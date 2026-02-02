@@ -1,0 +1,128 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <!-- title -->
+            <div class="md:col-span-12 flex flex-col">
+                <h2>Modalidades de Aventura</h2>
+
+                <p-message severity="info">
+                    <p class="font-bold text-lg">Importante:</p>
+
+                    <p>Registrar las modalidades de turismo de aventura ofertadas por el
+                        establecimiento.
+                    </p>
+                </p-message>
+            </div>
+
+            <!-- hasAdventureTourismModality -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label appLabel for="hasAdventureTourismModality"
+                       label="¿Su Establecimiento oferta alguna modalidad de turismo de aventura?"
+                       [required]="hasAdventureTourismModalityField"></label>
+
+                <app-toggle-switch id="hasAdventureTourismModality" formControlName="hasAdventureTourismModality"/>
+
+                <p-message
+                    appErrorMessage
+                    [errors]="hasAdventureTourismModalityField.errors"
+                    [touched]="hasAdventureTourismModalityField.touched"
+                    [dirty]="hasAdventureTourismModalityField.dirty"
+                />
+            </div>
+        </div>
+    </form>
+</p-fluid>
+
+<p-fluid>
+    @if (hasAdventureTourismModalityField.value) {
+        <div class="md:col-span-12">
+            <app-list-basic
+                title="Modalidades de Turismo de Aventura"
+                [items]="items"
+                [cols]="cols"
+                [buttonActions]="buttonActions"
+                (onCreate)="isVisibleModal = true"
+                (onSelect)="buildButtonActions($event)"
+            />
+        </div>
+
+        <app-regulation [modelId]="modelId" [isAdventureRequirement]="true" (dataOut)="saveForm($event)" />
+    }
+</p-fluid>
+
+<p-dialog
+    [(visible)]="isVisibleModal"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [style]="{ width: '25vw' }"
+    [draggable]="false"
+    (onHide)="closeModal()"
+    [resizable]="false"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Agregar Modalidad</span>
+        </div>
+    </ng-template>
+
+    <p-fluid>
+        <form [formGroup]="modalityForm" class="card flex flex-col gap-6 w-full" (ngSubmit)="onSubmit()">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <!-- className -->
+                <div class="md:col-span-12 flex flex-col gap-2">
+                    <label
+                        appLabel for="className"
+                        label="Clase de Modalidad"
+                        [required]="classNameField"></label>
+
+                    <p-select
+                        id="classModality"
+                        formControlName="className"
+                        [options]="classModalities"
+                        optionLabel="name"
+                        appendTo="body" />
+
+                    <p-message
+                        appErrorMessage
+                        [errors]="classNameField.errors"
+                        [touched]="classNameField.touched"
+                        [dirty]="classNameField.dirty"
+                    />
+                </div>
+
+                <!-- type -->
+                <div class="md:col-span-12 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="type"
+                        label="Modalidad"
+                        [required]="typeField"></label>
+
+                    <p-select
+                        id="modality"
+                        formControlName="type"
+                        [options]="availableModalities"
+                        optionLabel="name"
+                        appendTo="body" />
+
+                    <p-message
+                        appErrorMessage
+                        [errors]="typeField.errors"
+                        [touched]="typeField.touched"
+                        [dirty]="typeField.dirty"
+                    />
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="md:col-span-12 flex flex-col gap-2">
+                    <p-button
+                        type="submit"
+                        label="Agregar"
+                        [icon]="PrimeIcons.PLUS" />
+                </div>
+            </div>
+        </form>
+    </p-fluid>
+</p-dialog>

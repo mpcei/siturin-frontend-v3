@@ -1,0 +1,122 @@
+<p-fluid class="custom-card-form">
+    <form [formGroup]="form" class="custom-grid-form">
+        <!-- Section Name -->
+        <div class="md:col-span-12 custom-field-form">
+            <div class="custom-section-title-form">Personal del Establecimiento:</div>
+        </div>
+
+        <!-- totalMen -->
+        <div class="md:col-span-6 custom-field-form">
+            <label
+                appLabel
+                for="totalMen"
+                label="Total de hombres, que trabajan en el establecimiento"
+                [required]="totalMenField">
+            </label>
+
+            <p-inputNumber
+                id="totalMen"
+                formControlName="totalMen"
+                [min]="0"
+                showButtons
+                [useGrouping]="false" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="totalMenField.dirty"
+                [errors]="totalMenField.errors"
+                [touched]="totalMenField.touched" />
+        </div>
+
+        <!-- totalMenDisability -->
+        <div class="md:col-span-6 custom-field-form">
+            <label
+                appLabel
+                for="totalMenDisability"
+                label="Del total hombres, cuantos tienen discapacidad"
+                [required]="totalMenDisabilityField">
+            </label>
+
+            <p-inputNumber
+                id="totalMenDisability"
+                formControlName="totalMenDisability"
+                [min]="0"
+                [max]="totalMenField.value || 0"
+                showButtons
+                [useGrouping]="false" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="totalMenDisabilityField.dirty"
+                [errors]="totalMenDisabilityField.errors"
+                [touched]="totalMenDisabilityField.touched" />
+        </div>
+
+        <!-- totalWomen -->
+        <div class="md:col-span-6 custom-field-form">
+            <label
+                appLabel
+                for="totalWomen"
+                label="Total de mujeres, que trabajan en el establecimiento"
+                [required]="totalWomenField"
+            >
+            </label>
+
+            <p-inputNumber
+                id="totalWomen"
+                formControlName="totalWomen"
+                [min]="0"
+                showButtons
+                [useGrouping]="false" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="totalWomenField.dirty"
+                [errors]="totalWomenField.errors"
+                [touched]="totalWomenField.touched" />
+        </div>
+
+        <!-- totalWomenDisability -->
+        <div class="md:col-span-6 custom-field-form">
+            <label
+                appLabel
+                for="totalWomenDisability"
+                label="Del total mujeres, cuantas tienen discapacidad"
+                [required]="totalWomenDisabilityField">
+            </label>
+
+            <p-inputNumber
+                id="totalWomenDisability"
+                formControlName="totalWomenDisability"
+                [min]="0"
+                [max]="totalWomenField.value || 0"
+                showButtons
+                [useGrouping]="false" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="totalWomenDisabilityField.dirty"
+                [errors]="totalWomenDisabilityField.errors"
+                [touched]="totalWomenDisabilityField.touched" />
+        </div>
+
+        <!-- total -->
+        <div class="md:col-span-6 custom-field-form">
+            <label
+                appLabel
+                for="totalStaff"
+                label="Total personal del establecimiento"
+                [required]="totalStaffControl">
+            </label>
+
+            <!--                <p-tag [value]="totalStaffControl.value"></p-tag>-->
+            <p-message severity="info">{{ totalStaffControl.value }}</p-message>
+
+            <p-message
+                appErrorMessage
+                [errors]="totalStaffControl.errors"
+                [dirty]="totalStaffControl.dirty"
+                [touched]="totalStaffControl.touched" />
+        </div>
+    </form>
+</p-fluid>

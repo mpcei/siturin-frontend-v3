@@ -1,0 +1,27 @@
+<app-business-info-component (dataOut)="saveForm($event,ChildStep2FormEnum.establishment)" [dataIn]="step2Data()" />
+
+<app-staff (dataOut)="saveForm($event,ChildStep2FormEnum.establishment)" [dataIn]="step2Data()" />
+
+<app-address (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentAddress)" [dataIn]="step2Data()" />
+
+<app-contact-person (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentContactPerson)" [dataIn]="step2Data()" />
+
+<p-fluid class="custom-card-form">
+    <div class="custom-grid-form">
+        <div class="md:col-span-3 custom-field-form">
+            <p-button
+                label="Atrás"
+                severity="warn"
+                [icon]="PrimeIcons.ARROW_LEFT"
+                (onClick)="back()" />
+        </div>
+
+        <div class="md:col-start-10 md:col-span-3 custom-field-form">
+            <p-button
+                label="Siguiente"
+                iconPos="right"
+                [icon]="PrimeIcons.ARROW_RIGHT"
+                (onClick)="onSubmit()" />
+        </div>
+    </div>
+</p-fluid>

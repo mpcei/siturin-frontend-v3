@@ -1,0 +1,67 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="col-span-12 flex flex-col gap-2">
+                <h2>Persona de contacto</h2>
+            </div>
+            <!-- Persona de contacto -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Nombre"> </label>
+                <input pInputText type="text" formControlName="name" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="nameField.errors" 
+                [touched]="nameField.touched" 
+                [dirty]="nameField.dirty" />
+            </div>
+
+            <!--Correo electrónico de la persona de contacto-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Correo electrónico de la persona de contacto"> </label>
+                <input pInputText type="text" formControlName="email" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="emailField.errors" 
+                [touched]="emailField.touched" 
+                [dirty]="emailField.dirty" />
+            </div>
+
+            <!--Teléfono principal -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Teléfono principal"> </label>
+                <input pInputText type="text" formControlName="phone" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="phoneField.errors" 
+                [touched]="phoneField.touched" 
+                [dirty]="phoneField.dirty" />
+            </div>
+
+            <!--Teléfono secundario-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Teléfono secundario"> </label>
+                <input pInputText type="text" formControlName="secondaryPhone" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="secondaryPhoneField.errors" 
+                [touched]="secondaryPhoneField.touched" 
+                [dirty]="secondaryPhoneField.dirty" />
+            </div>
+
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Identificacin"> </label>
+                <input pInputText type="text" formControlName="identification" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="identificationField.errors" 
+                [touched]="identificationField.touched" 
+                [dirty]="identificationField.dirty" />
+            </div>
+        </div>
+    </form>
+</p-fluid>

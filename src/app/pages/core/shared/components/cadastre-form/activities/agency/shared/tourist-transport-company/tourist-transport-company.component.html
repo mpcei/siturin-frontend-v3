@@ -1,0 +1,144 @@
+<p-fluid>
+  <form [formGroup]="form" class="card flex flex-col gap-6 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      
+      <!-- Título e información -->
+      <div class="md:col-span-12 flex flex-col gap-2">
+        <h2>Compañías de Transporte Turístico</h2>
+
+        <p-message severity="info">
+          <div>
+                <p class="font-bold text-2xl">Importante:</p>
+
+                <p class="mt-4">
+                Registrar Compañía de Transporte Turístico contratado por el establecimiento
+                </p>
+          </div>
+        </p-message>
+      </div>
+
+      <!-- hasTouristTransportCompany -->
+      <div class="md:col-span-12 flex flex-col gap-2">
+        <label
+          appLabel
+          for="hasTouristTransportCompany"
+          label="Declaro que el establecimiento, al momento del envío del trámite, ha firmado un contrato con una Compañía de Transporte Turístico."
+          [required]="hasTouristTransportCompanyField"
+        ></label>
+
+        <p-toggleswitch id="hasTouristTransportCompany" formControlName="hasTouristTransportCompany">
+          <ng-template #handle let-checked="checked">
+            <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+          </ng-template>
+        </p-toggleswitch>
+
+        <p-message
+          appErrorMessage
+          [errors]="hasTouristTransportCompanyField.errors"
+          [touched]="hasTouristTransportCompanyField.touched"
+          [dirty]="hasTouristTransportCompanyField.dirty"
+        />
+      </div>
+    </div>
+  </form>
+</p-fluid>
+
+<p-fluid>
+  @if (hasTouristTransportCompanyField.value) {
+    <div class="md:col-span-12">
+      <app-list-basic
+        title="Listado de Compañías de Transporte Turístico"
+        [items]="items"
+        [cols]="cols"
+        [buttonActions]="buttonActions"
+        (onCreate)="isVisibleModal = true"
+        (onSelect)="buildButtonActions($event)"
+      />
+    </div>
+  }
+</p-fluid>
+
+<p-dialog
+  [(visible)]="isVisibleModal"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '25vw' }"
+  [draggable]="false"
+  (onHide)="closeModal()"
+  [resizable]="false">
+
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">Agregar Compañía</span>
+    </div>
+  </ng-template>
+
+  <p-fluid>
+    <form [formGroup]="touristTransportCompanyForm" class="card flex flex-col gap-2 w-full" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- RUC -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label 
+          appLabel 
+          for="ruc" 
+          label="RUC" 
+          [required]="rucField"></label>
+
+          <input pInputText id="ruc" formControlName="ruc">
+
+          <p-message
+            appErrorMessage
+            [errors]="rucField.errors"
+            [touched]="rucField.touched"
+            [dirty]="rucField.dirty"
+          />
+        </div>
+
+        <!-- Razón Social -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label 
+          appLabel 
+          for="legalName" 
+          label="Razón Social" 
+          [required]="legalNameField"></label>
+
+          <input pInputText id="legalName" formControlName="legalName">
+
+          <p-message
+            appErrorMessage
+            [errors]="legalNameField.errors"
+            [touched]="legalNameField.touched"
+            [dirty]="legalNameField.dirty"
+          />
+        </div>
+
+        <!-- Tipo Contribuyente -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label 
+          appLabel 
+          for="type"
+          label="Tipo Contribuyente" 
+          [required]="typeField"></label>
+
+          <input pInputText id="type" formControlName="type">
+
+          <p-message
+            appErrorMessage
+            [errors]="typeField.errors"
+            [touched]="typeField.touched"
+            [dirty]="typeField.dirty"
+          />
+        </div>
+
+        <!-- Action Button -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <p-button 
+                type="submit" 
+                label="Agregar" 
+                [icon]="PrimeIcons.PLUS" />
+        </div>
+      </div>
+    </form>
+  </p-fluid>
+</p-dialog>

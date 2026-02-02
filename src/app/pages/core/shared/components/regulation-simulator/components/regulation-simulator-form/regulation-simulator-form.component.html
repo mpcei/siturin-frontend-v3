@@ -1,0 +1,89 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- contributorType -->
+            <div class="md:col-span-2 flex flex-col gap-2">
+                <label appLabel
+                       for="contributorType"
+                       [label]="regulationSimulatorFormEnum.constributorType"
+                       [required]="contributorTypeField"></label>
+
+                <p-select id="contributorType"
+                          formControlName="contributorType"
+                          optionLabel="name"
+                          [options]="contributorTypes" />
+            </div>
+
+            <!-- geographicArea -->
+            @if (contributorTypeField.value) {
+                <div class="md:col-span-2 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="geographicArea"
+                        [required]="geographicAreaField"
+                        [label]="regulationSimulatorFormEnum.geographicArea"></label>
+
+                    <p-select
+                        id="geographicArea"
+                        formControlName="geographicArea"
+                        [options]="geographicAreas"
+                        optionLabel="name" />
+                </div>
+            }
+
+            <!-- activity -->
+            @if (geographicAreaField.value) {
+                <div class="md:col-span-3 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="activity"
+                        [required]="activityField"
+                        [label]="regulationSimulatorFormEnum.activity"></label>
+
+                    <p-select
+                        id="activity"
+                        formControlName="activity"
+                        [options]="activities"
+                        optionLabel="name"
+                    />
+                </div>
+            }
+
+            <!-- classification -->
+            @if (activityField.value) {
+                <div class="md:col-span-3 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="classification"
+                        [required]="classificationField"
+                        [label]="regulationSimulatorFormEnum.classification"
+                    ></label>
+
+                    <p-select
+                        id="classification"
+                        formControlName="classification"
+                        optionLabel="name"
+                        [options]="classifications" />
+                </div>
+            }
+
+            <!-- category -->
+            @if (classificationField.value) {
+                <div class="md:col-span-2 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="category"
+                        [required]="categoryField"
+                        [label]="regulationSimulatorFormEnum.category"></label>
+
+                    <p-select
+                        id="category"
+                        formControlName="category"
+                        optionLabel="name"
+                        [options]="categories"
+                    />
+                </div>
+            }
+        </div>
+    </form>
+</p-fluid>

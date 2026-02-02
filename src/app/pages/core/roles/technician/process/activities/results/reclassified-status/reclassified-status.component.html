@@ -1,0 +1,64 @@
+<p-fluid>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card flex flex-col">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div class="md:col-span-12 flex flex-col">
+                <label appLabel for="classification" label="Clasificación">
+                </label>
+                <p-select dataKey="id" [options]="classifications" [formControl]="classificationField"
+                    optionLabel="name" appendTo="body">
+                </p-select>
+
+                <p-message appErrorMessage [errors]="classificationField.errors" [touched]="classificationField.touched"
+                    [dirty]="classificationField.dirty" />
+            </div>
+
+            <!-- category -->
+            <div class="md:col-span-12 flex flex-col">
+                <label appLabel for="category" label="Categoria">
+                </label>
+                <p-select [options]="categories" [formControl]="categoryField" optionLabel="name" appendTo="body">
+                </p-select>
+
+                <p-message appErrorMessage [errors]="categoryField.errors" [touched]="categoryField.touched"
+                    [dirty]="categoryField.dirty" />
+            </div>
+
+
+
+            <!-- Botón que aparece condicionalmente -->
+            <div class="md:col-span-12 flex flex-col">
+                @if (form.get('category')?.value?.id) {
+                <p class="text-black">Formulario CheckList</p>
+                <p-button icon="pi pi-download" label="Acta de Supervision Lectoral" severity="info"
+                    styleClass="w-full" />
+                }
+            </div>
+
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label appLabel for="file" label="Formulario de Requisitos(Check List):" [required]="categoryField">
+                </label>
+
+                <p-fileupload id="file" name="file" chooseLabel="Buscar" chooseIcon="pi pi-search"
+                    uploadLabel="Subir archivos" [auto]="true" accept="application/pdf" [maxFileSize]="10485760"
+                    [customUpload]="true" (uploadHandler)="onFileSelect($event)">
+                </p-fileupload>
+            </div>
+
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label appLabel for="file" label="Formulario de Requisitos Incumplimiento(Check List):"
+                    [required]="categoryField">
+                </label>
+
+                <p-fileupload id="file" name="file" chooseLabel="Buscar" chooseIcon="pi pi-search"
+                    uploadLabel="Subir archivos" [auto]="true" accept="application/pdf" [maxFileSize]="10485760"
+                    [customUpload]="true" (uploadHandler)="onFileSelect($event)">
+                </p-fileupload>
+            </div>
+
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <p-button type="submit" label="Guardar" [icon]="PrimeIcons.SAVE" />
+            </div>
+        </div>
+    </form>
+</p-fluid>

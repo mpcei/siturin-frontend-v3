@@ -1,0 +1,44 @@
+<app-process (dataOut)="saveForm($event, 'process')" />
+<p-divider />
+<app-establishment (dataOut)="saveForm($event, 'establishment')" />
+<p-divider />
+<app-location (dataOut)="saveForm($event, 'location')" />
+<p-divider />
+<app-contact-person (dataOut)="saveForm($event, 'contact-person')" />
+<p-divider />
+<app-establishment-staff (dataOut)="saveForm($event, 'establishment-staff')" />
+<p-divider />
+@switch (nameComponent) {
+    @case (catalogueActivitiesCodeEnum.accommodation) {
+        <app-accommodation (dataOut)="saveForm($event, 'accommodation')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.park) {
+        <app-park (dataOut)="saveForm($event, 'park')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.transport) {
+        <app-transport (dataOut)="saveForm($event, 'transport')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.event) {
+        <app-event (dataOut)="saveForm($event, 'event')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.food_drink) {
+        <app-food-drink (dataOut)="saveForm($event, 'food-drink')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.agency) {
+        <app-agency (dataOut)="saveForm($event, 'agency')" />
+        <p-divider />
+    }
+    @case (catalogueActivitiesCodeEnum.ctc) {
+        <app-ctc (dataOut)="saveForm($event, 'ctc')" />
+        <p-divider />
+    }
+}
+
+<div class="justify-content-end align-items-right flex flex-wrap gap-2">
+    <p-button (onClick)="onSubmit()" icon="pi pi-save" size="small" label="Guardar" [raised]="true" severity="contrast" />
+</div>

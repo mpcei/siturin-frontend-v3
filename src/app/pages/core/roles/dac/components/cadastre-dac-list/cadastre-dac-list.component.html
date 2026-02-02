@@ -1,0 +1,11 @@
+<p>cadastre-list works!</p>
+
+@if (pagination) {
+    <app-list
+        title="Listado de Cadastres"
+        [pagination]="pagination"
+        [items]="items"
+        [cols]="cols"
+        (onSearch)="onSearch($event)"
+        (onPagination)="onPagination($event)" [buttonActions]="buttonActions" />
+}

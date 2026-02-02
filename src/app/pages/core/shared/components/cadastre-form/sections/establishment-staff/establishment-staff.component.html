@@ -1,0 +1,69 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Total de trabajadores Hombres  -->
+            
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <h2>Personal del establecimiento</h2>
+            </div>
+
+           <div class="col-span-6 flex flex-col gap-2">
+                   <label appLabel label="Del total hombres, cuantos tienen discapacidad"> </label>
+                    <p-inputnumber [showButtons]="true" id="totalAccreditedStaffLanguage"
+                                  formControlName="totalMen"
+                                  [showButtons]="true" mode="decimal" />
+
+
+                <p-message 
+                appErrorMessage 
+                [errors]="totalMenField.errors" 
+                [touched]="totalMenField.touched" 
+                [dirty]="totalMenField.dirty" />
+                    
+               </div>
+
+                <!-- Total de trabajadores Hombres con discapacidad  -->
+               <div class="md:col-span-6 flex flex-col gap-2">
+                   <label appLabel label="Del total hombres, cuantos tienen discapacidad"> </label>
+                    <p-inputnumber [showButtons]="true" id="totalAccreditedStaffLanguage"
+                                  formControlName="totalMenDisability"
+                                  [showButtons]="true" mode="decimal" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="totalMenDisabilityField.errors" 
+                [touched]="totalMenDisabilityField.touched" 
+                [dirty]="totalMenDisabilityField.dirty" />
+               </div>
+
+                <!-- Total de trabajadores Mujeres -->
+               <div class="md:col-span-6 flex flex-col gap-2">
+                   <label appLabel label="Del total hombres, cuantos tienen discapacidad"> </label>
+                    <p-inputnumber [showButtons]="true" id="totalAccreditedStaffLanguage"
+                                  formControlName="totalWomen"
+                                  [showButtons]="true" mode="decimal" />
+
+
+                <p-message 
+                appErrorMessage 
+                [errors]="totalWomenField.errors" 
+                [touched]="totalWomenField.touched" 
+                [dirty]="totalWomenField.dirty" />
+               </div>
+
+                <!-- Total de trabajadores Mujeres -->
+               <div class="md:col-span-6 flex flex-col gap-2">
+                   <label appLabel label="Del total hombres, cuantos tienen discapacidad"> </label>
+                    <p-inputnumber [showButtons]="true" id="totalAccreditedStaffLanguage"
+                                  formControlName="totalWomenDisability"
+                                  [showButtons]="true" mode="decimal" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="totalWomenDisabilityField.errors" 
+                [touched]="totalWomenDisabilityField.touched" 
+                [dirty]="totalWomenDisabilityField.dirty" />
+               </div>
+        </div>
+    </form>
+</p-fluid>

@@ -1,0 +1,203 @@
+<p-toolbar>
+    <ng-template #start>
+        <small class="text-gray-600">Todos los campos con <b class="text-red-600">*</b> son obligatorios</small>
+
+    </ng-template>
+
+    <ng-template #center>
+        <!-- title -->
+        <div class="custom-form-title">Formulario Usuario</div>
+    </ng-template>
+
+    <ng-template #end>
+        <!-- actions -->
+        <p-button label="Cancelar" [icon]="FontAwesome.CHEVRON_LEFT_SOLID" [text]="true" severity="secondary"
+                  (onClick)="return()" />
+        <p-button type="button" label="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" class="ml-2"
+                  (onClick)="onSubmit()" />
+    </ng-template>
+</p-toolbar>
+
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- identificationField -->
+        <div class="md:col-span-3 custom-form-field">
+            <label
+                appLabel
+                for="identification"
+                [required]="identificationField"
+                label="Identificación">
+            </label>
+
+            <input pInputText type="text" id="identification" formControlName="identification" [pAutoFocus]="true">
+
+            <small
+                appErrorMessage
+                [errors]="identificationField.errors"
+                [touched]="identificationField.touched"
+                [dirty]="identificationField.dirty" ></small>
+        </div>
+
+        <!-- lastnameField -->
+        <div class="md:col-span-3 custom-form-field">
+            <label
+                appLabel
+                for="lastname"
+                [required]="lastnameField"
+                label="Apellidos">
+            </label>
+
+            <input pInputText type="text" id="lastname" formControlName="lastname">
+
+            <small
+                appErrorMessage
+                [errors]="lastnameField.errors"
+                [touched]="lastnameField.touched"
+                [dirty]="lastnameField.dirty" ></small>
+        </div>
+
+        <!-- nameField -->
+        <div class="md:col-span-3 custom-form-field">
+            <label
+                appLabel
+                for="name"
+                [required]="nameField"
+                label="Nombres">
+            </label>
+
+            <input pInputText type="text" id="name" formControlName="name">
+
+            <small
+                appErrorMessage
+                [errors]="nameField.errors"
+                [touched]="nameField.touched"
+                [dirty]="nameField.dirty" ></small>
+        </div>
+
+        <!-- emailField -->
+        <div class="md:col-span-3 custom-form-field">
+            <label
+                appLabel
+                for="email"
+                [required]="emailField"
+                label="Correo electrónico">
+            </label>
+
+            <input pInputText type="email" id="email" formControlName="email">
+
+            <small
+                appErrorMessage
+                [errors]="emailField.errors"
+                [touched]="emailField.touched"
+                [dirty]="emailField.dirty" ></small>
+        </div>
+
+        <div class="md:col-span-12 custom-form-field">
+            <div class="custom-form-grid md:grid-cols-12">
+                <!-- passwordActivated -->
+                <div class="md:col-span-2 custom-form-field">
+                    <label
+                        appLabel
+                        for="passwordActivated"
+                        label="Activar contraseña">
+                    </label>
+
+                    <app-toggle-switch [formControl]="passwordActivated" />
+                </div>
+
+                <!-- passwordChanged -->
+                <div class="md:col-span-10 custom-form-field">
+                    <label
+                        appLabel
+                        for="passwordChanged"
+                        [required]="passwordChangedField"
+                        label="Forzar cambio de contraseña al iniciar sesión">
+                    </label>
+
+                    <app-toggle-switch id="passwordChanged" formControlName="passwordChanged" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="passwordChangedField.errors"
+                        [touched]="passwordChangedField.touched"
+                        [dirty]="passwordChangedField.dirty" ></small>
+                </div>
+
+                <!-- passwordField -->
+                @if (passwordField.enabled) {
+                    <div class="md:col-span-5 custom-form-field">
+                        <label
+                            appLabel
+                            for="password"
+                            [required]="passwordField"
+                            label="Contraseña">
+                        </label>
+
+                        <p-inputgroup>
+                            <p-password
+                                id="password"
+                                formControlName="password"
+                                inputStyleClass="w-full"
+                                [toggleMask]="true"
+                                [feedback]="false">
+                            </p-password>
+
+                            <!-- password autogenerated -->
+                            <p-button
+                                class="ml-1"
+                                pTooltip="Generar contraseña segura automáticamente"
+                                [icon]="FontAwesome.WAND_MAGIC_SPARKLES_SOLID"
+                                severity="info"
+                                [disabled]="passwordField.disabled"
+                                (onClick)="autoGeneratePassword()" />
+                        </p-inputgroup>
+
+
+                        <small
+                            appErrorMessage
+                            [errors]="passwordField.errors"
+                            [touched]="passwordField.touched"
+                            [dirty]="passwordField.dirty" ></small>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- rolesField -->
+        <div class="md:col-span-5 custom-form-field">
+            <label
+                appLabel
+                for="roles"
+                [required]="rolesField"
+                label="Roles">
+            </label>
+
+            <p-multiSelect
+                id="roles"
+                formControlName="roles"
+                [options]="roles"
+                optionLabel="name"
+                [filter]="true"
+                display="chip"
+                [maxSelectedLabels]="2"
+                appendTo="body"
+                placeholder="Seleccione..." />
+
+            <small
+                appErrorMessage
+                [errors]="rolesField.errors"
+                [touched]="rolesField.touched"
+                [dirty]="rolesField.dirty" ></small>
+        </div>
+
+        <!-- selected roles -->
+        @if (rolesField.value && rolesField.value.length > 1) {
+            @for (role of rolesField.value; track role.id) {
+                <div class="custom-form-field md:col-span-2 mt-7">
+                    <p-tag [value]="role.name"></p-tag>
+                </div>
+            }
+        }
+
+    </form>
+</div>

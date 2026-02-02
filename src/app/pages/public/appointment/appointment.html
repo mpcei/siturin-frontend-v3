@@ -1,0 +1,14 @@
+<app-appointment-form (dataOut)="saveForm($event)" [submitted]="submitted()" />
+
+<!-- submit -->
+<div class="custom-form-card mx-auto max-w-3xl">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-12">
+            @if (mainData()) {
+                <p-button
+                    label="Agendar"
+                    [icon]="FontAwesome.FLOPPY_DISK_SOLID" (onClick)="onSubmit()" />
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,277 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="flex flex-col">
+        <app-password-change/>
+
+        <div class="custom-form-card">
+            <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+                <!-- title -->
+                <div class="custom-form-title md:col-span-10">
+                    Datos Personales:
+                    <p-divider />
+                </div>
+
+                <!-- save action -->
+                <div class="custom-form-field md:col-span-2">
+                    <p-button pTooltip="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" (onClick)="onSubmit()" />
+                </div>
+
+                <!-- avatarField -->
+                <div class="md:col-span-3 custom-form-field">
+                    <label
+                        appLabel
+                        for="avatar"
+                        [required]="avatarField"
+                        label="Foto de perfil">
+                    </label>
+
+                    <p-avatar
+                        [image]="avatarUrl ? avatarUrl:undefined"
+                        [icon]="avatarUrl ? undefined:FontAwesome.CAMERA_RETRO_SOLID"
+                        size="xlarge"
+                        shape="circle"
+                        (click)="fileInput.click()"
+                        pTooltip="Haga click para cambiar" />
+
+                    <input
+                        #fileInput
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        (change)="uploadAvatar($event)" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="avatarField.errors"
+                        [touched]="avatarField.touched"
+                        [dirty]="avatarField.dirty" ></small>
+                </div>
+
+                <!-- emailField -->
+                <div class="md:col-span-9 custom-form-field">
+                    <label
+                        appLabel
+                        for="email"
+                        [required]="emailField">
+                        Correo Principal:
+                        @if (emailVerifiedAtField.value) {
+                            <p-tag value="Verificado" severity="success" />
+                        } @else {
+                            <p-tag value="No Verificado" severity="danger" />
+                        }
+                    </label>
+
+                    <input type="email" pInputText formControlName="email">
+
+                    <small
+                        appErrorMessage
+                        [errors]="emailField.errors"
+                        [touched]="emailField.touched"
+                        [dirty]="emailField.dirty" ></small>
+                </div>
+
+                <!-- identificationTypeField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="identificationType"
+                        [required]="identificationTypeField"
+                        label="Tipo de identificación">
+                    </label>
+
+                    <p-select
+                        id="identificationType"
+                        dataKey="id"
+                        [options]="identificationTypes"
+                        formControlName="identificationType"
+                        optionLabel="name"
+                        appendTo="body" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="identificationTypeField.errors"
+                        [touched]="identificationTypeField.touched"
+                        [dirty]="identificationTypeField.dirty" ></small>
+                </div>
+
+                <!-- identificationField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="identification"
+                        [required]="identificationField"
+                        label="Identificación">
+                    </label>
+
+                    <input type="text" pInputText formControlName="identification">
+
+                    <small
+                        appErrorMessage
+                        [errors]="identificationField.errors"
+                        [touched]="identificationField.touched"
+                        [dirty]="identificationField.dirty" ></small>
+                </div>
+
+                <!-- lastnameField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="lastname"
+                        [required]="lastnameField"
+                        label="Apellidos">
+                    </label>
+
+                    <input type="text" pInputText formControlName="lastname">
+
+                    <small
+                        appErrorMessage
+                        [errors]="lastnameField.errors"
+                        [touched]="lastnameField.touched"
+                        [dirty]="lastnameField.dirty" ></small>
+                </div>
+
+                <!-- nameField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="name"
+                        [required]="nameField"
+                        label="Nombres">
+                    </label>
+
+                    <input type="text" pInputText formControlName="name">
+
+                    <small
+                        appErrorMessage
+                        [errors]="nameField.errors"
+                        [touched]="nameField.touched"
+                        [dirty]="nameField.dirty" ></small>
+                </div>
+
+                <!-- personalEmailField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="personalEmail"
+                        [required]="personalEmailField"
+                        label="Correo Secundario">
+                    </label>
+
+                    <input type="email" pInputText formControlName="personalEmail">
+
+                    <small
+                        appErrorMessage
+                        [errors]="personalEmailField.errors"
+                        [touched]="personalEmailField.touched"
+                        [dirty]="personalEmailField.dirty" ></small>
+                </div>
+
+                <!-- birthdateField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="birthdate"
+                        [required]="birthdateField"
+                        label="Fecha de nacimiento">
+                    </label>
+
+                    <p-datePicker
+                        id="birthdate"
+                        formControlName="birthdate"
+                        appendTo="body"
+                        [showIcon]="true"
+                        dateFormat="yy-mm-dd" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="birthdateField.errors"
+                        [touched]="birthdateField.touched"
+                        [dirty]="birthdateField.dirty" ></small>
+                </div>
+
+                <!-- cellPhoneField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="cellPhone"
+                        [required]="cellPhoneField"
+                        label="Teléfono celular">
+                    </label>
+
+                    <input type="text" pInputText formControlName="cellPhone">
+
+                    <small
+                        appErrorMessage
+                        [errors]="cellPhoneField.errors"
+                        [touched]="cellPhoneField.touched"
+                        [dirty]="cellPhoneField.dirty" ></small>
+                </div>
+
+                <!-- phoneField -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel
+                        for="phone"
+                        [required]="phoneField"
+                        label="Teléfono convencional">
+                    </label>
+
+                    <input type="text" pInputText formControlName="phone">
+
+                    <small
+                        appErrorMessage
+                        [errors]="phoneField.errors"
+                        [touched]="phoneField.touched"
+                        [dirty]="phoneField.dirty" ></small>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="custom-form-card">
+            <form [formGroup]="form" class="custom-form-grid  md:grid-cols-12">
+                <!-- title -->
+                <div class="md:col-span-12 custom-form-title">
+                    Preguntas de seguridad:
+                    <p-divider />
+                </div>
+
+                <!-- securityQuestions -->
+                <div class="md:col-span-12 custom-form-field">
+                    <label
+                        appLabel
+                        for="securityQuestions">
+                        <p>
+                            Última modificación:
+                            <strong>
+                                {{ authService.auth.securityQuestionAcceptedAt | dateLong:true }}
+                            </strong>
+                        </p>
+
+                        <p>
+                            <small class="bg-surface-100">
+                                Estas preguntas se utilizan para verificar tu identidad.
+                            </small>
+                        </p>
+
+                        <small class="bg-surface-100">
+                            Para cambiarlas, deberás validar un código de seguridad.
+                        </small>
+                    </label>
+                </div>
+
+                <div class="md:col-span-12 custom-form-field">
+                    <p-button
+                        label="Cambiar Preguntas"
+                        severity="info"
+                        styleClass="w-full"
+                        [icon]="FontAwesome.PEN_TO_SQUARE_REGULAR"
+                        (onClick)="goToSecurityQuestions()"
+                    />
+                </div>
+            </form>
+        </div>
+
+        <app-additional-information/>
+    </div>
+</div>

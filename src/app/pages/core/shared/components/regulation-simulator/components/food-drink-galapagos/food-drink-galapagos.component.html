@@ -1,0 +1,20 @@
+@if (this.classification()) {
+    <p-message severity="info">
+        {{ classification()?.definition }}
+    </p-message>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <hr />
+        <div formArrayName="items">
+            @for (item of itemsField.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="flex items-center justify-between gap-2">
+                    <label>
+                        {{ item.value.name }}
+                        <span class="text-red-500 ml-1">*</span>
+                    </label>
+
+                    <app-toggle-switch id="isCompliant" formControlName="isCompliant" />
+                </div>
+            }
+        </div>
+    </form>
+}

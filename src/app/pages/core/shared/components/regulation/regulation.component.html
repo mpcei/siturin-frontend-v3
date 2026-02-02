@@ -1,0 +1,67 @@
+<p-fluid>
+    @if (sections()) {
+        <form [formGroup]="form" class="custom-card-form">
+            <div formArrayName="sections" class="custom-grid-form">
+                <div class="md:col-span-12 custom-field-form">
+                    <h1>Normativa</h1>
+
+                    <p-message severity="warn">
+                        <div>
+                            <p class="text-lg font-bold">Atención</p>
+
+                            <p>
+                                Los requisitos listados a continuación serán revisados por el inspector del Ministerio
+                                de Turismo el día de la visita a su establecimiento. Asegúrese que su establecimiento
+                                cumpla con aquellos seleccionados.
+                            </p>
+
+                            <p>
+                                Los Requisitos marcados con * son obligatorios
+                            </p>
+                        </div>
+                    </p-message>
+                </div>
+
+                @for (section of sectionsField.controls; track section.value.id; let i = $index; let even = $even) {
+                    <div [formGroupName]="i" class="md:col-span-12 custom-field-form">
+                        <div class="mb-4">
+                            <p-divider />
+                            <p class="text-lg font-bold mb-4 text-justify">
+                                {{ section.value.name }}
+
+                                @if (section.value.minimumItems && section.value.validationType == validationTypeEnum.MINIMUM_ITEMS) {
+                                    <span
+                                        class="text-primary text-sm font-medium ml-2">(Items mínimos requeridos {{ section.value.minimumItems }}
+                                        )
+                            </span>
+                                }
+                            </p>
+                        </div>
+
+                        <div formArrayName="items" class="custom-grid-form">
+                            @for (item of getRegulationItemsField(i).controls; track item.value.id; let j = $index) {
+                                <div [formGroupName]="j" class="md:col-span-11 custom-field-form">
+                                    <p class="text-justify">
+                                        @if (item.value.isMandatory) {
+                                            <span class="text-red-500 ml-1">*</span>
+                                        }
+
+                                        {{ item.value.name }}
+
+                                        @if (item.value.score) {
+                                            <p-tag [value]="'Puntos: ( ' + item.value.score + ' )'" [rounded]="true"/>
+                                        }
+                                    </p>
+                                </div>
+
+                                <div [formGroupName]="j" class="md:col-span-1 custom-field-form">
+                                    <app-toggle-switch id="isCompliant" formControlName="isCompliant"/>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </form>
+    }
+</p-fluid>

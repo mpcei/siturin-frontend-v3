@@ -1,0 +1,73 @@
+<p-fluid>
+    <p-message severity="info">
+        <div>
+            <b>NOTA IMPORTANTE:</b>
+            <p class="mt-4 text-justify">
+                Recuerde que para la obtención del Registro de Turismo, usted debe contar con el RUC (Registro
+                Único de Contribuyentes) Actualizado, con información de Razón Social, establecimientos, nombre
+                comercial, etc; en caso de no contar con estos requisitos, deberá actualizar su información en
+                la página del SRI www.sri.gob.ec
+            </p>
+            <p class="mt-4 text-justify">
+                Seleccione el trámite por establecimiento; si el código del establecimiento asociado a su RUC o
+                el código de Registro Turístico no son correctos, por favor comuníquese con el Ministerio de
+                Turismo.
+            </p>
+        </div>
+    </p-message>
+
+    <div class="card flex flex-col gap-6 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <p-table
+                    [value]="establishments"
+                    rowGroupMode="rowspan"
+                    groupRowsBy="number"
+                    sortField="number"
+                    sortMode="single"
+                    [tableStyle]="{ 'min-width': '75rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th style="width:3rem">#</th>
+                            <th>Representative</th>
+                            <th>Name</th>
+                            <th>Country</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template
+                        #body
+                        let-item
+                        let-rowIndex="rowIndex"
+                        let-rowgroup="rowgroup"
+                        let-rowspan="rowspan">
+                        <tr>
+                            <td>{{ rowIndex }}</td>
+                            @if (rowgroup) {
+                                <td [attr.rowspan]="rowspan">
+                                    <div class="flex items-center gap-2">
+                                        <span>{{ item.number }}</span>
+                                    </div>
+                                </td>
+                            }
+                            <td>
+                                {{ item.tradeName }}
+                            </td>
+                            <td>
+                                <div class="flex items-center gap-2">
+                                    <span>{{ item.webPage }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                {{ item.tradeName }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+
+</p-fluid>

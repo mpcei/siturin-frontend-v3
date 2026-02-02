@@ -1,0 +1,27 @@
+@if (this.classification()) {
+    <div class="flex flex-col gap-4">
+        <p-panel>
+            <p class="text-md mb-2">{{ classification()?.definition }}</p>
+        </p-panel>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <hr />
+        <div formArrayName="items">
+            @for (item of itemsField.controls; track item; let i = $index) {
+                <div [formGroupName]="i" class="flex items-center justify-between gap-2">
+                    <label>
+                        {{ item.value.name }}
+                        <span class="text-red-500 ml-1">*</span>
+                    </label>
+
+                    <p-toggleswitch formControlName="isCompliant">
+                        <ng-template #handle let-checked="checked">
+                            <span class="!text-xs font-bold">{{ checked ? 'SI' : 'NO' }}</span>
+                        </ng-template>
+                    </p-toggleswitch>
+                </div>
+                <hr />
+            }
+        </div>
+    </form>
+}

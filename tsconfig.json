@@ -1,0 +1,69 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "outDir": "./dist/out-tsc",
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "moduleResolution": "bundler",
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "ES2022",
+        "baseUrl": "./",
+        "paths": {
+            "@/*": [
+                "src/app/*"
+            ],
+            "@interfaces": [
+                "./src/app/interfaces"
+            ],
+            "@routes": [
+                "./src/my-routes"
+            ],
+            "@errorRoutes": [
+                "./src/app/layout/errors/*"
+            ],
+            "@assets/*": [
+                "./src/assets/*"
+            ],
+            "@env/*": [
+                "./src/environments/*"
+            ],
+            "@guards": [
+                "./src/app/guards"
+            ],
+            "@layout/*": [
+                "./src/app/layout/*"
+            ],
+            "@modules/*": [
+                "./src/app/pages/*"
+            ],
+            "@shared/*": [
+                "./src/app/shared/*"
+            ],
+            "@utils/*": [
+                "./src/app/utils/*"
+            ],
+            "@servicesApp/*": [
+                "./src/app/services/app/*"
+            ],
+            "@servicesHttp/*": [
+                "./src/app/services/http/*"
+            ]
+        }
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": true
+    }
+}

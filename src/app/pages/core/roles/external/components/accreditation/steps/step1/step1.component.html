@@ -1,0 +1,24 @@
+<app-sri />
+
+<app-juridical-person (dataOut)="saveForm($event)" [dataIn]="step1Data()" />
+
+<p-fluid class="custom-card-form">
+    <div class="custom-grid-form">
+        <div class="md:col-span-3 custom-field-form">
+            <p-button
+                label="Establecimientos"
+                severity="warn"
+                [icon]="PrimeIcons.ARROW_LEFT"
+                (onClick)="back()" />
+        </div>
+
+        <div class="md:col-start-10 md:col-span-3 custom-field-form">
+            <p-button
+                label="Continuar"
+                iconPos="right"
+                [icon]="PrimeIcons.ARROW_RIGHT"
+                (onClick)="onSubmit()" />
+        </div>
+    </div>
+</p-fluid>
+

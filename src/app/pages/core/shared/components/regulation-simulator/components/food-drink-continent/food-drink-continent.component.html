@@ -1,0 +1,22 @@
+@if (this.classification()) {
+    <p-message severity="info">
+        <p class="text-md mb-2">{{ classification()?.definition }}</p>
+    </p-message>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card flex flex-col gap-6">
+        <div formArrayName="items">
+            @for (item of itemsField.controls; track $index; let i = $index) {
+                <div [formGroupName]="i" class="flex items-center justify-between gap-2">
+                    <label appLabel [required]="item" [label]="item.value.name">
+                    </label>
+
+                    <p-toggleswitch formControlName="isCompliant">
+                        <ng-template #handle let-checked="checked">
+                            <span class="!text-xs font-bold">{{ checked ? 'SI' : 'NO' }}</span>
+                        </ng-template>
+                    </p-toggleswitch>
+                </div>
+            }
+        </div>
+    </form>
+}

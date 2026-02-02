@@ -1,0 +1,39 @@
+<p-drawer appendTo="body" [(visible)]="enabled" position="right" (onHide)="close()">
+    <ng-template #headless>
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between px-6 pt-4 shrink-0">
+                <span class="inline-flex items-center gap-2">
+                    <span class="font-semibold text-2xl text-primary">
+                        Acciones
+                    </span>
+                </span>
+                <span>
+                    <p-button
+                        type="button"
+                        (click)="close()"
+                        [icon]="FontAwesome.XMARK_SOLID"
+                        [rounded]="true"
+                        [outlined]="true"
+                        styleClass="h-8 w-8"></p-button>
+                </span>
+            </div>
+            <div class="overflow-y-auto">
+                <p-panelMenu
+                    [model]="buttonActions"
+                    (click)="close()" />
+            </div>
+
+            <div class="mt-auto">
+                <hr class="mb-4 mx-4 border-t border-0 border-surface" />
+                <a pRipple
+                   class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
+                    <span class="font-bold">
+                                &copy; {{ environment.APP_SHORT_NAME }} {{ currentYear }}
+                    </span>
+                </a>
+            </div>
+        </div>
+    </ng-template>
+</p-drawer>
+
+

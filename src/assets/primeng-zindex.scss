@@ -1,0 +1,26 @@
+:root {
+    --z-mask: 8999;
+    --z-dialog: 9000;
+    --z-toast: 10000;
+}
+
+/* Desactivar stacking automático de PrimeNG */
+.p-overlay,
+.p-dialog,
+.p-dropdown-panel,
+.p-overlaypanel,
+.p-toast {
+    z-index: auto !important;
+}
+
+.p-dialog-mask {
+    z-index: var(--z-mask) !important;
+}
+
+.p-dialog {
+    z-index: var(--z-dialog) !important;
+}
+
+.p-toast {
+    z-index: var(--z-toast) !important;
+}

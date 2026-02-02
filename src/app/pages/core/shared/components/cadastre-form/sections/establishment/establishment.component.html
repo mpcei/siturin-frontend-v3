@@ -1,0 +1,163 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col">
+        <!-- Componente Registro de turismo -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="col-span-12 flex flex-col gap-2">
+                <h2>Establecimiento</h2>
+            </div>
+            <!-- RUC-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="RUC"></label>
+                <input pInputText type="text" formControlName="ruc" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="rucField.errors" 
+                [touched]="rucField.touched" 
+                [dirty]="rucField.dirty" />
+            </div>
+
+            <!-- Código de Establecimiento RUC-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Código de establecimiento RUC"> </label>
+                <input pInputText type="text" formControlName="code" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="codeField.errors" 
+                [touched]="codeField.touched" 
+                [dirty]="codeField.dirty" />
+            </div>
+
+            <!-- Estado RUC-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Estado RUC"> </label>
+                <input pInputText type="text" formControlName="state" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="stateField.errors" 
+                [touched]="stateField.touched" 
+                [dirty]="stateField.dirty" />
+            </div>
+
+            <!-- Nombre Comercial-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Nombre Comercial"> </label>
+                <input pInputText type="text" formControlName="tradeName" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="tradeNameField.errors" 
+                [touched]="tradeNameField.touched" 
+                [dirty]="tradeNameField.dirty" />
+            </div>
+
+            <!-- Tipo de Establecimieto-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Tipo de Establecimiento"></label>
+                <p-select optionLabel="label" formControlName="establishments" placeholder="Seleccione una opción"/> 
+
+                <p-message 
+                appErrorMessage 
+                [errors]="establishmentsField.errors" 
+                [touched]="establishmentsField.touched" 
+                [dirty]="establishmentsField.dirty" />
+            </div>
+
+            <!-- Nombre(Franquicia o Cadena)-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Nombre (Franquicia o Cadena)"> </label>
+                 <input pInputText type="text" formControlName="name" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="nameField.errors" 
+                [touched]="nameField.touched" 
+                [dirty]="nameField.dirty" />
+            </div>
+
+            <!-- Tipo de Personería-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Tipo de Personería"> </label>
+                <p-select optionLabel="label" formControlName="type" placeholder="Seleccione una opción"/>
+
+                <p-message 
+                appErrorMessage 
+                [errors]="typeField.errors" 
+                [touched]="typeField.touched" 
+                [dirty]="typeField.dirty" />
+            </div>
+
+            <!-- Personería Jurídica-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Personería jurídica"> </label>
+                 <p-select optionLabel="label" formControlName="legalEntity" placeholder="Seleccione una opción"/>
+
+                  <p-message 
+                appErrorMessage 
+                [errors]="legalEntityField.errors" 
+                [touched]="legalEntityField.touched" 
+                [dirty]="legalEntityField.dirty" />
+            </div>
+
+            <!-- Correo electrónico-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Correo electrónico"> </label>
+                <input pInputText type="text" formControlName="email" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="emailField.errors" 
+                [touched]="emailField.touched" 
+                [dirty]="emailField.dirty" />
+            </div>
+
+            <!-- Página Web -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Página Web "> </label>
+                <input pInputText type="text" formControlName="webPage" />
+
+                <p-message 
+                appErrorMessage 
+                [errors]="webPageField.errors" 
+                [touched]="webPageField.touched" 
+                [dirty]="webPageField.dirty" />
+            </div>
+
+            <!-- Estado Registro del establecimiento-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Estado Registro del establecimiento (Abierto o Cerrado)"> </label>
+                 <p-select optionLabel="label" formControlName="state" placeholder="Seleccione una opción"/>
+
+                    <p-message 
+                appErrorMessage 
+                [errors]="stateField.errors" 
+                [touched]="stateField.touched" 
+                [dirty]="stateField.dirty" />
+            </div>
+
+            <!-- Estado del Registro con deuda -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Estado Registro con Deuda"> </label>
+                <p-toggleswitch formControlName="hasDebt">
+                    <ng-template #handle let-checked="checked">
+                        <span class="!text-xs font-semibold">{{ checked ? 'Si' : 'No' }}</span>
+                    </ng-template>
+                </p-toggleswitch>
+            </div>
+
+            <!-- Número -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Número"> </label>
+                <input pInputText type="text" formControlName="number" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="numberField.errors" 
+                [touched]="numberField.touched" 
+                [dirty]="numberField.dirty" />
+            </div>
+        </div>
+    </form>
+</p-fluid>

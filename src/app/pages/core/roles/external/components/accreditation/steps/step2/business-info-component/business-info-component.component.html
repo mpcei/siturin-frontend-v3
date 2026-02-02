@@ -1,0 +1,48 @@
+<p-fluid class="custom-card-form">
+    <form [formGroup]="form" class="custom-grid-form">
+            <!-- tradeName -->
+            <div class="md:col-span-6 custom-field-form">
+                <div class="md:col-span-12 custom-field-form">
+                    <label
+                        appLabel
+                        for="tradeName"
+                        label="Nombre Comercial"
+                        [required]="tradeNameField">
+                    </label>
+
+                    <input
+                        pInputText
+                        id="webPage"
+                        formControlName="tradeName" />
+
+                    <p-message
+                        appErrorMessage
+                        [dirty]="tradeNameField.dirty"
+                        [errors]="tradeNameField.errors"
+                        [touched]="tradeNameField.touched" />
+                </div>
+            </div>
+
+            <!-- webPage -->
+            <div class="md:col-span-6 custom-field-form">
+                <label
+                    appLabel
+                    for="webPage"
+                    label="Dirección URL de la Página WEB"
+                    [required]="webPageField">
+                </label>
+
+                <input
+                    pInputText
+                    id="webPage"
+                    formControlName="webPage"
+                    placeholder="www.miempresa.com" />
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="webPageField.dirty"
+                    [errors]="webPageField.errors"
+                    [touched]="webPageField.touched" />
+            </div>
+    </form>
+</p-fluid>

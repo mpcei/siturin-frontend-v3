@@ -1,0 +1,240 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col gap-6 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <!-- Section Name -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <div class="custom-section-title-form">Datos de Ubicación del Establecimiento:</div>
+            </div>
+
+            <!-- province -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="province"
+                    label="Provincia"
+                    [required]="provinceField">
+                </label>
+
+                <p-select
+                    id="province"
+                    [options]="provinces"
+                    formControlName="province"
+                    optionLabel="name"
+                    [filter]="true"
+                    placeholder="Seleccione una provincia" />
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="provinceField.dirty"
+                    [errors]="provinceField.errors"
+                    [touched]="provinceField.touched" />
+            </div>
+
+            <!-- canton -->
+            @if (provinceField.value) {
+                <div class="md:col-span-4 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="canton"
+                        label="Cantón"
+                        [required]="cantonField">
+                    </label>
+
+                    <p-select
+                        id="canton"
+                        [options]="cantons"
+                        formControlName="canton"
+                        optionLabel="name"
+                        [filter]="true"
+                        placeholder="Seleccione un cantón" />
+
+                    <p-message
+                        appErrorMessage
+                        [dirty]="cantonField.dirty"
+                        [errors]="cantonField.errors"
+                        [touched]="cantonField.touched" />
+                </div>
+            }
+
+            <!-- parish -->
+            @if (cantonField.value) {
+                <div class="md:col-span-4 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="parish"
+                        label="Parroquia"
+                        [required]="parishField">
+                    </label>
+
+                    <p-select
+                        id="parish"
+                        [options]="parishes"
+                        formControlName="parish"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione una parroquia">
+                        <ng-template #item let-item>
+                            {{ item.name }} ({{ item.zoneType }})
+                        </ng-template>
+
+                        <ng-template #selectedItem let-selectedItem>
+                            {{ selectedItem.name }} ({{ selectedItem.zoneType }})
+                        </ng-template>
+                    </p-select>
+
+                    <p-message
+                        appErrorMessage
+                        [dirty]="parishField.dirty"
+                        [errors]="parishField.errors"
+                        [touched]="parishField.touched" />
+                </div>
+            }
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- mainStreet -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="mainStreet"
+                    label="Calle Principal"
+                    [required]="mainStreetField">
+                </label>
+
+                <input
+                    pInputText
+                    id="mainStreet"
+                    formControlName="mainStreet" />
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="mainStreetField.dirty"
+                    [errors]="mainStreetField.errors"
+                    [touched]="mainStreetField.touched" />
+            </div>
+
+            <!-- numberStreet -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="numberStreet"
+                    label="Numeración"
+                    [required]="numberStreetField">
+                </label>
+
+                <input
+                    pInputText
+                    id="numberStreet"
+                    formControlName="numberStreet" />
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="numberStreetField.dirty"
+                    [errors]="numberStreetField.errors"
+                    [touched]="numberStreetField.touched" />
+            </div>
+
+            <!-- secondaryStreet -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="secondaryStreet"
+                    label="Calle Intersección"
+                    [required]="secondaryStreetField">
+                </label>
+
+                <input
+                    pInputText
+                    id="secondaryStreet"
+                    formControlName="secondaryStreet" />
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="secondaryStreetField.dirty"
+                    [errors]="secondaryStreetField.errors"
+                    [touched]="secondaryStreetField.touched" />
+            </div>
+
+            <!-- referenceStreet -->
+            <div class="md:col-span-8 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="referenceStreet"
+                    label="Referencia de Ubicación"
+                    [required]="referenceStreetField">
+                </label>
+
+                <textarea
+                    pTextarea
+                    id="referenceStreet"
+                    formControlName="referenceStreet">
+                </textarea>
+
+                <p-message
+                    appErrorMessage
+                    [dirty]="referenceStreetField.dirty"
+                    [errors]="referenceStreetField.errors"
+                    [touched]="referenceStreetField.touched" />
+            </div>
+
+            <!-- latitude -->
+            @if (latitudeField.value) {
+                <div class="md:col-span-2 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="latitude"
+                        label="Latitud"
+                        [required]="latitudeField">
+                    </label>
+
+                    <input
+                        pInputText
+                        id="latitude"
+                        formControlName="latitude"
+                        readonly />
+
+                    <p-message
+                        appErrorMessage
+                        [dirty]="latitudeField.dirty"
+                        [errors]="latitudeField.errors"
+                        [touched]="latitudeField.touched" />
+                </div>
+            }
+
+            @if (longitudeField.value) {
+                <!-- longitude -->
+                <div class="md:col-span-2 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="longitude"
+                        label="Longitud"
+                        [required]="longitudeField">
+                    </label>
+
+                    <input
+                        pInputText
+                        id="longitude"
+                        formControlName="longitude"
+                        readonly />
+
+                    <p-message
+                        appErrorMessage
+                        [dirty]="longitudeField.dirty"
+                        [errors]="longitudeField.errors"
+                        [touched]="longitudeField.touched" />
+                </div>
+            }
+
+            <!-- map -->
+            @if (parishField.value) {
+                <div class="md:col-span-12 flex flex-col gap-2">
+                    <app-map
+                        (dataOut)="setlatLng($event)"
+                        [latitude]="parishField.value?.latitude"
+                        [longitude]="parishField.value?.longitude" />
+                </div>
+            }
+        </div>
+    </form>
+</p-fluid>

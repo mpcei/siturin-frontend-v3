@@ -1,0 +1,120 @@
+<p-fluid>
+    <form [formGroup]="form" class="card flex flex-col">
+        
+        <!-- Componente Registro de turismo -->
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="col-span-12 flex flex-col gap-2">
+                <h2>Tramite</h2>
+            </div>
+
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Número de Registro"> </label>
+                <input pInputText type="text" formControlName="registerNumber" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="registerNumberField.errors" 
+                [touched]="registerNumberField.touched" 
+                [dirty]="registerNumberField.dirty" />
+            </div>
+
+            <!-- Fecha de registro -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Fecha de registro"> </label>
+                <p-datepicker type="date" formControlName="registeredAt" />
+                 <p-message 
+                appErrorMessage 
+                [errors]="registeredAtField.errors" 
+                [touched]="registeredAtField.touched" 
+                [dirty]="registeredAtField.dirty" />
+            </div>
+
+            <!--Tipo trámite -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Tipo trámite"> </label>
+                <input pInputText type="text" formControlName="type" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="typeField.errors" 
+                [touched]="typeField.touched" 
+                [dirty]="typeField.dirty" />
+            </div>
+
+            <!-- Clasificación -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Clasificación"> </label>
+                <input pInputText type="text" formControlName="classification" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="classificationField.errors" 
+                [touched]="classificationField.touched" 
+                [dirty]="classificationField.dirty" />
+            </div>
+
+            <!-- Categoría -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Categoría"> </label>
+                <input pInputText type="text" formControlName="category" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="categoryField.errors" 
+                [touched]="categoryField.touched" 
+                [dirty]="categoryField.dirty" />
+            </div>
+
+            <!-- Actividad -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Actividad"> </label>
+                <input pInputText type="text" formControlName="activity" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="activityField.errors" 
+                [touched]="activityField.touched" 
+                [dirty]="activityField.dirty" />
+            </div>
+
+            <!-- Razón Social-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Razón social (Propietario)"> </label>
+                <input pInputText type="text" formControlName="socialReason" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="socialReasonField.errors" 
+                [touched]="socialReasonField.touched" 
+                [dirty]="socialReasonField.dirty" />
+                
+            </div>
+
+            <!-- Respresentante legal-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Representante legal"> </label>
+                <input pInputText type="text" formControlName="legalName"/>
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="legalNameField.errors" 
+                [touched]="legalNameField.touched" 
+                [dirty]="legalNameField.dirty" />
+            </div>
+
+
+            <!-- Estado del Registro-->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label appLabel label="Estado del Registro"></label>
+                <input pInputText type="text" formControlName="state" />
+
+                 <p-message 
+                appErrorMessage 
+                [errors]="stateField.errors" 
+                [touched]="stateField.touched" 
+                [dirty]="stateField.dirty" />
+            </div>
+        </div>
+    </form>
+</p-fluid>

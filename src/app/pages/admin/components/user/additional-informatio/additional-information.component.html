@@ -1,0 +1,183 @@
+<div class="custom-form-card">
+    <form
+        [formGroup]="form"
+        class="custom-form-grid md:grid-cols-12"
+        (ngSubmit)="onSubmit()"
+    >
+        <!-- title -->
+        <div class="custom-form-title md:col-span-10">
+            Información Adicional:
+            <p-divider />
+        </div>
+
+        <!-- save action -->
+        <div class="custom-form-title md:col-span-2">
+            <p-button type="submit" pTooltip="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" />
+        </div>
+
+        <!-- bloodTypeField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="bloodType"
+                [required]="bloodTypeField"
+                label="Tipo de sangre">
+            </label>
+
+            <p-select
+                id="bloodType"
+                dataKey="id"
+                [options]="bloodTypes"
+                formControlName="bloodType"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="bloodTypeField.errors"
+                [touched]="bloodTypeField.touched"
+                [dirty]="bloodTypeField.dirty" ></small>
+        </div>
+
+        <!-- ethnicOriginField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="ethnicOrigin"
+                [required]="ethnicOriginField"
+                label="Etnia">
+            </label>
+
+            <p-select
+                id="ethnicOrigin"
+                dataKey="id"
+                [options]="ethnicOrigins"
+                formControlName="ethnicOrigin"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="ethnicOriginField.errors"
+                [touched]="ethnicOriginField.touched"
+                [dirty]="ethnicOriginField.dirty" ></small>
+        </div>
+
+        <!-- genderField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="gender"
+                [required]="genderField"
+                label="Género">
+            </label>
+
+            <p-select
+                id="gender"
+                dataKey="id"
+                [options]="genders"
+                formControlName="gender"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="genderField.errors"
+                [touched]="genderField.touched"
+                [dirty]="genderField.dirty" ></small>
+        </div>
+
+        <!-- sexField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="sex"
+                [required]="sexField"
+                label="Sexo">
+            </label>
+
+            <p-select
+                id="sex"
+                dataKey="id"
+                [options]="sexes"
+                formControlName="sex"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="sexField.errors"
+                [touched]="sexField.touched"
+                [dirty]="sexField.dirty" ></small>
+        </div>
+
+        <!-- maritalStatusField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="maritalStatus"
+                [required]="maritalStatusField"
+                label="Estado civil">
+            </label>
+
+            <p-select
+                id="maritalStatus"
+                dataKey="id"
+                [options]="maritalStatuses"
+                formControlName="maritalStatus"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="maritalStatusField.errors"
+                [touched]="maritalStatusField.touched"
+                [dirty]="maritalStatusField.dirty" ></small>
+        </div>
+
+        <!-- nationalityField -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="nationality"
+                [required]="nationalityField"
+                label="Nacionalidad">
+            </label>
+
+            <p-select
+                id="nationality"
+                dataKey="id"
+                [options]="nationalities"
+                formControlName="nationality"
+                [filter]="true"
+                filterBy="name"
+                optionLabel="name"
+                appendTo="body" />
+
+            <small
+                appErrorMessage
+                [errors]="nationalityField.errors"
+                [touched]="nationalityField.touched"
+                [dirty]="nationalityField.dirty" ></small>
+        </div>
+
+        <!-- allergiesField -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="allergies"
+                [required]="nationalityField"
+                label="Alergias">
+            </label>
+
+            <textarea rows="4" cols="30" pTextarea formControlName="allergies"
+                      placeholder="Colocar ninguna, si no las tiene."></textarea>
+
+            <small
+                appErrorMessage
+                [errors]="nationalityField.errors"
+                [touched]="nationalityField.touched"
+                [dirty]="nationalityField.dirty" ></small>
+        </div>
+    </form>
+</div>

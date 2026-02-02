@@ -1,0 +1,184 @@
+<p-fluid>
+  <form [formGroup]="form" class="card flex flex-col gap-6 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+      <!-- Título e información -->
+      <div class="md:col-span-12 flex flex-col gap-2">
+        <h2>Representantes de Ventas</h2>
+
+        <p-message severity="info">
+          <div>
+                <p class="font-bold text-2xl">Importante:</p>
+
+                <p class="mt-4"> Registrar Representante de Ventas contratado por el establecimiento.</p>
+          </div>
+        </p-message>
+      </div>
+
+      <!-- hasSalesRepresentative -->
+      <div class="md:col-span-12 flex flex-col gap-2">
+        <label appLabel for="hasSalesRepresentative"
+          label="Declaro que el establecimiento, al momento del envío del trámite, ha contratado Representante de Ventas."
+          [required]="hasSalesRepresentativeField"></label>
+
+        <p-toggleswitch id="hasSalesRepresentative" formControlName="hasSalesRepresentative">
+          <ng-template #handle let-checked="checked">
+                <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+          </ng-template>
+        </p-toggleswitch>
+
+        <p-message
+          appErrorMessage
+          [errors]="hasSalesRepresentativeField.errors"
+          [touched]="hasSalesRepresentativeField.touched"
+          [dirty]="hasSalesRepresentativeField.dirty"
+        />
+      </div>
+    </div>
+  </form>
+</p-fluid>
+
+<p-fluid>
+  @if (hasSalesRepresentativeField.value) {
+    <div class="md:col-span-12">
+      <app-list-basic
+        title="Representantes de Ventas"
+        [items]="items"
+        [cols]="cols"
+        [buttonActions]="buttonActions"
+        (onCreate)="isVisibleModal = true"
+        (onSelect)="buildButtonActions($event)"
+      />
+    </div>
+  }
+</p-fluid>
+
+<p-dialog
+  [(visible)]="isVisibleModal"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '25vw' }"
+  [draggable]="false"
+  (onHide)="closeModal()"
+  [resizable]="false"
+>
+  <ng-template #header>
+    <div class="inline-flex items-center justify-center gap-2">
+      <span class="font-bold whitespace-nowrap">Agregar Representante de Ventas</span>
+    </div>
+  </ng-template>
+
+  <p-fluid>
+    <form [formGroup]="salesRepresentativeForm" (ngSubmit)="onSubmit()" class="card flex flex-col gap-6 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <!-- ruc -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label
+            appLabel
+            for="ruc"
+            label="RUC"
+            [required]="rucField"></label>
+
+          <input pInputText id="ruc" formControlName="ruc">
+
+          <p-message
+            appErrorMessage
+            [errors]="rucField.errors"
+            [touched]="rucField.touched"
+            [dirty]="rucField.dirty"
+          />
+        </div>
+
+        <!-- legalName -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label
+          appLabel for="legalName"
+          label="Razón Social"
+          [required]="legalNameField"></label>
+
+          <input pInputText id="legalName" formControlName="legalName">
+
+          <p-message
+            appErrorMessage
+            [errors]="legalNameField.errors"
+            [touched]="legalNameField.touched"
+            [dirty]="legalNameField.dirty"
+          />
+        </div>
+
+        <!-- hasProfessionalDegree -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label
+          appLabel for="hasProfessionalDegree"
+          label="Título Profesional"
+          [required]="hasProfessionalDegreeField"></label>
+
+          <p-toggleswitch id="hasProfessionalDegree" formControlName="hasProfessionalDegree">
+            <ng-template #handle let-checked="checked">
+                <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+            </ng-template>
+          </p-toggleswitch>
+
+          <p-message
+            appErrorMessage
+            [errors]="hasProfessionalDegreeField.errors"
+            [touched]="hasProfessionalDegreeField.touched"
+            [dirty]="hasProfessionalDegreeField.dirty"
+          />
+        </div>
+
+        <!-- hasContract -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label
+          appLabel for="hasContract"
+          label="Contrato Suscrito"
+          [required]="hasContractField"></label>
+
+          <p-toggleswitch id="hasContract" formControlName="hasContract">
+            <ng-template #handle let-checked="checked">
+              <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+            </ng-template>
+          </p-toggleswitch>
+
+          <p-message
+            appErrorMessage
+            [errors]="hasContractField.errors"
+            [touched]="hasContractField.touched"
+            [dirty]="hasContractField.dirty"
+          />
+        </div>
+
+        <!-- hasWorkExperience -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <label
+          appLabel for="hasWorkExperience"
+          label="Experiencia Probada"
+          [required]="hasWorkExperienceField"></label>
+
+          <p-toggleswitch id="hasWorkExperience" formControlName="hasWorkExperience">
+            <ng-template #handle let-checked="checked">
+              <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+            </ng-template>
+          </p-toggleswitch>
+
+          <p-message
+            appErrorMessage
+            [errors]="hasWorkExperienceField.errors"
+            [touched]="hasWorkExperienceField.touched"
+            [dirty]="hasWorkExperienceField.dirty"
+          />
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="md:col-span-12 flex flex-col gap-2">
+          <p-button
+          type="submit"
+          label="Agregar"
+          [icon]="PrimeIcons.PLUS" />
+        </div>
+
+      </div>
+    </form>
+  </p-fluid>
+</p-dialog>

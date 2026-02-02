@@ -1,0 +1,20 @@
+<div class="custom-form-card">
+    @if (pagination) {
+        <app-list
+            title="Listado de Usuarios"
+            [pagination]="pagination"
+            [items]="items"
+            [cols]="cols"
+            [buttonActions]="buttonActions"
+            (onCreate)="onCreate()"
+            (onSearch)="onSearch($event)"
+            (onSelect)="onSelect($event)"
+            (onPagination)="onPagination($event)" />
+    }
+</div>
+
+<app-button-action
+    [buttonActions]="buttonActions"
+    [enabled]="isButtonActionsEnabled"
+    (isHide)="isButtonActionsEnabled = $event">
+</app-button-action>

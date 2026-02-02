@@ -1,0 +1,62 @@
+<p-fluid class="custom-card-form">
+    <form [formGroup]="form" class="custom-grid-form">
+        <!-- legalEntity -->
+        <div class="md:col-span-12 custom-field-form">
+            <label
+                appLabel
+                for="legalEntity"
+                label="Tipo de Personería Jurídica"
+                [required]="legalEntityField">
+            </label>
+
+            <p-select
+                id="legalEntity"
+                [options]="legalEntities"
+                formControlName="legalEntity"
+                optionLabel="name"
+                placeholder="Seleccione..." />
+
+            <p-message
+                appErrorMessage
+                [dirty]="legalEntityField.dirty"
+                [errors]="legalEntityField.errors"
+                [touched]="legalEntityField.touched" />
+        </div>
+
+        <!-- Documento 1: Nombramiento vigente -->
+        <div class="md:col-span-12 custom-field-form">
+            <label
+                appLabel
+                for="hasPersonDesignation"
+                label="Al momento de la inspección usted deberá presentar el 'Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad correspondiente'"
+                [required]="hasPersonDesignationField">
+            </label>
+
+            <app-toggle-switch id="hasPersonDesignation" formControlName="hasPersonDesignation" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="hasPersonDesignationField.dirty"
+                [errors]="hasPersonDesignationField.errors"
+                [touched]="hasPersonDesignationField.touched" />
+        </div>
+
+        <!-- hasTouristActivityDocument -->
+        <div class="md:col-span-12 custom-field-form">
+            <label
+                appLabel
+                for="hasTouristActivityDocument"
+                label="Al momento de la inspección usted deberá presentar el 'Documento constitutivo de la misma debidamente aprobada por la autoridad correspondiente, en la que conste como su objeto social el desarrollo de la actividad turística'"
+                [required]="hasTouristActivityDocumentField">
+            </label>
+
+            <app-toggle-switch id="hasTouristActivityDocument" formControlName="hasTouristActivityDocument" />
+
+            <p-message
+                appErrorMessage
+                [dirty]="hasTouristActivityDocumentField.dirty"
+                [errors]="hasTouristActivityDocumentField.errors"
+                [touched]="hasTouristActivityDocumentField.touched" />
+        </div>
+    </form>
+</p-fluid>
