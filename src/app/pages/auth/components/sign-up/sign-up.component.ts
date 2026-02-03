@@ -1,14 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-    AbstractControl,
-    FormArray,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -21,11 +12,7 @@ import { environment } from '@env/environment';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import {
-    invalidEmailValidator,
-    passwordPolicesValidator,
-    unavailableUserValidator
-} from '@utils/form-validators/custom-validator';
+import { invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
 import { KeyFilter } from 'primeng/keyfilter';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -68,6 +55,10 @@ export default class SignUpComponent implements OnInit {
 
     protected get passwordField(): AbstractControl {
         return this.form.controls['password'];
+    }
+
+    protected get passwordConfirmField(): AbstractControl {
+        return this.form.controls['passwordConfirm'];
     }
 
     protected get identificationField(): AbstractControl {
@@ -178,21 +169,25 @@ export default class SignUpComponent implements OnInit {
     }
 
     private buildForm() {
-        this.form = this.formBuilder.group({
-            email: [null, [Validators.required, invalidEmailValidator()]],
-            password: [null, [Validators.required, passwordPolicesValidator()]],
-            name: [null, [Validators.required]],
-            username: [null, [Validators.required]],
-            termsAcceptedAt: [false, [Validators.requiredTrue]],
-            identification: [
-                null,
-                {
-                    validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13)],
-                    asyncValidators: [unavailableUserValidator(this.authHttpService)]
-                }
-            ],
-            securityQuestions: this.formBuilder.array([], [Validators.required, Validators.minLength(3)])
-        });
+        this.form = this.formBuilder.group(
+            {
+                email: [null, [Validators.required, invalidEmailValidator()]],
+                password: [null, [Validators.required, passwordPolicesValidator()]],
+                passwordConfirm: [null, [Validators.required]],
+                name: [null, [Validators.required]],
+                username: [null, [Validators.required]],
+                termsAcceptedAt: [false, [Validators.requiredTrue]],
+                identification: [
+                    null,
+                    {
+                        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13)],
+                        asyncValidators: [unavailableUserValidator(this.authHttpService)]
+                    }
+                ],
+                securityQuestions: this.formBuilder.array([], [Validators.required, Validators.minLength(3)])
+            },
+            { validators: [matchPasswords('password', 'passwordConfirm')] }
+        );
 
         this.emailField.disable();
         this.nameField.disable();

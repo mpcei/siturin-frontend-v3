@@ -221,6 +221,10 @@ export const MY_ROUTES = {
         appointments: {
             base: 'appointments',
             absolute: '/public/appointments'
+        },
+        simulator: {
+            base: 'simulators',
+            absolute: '/public/simulators'
         }
     },
     authPages: {

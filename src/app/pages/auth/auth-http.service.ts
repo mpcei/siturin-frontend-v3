@@ -119,7 +119,7 @@ export class AuthHttpService {
     }
 
     resetPassword(username: string, password: string): Observable<HttpResponseInterface> {
-        const url = `${this.apiUrl}/passwords/${username}/reset`;
+        const url = `${this.apiUrl}/passwords/reset`;
 
         return this.httpClient.patch<HttpResponseInterface>(url, { username, password }).pipe(
             map((response) => {

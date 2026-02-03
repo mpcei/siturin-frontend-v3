@@ -40,7 +40,7 @@ import { Fluid } from 'primeng/fluid';
     templateUrl: './regulation-simulator.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegulationSimulatorComponent {
+export default class RegulationSimulatorComponent {
     protected geographicArea = signal<CatalogueInterface | null>(null);
     protected activity = signal<ActivityInterface | null>(null);
     protected classification = signal<ClassificationInterface | null>(null);

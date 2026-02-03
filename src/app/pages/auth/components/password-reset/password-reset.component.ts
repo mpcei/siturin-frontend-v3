@@ -1,13 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-    AbstractControl,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -22,12 +14,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { MY_ROUTES } from '@routes';
-import {
-    invalidEmailMINTURValidator,
-    invalidEmailValidator,
-    passwordPolicesValidator,
-    unregisteredUserValidator
-} from '@utils/form-validators/custom-validator';
+import { invalidEmailMINTURValidator, invalidEmailValidator, matchPasswords, passwordPolicesValidator, unregisteredUserValidator } from '@utils/form-validators/custom-validator';
 import { Tooltip } from 'primeng/tooltip';
 import { Dialog } from 'primeng/dialog';
 import EmailResetComponent from '@/pages/auth/components/email-reset/email-reset.component';
@@ -86,6 +73,10 @@ export default class PasswordResetComponent {
 
     protected get passwordField(): AbstractControl {
         return this.form.controls['password'];
+    }
+
+    protected get passwordConfirmField(): AbstractControl {
+        return this.form.controls['passwordConfirm'];
     }
 
     protected get identificationField(): AbstractControl {
@@ -172,25 +163,29 @@ export default class PasswordResetComponent {
     }
 
     private buildForm() {
-        this.form = this.formBuilder.group({
-            id: [null, [Validators.required]],
-            email: [
-                {
-                    value: null,
-                    disabled: true
-                },
-                [Validators.required, invalidEmailValidator(), invalidEmailMINTURValidator()]
-            ],
-            password: [null, [Validators.required, passwordPolicesValidator()]],
-            name: [null, [Validators.required]],
-            identification: [
-                null,
-                {
-                    validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13)],
-                    asyncValidators: [unregisteredUserValidator(this.authHttpService)]
-                }
-            ]
-        });
+        this.form = this.formBuilder.group(
+            {
+                id: [null, [Validators.required]],
+                email: [
+                    {
+                        value: null,
+                        disabled: true
+                    },
+                    [Validators.required, invalidEmailValidator(), invalidEmailMINTURValidator()]
+                ],
+                password: [null, [Validators.required, passwordPolicesValidator()]],
+                passwordConfirm: [null, [Validators.required]],
+                name: [null, [Validators.required]],
+                identification: [
+                    null,
+                    {
+                        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13)],
+                        asyncValidators: [unregisteredUserValidator(this.authHttpService)]
+                    }
+                ]
+            },
+            { validators: [matchPasswords('password', 'passwordConfirm')] }
+        );
 
         this.idField.disable();
         this.emailField.disable();

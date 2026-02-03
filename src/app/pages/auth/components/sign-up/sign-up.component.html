@@ -128,6 +128,28 @@
                        [dirty]="passwordField.dirty"></small>
             </div>
 
+            <!-- passwordConfirmField -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="passwordConfirm"
+                    [required]="passwordConfirmField"
+                    label="Confirmar contraseña"></label>
+
+                <p-password
+                    id="passwordConfirm"
+                    formControlName="passwordConfirm"
+                    inputStyleClass="w-full"
+                    [toggleMask]="true"
+                    [feedback]="false" />
+
+                <small
+                    appErrorMessage
+                    [errors]="passwordConfirmField.errors"
+                    [touched]="passwordConfirmField.touched"
+                    [dirty]="passwordConfirmField.dirty" ></small>
+            </div>
+
             <!-- securityQuestions title -->
             <div class="md:col-span-12">
                 <h4>Preguntas de seguridad:</h4>
