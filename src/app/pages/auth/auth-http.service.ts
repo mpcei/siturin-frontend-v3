@@ -118,10 +118,10 @@ export class AuthHttpService {
         );
     }
 
-    resetPassword(username: string, password: string): Observable<HttpResponseInterface> {
+    resetPassword(payload: PasswordChangedInterface): Observable<HttpResponseInterface> {
         const url = `${this.apiUrl}/passwords/reset`;
 
-        return this.httpClient.patch<HttpResponseInterface>(url, { username, password }).pipe(
+        return this.httpClient.patch<HttpResponseInterface>(url, payload).pipe(
             map((response) => {
                 return response.data;
             })
