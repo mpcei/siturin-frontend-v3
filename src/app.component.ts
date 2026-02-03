@@ -12,13 +12,11 @@ import { CatalogueHttpService, CoreSessionStorageService, DpaHttpService } from 
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import { CoreEnum } from '@utils/enums';
 import { from } from 'rxjs';
-import { Divider } from 'primeng/divider';
-import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ToastModule, MessageModalComponent, MessageProcessingComponent, AppConfigurator, FormsModule, ConfirmDialog, Divider, JsonPipe],
+    imports: [RouterModule, ToastModule, MessageModalComponent, MessageProcessingComponent, AppConfigurator, FormsModule, ConfirmDialog],
     template: ` <!-- show a modal for http response -->
         @if (coreService.processing()) {
             <app-message-processing />
@@ -30,7 +28,7 @@ import { JsonPipe } from '@angular/common';
         }
 
         <!-- show a toast for custom messages (http response) -->
-        <p-toast position="top-center" [life]="customMessageService.modalLife"/>
+        <p-toast position="top-center" [life]="customMessageService.modalLife" />
 
         <!-- show a confirm modal for custom messages (ex. delete) -->
         <p-confirmdialog key="confirmdialog"></p-confirmdialog>

@@ -1,7 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="flex flex-col">
-        <app-password-change/>
-
         <div class="custom-form-card">
             <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
                 <!-- title -->
@@ -43,7 +41,7 @@
                         appErrorMessage
                         [errors]="avatarField.errors"
                         [touched]="avatarField.touched"
-                        [dirty]="avatarField.dirty" ></small>
+                        [dirty]="avatarField.dirty"></small>
                 </div>
 
                 <!-- emailField -->
@@ -66,7 +64,7 @@
                         appErrorMessage
                         [errors]="emailField.errors"
                         [touched]="emailField.touched"
-                        [dirty]="emailField.dirty" ></small>
+                        [dirty]="emailField.dirty"></small>
                 </div>
 
                 <!-- identificationTypeField -->
@@ -90,7 +88,7 @@
                         appErrorMessage
                         [errors]="identificationTypeField.errors"
                         [touched]="identificationTypeField.touched"
-                        [dirty]="identificationTypeField.dirty" ></small>
+                        [dirty]="identificationTypeField.dirty"></small>
                 </div>
 
                 <!-- identificationField -->
@@ -108,7 +106,7 @@
                         appErrorMessage
                         [errors]="identificationField.errors"
                         [touched]="identificationField.touched"
-                        [dirty]="identificationField.dirty" ></small>
+                        [dirty]="identificationField.dirty"></small>
                 </div>
 
                 <!-- lastnameField -->
@@ -126,7 +124,7 @@
                         appErrorMessage
                         [errors]="lastnameField.errors"
                         [touched]="lastnameField.touched"
-                        [dirty]="lastnameField.dirty" ></small>
+                        [dirty]="lastnameField.dirty"></small>
                 </div>
 
                 <!-- nameField -->
@@ -144,7 +142,7 @@
                         appErrorMessage
                         [errors]="nameField.errors"
                         [touched]="nameField.touched"
-                        [dirty]="nameField.dirty" ></small>
+                        [dirty]="nameField.dirty"></small>
                 </div>
 
                 <!-- personalEmailField -->
@@ -162,7 +160,7 @@
                         appErrorMessage
                         [errors]="personalEmailField.errors"
                         [touched]="personalEmailField.touched"
-                        [dirty]="personalEmailField.dirty" ></small>
+                        [dirty]="personalEmailField.dirty"></small>
                 </div>
 
                 <!-- birthdateField -->
@@ -185,7 +183,7 @@
                         appErrorMessage
                         [errors]="birthdateField.errors"
                         [touched]="birthdateField.touched"
-                        [dirty]="birthdateField.dirty" ></small>
+                        [dirty]="birthdateField.dirty"></small>
                 </div>
 
                 <!-- cellPhoneField -->
@@ -203,7 +201,7 @@
                         appErrorMessage
                         [errors]="cellPhoneField.errors"
                         [touched]="cellPhoneField.touched"
-                        [dirty]="cellPhoneField.dirty" ></small>
+                        [dirty]="cellPhoneField.dirty"></small>
                 </div>
 
                 <!-- phoneField -->
@@ -221,13 +219,15 @@
                         appErrorMessage
                         [errors]="phoneField.errors"
                         [touched]="phoneField.touched"
-                        [dirty]="phoneField.dirty" ></small>
+                        [dirty]="phoneField.dirty"></small>
                 </div>
             </form>
         </div>
     </div>
 
     <div class="flex flex-col">
+        <app-password-change />
+
         <div class="custom-form-card">
             <form [formGroup]="form" class="custom-form-grid  md:grid-cols-12">
                 <!-- title -->
@@ -271,7 +271,6 @@
                 </div>
             </form>
         </div>
-
-        <app-additional-information/>
+        <!--        <app-additional-information/>-->
     </div>
 </div>

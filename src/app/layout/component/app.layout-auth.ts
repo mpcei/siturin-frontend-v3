@@ -98,7 +98,7 @@ import { Tooltip } from 'primeng/tooltip';
                                 </p>
 
                                 <p>
-                                    <i [class]="FontAwesome.AT_SOLID"></i>
+                                    <i [class]="FontAwesome.ENVELOPE_SOLID"></i>
                                     <b>Correo electrónico:</b> <a href="mailto:info@quito-turismo.gob.ec"> info@quito -turismo.gob.ec</a>
                                 </p>
                             </p-message>

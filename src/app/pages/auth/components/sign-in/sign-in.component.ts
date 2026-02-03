@@ -28,6 +28,7 @@ import { CoreService } from '@utils/services';
 import { FontAwesome } from '@/api/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
+import { invalidEmailValidator } from '@utils/form-validators/custom-validator';
 
 @Component({
     selector: 'app-sign-in',
@@ -103,7 +104,7 @@ export default class SignInComponent {
 
     private buildForm() {
         this.form = this.formBuilder.group({
-            username: [null, [Validators.required]],
+            username: [null, [Validators.required,invalidEmailValidator()]],
             password: [null, [Validators.required]]
         });
     }

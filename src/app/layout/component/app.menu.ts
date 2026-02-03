@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
@@ -88,10 +88,16 @@ export class AppMenu {
         switch (this.authService.role.code) {
             case RoleEnum.ADMIN:
                 return this.adminMenu;
-            case RoleEnum.OWNER:
-                return this.ownerMenu;
-            case RoleEnum.CUSTOMER:
-                return this.customerMenu;
+            case RoleEnum.EXTERNAL:
+                return this.externalMenu;
+            case RoleEnum.TECHNICIAN:
+                return this.technicianMenu;
+            case RoleEnum.SPECIALIST:
+                return this.specialistMenu;
+            case RoleEnum.DAC:
+                return this.dacMenu;
+            case RoleEnum.GAD:
+                return this.gadMenu;
             default:
                 return [];
         }
@@ -107,27 +113,114 @@ export class AppMenu {
         ];
     }
 
-    get ownerMenu(): MenuItem[] {
+    get externalMenu(): MenuItem[] {
         return [
             {
-                label: 'Citas',
-                icon: FontAwesome.CALENDAR_SOLID,
-                routerLink: [MY_ROUTES.corePages.owner.appointments.absolute]
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.external.simulator.absolute]
+            },
+            {
+                label: 'Proceso de Acreditación de Actividades Turísticas',
+                icon: FontAwesome.FILE_LINES_SOLID,
+                routerLink: [MY_ROUTES.corePages.external.accreditation.absolute]
+            },
+            {
+                label: 'Manual de Usuario',
+                icon: FontAwesome.DOWNLOAD_SOLID,
+                command() {
+                    window.open(`${environment.PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
+                }
             }
         ];
     }
 
-    get customerMenu(): MenuItem[] {
+    get technicianMenu(): MenuItem[] {
         return [
             {
-                label: 'Mis Citas',
-                icon: FontAwesome.CALENDAR_SOLID,
-                routerLink: [MY_ROUTES.corePages.owner.appointments.absolute]
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.technician.simulator.absolute]
             },
             {
-                label: 'Cancelar Cita',
-                icon: FontAwesome.CALENDAR_XMARK_SOLID,
-                routerLink: [MY_ROUTES.corePages.owner.appointments.absolute]
+                label: 'Catrasto Turístico',
+                icon: FontAwesome.DATABASE_SOLID,
+                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+            },
+            {
+                label: 'Trámites',
+                icon: FontAwesome.CLIPBOARD_LIST_SOLID,
+                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+            },
+            {
+                label: 'Bitácora',
+                icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
+                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+            }
+        ];
+    }
+
+    get specialistMenu(): MenuItem[] {
+        return [
+            {
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.specialist.simulator.absolute]
+            },
+            {
+                label: 'Catrasto Turístico',
+                icon: FontAwesome.DATABASE_SOLID,
+                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
+            },
+            {
+                label: 'Trámites',
+                icon: FontAwesome.CLIPBOARD_LIST_SOLID,
+                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
+            },
+            {
+                label: 'Bitácora',
+                icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
+                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
+            }
+        ];
+    }
+
+    get dacMenu(): MenuItem[] {
+        return [
+            {
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.dac.simulator.absolute]
+            },
+            {
+                label: 'Catrasto Turístico',
+                icon: FontAwesome.DATABASE_SOLID,
+                routerLink: [MY_ROUTES.corePages.dac.cadastre.absolute]
+            },
+            {
+                label: 'Bitácora',
+                icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
+                routerLink: [MY_ROUTES.corePages.dac.processLog.absolute]
+            }
+        ];
+    }
+
+    get gadMenu(): MenuItem[] {
+        return [
+            {
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.gad.simulator.absolute]
+            },
+            {
+                label: 'Catrasto Turístico',
+                icon: FontAwesome.DATABASE_SOLID,
+                routerLink: [MY_ROUTES.corePages.gad.cadastre.absolute]
+            },
+            {
+                label: 'Bitácora',
+                icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
+                routerLink: [MY_ROUTES.corePages.gad.processLog.absolute]
             }
         ];
     }

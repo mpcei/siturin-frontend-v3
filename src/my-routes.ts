@@ -26,18 +26,6 @@ export const MY_ROUTES = {
     corePages: {
         base: 'core',
         absolute: '/main/core',
-        owner: {
-            base: 'owner',
-            absolute: '/main/core/owner',
-            dashboard: {
-                base: 'dashboard',
-                absolute: '/main/core/owner/dashboard'
-            },
-            appointments: {
-                base: 'appointments',
-                absolute: '/main/core/owner/appointments'
-            }
-        },
         shared: {
             base: 'shared',
             absolute: '/main/core/shared',
@@ -53,25 +41,17 @@ export const MY_ROUTES = {
                 base: 'dashboard',
                 absolute: '/main/core/dac/dashboard'
             },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/dac/simulators'
+            },
             cadastre: {
                 base: 'cadastres',
                 absolute: '/main/core/dac/cadastres'
             },
-            program: {
-                base: 'programs',
-                absolute: '/main/core/dac/programs',
-                list: {
-                    base: 'programs/list',
-                    absolute: '/main/core/dac/programs/list'
-                },
-                form: {
-                    base: 'programs/form',
-                    absolute: '/main/core/dac/programs/form'
-                },
-                document: {
-                    base: 'programs/document',
-                    absolute: '/main/core/dac/programs/document'
-                }
+            processLog: {
+                base: 'process-logs',
+                absolute: '/main/core/dac/process-logs'
             }
         },
         specialist: {
@@ -81,41 +61,21 @@ export const MY_ROUTES = {
                 base: 'dashboard',
                 absolute: '/main/core/specialist/dashboard'
             },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/specialist/simulators'
+            },
+            process: {
+                base: 'processes',
+                absolute: '/main/core/specialist/processes'
+            },
             cadastre: {
                 base: 'cadastres',
                 absolute: '/main/core/specialist/cadastres'
             },
-            project: {
-                base: 'projects',
-                absolute: '/main/core/dac/projects',
-                list: {
-                    base: 'projects/list',
-                    absolute: '/main/core/dac/projects/list'
-                },
-                form: {
-                    base: 'projects/form',
-                    absolute: '/main/core/dac/projects/form'
-                },
-                document: {
-                    base: 'projects/document',
-                    absolute: '/main/core/dac/projects/document'
-                }
-            },
-            program: {
-                base: 'programs',
-                absolute: '/main/core/dac/programs',
-                list: {
-                    base: 'programs/list',
-                    absolute: '/main/core/dac/programs/list'
-                },
-                form: {
-                    base: 'programs/form',
-                    absolute: '/main/core/dac/programs/form'
-                },
-                document: {
-                    base: 'programs/document',
-                    absolute: '/main/core/dac/programs/document'
-                }
+            processLog: {
+                base: 'process-logs',
+                absolute: '/main/core/specialist/process-logs'
             }
         },
         gad: {
@@ -125,41 +85,17 @@ export const MY_ROUTES = {
                 base: 'dashboard',
                 absolute: '/main/core/gad/dashboard'
             },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/gad/simulators'
+            },
             cadastre: {
                 base: 'cadastres',
                 absolute: '/main/core/gad/cadastres'
             },
-            project: {
-                base: 'projects',
-                absolute: '/main/core/dac/projects',
-                list: {
-                    base: 'projects/list',
-                    absolute: '/main/core/dac/projects/list'
-                },
-                form: {
-                    base: 'projects/form',
-                    absolute: '/main/core/dac/projects/form'
-                },
-                document: {
-                    base: 'projects/document',
-                    absolute: '/main/core/dac/projects/document'
-                }
-            },
-            program: {
-                base: 'programs',
-                absolute: '/main/core/dac/programs',
-                list: {
-                    base: 'programs/list',
-                    absolute: '/main/core/dac/programs/list'
-                },
-                form: {
-                    base: 'programs/form',
-                    absolute: '/main/core/dac/programs/form'
-                },
-                document: {
-                    base: 'programs/document',
-                    absolute: '/main/core/dac/programs/document'
-                }
+            processLog: {
+                base: 'process-logs',
+                absolute: '/main/core/gad/process-logs'
             }
         },
         external: {
@@ -168,6 +104,10 @@ export const MY_ROUTES = {
             dashboard: {
                 base: 'dashboard',
                 absolute: '/main/core/external/dashboard'
+            },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/external/simulators'
             },
             accreditation: {
                 base: 'accreditations',
@@ -185,6 +125,10 @@ export const MY_ROUTES = {
                 base: 'dashboard',
                 absolute: '/main/core/technician/dashboard'
             },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/technician/simulators'
+            },
             process: {
                 base: 'processes',
                 absolute: '/main/core/technician/processes'
@@ -193,21 +137,9 @@ export const MY_ROUTES = {
                 base: 'cadastres',
                 absolute: '/main/core/technician/cadastres'
             },
-            program: {
-                base: 'programs',
-                absolute: '/main/core/dac/programs',
-                list: {
-                    base: 'programs/list',
-                    absolute: '/main/core/dac/programs/list'
-                },
-                form: {
-                    base: 'programs/form',
-                    absolute: '/main/core/dac/programs/form'
-                },
-                document: {
-                    base: 'programs/document',
-                    absolute: '/main/core/dac/programs/document'
-                }
+            processLog: {
+                base: 'process-logs',
+                absolute: '/main/core/technician/process-logs'
             }
         }
     },
@@ -217,10 +149,6 @@ export const MY_ROUTES = {
         emailVerification: {
             base: 'email-verifications',
             absolute: '/public/email-verifications'
-        },
-        appointments: {
-            base: 'appointments',
-            absolute: '/public/appointments'
         },
         simulator: {
             base: 'simulators',
@@ -267,13 +195,6 @@ export const MY_ROUTES = {
                 base: 'users/profile',
                 absolute: '/main/admin/users/profile'
             }
-        }
-    },
-    guessPages: {
-        base: 'guess',
-        simulator: {
-            base: 'simulators',
-            absolute: '/guess/simulators'
         }
     },
     dashboards: {

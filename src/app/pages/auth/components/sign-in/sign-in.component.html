@@ -4,16 +4,21 @@
         class="custom-form-grid md:grid-cols-12"
         (ngSubmit)="onSubmit()"
     >
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12 text-center">
+            Ingreso a la Cuenta
+        </div>
+
         <!-- username -->
         <div class="custom-form-field md:col-span-12">
             <label
                 appLabel for="username"
-                label="Usuario"
+                label="Correo Electrónico"
                 [required]="usernameField"></label>
 
             <p-inputgroup>
                 <p-inputgroup-addon>
-                    <i [class]="FontAwesome.USER_SHIELD_SOLID"></i>
+                    <i [class]="FontAwesome.ENVELOPE_SOLID"></i>
                 </p-inputgroup-addon>
                 <input
                     pInputText
