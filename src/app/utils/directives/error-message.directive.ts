@@ -29,6 +29,7 @@ export class ErrorMessageDirective implements OnChanges {
         userExist: this.fieldUserExist,
         unregisteredUser: this.fieldUnregisteredUser,
         unavailableUser: this.fieldUnavailableUser,
+        unavailableEmail: this.fieldUnavailableEmail,
         pendingPaymentRuc: this.fieldRucPendingPayment,
         phoneNotAvailable: this.fieldPhoneNotAvailable,
         dateInvalid: this.fieldDateValid,
@@ -39,7 +40,7 @@ export class ErrorMessageDirective implements OnChanges {
         invalidPasswordPolicesLower: this.fieldPasswordPolicesLower,
         invalidPasswordPolicesNumber: this.fieldPasswordPolicesNumber,
         invalidPasswordPolicesSpecialCharacter: this.fieldPasswordPolicesSpecialCharacter,
-        invalidTransactionalCode: this.fieldInvalidTransactionalCode,
+        invalidTransactionalCode: this.fieldInvalidTransactionalCode
     };
 
     constructor() {
@@ -166,6 +167,10 @@ export class ErrorMessageDirective implements OnChanges {
 
     private get fieldUnavailableUser(): string {
         return 'El usuario no se encuentra disponible.';
+    }
+
+    private get fieldUnavailableEmail(): string {
+        return 'El correo ya se encuentra en uso, por favor intente con otro.';
     }
 
     private get fieldUserExist(): string {

@@ -12,7 +12,7 @@ import { environment } from '@env/environment';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import { invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
+import { invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableEmailValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
 import { KeyFilter } from 'primeng/keyfilter';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -22,12 +22,29 @@ import { FontAwesome } from '@/api/font-awesome';
 import { CatalogueHttpService, CoreSessionStorageService } from '@utils/services';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { CatalogueInterface } from '@utils/interfaces';
+import { Message } from 'primeng/message';
 
 @Component({
     selector: 'app-sign-up',
     templateUrl: './sign-up.component.html',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, ReactiveFormsModule, DatePickerModule, LabelDirective, ErrorMessageDirective, KeyFilter, Tooltip, TransactionalCodeComponent]
+    imports: [
+        ButtonModule,
+        CheckboxModule,
+        InputTextModule,
+        PasswordModule,
+        FormsModule,
+        RouterModule,
+        RippleModule,
+        ReactiveFormsModule,
+        DatePickerModule,
+        LabelDirective,
+        ErrorMessageDirective,
+        KeyFilter,
+        Tooltip,
+        TransactionalCodeComponent,
+        Message
+    ]
 })
 export default class SignUpComponent implements OnInit {
     protected readonly environment = environment;
@@ -171,7 +188,13 @@ export default class SignUpComponent implements OnInit {
     private buildForm() {
         this.form = this.formBuilder.group(
             {
-                email: [null, [Validators.required, invalidEmailValidator()]],
+                email: [
+                    null,
+                    {
+                        validators: [Validators.required, invalidEmailValidator()],
+                        asyncValidators: [unavailableEmailValidator(this.authHttpService)]
+                    }
+                ],
                 password: [null, [Validators.required, passwordPolicesValidator()]],
                 passwordConfirm: [null, [Validators.required]],
                 name: [null, [Validators.required]],
@@ -180,7 +203,7 @@ export default class SignUpComponent implements OnInit {
                 identification: [
                     null,
                     {
-                        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13)],
+                        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.minLength(13)],
                         asyncValidators: [unavailableUserValidator(this.authHttpService)]
                     }
                 ],

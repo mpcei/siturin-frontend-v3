@@ -67,6 +67,18 @@ export function unavailableUserValidator(authHttpService: AuthHttpService): Asyn
     };
 }
 
+export function unavailableEmailValidator(authHttpService: AuthHttpService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+        if (!control.value) return of(null);
+
+        return of(control.value).pipe(
+            debounceTime(300),
+            take(1),
+            switchMap((value) => authHttpService.verifyEmailExist(value).pipe(map((response) => (response ? { unavailableEmail: true } : null))))
+        );
+    };
+}
+
 export function userUpdatedValidator(authHttpService: AuthHttpService, userId = ''): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
         if (!control.value) return of(null);

@@ -187,6 +187,16 @@ export class AuthHttpService {
         );
     }
 
+    verifyEmailExist(email: string) {
+        const url = `${this.apiUrl}/${email}/email-exist`;
+
+        return this.httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
     verifyUserUpdated(identification: string, userId = '') {
         const url = `${this.apiUrl}/${identification}/updated`;
 

@@ -20,7 +20,7 @@
         <div class="custom-form-field md:col-span-12">
             <label
                 appLabel for="identification"
-                label="Cédula"
+                label="Número de RUC al que pertenece el Establecimiento"
                 [required]="identificationField"></label>
 
             <input pInputText type="text" id="identification" formControlName="identification" [maxlength]="13"
@@ -31,6 +31,13 @@
                 [errors]="identificationField.errors"
                 [touched]="identificationField.touched"
                 [dirty]="identificationField.dirty"></small>
+
+            @if (identificationField.hasError( 'unavailableUser' )) {
+                <p-message severity="error">
+                    <b>El usuario ya existe</b>
+                    <p>Por favor ingrese otro RUC</p>
+                </p-message>
+            }
         </div>
 
         @if (emailField.enabled && identificationField.valid) {
@@ -147,7 +154,7 @@
                     appErrorMessage
                     [errors]="passwordConfirmField.errors"
                     [touched]="passwordConfirmField.touched"
-                    [dirty]="passwordConfirmField.dirty" ></small>
+                    [dirty]="passwordConfirmField.dirty"></small>
             </div>
 
             <!-- securityQuestions title -->
