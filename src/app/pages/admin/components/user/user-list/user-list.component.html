@@ -1,9 +1,9 @@
 <div class="custom-form-card">
-    @if (pagination) {
+    @if (items().length > 0) {
         <app-list
             title="Listado de Usuarios"
             [pagination]="pagination"
-            [items]="items"
+            [items]="items()"
             [cols]="cols"
             [buttonActions]="buttonActions"
             (onCreate)="onCreate()"
