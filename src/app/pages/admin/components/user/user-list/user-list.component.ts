@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ListComponent } from '@utils/components/list/list.component';
 import { UserHttpService } from '@/pages/admin/user-http.service';
 import { ColInterface, PaginationInterface } from '@utils/interfaces';
@@ -20,21 +20,21 @@ import { ButtonActionComponent } from '@utils/components/button-action/button-ac
     styleUrl: './user-list.component.scss'
 })
 export default class UserListComponent implements OnInit {
+    x = signal('');
     protected cols: ColInterface[] = [];
-    protected items: UserInterface[] = [];
+    protected items = signal<UserInterface[]>([]);
     protected selectedItem!: UserInterface;
     protected pagination!: PaginationInterface;
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
     protected currentSearch: string = '';
-
     protected readonly router = inject(Router);
     protected readonly customMessageService = inject(CustomMessageService);
     private readonly confirmationService = inject(ConfirmationService);
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly authService = inject(AuthService);
     private readonly userHttpService = inject(UserHttpService);
-    visible = false;
+
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Listado de Usuarios' }]);
 
@@ -48,7 +48,7 @@ export default class UserListComponent implements OnInit {
     loadData(page = 1) {
         this.userHttpService.findAll(page, this.currentSearch).subscribe({
             next: (response: any) => {
-                this.items = response.data;
+                this.items.set(response.data);
                 this.pagination = response.pagination;
             }
         });
@@ -117,7 +117,7 @@ export default class UserListComponent implements OnInit {
             accept: () => {
                 this.userHttpService.delete(id).subscribe({
                     next: (_) => {
-                        this.items.splice(index, 1);
+                        this.items().splice(index, 1);
                     }
                 });
             },
@@ -142,7 +142,7 @@ export default class UserListComponent implements OnInit {
             accept: () => {
                 this.userHttpService.suspend(id).subscribe({
                     next: (_) => {
-                        this.items[index].suspendedAt = new Date();
+                        this.items()[index].suspendedAt = new Date();
                     }
                 });
             },
@@ -153,7 +153,7 @@ export default class UserListComponent implements OnInit {
     activate(id: string, index: number) {
         this.userHttpService.activate(id).subscribe({
             next: (_) => {
-                this.items[index].suspendedAt = null;
+                this.items()[index].suspendedAt = null;
             }
         });
     }
