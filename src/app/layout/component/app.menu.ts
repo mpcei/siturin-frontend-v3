@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
@@ -75,7 +75,7 @@ import { Fluid } from 'primeng/fluid';
         </div>
     `
 })
-export class AppMenu {
+export class AppMenu implements OnInit {
     protected readonly authService = inject(AuthService);
     protected readonly authHttpService = inject(AuthHttpService);
 
@@ -201,6 +201,11 @@ export class AppMenu {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
                 routerLink: [MY_ROUTES.corePages.dac.processLog.absolute]
+            },
+            {
+                label: 'Gantt',
+                icon: FontAwesome.CHART_BAR_REGULAR,
+                routerLink: ['/main/core/dac/gantt']
             }
         ];
     }

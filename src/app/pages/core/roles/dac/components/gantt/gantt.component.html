@@ -1,0 +1,60 @@
+<p-table
+    [value]="tasks"
+    [scrollable]="true" scrollHeight="800px" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template #header let-columns>
+        <tr>
+            <th rowspan="2">Tarea</th>
+            <th rowspan="2">Inicio</th>
+            <th rowspan="2">Fin</th>
+
+            @for (month of months; track month.name) {
+                <th
+                    [attr.colspan]="month.days.length"
+                    class="text-center">
+                    {{ month.name }}
+                </th>
+            }
+
+        </tr>
+
+        <!-- FILA DÍAS -->
+        <tr>
+            @for (month of months; track month.name) {
+                @for (day of month.days; track day) {
+                    <th class="text-center">
+                        {{ day }}
+                    </th>
+                }
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-item let-columns="columns" let-rowIndex="rowIndex">
+        <tr>
+            <!-- Columnas fijas -->
+            <td>{{ item.name }}</td>
+            <td>{{ item.start }}</td>
+            <td>{{ item.end }}</td>
+
+            <!-- Línea de tiempo -->
+            <td class="gantt-cell" [attr.colspan]="totalDays">
+                <div class="task-row">
+                    <div class="task-bar"
+                         [style.left.px]="getLeft(item)"
+                         [style.width.px]="getWidth(item)">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+    </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="6">
+                No existen registros
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

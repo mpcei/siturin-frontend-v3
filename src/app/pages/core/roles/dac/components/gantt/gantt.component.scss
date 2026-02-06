@@ -1,0 +1,32 @@
+th {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+}
+
+th.day {
+    width: 30px;
+}
+
+
+.gantt-cell {
+    position: relative;
+    padding: 0;
+}
+
+.task-row {
+    position: relative;
+    height: 40px;
+}
+
+.task-bar {
+    position: absolute;
+    top: 6px;
+    height: 28px;
+    background: var(--primary-color);
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+    padding: 4px 8px;
+    white-space: nowrap;
+}
