@@ -1,8 +1,8 @@
 <p-fluid>
-    <form [formGroup]="form" class="custom-card-form">
-        <div class="custom-grid-form">
+    <form [formGroup]="form" class="custom-form-card">
+        <div class="custom-form-grid">
             <!-- localType -->
-            <div class="md:col-span-6 custom-field-form">
+            <div class="md:col-span-6 custom-form-field">
                 <label
                     appLabel
                     for="localType"
@@ -24,7 +24,7 @@
             </div>
 
             <!-- isProtectedArea -->
-            <div class="md:col-span-12 custom-field-form">
+            <div class="md:col-span-12 custom-form-field">
                 <label
                     appLabel
                     for="isProtectedArea"
@@ -43,7 +43,7 @@
 
             <!-- hasProtectedAreaContract -->
             @if (hasProtectedAreaContractField.hasValidator(Validators.requiredTrue)) {
-                <div class="md:col-span-12 custom-field-form">
+                <div class="md:col-span-12 custom-form-field">
                     <label
                         appLabel
                         for="hasProtectedAreaContract"

@@ -122,8 +122,8 @@ export class AppMenu implements OnInit {
             },
             {
                 label: 'Proceso de Acreditación de Actividades Turísticas',
-                icon: FontAwesome.FILE_LINES_SOLID,
-                routerLink: [MY_ROUTES.corePages.external.accreditation.absolute]
+                icon: FontAwesome.SHOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.external.establishment.absolute]
             },
             {
                 label: 'Manual de Usuario',

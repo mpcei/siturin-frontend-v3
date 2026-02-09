@@ -42,3 +42,15 @@ export const documentButtonAction = {
     label: 'Documentos',
     icon: FontAwesome.PAPERCLIP_SOLID
 };
+
+export const inactivationButtonAction = {
+    id: 'inactivation',
+    label: 'Inactivar',
+    icon: FontAwesome.BAN_SOLID
+};
+
+export const registrationButtonAction = {
+    id: 'registration',
+    label: 'Registro',
+    icon: FontAwesome.FILE_SIGNATURE_SOLID
+};

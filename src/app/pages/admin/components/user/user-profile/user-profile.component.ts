@@ -27,12 +27,10 @@ import { uploadFileValidator } from '@utils/helpers/file.helper';
 import { DateLongPipe } from '@utils/pipes/date-long.pipe';
 import { FontAwesome } from '@/api/font-awesome';
 import PasswordChangeComponent from '@/pages/admin/components/user/password-change/password-change.component';
-import AdditionalInformationComponent
-    from '@/pages/admin/components/user/additional-informatio/additional-information.component';
 
 @Component({
     selector: 'app-user-profile',
-    imports: [Button, Divider, ErrorMessageDirective, FormsModule, InputText, LabelDirective, ReactiveFormsModule, Tag, DatePicker, Select, Avatar, Tooltip, DateLongPipe, PasswordChangeComponent, AdditionalInformationComponent],
+    imports: [Button, Divider, ErrorMessageDirective, FormsModule, InputText, LabelDirective, ReactiveFormsModule, Tag, DatePicker, Select, Avatar, Tooltip, DateLongPipe, PasswordChangeComponent],
     templateUrl: './user-profile.component.html',
     styleUrl: './user-profile.component.scss'
 })

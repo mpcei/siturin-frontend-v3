@@ -9,3 +9,5 @@ export * from './regulation-section.interface';
 export * from './regulation-item.interface';
 export * from './regulation-response.interface';
 export * from './adventure-tourism-modality.interface';
+export * from './cadastre.interface';
+export * from './cadastre-state.interface';

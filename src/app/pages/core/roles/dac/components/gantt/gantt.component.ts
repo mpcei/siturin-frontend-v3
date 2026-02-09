@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CadastreDacListComponent } from '@/pages/core/roles/dac/components/cadastre-dac-list/cadastre-dac-list.component';
-import { CadastreFormComponent } from '@/pages/core/shared/components/cadastre-form/cadastre-form.component';
 import { TableModule } from 'primeng/table';
-import { ProgressBar } from 'primeng/progressbar';
 import { HttpClient } from '@angular/common/http';
 import * as Papa from 'papaparse';
 
@@ -20,7 +17,7 @@ interface GanttMonth {
 
 @Component({
     selector: 'app-gantt',
-    imports: [CadastreDacListComponent, CadastreFormComponent, TableModule, ProgressBar],
+    imports: [TableModule],
     templateUrl: './gantt.component.html',
     styleUrl: './gantt.component.scss'
 })
@@ -93,7 +90,7 @@ export class GanttComponent implements OnInit {
 
     parseDate(dateStr: string): Date {
         const [month, day, year] = dateStr.split('/').map(Number);
-        return new Date(year, month - 1, day+1);
+        return new Date(year, month - 1, day + 1);
     }
 
     constructor(private http: HttpClient) {

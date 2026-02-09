@@ -1,8 +1,8 @@
 <p-fluid>
     @if (sections()) {
-        <form [formGroup]="form" class="custom-card-form">
-            <div formArrayName="sections" class="custom-grid-form">
-                <div class="md:col-span-12 custom-field-form">
+        <form [formGroup]="form" class="custom-form-card">
+            <div formArrayName="sections" class="custom-form-grid">
+                <div class="md:col-span-12 custom-form-field">
                     <h1>Normativa</h1>
 
                     <p-message severity="warn">
@@ -23,7 +23,7 @@
                 </div>
 
                 @for (section of sectionsField.controls; track section.value.id; let i = $index; let even = $even) {
-                    <div [formGroupName]="i" class="md:col-span-12 custom-field-form">
+                    <div [formGroupName]="i" class="md:col-span-12 custom-form-field">
                         <div class="mb-4">
                             <p-divider />
                             <p class="text-lg font-bold mb-4 text-justify">
@@ -38,9 +38,9 @@
                             </p>
                         </div>
 
-                        <div formArrayName="items" class="custom-grid-form">
+                        <div formArrayName="items" class="custom-form-grid">
                             @for (item of getRegulationItemsField(i).controls; track item.value.id; let j = $index) {
-                                <div [formGroupName]="j" class="md:col-span-11 custom-field-form">
+                                <div [formGroupName]="j" class="md:col-span-11 custom-form-field">
                                     <p class="text-justify">
                                         @if (item.value.isMandatory) {
                                             <span class="text-red-500 ml-1">*</span>
@@ -54,7 +54,7 @@
                                     </p>
                                 </div>
 
-                                <div [formGroupName]="j" class="md:col-span-1 custom-field-form">
+                                <div [formGroupName]="j" class="md:col-span-1 custom-form-field">
                                     <app-toggle-switch id="isCompliant" formControlName="isCompliant"/>
                                 </div>
                             }

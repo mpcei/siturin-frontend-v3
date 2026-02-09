@@ -6,6 +6,7 @@ import { Step2Component } from '@modules/core/roles/external/components/accredit
 import { Step3Component } from '@modules/core/roles/external/components/accreditation/steps/step3/step3.component';
 import { BreadcrumbService } from '@layout/service';
 import { Fluid } from 'primeng/fluid';
+import { CoreSessionStorageService } from '@utils/services';
 
 @Component({
     selector: 'app-accreditation',
@@ -14,10 +15,12 @@ import { Fluid } from 'primeng/fluid';
     styleUrl: './accreditation.component.scss'
 })
 export class AccreditationComponent {
-    private readonly _breadcrumbService = inject(BreadcrumbService);
+    private readonly breadcrumbService = inject(BreadcrumbService);
+    protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected activeStep: number = 1;
 
     constructor() {
-        this._breadcrumbService.setItems([{ label: 'Proceso de Acreditación de Actividades Turísticas' }]);
+        this.breadcrumbService.setItems([{ label: 'Proceso de Acreditación de Actividades Turísticas' }]);
+        console.log(this.coreSessionStorageService.establishment());
     }
 }

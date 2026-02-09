@@ -2,23 +2,27 @@
 
 <app-juridical-person (dataOut)="saveForm($event)" [dataIn]="step1Data()" />
 
-<p-fluid class="custom-card-form">
-    <div class="custom-grid-form">
-        <div class="md:col-span-3 custom-field-form">
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-3">
             <p-button
                 label="Establecimientos"
                 severity="warn"
+                [text]="true"
+                [raised]="true"
+                styleClass="w-full"
                 [icon]="PrimeIcons.ARROW_LEFT"
                 (onClick)="back()" />
         </div>
 
-        <div class="md:col-start-10 md:col-span-3 custom-field-form">
+        <div class="md:col-start-10 md:col-span-3 custom-form-field">
             <p-button
                 label="Continuar"
                 iconPos="right"
+                styleClass="w-full"
                 [icon]="PrimeIcons.ARROW_RIGHT"
                 (onClick)="onSubmit()" />
         </div>
     </div>
-</p-fluid>
+</div>
 

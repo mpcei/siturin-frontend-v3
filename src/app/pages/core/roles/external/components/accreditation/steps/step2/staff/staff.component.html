@@ -1,12 +1,12 @@
-<p-fluid class="custom-card-form">
-    <form [formGroup]="form" class="custom-grid-form">
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
         <!-- Section Name -->
-        <div class="md:col-span-12 custom-field-form">
+        <div class="md:col-span-12 custom-form-field">
             <div class="custom-section-title-form">Personal del Establecimiento:</div>
         </div>
 
         <!-- totalMen -->
-        <div class="md:col-span-6 custom-field-form">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel
                 for="totalMen"
@@ -29,7 +29,7 @@
         </div>
 
         <!-- totalMenDisability -->
-        <div class="md:col-span-6 custom-field-form">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel
                 for="totalMenDisability"
@@ -53,7 +53,7 @@
         </div>
 
         <!-- totalWomen -->
-        <div class="md:col-span-6 custom-field-form">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel
                 for="totalWomen"
@@ -77,7 +77,7 @@
         </div>
 
         <!-- totalWomenDisability -->
-        <div class="md:col-span-6 custom-field-form">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel
                 for="totalWomenDisability"
@@ -101,7 +101,7 @@
         </div>
 
         <!-- total -->
-        <div class="md:col-span-6 custom-field-form">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel
                 for="totalStaff"
@@ -119,4 +119,4 @@
                 [touched]="totalStaffControl.touched" />
         </div>
     </form>
-</p-fluid>
+</div>

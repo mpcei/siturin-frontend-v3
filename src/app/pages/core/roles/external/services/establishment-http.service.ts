@@ -31,6 +31,16 @@ export class EstablishmentHttpService {
         );
     }
 
+    updateSRIEstablishments(ruc: string) {
+        const url = `${this._apiUrl}/sri/${ruc}`;
+
+        return this._httpClient.put<HttpResponseInterface>(url, null).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
     findOne(id: string) {
         const url = `${this._apiUrl}/${id}`;
 

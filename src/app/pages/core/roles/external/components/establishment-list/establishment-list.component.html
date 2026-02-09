@@ -1,73 +1,117 @@
-<p-fluid>
-    <p-message severity="info">
-        <div>
-            <b>NOTA IMPORTANTE:</b>
-            <p class="mt-4 text-justify">
-                Recuerde que para la obtención del Registro de Turismo, usted debe contar con el RUC (Registro
-                Único de Contribuyentes) Actualizado, con información de Razón Social, establecimientos, nombre
-                comercial, etc; en caso de no contar con estos requisitos, deberá actualizar su información en
-                la página del SRI www.sri.gob.ec
-            </p>
-            <p class="mt-4 text-justify">
-                Seleccione el trámite por establecimiento; si el código del establecimiento asociado a su RUC o
-                el código de Registro Turístico no son correctos, por favor comuníquese con el Ministerio de
-                Turismo.
-            </p>
-        </div>
-    </p-message>
+<p-message severity="info">
+    <small>
+        <b>NOTA IMPORTANTE:</b>
+        <p class="mt-4 text-justify">
+            Recuerde que para la obtención del Registro de Turismo, usted debe contar con el RUC (Registro
+            Único de Contribuyentes) Actualizado, con información de Razón Social, establecimientos, nombre
+            comercial, etc; en caso de no contar con estos requisitos, deberá actualizar su información en
+            la página del SRI <a href="https://www.sri.gob.ec" target="_blank">www.sri.gob.ec</a>
+        </p>
+        <p class="mt-4 text-justify">
+            Seleccione el trámite por establecimiento; si el código del establecimiento asociado a su RUC o
+            el código de Registro Turístico no son correctos, por favor comuníquese con el Ministerio de Producción,
+            Comercio Exterior e Inversiones.
+        </p>
+    </small>
+</p-message>
 
-    <div class="card flex flex-col gap-6 w-full">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div class="md:col-span-12 flex flex-col gap-2">
-                <p-table
-                    [value]="establishments"
-                    rowGroupMode="rowspan"
-                    groupRowsBy="number"
-                    sortField="number"
-                    sortMode="single"
-                    [tableStyle]="{ 'min-width': '75rem' }">
-                    <ng-template #header>
-                        <tr>
-                            <th style="width:3rem">#</th>
-                            <th>Representative</th>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Company</th>
-                            <th>Status</th>
-                        </tr>
-                    </ng-template>
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class=" custom-form-field md:col-span-12">
+            <p-table
+                [value]="establishments()"
+                [tableStyle]="{ 'min-width': '75rem' }">
+                <ng-template #header>
+                    <tr>
+                        <th>Opciones</th>
+                        <th style="width:3rem">Nro.</th>
+                        <th>Nombre Comercial</th>
+                        <th>Ubicación</th>
+                        <th>Actividad</th>
+                        <th>Número de Registro</th>
+                        <th>Estado Catastro</th>
+                    </tr>
+                </ng-template>
 
-                    <ng-template
-                        #body
-                        let-item
-                        let-rowIndex="rowIndex"
-                        let-rowgroup="rowgroup"
-                        let-rowspan="rowspan">
-                        <tr>
-                            <td>{{ rowIndex }}</td>
-                            @if (rowgroup) {
-                                <td [attr.rowspan]="rowspan">
-                                    <div class="flex items-center gap-2">
-                                        <span>{{ item.number }}</span>
-                                    </div>
-                                </td>
+                <ng-template
+                    #body
+                    let-item
+                    let-rowIndex="rowIndex">
+                    <tr>
+                        <td class="justify-center">
+                            @if (item.process) {
+                                <p-button
+                                    pTooltip="Gestionar"
+                                    [icon]="FontAwesome.ELLIPSIS_VERTICAL_SOLID"
+                                    (click)="onSelect({item,index:rowIndex})" />
+                            } @else {
+                                <p-button
+                                    pTooltip="Crear Trámite"
+                                    severity="success"
+                                    [text]="true"
+                                    [raised]="true"
+                                    [icon]="FontAwesome.FILE_CIRCLE_PLUS_SOLID"
+                                    (click)="onSelect({item,index:rowIndex})" />
                             }
-                            <td>
-                                {{ item.tradeName }}
-                            </td>
-                            <td>
-                                <div class="flex items-center gap-2">
-                                    <span>{{ item.webPage }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                {{ item.tradeName }}
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
+                        </td>
+                        <td>
+                            {{ item.number }}
+                        </td>
+                        <td>
+                            @if (item?.state?.code === 'closed') {
+                                <p-tag severity="danger" value="CERRADO SRI" />
+                            }
+                            @if (!item?.tradeName) {
+                                <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
+                            }
+
+                            {{ item.tradeName }}
+                        </td>
+                        <td>
+                            @if (item.process) {
+                                {{ item.process.establishment.province.name }}
+                                {{ item.process.establishment.canton.name }}
+                                {{ item.process.establishment.parish.name }}
+                                {{ item.process.establishment.mainStreet }},
+                                {{ item.process.establishment.numberStreet }},
+                                {{ item.process.establishment.secondaryStreet }}
+                            }
+                        </td>
+                        <td>
+                            @if (item.process) {
+                                {{ item.process.activity.name }}
+                            }
+                        </td>
+                        <td>
+                            @if (item.process) {
+                                {{ item.process.cadastre.registerNumber }}
+                            } @else {
+                                Sin Registro
+                            }
+                        </td>
+                        <td>
+                            @if (item.process) {
+                                {{ item.process.cadastre.cadastreState.state.name }}
+                            }
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </div>
 
-</p-fluid>
+    @if (pagination) {
+        <p-paginator
+            (onPageChange)="onPagination($event)"
+            [rows]="pagination.limit"
+            [totalRecords]="pagination.totalItems" />
+    }
+</div>
+
+
+@if (isButtonActionsEnabled) {
+    <app-button-action
+        [buttonActions]="buttonActions"
+        [enabled]="true"
+        (isHide)="isButtonActionsEnabled = $event" />
+}

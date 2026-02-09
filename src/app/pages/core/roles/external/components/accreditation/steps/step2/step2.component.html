@@ -6,9 +6,9 @@
 
 <app-contact-person (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentContactPerson)" [dataIn]="step2Data()" />
 
-<p-fluid class="custom-card-form">
-    <div class="custom-grid-form">
-        <div class="md:col-span-3 custom-field-form">
+<p-fluid class="custom-form-card">
+    <div class="custom-form-grid">
+        <div class="md:col-span-3 custom-form-field">
             <p-button
                 label="Atrás"
                 severity="warn"
@@ -16,7 +16,7 @@
                 (onClick)="back()" />
         </div>
 
-        <div class="md:col-start-10 md:col-span-3 custom-field-form">
+        <div class="md:col-start-10 md:col-span-3 custom-form-field">
             <p-button
                 label="Siguiente"
                 iconPos="right"

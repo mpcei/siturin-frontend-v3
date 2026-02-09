@@ -1,7 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { CoreEnum } from '@utils/enums';
 import { CatalogueInterface, DpaInterface } from '@utils/interfaces';
 import { ActivityInterface, CategoryInterface, ClassificationInterface } from '@/pages/core/shared/interfaces';
+import { CadastreInterface, EstablishmentInterface } from '@/pages/core/interfaces';
+
+const STORAGE_KEY = 'process_state';
 
 export interface ProcessI {
     processId?: string;
@@ -29,26 +32,58 @@ export class CoreSessionStorageService {
     private _processSignal = signal<any>({});
     readonly processSignal = this._processSignal.asReadonly();
 
+    private _process = signal<ProcessI | null>(null);
+    private _cadastre = signal<CadastreInterface | null>(null);
+    private _establishment = signal<EstablishmentInterface | null>(null);
+
+    process = this._process.asReadonly();
+    cadastre = this._cadastre.asReadonly();
+    establishment = this._establishment.asReadonly();
+
+    fullProcess = computed(() => ({
+        process: this._process(),
+        cadastre: this._cadastre(),
+        establishment: this._establishment()
+    }));
+
+    setProcess(data: ProcessI) {
+        this._process.set(data);
+    }
+
+    setCadastre(data: CadastreInterface) {
+        this._cadastre.set(data);
+    }
+
+    setEstablishment(data: EstablishmentInterface) {
+        this._establishment.set(data);
+    }
+
+    clearAll() {
+        this._process.set(null);
+        this._cadastre.set(null);
+        this._establishment.set(null);
+    }
+
     constructor() {
         this.loadInitialSignal().then();
+        this.loadFromStorage();
+
+        // guarda automáticamente cada vez que cambia algo
+        effect(() => {
+            const data = this.fullProcess();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        });
     }
 
-    private async loadInitialSignal() {
-        let decryptedValue = await this.getEncryptedValue(sessionStorage.getItem(CoreEnum.process));
+    private loadFromStorage() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return;
 
-        this._processSignal.set(decryptedValue);
-    }
+        const data = JSON.parse(stored);
 
-    private async generateCryptoKey(): Promise<CryptoKey> {
-        const encoder = new TextEncoder();
-        const keyData = encoder.encode(this.encryptionKey);
-        return await crypto.subtle.importKey(
-            'raw', // Tipo de clave
-            keyData, // Datos de la clave
-            { name: 'AES-GCM' }, // Algoritmo
-            false, // No se puede exportar la clave generada
-            ['encrypt', 'decrypt'] // Permitir encriptar y desencriptar
-        );
+        this._process.set(data.process);
+        this._cadastre.set(data.cadastre);
+        this._establishment.set(data.establishment);
     }
 
     async setEncryptedValue(key: string, newValue: any): Promise<void> {
@@ -120,6 +155,24 @@ export class CoreSessionStorageService {
         const decoder = new TextDecoder();
 
         return JSON.parse(decoder.decode(decryptedData));
+    }
+
+    private async loadInitialSignal() {
+        let decryptedValue = await this.getEncryptedValue(sessionStorage.getItem(CoreEnum.process));
+
+        this._processSignal.set(decryptedValue);
+    }
+
+    private async generateCryptoKey(): Promise<CryptoKey> {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(this.encryptionKey);
+        return await crypto.subtle.importKey(
+            'raw', // Tipo de clave
+            keyData, // Datos de la clave
+            { name: 'AES-GCM' }, // Algoritmo
+            false, // No se puede exportar la clave generada
+            ['encrypt', 'decrypt'] // Permitir encriptar y desencriptar
+        );
     }
 
     // Utilidades para trabajar con Base64

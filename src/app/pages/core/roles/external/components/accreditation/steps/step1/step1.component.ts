@@ -1,10 +1,11 @@
-import { Component, EventEmitter, effect, inject, input, OnInit, Output, QueryList, signal, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, QueryList, signal, ViewChildren } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
-import { JuridicalPersonComponent } from '@modules/core/roles/external/components/accreditation/steps/step1/juridical-person/juridical-person.component';
+import {
+    JuridicalPersonComponent
+} from '@modules/core/roles/external/components/accreditation/steps/step1/juridical-person/juridical-person.component';
 import { Button } from 'primeng/button';
-import { Fluid } from 'primeng/fluid';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { SriComponent } from '@modules/core/shared/components/sri/sri.component';
@@ -14,36 +15,24 @@ import { ProcessHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-step1',
-    imports: [JuridicalPersonComponent, Button, Fluid, SriComponent],
+    imports: [JuridicalPersonComponent, Button, SriComponent],
     templateUrl: './step1.component.html',
     styleUrl: './step1.component.scss'
 })
 export class Step1Component implements OnInit {
+    @Output() step: EventEmitter<number> = new EventEmitter<number>();
     protected readonly PrimeIcons = PrimeIcons;
     protected readonly router = inject(Router);
-
-    @Output() step: EventEmitter<number> = new EventEmitter<number>();
-    @ViewChildren(JuridicalPersonComponent) private juridicalPersonComponent!: QueryList<JuridicalPersonComponent>;
-
-    private formBuilder = inject(FormBuilder);
     protected mainForm!: FormGroup;
-
     protected step1Data = signal<any>(null);
-
     protected readonly processHttpService = inject(ProcessHttpService);
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    @ViewChildren(JuridicalPersonComponent) private juridicalPersonComponent!: QueryList<JuridicalPersonComponent>;
+    private formBuilder = inject(FormBuilder);
 
     constructor() {
         this.mainForm = this.formBuilder.group({});
-
-        this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, {
-            type: {
-                id: '4fcbe6da-c9b3-4a3b-b2f7-3a5f865d4de9',
-                code: 'registration',
-                name: 'Registro'
-            }
-        });
     }
 
     async ngOnInit() {
@@ -81,15 +70,15 @@ export class Step1Component implements OnInit {
 
     async saveProcess() {
         await this.coreSessionStorageService.setEncryptedValue(CoreEnum.step1, { ...this.mainForm.value });
-        const { type, processId } = await this.coreSessionStorageService.getEncryptedValue(CoreEnum.process);
+        const { type, processId } = this.coreSessionStorageService.process()!;
 
         const payload = { ...this.mainForm.value, processId, type };
 
         this.processHttpService.createStep1(payload).subscribe({
             next: (response: any) => {
                 this.step.emit(2);
-                this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, {
-                    processId:response.id,
+                this.coreSessionStorageService.setProcess({
+                    processId: response.id
                 });
             }
         });

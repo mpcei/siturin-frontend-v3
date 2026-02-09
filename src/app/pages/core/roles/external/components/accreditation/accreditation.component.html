@@ -1,35 +1,37 @@
-<p-fluid>
-    <div class="custom-card-form">
-        <div class="custom-grid-form">
-            <div class="md:col-span-3 custom-field-form">
-                Establecimiento Seleccionado:
-            </div>
-
-            <div class="md:col-span-4 custom-field-form">
-                <b>KFC</b>
-            </div>
-
-            <div class="md:col-span-3 custom-field-form">
-                Trámite Seleccionado:
-            </div>
-
-            <div class="md:col-span-2 custom-field-form">
-                <b>Registro</b>
-            </div>
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-3">
+            Establecimiento Seleccionado:
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div class="md:col-span-3 custom-field-form">
-                Número de Registro::
-            </div>
-            <div class="md:col-span-9 custom-field-form">
-                <b>1724909443001.001.1234567</b>
-            </div>
+        <div class="custom-form-field md:col-span-9">
+            <b>{{ coreSessionStorageService.establishment()?.tradeName }}</b>
+        </div>
+
+        <div class="custom-form-field md:col-span-3">
+            Trámite Seleccionado:
+        </div>
+
+        <div class="custom-form-field md:col-span-9">
+            <b>{{ coreSessionStorageService.process()?.type?.name }}</b>
+        </div>
+
+        <div class="custom-form-field md:col-span-3">
+            Número de Registro::
+        </div>
+
+        <div class="custom-form-field md:col-span-9">
+            @if(coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber){
+                <b>{{ coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber }}</b>
+            }@else{
+                <b>Sin Registro</b>
+            }
         </div>
     </div>
-</p-fluid>
+</div>
 
-<p-stepper [(value)]="activeStep" class="basis-[40rem]" [linear]="true">
+
+<p-stepper [(value)]="activeStep" [linear]="true">
     <p-step-list>
         <p-step [value]="1">Datos generales de Persona Natural / Jurídica</p-step>
         <p-step [value]="2">Datos generales del establecimiento</p-step>

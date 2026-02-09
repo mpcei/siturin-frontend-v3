@@ -1,8 +1,8 @@
-<p-fluid class="custom-card-form">
-    <form [formGroup]="form" class="custom-grid-form">
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
             <!-- tradeName -->
-            <div class="md:col-span-6 custom-field-form">
-                <div class="md:col-span-12 custom-field-form">
+            <div class="md:col-span-6 custom-form-field">
+                <div class="md:col-span-12 custom-form-field">
                     <label
                         appLabel
                         for="tradeName"
@@ -24,7 +24,7 @@
             </div>
 
             <!-- webPage -->
-            <div class="md:col-span-6 custom-field-form">
+            <div class="md:col-span-6 custom-form-field">
                 <label
                     appLabel
                     for="webPage"
@@ -45,4 +45,4 @@
                     [touched]="webPageField.touched" />
             </div>
     </form>
-</p-fluid>
+</div>
