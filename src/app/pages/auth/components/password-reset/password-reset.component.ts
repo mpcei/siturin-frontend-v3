@@ -14,7 +14,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { MY_ROUTES } from '@routes';
-import { invalidEmailMINTURValidator, invalidEmailValidator, matchPasswords, passwordPolicesValidator, unregisteredUserValidator } from '@utils/form-validators/custom-validator';
+import { invalidEmailDomainValidator, invalidEmailValidator, matchPasswords, passwordPolicesValidator, unregisteredUserValidator } from '@utils/form-validators/custom-validator';
 import { Tooltip } from 'primeng/tooltip';
 import { Dialog } from 'primeng/dialog';
 import EmailResetComponent from '@/pages/auth/components/email-reset/email-reset.component';
@@ -87,7 +87,7 @@ export default class PasswordResetComponent {
         return this.form.controls['name'];
     }
 
-    onSubmitEmailReset(email: string) {
+    protected onSubmitEmailReset(email: string) {
         this.emailField.setValue(email);
         this.securityQuestionsModal = false;
     }
@@ -171,7 +171,7 @@ export default class PasswordResetComponent {
                         value: null,
                         disabled: true
                     },
-                    [Validators.required, invalidEmailValidator(), invalidEmailMINTURValidator()]
+                    [Validators.required, invalidEmailValidator(), invalidEmailDomainValidator()]
                 ],
                 password: [null, [Validators.required, passwordPolicesValidator()]],
                 passwordConfirm: [null, [Validators.required]],

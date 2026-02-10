@@ -279,12 +279,22 @@ export class AuthHttpService {
         );
     }
 
-    acceptTermsConditions() {
+    findRUC(ruc: string) {
+        const url = `${this.apiUrl}/rucs/${ruc}`;
+
+        return this.httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    acceptTermsConditions(termsAcceptedAt: boolean) {
         const url = `${this.apiUrl}/terms-conditions/accept`;
 
-        return this.httpClient.patch<HttpResponseInterface>(url, null).pipe(
+        return this.httpClient.patch<HttpResponseInterface>(url, { termsAcceptedAt }).pipe(
             map((response) => {
-                this.authService.auth = { ...this.authService.auth, termsConditions: true };
+                this.authService.auth = { ...this.authService.auth, termsAcceptedAt: new Date() };
                 return response.data;
             })
         );

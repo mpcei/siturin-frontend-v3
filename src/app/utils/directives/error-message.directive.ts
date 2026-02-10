@@ -24,7 +24,7 @@ export class ErrorMessageDirective implements OnChanges {
         pattern: this.fieldPattern,
         noPasswordMatch: this.fieldNoPasswordMatch,
         invalidEmail: this.fieldInvalidEmail,
-        invalidEmailMINTUR: this.fieldInvalidEmailMINTUR,
+        invalidEmailDomain: this.fieldInvalidEmailDomain,
         registeredIdentification: this.fieldRegisteredIdentification,
         userExist: this.fieldUserExist,
         unregisteredUser: this.fieldUnregisteredUser,
@@ -145,8 +145,8 @@ export class ErrorMessageDirective implements OnChanges {
         return 'Correo electrónico no es válido.';
     }
 
-    private get fieldInvalidEmailMINTUR(): string {
-        return 'Correo electrónico no puede pertencer al MINTUR.';
+    private fieldInvalidEmailDomain(errors: ValidationErrors): string {
+        return `Correo electrónico no puede pertencer a ${errors['invalidEmailDomain']['disallowedDomain']}.`;
     }
 
     private get fieldPhoneNotAvailable(): string {

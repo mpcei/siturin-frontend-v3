@@ -12,10 +12,18 @@ export function invalidEmailValidator(): ValidatorFn {
     };
 }
 
-export function invalidEmailMINTURValidator(): ValidatorFn {
+export function invalidEmailDomainValidator(domain: string = 'produccion.gob.ec'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-        const value = control.value;
-        return !value || value.includes('@turismo.gob.ec') ? { invalidEmailMINTUR: true } : null;
+        const value: string = control.value;
+
+        if (!value) return null;
+
+        const parts = value.split('@');
+        if (parts.length !== 2) return null;
+
+        const emailDomain = parts[1].toLowerCase();
+
+        return emailDomain === domain.toLowerCase() ? { invalidEmailDomain: { disallowedDomain: domain } } : null;
     };
 }
 

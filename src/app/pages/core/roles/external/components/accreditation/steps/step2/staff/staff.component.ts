@@ -1,7 +1,6 @@
 import { Component, effect, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { Fluid } from 'primeng/fluid';
 import { InputNumber } from 'primeng/inputnumber';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
@@ -10,7 +9,7 @@ import { Message } from 'primeng/message';
 
 @Component({
     selector: 'app-staff',
-    imports: [Fluid, ReactiveFormsModule, LabelDirective, InputNumber, ErrorMessageDirective, Message],
+    imports: [ReactiveFormsModule, LabelDirective, InputNumber, ErrorMessageDirective, Message],
     templateUrl: './staff.component.html',
     styleUrl: './staff.component.scss'
 })

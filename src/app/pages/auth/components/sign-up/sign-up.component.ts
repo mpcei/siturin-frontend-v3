@@ -12,7 +12,7 @@ import { environment } from '@env/environment';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import { invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableEmailValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
+import { invalidEmailDomainValidator, invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableEmailValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
 import { KeyFilter } from 'primeng/keyfilter';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -23,6 +23,7 @@ import { CatalogueHttpService, CoreSessionStorageService } from '@utils/services
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
+import { debounceTime } from 'rxjs';
 
 @Component({
     selector: 'app-sign-up',
@@ -90,6 +91,10 @@ export default class SignUpComponent implements OnInit {
         return this.form.controls['username'];
     }
 
+    protected get rucField(): AbstractControl {
+        return this.form.controls['ruc'];
+    }
+
     protected get termsAcceptedAtField(): AbstractControl {
         return this.form.controls['termsAcceptedAt'];
     }
@@ -135,13 +140,8 @@ export default class SignUpComponent implements OnInit {
     }
 
     protected watchFormChanges() {
-        this.identificationField.valueChanges.subscribe((value) => {
-            this.transactionalCodeControl.reset();
-            this.transactionalCodeControl.disable();
-            this.emailField.reset();
-            this.emailField.enable();
-            this.passwordField.reset();
-            this.passwordField.disable();
+        this.identificationField.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
+            if (this.identificationField.valid) this.findRUC(value);
         });
 
         this.emailField.valueChanges.subscribe((value) => {
@@ -161,7 +161,7 @@ export default class SignUpComponent implements OnInit {
 
     protected requestTransactionalCode() {
         this.nameField.disable();
-        this.nameField.reset();
+        // this.nameField.reset();
         this.passwordField.disable();
         this.passwordField.reset();
 
@@ -178,7 +178,7 @@ export default class SignUpComponent implements OnInit {
     }
 
     protected onSubmit() {
-        this.usernameField.setValue(this.identificationField.value);
+        this.usernameField.setValue(this.emailField.value);
 
         if (this.validateForm()) {
             this.signUpExternal();
@@ -191,12 +191,13 @@ export default class SignUpComponent implements OnInit {
                 email: [
                     null,
                     {
-                        validators: [Validators.required, invalidEmailValidator()],
+                        validators: [Validators.required, invalidEmailValidator(), invalidEmailDomainValidator()],
                         asyncValidators: [unavailableEmailValidator(this.authHttpService)]
                     }
                 ],
                 password: [null, [Validators.required, passwordPolicesValidator()]],
                 passwordConfirm: [null, [Validators.required]],
+                ruc: [null, [Validators.required]],
                 name: [null, [Validators.required]],
                 username: [null, [Validators.required]],
                 termsAcceptedAt: [false, [Validators.requiredTrue]],
@@ -219,11 +220,29 @@ export default class SignUpComponent implements OnInit {
         this.watchFormChanges();
     }
 
+    private findRUC(ruc: string) {
+        this.authHttpService.findRUC(ruc).subscribe({
+            next: (response) => {
+                this.rucField.setValue(response);
+                this.nameField.setValue(response.razonSocial);
+
+                if (response.estadoContribuyente === 'ACTIVO') {
+                    this.transactionalCodeControl.reset();
+                    this.transactionalCodeControl.disable();
+                    this.emailField.reset();
+                    this.emailField.enable();
+                    this.passwordField.reset();
+                    this.passwordField.disable();
+                }
+            }
+        });
+    }
+
     private signUpExternal() {
         this.authHttpService.signUpExternal(this.form.value).subscribe({
             next: (_) => {
-                this.form.reset();
-                this.router.navigate([MY_ROUTES.authPages.signIn.absolute]);
+                // this.form.reset();
+                // this.router.navigate([MY_ROUTES.authPages.signIn.absolute]);
             }
         });
     }

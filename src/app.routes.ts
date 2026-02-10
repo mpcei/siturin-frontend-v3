@@ -8,6 +8,7 @@ import { accountGuard } from '@/guards/account.guard';
 import SecurityQuestionComponent from '@/pages/auth/components/security-question/security-question.component';
 import FontAwesomeIcons from '@/api/font-awesome-icons';
 import PasswordChangedComponent from '@/pages/auth/components/password-changed/password-changed.component';
+import TermsComponent from '@/pages/auth/components/terms/terms.component';
 
 export const appRoutes: Routes = [
     {
@@ -40,14 +41,20 @@ export const appRoutes: Routes = [
     },
 
     {
+        path: 'password-changed',
+        component: PasswordChangedComponent,
+        canActivate: [tokenGuard]
+    },
+
+    {
         path: 'security-questions',
         component: SecurityQuestionComponent,
         canActivate: [tokenGuard]
     },
 
     {
-        path: 'password-changed',
-        component: PasswordChangedComponent,
+        path: 'terms',
+        component: TermsComponent,
         canActivate: [tokenGuard]
     },
 

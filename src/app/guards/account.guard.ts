@@ -12,10 +12,12 @@ export const accountGuard: CanActivateFn = (route, state) => {
         return router.createUrlTree(['password-changed']);
     }
 
-    const securityQuestionAcceptedAt = authService.auth?.securityQuestionAcceptedAt;
-
-    if (!securityQuestionAcceptedAt) {
+    if (!authService.auth?.securityQuestionAcceptedAt) {
         return router.createUrlTree(['security-questions']);
+    }
+
+    if (!authService.auth?.termsAcceptedAt) {
+        return router.createUrlTree(['terms']);
     }
 
     return true;

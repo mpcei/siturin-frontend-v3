@@ -5,12 +5,11 @@ import { Step1Component } from '@modules/core/roles/external/components/accredit
 import { Step2Component } from '@modules/core/roles/external/components/accreditation/steps/step2/step2.component';
 import { Step3Component } from '@modules/core/roles/external/components/accreditation/steps/step3/step3.component';
 import { BreadcrumbService } from '@layout/service';
-import { Fluid } from 'primeng/fluid';
 import { CoreSessionStorageService } from '@utils/services';
 
 @Component({
     selector: 'app-accreditation',
-    imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step3Component, Fluid],
+    imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step3Component],
     templateUrl: './accreditation.component.html',
     styleUrl: './accreditation.component.scss'
 })

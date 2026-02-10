@@ -10,7 +10,7 @@ export interface AuthInterface {
     name?: string;
     identification?: string;
     username: string;
-    termsConditions?: boolean;
+    termsAcceptedAt?: Date;
     securityQuestionAcceptedAt?: Date;
     passwordChanged: boolean;
 }

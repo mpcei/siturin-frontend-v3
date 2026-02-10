@@ -136,7 +136,7 @@ export default class UserFormComponent implements OnInit {
     }
 
     watchFormChanges() {
-        this.identificationField.valueChanges.subscribe((value) => {
+        this.emailField.valueChanges.subscribe((value) => {
             this.usernameField.setValue(value);
         });
 
