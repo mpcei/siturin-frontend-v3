@@ -13,7 +13,10 @@
         <!-- actions -->
         <p-button label="Cancelar" [icon]="FontAwesome.CHEVRON_LEFT_SOLID" [text]="true" severity="secondary"
                   (onClick)="return()" />
-        <p-button type="button" label="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" class="ml-2"
+        <p-button type="button" label="Guardar"
+                  [text]="true"
+                  [raised]="true"
+                  [icon]="FontAwesome.FLOPPY_DISK_SOLID" class="ml-2"
                   (onClick)="onSubmit()" />
     </ng-template>
 </p-toolbar>
@@ -148,6 +151,8 @@
                                 pTooltip="Generar contraseña segura automáticamente"
                                 [icon]="FontAwesome.WAND_MAGIC_SPARKLES_SOLID"
                                 severity="info"
+                                [outlined]="true"
+                                [raised]="true"
                                 [disabled]="passwordField.disabled"
                                 (onClick)="autoGeneratePassword()" />
                         </p-inputgroup>

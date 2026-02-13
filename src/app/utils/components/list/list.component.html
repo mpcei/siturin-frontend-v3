@@ -31,6 +31,8 @@
                 <p-button
                     label="Nuevo"
                     severity="success"
+                    [outlined]="true"
+                    [raised]="true"
                     (onClick)="create()" />
             </th>
 
@@ -46,6 +48,8 @@
         <tr>
             <td class="justify-center">
                 <p-button
+                    [outlined]="true"
+                    [raised]="true"
                     [icon]="FontAwesome.ELLIPSIS_VERTICAL_SOLID"
                     (click)="onSelect.emit({item,rowIndex})" />
             </td>

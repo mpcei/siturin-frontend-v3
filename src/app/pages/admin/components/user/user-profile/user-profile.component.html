@@ -10,7 +10,8 @@
 
                 <!-- save action -->
                 <div class="custom-form-field md:col-span-2">
-                    <p-button pTooltip="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" (onClick)="onSubmit()" />
+                    <p-button pTooltip="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" [outlined]="true"
+                              [raised]="true" (onClick)="onSubmit()" />
                 </div>
 
                 <!-- avatarField -->
@@ -249,12 +250,12 @@
                         </p>
 
                         <p>
-                            <small class="bg-surface-100">
+                            <small class="text-gray-500">
                                 Estas preguntas se utilizan para verificar tu identidad.
                             </small>
                         </p>
 
-                        <small class="bg-surface-100">
+                        <small class="text-gray-500">
                             Para cambiarlas, deberás validar un código de seguridad.
                         </small>
                     </label>
@@ -265,6 +266,8 @@
                         label="Cambiar Preguntas"
                         severity="info"
                         styleClass="w-full"
+                        [outlined]="true"
+                        [raised]="true"
                         [icon]="FontAwesome.PEN_TO_SQUARE_REGULAR"
                         (onClick)="goToSecurityQuestions()"
                     />

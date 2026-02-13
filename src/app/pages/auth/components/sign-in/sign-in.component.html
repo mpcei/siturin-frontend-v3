@@ -79,8 +79,8 @@
                 styleClass="w-full"
                 [icon]="FontAwesome.USER_PLUS_SOLID"
                 severity="success"
-                [raised]="true"
-                [text]="true"
+                [outlined]="true"
+                raised="true"
                 [routerLink]="MY_ROUTES.authPages.signUp.absolute" />
         </div>
 
@@ -89,9 +89,9 @@
                 label="Recuperar Cuenta"
                 styleClass="w-full"
                 [icon]="FontAwesome.UNLOCK_KEYHOLE_SOLID"
-                severity="help"
+                severity="info"
+                [outlined]="true"
                 [raised]="true"
-                [text]="true"
                 [routerLink]="MY_ROUTES.authPages.passwordReset.absolute" />
         </div>
     </form>

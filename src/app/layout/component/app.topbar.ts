@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
@@ -16,16 +16,38 @@ import { MY_ROUTES } from '@routes';
     selector: 'app-topbar',
     standalone: true,
     imports: [RouterModule, CommonModule, StyleClassModule, Button, Tooltip],
+    styles: [
+        `
+            .layout-topbar {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .layout-topbar-center {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .layout-topbar-center img {
+                height: 40px;
+            }
+        `
+    ],
     template: `
         <div class="layout-topbar">
             <div class="layout-topbar-logo-container">
                 <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                     <i [class]="FontAwesome.BARS_SOLID"></i>
                 </button>
-                <a class="layout-topbar-logo" routerLink="/">
-                    <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="50px" />
-                    <span>{{ environment.APP_SHORT_NAME }}</span>
-                </a>
+
+                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />
+            </div>
+
+            <div class="layout-topbar-center">
+                <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" />
             </div>
 
             <div class="layout-topbar-actions">
@@ -36,11 +58,11 @@ import { MY_ROUTES } from '@routes';
                 <div class="layout-topbar-menu hidden lg:block">
                     <div class="layout-topbar-menu-content">
                         @if (authService.auth && authService.role) {
-                            <p-button type="button" (onClick)="redirectProfile()" [text]="true" [raised]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />
+                            <!--                            <p-button type="button" (onClick)="redirectProfile()" [text]="true" [raised]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
 
-                            <p-button type="button" [icon]="authService.role.icon" [text]="true" [raised]="true" [rounded]="true" severity="warn" [label]="authService.role.name" pTooltip="Mi Rol" />
+                            <p-button type="button" [icon]="authService.role.icon" [text]="true" severity="secondary" [label]="authService.role.name" pTooltip="Mi Rol" />
                         }
-                        <p-button (onClick)="signOut()" type="button" [raised]="true" [rounded]="true" severity="danger" pTooltip="Cerrar Sesión" [icon]="FontAwesome.POWER_OFF_SOLID" />
+                        <p-button (onClick)="signOut()" type="button" [raised]="true" [outlined]="true" [rounded]="true" severity="danger" pTooltip="Cerrar Sesión" [icon]="FontAwesome.POWER_OFF_SOLID" />
                     </div>
                 </div>
             </div>
@@ -51,8 +73,10 @@ export class AppTopbar {
     protected readonly authService = inject(AuthService);
     protected readonly authHttpService = inject(AuthHttpService);
     private readonly router = inject(Router);
-
-    items!: MenuItem[];
+    private readonly confirmationService = inject(ConfirmationService);
+    protected readonly FontAwesome = FontAwesome;
+    protected readonly environment = environment;
+    protected items!: MenuItem[];
 
     layoutService = inject(LayoutService);
 
@@ -64,13 +88,28 @@ export class AppTopbar {
     }
 
     signOut() {
-        this.authHttpService.signOut().subscribe();
+        this.confirmationService.confirm({
+            message: '¿Está seguro de salir del sistema?',
+            header: 'Salir del Sistema',
+            icon: FontAwesome.POWER_OFF_SOLID,
+            rejectButtonProps: {
+                label: 'Cancelar',
+                severity: 'secondary',
+                text: true
+            },
+            acceptButtonProps: {
+                label: 'Sí, Salir',
+                severity: 'danger',
+                outlined: true
+            },
+            accept: () => {
+                this.authHttpService.signOut().subscribe();
+            },
+            key: 'confirmdialog'
+        });
     }
 
     redirectProfile() {
         this.router.navigate([MY_ROUTES.adminPages.user.profile.absolute]);
     }
-
-    protected readonly FontAwesome = FontAwesome;
-    protected readonly environment = environment;
 }

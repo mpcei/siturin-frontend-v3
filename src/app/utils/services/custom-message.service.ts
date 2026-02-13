@@ -16,7 +16,8 @@ export class CustomMessageService {
         ['INVALID_PASSWORD', 'Credenciales no válidas'],
         ['INSUFFICIENT_PERMISSIONS', 'Permisos Insuficientes'],
         ['ACCOUNT_SUSPENDED', 'Cuenta Suspendida'],
-        ['ACCOUNT_LOCKED', 'Cuenta Bloqueada']
+        ['ACCOUNT_LOCKED', 'Cuenta Bloqueada'],
+        ['REMAINING_TOKEN', 'Ya has generado un código recientemente.']
     ]);
 
     private _modalConfirmVisible: boolean = false;
@@ -111,7 +112,7 @@ export class CustomMessageService {
             }
 
             if (error.error === 'REMAINING_TOKEN') {
-                this._modalLife = error.data.remainingSeconds * 1000
+                this._modalLife = error.data.remainingSeconds * 1000;
             }
 
             this._messageService.add({

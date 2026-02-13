@@ -19,11 +19,12 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueTypeEnum, CoreEnum } from '@utils/enums';
 import { Tooltip } from 'primeng/tooltip';
 import { FontAwesome } from '@/api/font-awesome';
-import { CatalogueHttpService, CoreSessionStorageService } from '@utils/services';
+import { CatalogueHttpService, CoreService, CoreSessionStorageService } from '@utils/services';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
 import { debounceTime } from 'rxjs';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sign-up',
@@ -44,7 +45,8 @@ import { debounceTime } from 'rxjs';
         KeyFilter,
         Tooltip,
         TransactionalCodeComponent,
-        Message
+        Message,
+        JsonPipe
     ]
 })
 export default class SignUpComponent implements OnInit {
@@ -58,6 +60,7 @@ export default class SignUpComponent implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    protected readonly coreService = inject(CoreService);
     private readonly catalogueHttpService = inject(CatalogueHttpService);
     private readonly catalogueService = inject(CatalogueService);
     private readonly authHttpService = inject(AuthHttpService);
@@ -141,6 +144,9 @@ export default class SignUpComponent implements OnInit {
 
     protected watchFormChanges() {
         this.identificationField.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
+            this.emailField.disable();
+            this.rucField.reset();
+
             if (this.identificationField.valid) this.findRUC(value);
         });
 
@@ -197,14 +203,14 @@ export default class SignUpComponent implements OnInit {
                 ],
                 password: [null, [Validators.required, passwordPolicesValidator()]],
                 passwordConfirm: [null, [Validators.required]],
-                ruc: [null, [Validators.required]],
+                ruc: [false, [Validators.required]],
                 name: [null, [Validators.required]],
                 username: [null, [Validators.required]],
                 termsAcceptedAt: [false, [Validators.requiredTrue]],
                 identification: [
                     null,
                     {
-                        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(13), Validators.minLength(13)],
+                        validators: [Validators.required, Validators.maxLength(13), Validators.minLength(13)],
                         asyncValidators: [unavailableUserValidator(this.authHttpService)]
                     }
                 ],

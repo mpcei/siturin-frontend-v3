@@ -64,11 +64,13 @@ import { Fluid } from 'primeng/fluid';
 
                 <p-fluid>
                     <div>
-                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID" [label]="environment.VERSION" />
+                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID"
+                                  [label]="environment.VERSION" />
                     </div>
 
                     <div>
-                        <p-button outlined size="small" severity="danger" [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
+                        <p-button [outlined]="true" [raised]="true" size="small" severity="danger"
+                                  [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
                     </div>
                 </p-fluid>
             </div>

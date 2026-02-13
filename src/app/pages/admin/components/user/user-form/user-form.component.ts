@@ -229,7 +229,7 @@ export default class UserFormComponent implements OnInit {
     async autoGeneratePassword() {
         this.passwordField.patchValue(generatePassword({ length: 8 }));
         await navigator.clipboard.writeText(this.passwordField.value);
-        this.customMessageService.showSuccess({ summary: 'Contraseña copiada', detail: this.passwordField.value });
+        this.customMessageService.showSuccess({ summary: 'Contraseña copiada', detail: '********' });
     }
 
     protected readonly FontAwesome = FontAwesome;
