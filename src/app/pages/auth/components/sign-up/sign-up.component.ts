@@ -24,7 +24,6 @@ import { TransactionalCodeComponent } from '@utils/components/transactional-code
 import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
 import { debounceTime } from 'rxjs';
-import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sign-up',
@@ -45,8 +44,7 @@ import { JsonPipe } from '@angular/common';
         KeyFilter,
         Tooltip,
         TransactionalCodeComponent,
-        Message,
-        JsonPipe
+        Message
     ]
 })
 export default class SignUpComponent implements OnInit {

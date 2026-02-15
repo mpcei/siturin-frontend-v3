@@ -18,14 +18,13 @@ import { Password } from 'primeng/password';
 import { Divider } from 'primeng/divider';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { AuthService } from '@/pages/auth/auth.service';
-import { Tooltip } from 'primeng/tooltip';
 import { FontAwesome } from '@/api/font-awesome';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 
 @Component({
     selector: 'app-password-change',
-    imports: [Button, Divider, ErrorMessageDirective, FormsModule, LabelDirective, Password, ReactiveFormsModule, Tooltip, TransactionalCodeComponent, ToggleSwitchComponent],
+    imports: [Button, Divider, ErrorMessageDirective, FormsModule, LabelDirective, Password, ReactiveFormsModule, TransactionalCodeComponent, ToggleSwitchComponent],
     templateUrl: './password-change.component.html'
 })
 export default class PasswordChangeComponent implements OnInit {

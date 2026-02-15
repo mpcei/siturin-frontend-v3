@@ -4,11 +4,23 @@ import { InputOtp, InputOtpChangeEvent } from 'primeng/inputotp';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Button } from 'primeng/button';
+import { FontAwesome } from '@/api/font-awesome';
+import { InputGroup } from 'primeng/inputgroup';
+import { InputGroupAddon } from 'primeng/inputgroupaddon';
 
 @Component({
     selector: 'app-transactional-code',
-    template: ` <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true" (onChange)="handleChange($event)" [disabled]="disabled" /> `,
-    imports: [FormsModule, InputOtp],
+    template: `
+        <p-inputgroup>
+            <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true"
+                        (onChange)="handleChange($event)" [disabled]="disabled" [mask]="isMask" />
+
+            <p-button class="ml-2" [icon]="isMask?FontAwesome.EYE_SOLID:FontAwesome.EYE_SLASH_SOLID" (onClick)="isMask = !isMask"
+                      [text]="true" [raised]="true" />
+        </p-inputgroup>
+    `,
+    imports: [FormsModule, InputOtp, Button, InputGroup, InputGroupAddon],
     standalone: true,
     providers: [
         {
@@ -26,6 +38,7 @@ import { catchError, map } from 'rxjs/operators';
 export class TransactionalCodeComponent implements ControlValueAccessor, AsyncValidator {
     value: string = '';
     disabled = false;
+    isMask = true;
 
     requester = input.required<string>();
     private readonly authHttpService = inject(AuthHttpService);
@@ -80,4 +93,5 @@ export class TransactionalCodeComponent implements ControlValueAccessor, AsyncVa
     private onChange: (val: string) => void = () => {};
 
     private onTouched: () => void = () => {};
+    protected readonly FontAwesome = FontAwesome;
 }
