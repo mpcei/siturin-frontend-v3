@@ -44,8 +44,7 @@ import { MY_ROUTES } from '@routes';
                 </button>
 
                 <a class="layout-topbar-logo" routerLink="/">
-                    <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="50px" />
-                    <small class="text-gray-500">{{ environment.APP_SHORT_NAME }}</small>
+                    <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="75px" />
                 </a>
                 <!--                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
             </div>
