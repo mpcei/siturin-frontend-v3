@@ -43,11 +43,14 @@ import { MY_ROUTES } from '@routes';
                     <i [class]="FontAwesome.BARS_SOLID"></i>
                 </button>
 
-                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />
+                <a class="layout-topbar-logo" routerLink="/">
+                    <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="75px" />
+                </a>
+                <!--                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
             </div>
 
             <div class="layout-topbar-center">
-                <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" />
+                <!--                <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" />-->
             </div>
 
             <div class="layout-topbar-actions">
@@ -58,7 +61,7 @@ import { MY_ROUTES } from '@routes';
                 <div class="layout-topbar-menu hidden lg:block">
                     <div class="layout-topbar-menu-content">
                         @if (authService.auth && authService.role) {
-                            <!--                            <p-button type="button" (onClick)="redirectProfile()" [text]="true" [raised]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
+                            <p-button type="button" (onClick)="redirectProfile()" [text]="true" [raised]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />
 
                             <p-button type="button" [icon]="authService.role.icon" [text]="true" severity="secondary" [label]="authService.role.name" pTooltip="Mi Rol" />
                         }
