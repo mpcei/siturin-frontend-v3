@@ -1,5 +1,13 @@
 import { Component, forwardRef, inject, input } from '@angular/core';
-import { AbstractControl, AsyncValidator, ControlValueAccessor, FormsModule, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import {
+    AbstractControl,
+    AsyncValidator,
+    ControlValueAccessor,
+    FormsModule,
+    NG_ASYNC_VALIDATORS,
+    NG_VALUE_ACCESSOR,
+    ValidationErrors
+} from '@angular/forms';
 import { InputOtp, InputOtpChangeEvent } from 'primeng/inputotp';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { Observable, of } from 'rxjs';
@@ -7,20 +15,17 @@ import { catchError, map } from 'rxjs/operators';
 import { Button } from 'primeng/button';
 import { FontAwesome } from '@/api/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
-import { InputGroupAddon } from 'primeng/inputgroupaddon';
 
 @Component({
     selector: 'app-transactional-code',
     template: `
         <p-inputgroup>
-            <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true"
-                        (onChange)="handleChange($event)" [disabled]="disabled" [mask]="isMask" />
+            <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true" (onChange)="handleChange($event)" [disabled]="disabled" [mask]="isMask" />
 
-            <p-button class="ml-2" [icon]="isMask?FontAwesome.EYE_SOLID:FontAwesome.EYE_SLASH_SOLID" (onClick)="isMask = !isMask"
-                      [text]="true" [raised]="true" />
+            <p-button class="ml-2" [icon]="isMask ? FontAwesome.EYE_SOLID : FontAwesome.EYE_SLASH_SOLID" (onClick)="isMask = !isMask" [text]="true" [raised]="true" />
         </p-inputgroup>
     `,
-    imports: [FormsModule, InputOtp, Button, InputGroup, InputGroupAddon],
+    imports: [FormsModule, InputOtp, Button, InputGroup],
     standalone: true,
     providers: [
         {

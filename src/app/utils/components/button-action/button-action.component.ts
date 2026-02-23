@@ -3,7 +3,6 @@ import { LabelButtonActionEnum } from '@utils/enums';
 import { MenuItem } from 'primeng/api';
 import { format } from 'date-fns';
 import { Drawer } from 'primeng/drawer';
-import { Button } from 'primeng/button';
 import { PanelMenu } from 'primeng/panelmenu';
 import { environment } from '@env/environment';
 import { FontAwesome } from '@/api/font-awesome';
@@ -13,7 +12,7 @@ import { Divider } from 'primeng/divider';
     selector: 'app-button-action',
     templateUrl: './button-action.component.html',
     styleUrls: ['./button-action.component.scss'],
-    imports: [Drawer, Button, PanelMenu, Divider],
+    imports: [Drawer, PanelMenu, Divider],
     standalone: true
 })
 export class ButtonActionComponent {
