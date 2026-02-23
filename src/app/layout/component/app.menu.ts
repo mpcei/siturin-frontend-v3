@@ -268,7 +268,8 @@ export class AppMenu implements OnInit {
             acceptButtonProps: {
                 label: 'Sí, Salir',
                 severity: 'danger',
-                outlined: true
+                outlined: true,
+                raised: true
             },
             accept: () => {
                 this.authHttpService.signOut().subscribe();

@@ -61,11 +61,22 @@ import { MY_ROUTES } from '@routes';
                 <div class="layout-topbar-menu hidden lg:block">
                     <div class="layout-topbar-menu-content">
                         @if (authService.auth && authService.role) {
-                            <p-button type="button" (onClick)="redirectProfile()" [text]="true" [raised]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />
+                            <p-button
+                                type="button"
+                                [label]="authService.auth.username"
+                                [icon]="FontAwesome.ID_CARD_CLIP_SOLID"
+                                pTooltip="Mi Perfil"
+                                tooltipPosition="bottom"
+                                [text]="true"
+                                [raised]="true"
+                                [outlined]="true"
+                                [rounded]="true"
+                                (onClick)="redirectProfile()"
+                            />
 
-                            <p-button type="button" [icon]="authService.role.icon" [text]="true" severity="secondary" [label]="authService.role.name" pTooltip="Mi Rol" />
+                            <p-button type="button" [label]="authService.role.name" [icon]="authService.role.icon" severity="secondary" pTooltip="Mi Rol" tooltipPosition="bottom" [text]="true" />
                         }
-                        <p-button (onClick)="signOut()" type="button" [raised]="true" [outlined]="true" [rounded]="true" severity="danger" pTooltip="Cerrar Sesión" [icon]="FontAwesome.POWER_OFF_SOLID" />
+                        <p-button type="button" [icon]="FontAwesome.POWER_OFF_SOLID" severity="danger" pTooltip="Cerrar Sesión" tooltipPosition="left" [raised]="true" [outlined]="true" [rounded]="true" (onClick)="signOut()" />
                     </div>
                 </div>
             </div>
@@ -103,7 +114,8 @@ export class AppTopbar {
             acceptButtonProps: {
                 label: 'Sí, Salir',
                 severity: 'danger',
-                outlined: true
+                outlined: true,
+                raised: true
             },
             accept: () => {
                 this.authHttpService.signOut().subscribe();

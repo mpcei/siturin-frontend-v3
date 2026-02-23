@@ -14,7 +14,6 @@
         <p-button label="Cancelar" [icon]="FontAwesome.CHEVRON_LEFT_SOLID" [text]="true" severity="secondary"
                   (onClick)="return()" />
         <p-button type="button" label="Guardar"
-                  [text]="true"
                   [raised]="true"
                   [icon]="FontAwesome.FLOPPY_DISK_SOLID" class="ml-2"
                   (onClick)="onSubmit()" />
@@ -198,11 +197,10 @@
         <!-- selected roles -->
         @if (rolesField.value && rolesField.value.length > 1) {
             @for (role of rolesField.value; track role.id) {
-                <div class="custom-form-field md:col-span-2 mt-7">
-                    <p-tag [value]="role.name"></p-tag>
+                <div class="custom-form-field md:col-span-1 mt-7">
+                    <p-tag [value]="role.name" severity="secondary"/>
                 </div>
             }
         }
-
     </form>
 </div>

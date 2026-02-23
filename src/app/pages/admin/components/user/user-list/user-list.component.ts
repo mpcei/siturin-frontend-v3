@@ -20,7 +20,6 @@ import { ButtonActionComponent } from '@utils/components/button-action/button-ac
     styleUrl: './user-list.component.scss'
 })
 export default class UserListComponent implements OnInit {
-    x = signal('');
     protected cols: ColInterface[] = [];
     protected items = signal<UserInterface[]>([]);
     protected selectedItem!: UserInterface;
@@ -60,7 +59,7 @@ export default class UserListComponent implements OnInit {
             { header: 'Nombres', field: 'name' },
             { header: 'Apellidos', field: 'lastname' },
             { header: 'Email', field: 'email' },
-            { header: 'Email', field: 'createdAt' },
+            { header: 'Fecha de Suspensión', field: 'suspendedAt', type: 'date' },
             { header: 'Roles', field: 'roles', type: 'arrayObject', objectName: 'name' }
         ];
     }
@@ -71,12 +70,6 @@ export default class UserListComponent implements OnInit {
                 ...editButtonAction,
                 command: () => {
                     this.edit(item.id);
-                }
-            },
-            {
-                ...deleteButtonAction,
-                command: () => {
-                    this.delete(item.id, index);
                 }
             }
         ];
@@ -100,44 +93,20 @@ export default class UserListComponent implements OnInit {
         }
     }
 
-    delete(id: string, index: number) {
-        this.confirmationService.confirm({
-            message: '¿Está seguro de eliminar?',
-            header: 'Eliminar',
-            icon: FontAwesome.TRASH_CAN_SOLID,
-            rejectButtonStyleClass: 'p-button-text',
-            rejectButtonProps: {
-                label: 'Cancelar',
-                severity: 'danger',
-                text: true
-            },
-            acceptButtonProps: {
-                label: 'Sí, Eliminar'
-            },
-            accept: () => {
-                this.userHttpService.delete(id).subscribe({
-                    next: (_) => {
-                        this.items().splice(index, 1);
-                    }
-                });
-            },
-            key: 'confirmdialog'
-        });
-    }
-
     suspend(id: string, index: number) {
         this.confirmationService.confirm({
             message: '¿Está seguro de suspender al usuario?',
             header: 'Suspender',
             icon: FontAwesome.BAN_SOLID,
-            rejectButtonStyleClass: 'p-button-text',
             rejectButtonProps: {
                 label: 'Cancelar',
-                severity: 'danger',
+                severity: 'secondary',
                 text: true
             },
             acceptButtonProps: {
-                label: 'Sí, Suspender'
+                label: 'Sí, Suspender',
+                outlined: true,
+                raised: true
             },
             accept: () => {
                 this.userHttpService.suspend(id).subscribe({

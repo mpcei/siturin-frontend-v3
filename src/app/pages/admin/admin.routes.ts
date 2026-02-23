@@ -5,8 +5,8 @@ import UserFormComponent from '@/pages/admin/components/user/user-form/user-form
 import UserProfileComponent from '@/pages/admin/components/user/user-profile/user-profile.component';
 
 export default [
-    { path: MY_ROUTES.adminPages.user.base, loadComponent: () => UserListComponent },
-    { path: MY_ROUTES.adminPages.user.form.base, loadComponent: () => UserFormComponent },
-    { path: MY_ROUTES.adminPages.user.form.base + '/:id', loadComponent: () => UserFormComponent },
-    { path: MY_ROUTES.adminPages.user.profile.base, loadComponent: () => UserProfileComponent }
+    { path: MY_ROUTES.adminPages.user.base, title: 'Listado de Usuarios', loadComponent: () => UserListComponent },
+    { path: MY_ROUTES.adminPages.user.form.base, title: 'Formulario Usuario', loadComponent: () => UserFormComponent },
+    { path: MY_ROUTES.adminPages.user.form.base + '/:id', title: 'Formulario Usuario', loadComponent: () => UserFormComponent },
+    { path: MY_ROUTES.adminPages.user.profile.base, title: 'Mi Perfil', loadComponent: () => UserProfileComponent }
 ] as Routes;
