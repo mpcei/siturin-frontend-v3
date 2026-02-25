@@ -56,6 +56,11 @@
                     <p>
                         <b>Estado Contribuyente:</b> {{ rucField.value?.estadoContribuyente }}
                     </p>
+                    @if (rucField.value?.tipoContribuyente === 'SCD') {
+                        <p>
+                            <b>Representante Legal:</b> {{ rucField.value?.nombreRepresentanteLegal }}
+                        </p>
+                    }
                 </p-message>
 
                 @if (rucField.value?.estadoContribuyente !== 'ACTIVO') {

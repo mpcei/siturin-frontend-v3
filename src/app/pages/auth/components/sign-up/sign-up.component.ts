@@ -227,16 +227,18 @@ export default class SignUpComponent implements OnInit {
     private findRUC(ruc: string) {
         this.authHttpService.findRUC(ruc).subscribe({
             next: (response) => {
-                this.rucField.setValue(response);
-                this.nameField.setValue(response.razonSocial);
+                if (response) {
+                    this.rucField.setValue(response);
+                    this.nameField.setValue(response.razonSocial);
 
-                if (response.estadoContribuyente === 'ACTIVO') {
-                    this.transactionalCodeControl.reset();
-                    this.transactionalCodeControl.disable();
-                    this.emailField.reset();
-                    this.emailField.enable();
-                    this.passwordField.reset();
-                    this.passwordField.disable();
+                    if (response.estadoContribuyente === 'ACTIVO') {
+                        this.transactionalCodeControl.reset();
+                        this.transactionalCodeControl.disable();
+                        this.emailField.reset();
+                        this.emailField.enable();
+                        this.passwordField.reset();
+                        this.passwordField.disable();
+                    }
                 }
             }
         });
