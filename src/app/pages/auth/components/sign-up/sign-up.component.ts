@@ -247,8 +247,8 @@ export default class SignUpComponent implements OnInit {
     private signUpExternal() {
         this.authHttpService.signUpExternal(this.form.value).subscribe({
             next: (_) => {
-                // this.form.reset();
-                // this.router.navigate([MY_ROUTES.authPages.signIn.absolute]);
+                this.form.reset();
+                this.router.navigate([MY_ROUTES.authPages.signIn.absolute]);
             }
         });
     }
