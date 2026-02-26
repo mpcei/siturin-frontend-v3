@@ -5,10 +5,8 @@
 /* 2. Librerías CSS externas (Pueden ir con @use o @import) */
 @use 'primeicons/primeicons.css';
 @use "@fortawesome/fontawesome-free/css/all.css";
-@use './primeng-zindex';
 
 /* 3. Tailwind (Debe ir después de los @use de Sass para no romper la regla) */
-
 @import './tailwind.css';
 
 @layer components {

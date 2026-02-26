@@ -16,26 +16,6 @@ import { MY_ROUTES } from '@routes';
     selector: 'app-topbar',
     standalone: true,
     imports: [RouterModule, CommonModule, StyleClassModule, Button, Tooltip],
-    styles: [
-        `
-            .layout-topbar {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .layout-topbar-center {
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .layout-topbar-center img {
-                height: 40px;
-            }
-        `
-    ],
     template: `
         <div class="layout-topbar">
             <div class="layout-topbar-logo-container">
@@ -47,10 +27,6 @@ import { MY_ROUTES } from '@routes';
                     <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="75px" />
                 </a>
                 <!--                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
-            </div>
-
-            <div class="layout-topbar-center">
-                <!--                <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" />-->
             </div>
 
             <div class="layout-topbar-actions">
