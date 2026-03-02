@@ -166,4 +166,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     private delete(id: string) {}
+
+    protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
 }

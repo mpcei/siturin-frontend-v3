@@ -70,8 +70,8 @@ export enum CatalogueProcessesTypeEnum {
 }
 
 export enum CatalogueEstablishmentsStateEnum {
-    open = 'open',
-    closed = 'closed',
+    open = 'abierto',
+    closed = 'cerrado',
 }
 
 export enum CatalogueProcessFoodDrinksEstablishmentTypeEnum {
