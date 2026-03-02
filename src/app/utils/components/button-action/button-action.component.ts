@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { Drawer } from 'primeng/drawer';
 import { PanelMenu } from 'primeng/panelmenu';
 import { environment } from '@env/environment';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Divider } from 'primeng/divider';
 
 @Component({

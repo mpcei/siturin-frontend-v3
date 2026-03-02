@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { UserInterface } from '@/pages/auth/interfaces';
 import { AuthService } from '@/pages/auth/auth.service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 
 @Component({

@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { environment } from '@env/environment';
 import { AuthService } from '@modules/auth/auth.service';
 import { MY_ROUTES } from '@routes';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Fluid } from 'primeng/fluid';
 import { Divider } from 'primeng/divider';
 import { NgClass } from '@angular/common';

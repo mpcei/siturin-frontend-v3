@@ -25,7 +25,7 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { MY_ROUTES } from '@routes';
 import { RoleInterface } from '@modules/auth/interfaces';
 import { CoreService } from '@utils/services';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { invalidEmailValidator } from '@utils/form-validators/custom-validator';

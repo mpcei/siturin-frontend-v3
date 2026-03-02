@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
-import { SpecialistDashboardComponent } from '@modules/core/roles/specialist/specialist-dashboard/specialist-dashboard.component';
-import { CadastreDacComponent } from '@/pages/core/roles/dac/components/cadastre-dac/cadastre-dac.component';
+import SpecialistDashboardComponent from '@modules/core/roles/specialist/specialist-dashboard/specialist-dashboard.component';
+import CadastreDacComponent from '@/pages/core/roles/dac/components/cadastre-dac/cadastre-dac.component';
 
 export default [
     {

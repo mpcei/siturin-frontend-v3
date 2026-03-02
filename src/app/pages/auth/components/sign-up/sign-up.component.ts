@@ -18,7 +18,7 @@ import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueTypeEnum, CoreEnum } from '@utils/enums';
 import { Tooltip } from 'primeng/tooltip';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { CatalogueHttpService, CoreService, CoreSessionStorageService } from '@utils/services';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { CatalogueInterface } from '@utils/interfaces';
@@ -127,7 +127,7 @@ export default class SignUpComponent implements OnInit {
     }
 
     protected openTerms() {
-        window.open(`${environment.PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
+        window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
     }
 
     protected addQuestion(question: any): void {

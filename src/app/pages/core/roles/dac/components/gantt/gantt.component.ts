@@ -21,7 +21,7 @@ interface GanttMonth {
     templateUrl: './gantt.component.html',
     styleUrl: './gantt.component.scss'
 })
-export class GanttComponent implements OnInit {
+export default class GanttComponent implements OnInit {
     tasks: any[] = [];
     months: GanttMonth[] = [];
     totalDays = 0;

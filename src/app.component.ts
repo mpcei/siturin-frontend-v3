@@ -12,6 +12,8 @@ import { CatalogueHttpService, CoreSessionStorageService, DpaHttpService } from 
 import { concatMap, map, switchMap } from 'rxjs/operators';
 import { CoreEnum } from '@utils/enums';
 import { from } from 'rxjs';
+import { ActivityHttpService } from '@/pages/core/shared/services';
+import { FaviconService } from '@utils/services/favicon.service';
 
 @Component({
     selector: 'app-root',
@@ -46,25 +48,56 @@ export class AppComponent implements OnInit {
     protected readonly catalogueHttpService = inject(CatalogueHttpService);
     protected readonly customMessageService = inject(CustomMessageService);
     protected loading: boolean = true;
+    private readonly faviconService = inject(FaviconService);
+    private readonly activityHttpService = inject(ActivityHttpService);
     private readonly dpaHttpService = inject(DpaHttpService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
 
     constructor() {}
 
-    async ngOnInit() {
+    ngOnInit() {
+        this.initApp();
+        this.setFavicon();
+    }
+
+    initApp() {
         this.catalogueHttpService
             .findCache()
             .pipe(
-                concatMap((response) =>
-                    from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, response)).pipe(
-                        map(() => response) // (Opcional) Pasa la respuesta por si la necesitas luego
-                    )
-                ),
+                // Guardar catálogos
+                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, response)).pipe(map(() => response))),
 
+                // Obtener DPA
                 switchMap(() => this.dpaHttpService.findCache()),
 
-                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, response)).pipe(map(() => response)))
+                // Guardar DPA
+                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, response)).pipe(map(() => response))),
+
+                // Obtener actividades
+                switchMap(() => this.activityHttpService.findCache()),
+
+                // Guardar activities, classifications y categories
+                concatMap((response) =>
+                    from(
+                        Promise.all([
+                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
+                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
+                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
+                        ])
+                    ).pipe(map(() => response))
+                )
             )
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.loading = true;
+                },
+                error: (err) => {
+                    console.error(err);
+                }
+            });
+    }
+
+    setFavicon(): void {
+        this.faviconService.setFavicon();
     }
 }

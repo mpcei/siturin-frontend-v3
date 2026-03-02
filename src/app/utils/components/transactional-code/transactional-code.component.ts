@@ -13,7 +13,7 @@ import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Button } from 'primeng/button';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
 
 @Component({

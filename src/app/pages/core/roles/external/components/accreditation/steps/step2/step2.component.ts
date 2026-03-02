@@ -15,7 +15,6 @@ import { ProcessHttpService } from '@/pages/core/shared/services';
     selector: 'app-step2',
     imports: [Button, BusinessInfoComponent, StaffComponent, ContactPersonComponent, Fluid, AddressComponent],
     templateUrl: './step2.component.html',
-    styleUrl: './step2.component.scss'
 })
 export class Step2Component implements OnInit {
     @ViewChildren(BusinessInfoComponent) private businessInfoComponent!: QueryList<BusinessInfoComponent>;

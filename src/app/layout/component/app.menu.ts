@@ -7,7 +7,7 @@ import { MY_ROUTES } from '@routes';
 import { AuthService } from '@modules/auth/auth.service';
 import { RoleEnum } from '@utils/enums';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { environment } from '@env/environment';
 import { Button } from 'primeng/button';
 import { Fluid } from 'primeng/fluid';
@@ -65,7 +65,7 @@ import { Fluid } from 'primeng/fluid';
                 <p-fluid>
                     <div>
                         <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID"
-                                  [label]="environment.VERSION" />
+                                  [label]="environment.APP_VERSION" />
                     </div>
 
                     <div>
@@ -128,10 +128,15 @@ export class AppMenu implements OnInit {
                 routerLink: [MY_ROUTES.corePages.external.establishment.absolute]
             },
             {
+                label: 'Proceso de Acreditación de Guianza Turística',
+                icon: FontAwesome.PERSON_HIKING_SOLID,
+                routerLink: [MY_ROUTES.corePages.external.guideEstablishment.absolute]
+            },
+            {
                 label: 'Manual de Usuario',
                 icon: FontAwesome.DOWNLOAD_SOLID,
                 command() {
-                    window.open(`${environment.PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
+                    window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
                 }
             }
         ];

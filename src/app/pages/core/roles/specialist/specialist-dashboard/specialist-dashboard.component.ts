@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './specialist-dashboard.component.html',
   styleUrl: './specialist-dashboard.component.scss'
 })
-export class SpecialistDashboardComponent {
+export default class SpecialistDashboardComponent {
 
 }

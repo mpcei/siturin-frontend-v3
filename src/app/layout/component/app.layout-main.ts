@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Message } from 'primeng/message';
 import { environment } from '@env/environment';
 import { MY_ROUTES } from '@routes';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { AppFooter } from '@layout/component/app.footer';
@@ -37,7 +37,7 @@ import { AppBreadcrumb } from '@layout/component/app.breadcrumb';
         </div>
     `
 })
-export class AppLayoutMain {
+export default class AppLayoutMain {
     layoutService = inject(LayoutService);
     protected readonly environment = environment;
     protected readonly MY_ROUTES = MY_ROUTES;

@@ -18,7 +18,7 @@ import { Password } from 'primeng/password';
 import { Divider } from 'primeng/divider';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { AuthService } from '@/pages/auth/auth.service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 

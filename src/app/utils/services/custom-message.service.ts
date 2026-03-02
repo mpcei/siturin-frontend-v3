@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 type Severity = 'success' | 'info' | 'warn' | 'danger' | 'help' | 'primary' | 'secondary' | 'contrast' | null | undefined;
 

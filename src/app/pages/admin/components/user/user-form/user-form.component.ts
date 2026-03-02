@@ -32,7 +32,7 @@ import { MultiSelect } from 'primeng/multiselect';
 import { AutoFocus } from 'primeng/autofocus';
 import { Tag } from 'primeng/tag';
 import { Toolbar } from 'primeng/toolbar';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Tooltip } from 'primeng/tooltip';
 import { InputGroup } from 'primeng/inputgroup';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpResponseInterface, PasswordChangedInterface, SignInInterface, UserInterface } from './interfaces';
 import { environment } from '@env/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, switchMap } from 'rxjs/operators';
+import { concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@modules/auth/auth.service';
 import { SignInResponseInterface } from '@modules/auth/interfaces';
 import { from, Observable, of } from 'rxjs';
@@ -11,6 +11,7 @@ import { CoreEnum } from '@utils/enums';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueInterface } from '@utils/interfaces';
+import { ActivityHttpService } from '@/pages/core/shared/services';
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,7 @@ export class AuthHttpService {
     private readonly apiUrl = `${environment.API_URL}/auth`;
     private readonly dpaHttpService = inject(DpaHttpService);
     private readonly router = inject(Router);
+    private readonly activityHttpService = inject(ActivityHttpService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
 
     refreshToken() {
@@ -40,23 +42,24 @@ export class AuthHttpService {
         const url = `${this.apiUrl}/sign-in`;
 
         return this.catalogueHttpService.findCache().pipe(
-            // 1. Obtiene catálogos y ESPERA a que se guarden en storage
-            switchMap((catalogues) =>
-                from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, catalogues)).pipe(
-                    map(() => catalogues) // Retornamos el valor para seguir la cadena (opcional, pero buena práctica)
-                )
-            ),
-            // 2. Una vez guardado lo anterior, ejecuta DPA
+            concatMap((catalogues) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, catalogues)).pipe(map(() => catalogues))),
+
             switchMap(() => this.dpaHttpService.findCache()),
+            concatMap((dpa) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, dpa)).pipe(map(() => dpa))),
 
-            // 3. Obtiene DPA y ESPERA a que se guarde en storage
-            switchMap((dpa) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, dpa)).pipe(map(() => dpa))),
+            switchMap(() => this.activityHttpService.findCache()),
+            concatMap((response) =>
+                from(
+                    Promise.all([
+                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
+                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
+                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
+                    ])
+                ).pipe(map(() => response))
+            ),
 
-            // 4. Finalmente, hace el login
             switchMap(() => this.httpClient.post<SignInResponseInterface>(url, payload)),
-
-            // 5. Procesa la respuesta del login
-            map((response) => {
+            tap((response) => {
                 const { data } = response;
                 this.authService.accessToken = data.accessToken;
                 this.authService.refreshToken = data.refreshToken;
@@ -66,26 +69,9 @@ export class AuthHttpService {
                 if (data.roles.length === 1) {
                     this.authService.role = data.roles[0];
                 }
-
-                return data;
-            })
+            }),
+            map((response) => response.data)
         );
-
-        // return this.httpClient.post<SignInResponseInterface>(url, payload).pipe(
-        //     map((response) => {
-        //         this.authService.accessToken = response.data.accessToken;
-        //
-        //         this.authService.auth = response.data.auth;
-        //
-        //         this.authService.roles = response.data.roles;
-        //
-        //         if (response.data.roles.length === 1) {
-        //             this.authService.role = response.data.roles[0];
-        //         }
-        //
-        //         return response.data;
-        //     })
-        // );
     }
 
     signOut() {

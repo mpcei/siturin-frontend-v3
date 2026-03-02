@@ -1,5 +1,5 @@
 import { PrimeIcons } from 'primeng/api';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 export const viewButtonAction = {
     id: 'view',

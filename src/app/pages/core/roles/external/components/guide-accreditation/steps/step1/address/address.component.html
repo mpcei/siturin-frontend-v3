@@ -1,0 +1,193 @@
+<form [formGroup]="form" class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <!-- Section Name -->
+        <div class="md:col-span-12 custom-form-field">
+            <div class="custom-section-title-form">Datos de Ubicación del Establecimiento:</div>
+        </div>
+
+        <!-- province -->
+        <div class="md:col-span-4 custom-form-field">
+            <label
+                appLabel
+                for="province"
+                label="Provincia"
+                [required]="provinceField">
+            </label>
+
+            <p-select
+                id="province"
+                [options]="provinces"
+                formControlName="province"
+                optionLabel="name"
+                [filter]="true"
+                placeholder="Seleccione una provincia" />
+
+            <small
+                appErrorMessage
+                [dirty]="provinceField.dirty"
+                [errors]="provinceField.errors"
+                [touched]="provinceField.touched"></small>
+        </div>
+
+        <!-- canton -->
+        @if (provinceField.value) {
+            <div class="md:col-span-4 custom-form-field">
+                <label
+                    appLabel
+                    for="canton"
+                    [required]="cantonField"
+                    label="Cantón">
+                </label>
+
+                <p-select
+                    id="canton"
+                    [options]="cantons"
+                    formControlName="canton"
+                    appendTo="body"
+                    optionLabel="name"
+                    [filter]="true"
+                    placeholder="Seleccione un cantón" />
+
+                <small
+                    appErrorMessage
+                    [dirty]="cantonField.dirty"
+                    [errors]="cantonField.errors"
+                    [touched]="cantonField.touched"></small>
+            </div>
+        }
+
+        <!-- parish -->
+        @if (cantonField.value) {
+            <div class="md:col-span-4 custom-form-field">
+                <label
+                    appLabel
+                    for="parish"
+                    label="Parroquia"
+                    [required]="parishField">
+                </label>
+
+                <p-select
+                    id="parish"
+                    [options]="parishes"
+                    formControlName="parish"
+                    appendTo="body"
+                    [filter]="true"
+                    filterBy="name"
+                    placeholder="Seleccione una parroquia">
+                    <ng-template #item let-item>
+                        {{ item.name }} ({{ item.zoneType }})
+                    </ng-template>
+
+                    <ng-template #selectedItem let-selectedItem>
+                        {{ selectedItem.name }} ({{ selectedItem.zoneType }})
+                    </ng-template>
+                </p-select>
+
+                <small
+                    appErrorMessage
+                    [dirty]="parishField.dirty"
+                    [errors]="parishField.errors"
+                    [touched]="parishField.touched"></small>
+            </div>
+        }
+    </div>
+</form>
+
+<form [formGroup]="form" class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <!-- mainStreet -->
+        <div class="md:col-span-4 custom-form-field">
+            <label
+                appLabel
+                for="mainStreet"
+                label="Calle Principal"
+                [required]="mainStreetField">
+            </label>
+
+            <input
+                pInputText
+                id="mainStreet"
+                formControlName="mainStreet" />
+
+            <small
+                appErrorMessage
+                [dirty]="mainStreetField.dirty"
+                [errors]="mainStreetField.errors"
+                [touched]="mainStreetField.touched"></small>
+        </div>
+
+        <!-- numberStreet -->
+        <div class="md:col-span-4 custom-form-field">
+            <label
+                appLabel
+                for="numberStreet"
+                label="Numeración"
+                [required]="numberStreetField">
+            </label>
+
+            <input
+                pInputText
+                id="numberStreet"
+                formControlName="numberStreet" />
+
+            <small
+                appErrorMessage
+                [dirty]="numberStreetField.dirty"
+                [errors]="numberStreetField.errors"
+                [touched]="numberStreetField.touched"></small>
+        </div>
+
+        <!-- secondaryStreet -->
+        <div class="md:col-span-4 custom-form-field">
+            <label
+                appLabel
+                for="secondaryStreet"
+                label="Calle Intersección"
+                [required]="secondaryStreetField">
+            </label>
+
+            <input
+                pInputText
+                id="secondaryStreet"
+                formControlName="secondaryStreet" />
+
+            <small
+                appErrorMessage
+                [dirty]="secondaryStreetField.dirty"
+                [errors]="secondaryStreetField.errors"
+                [touched]="secondaryStreetField.touched"></small>
+        </div>
+
+        <!-- referenceStreet -->
+        <div class="md:col-span-12 custom-form-field">
+            <label
+                appLabel
+                for="referenceStreet"
+                label="Referencia de Ubicación"
+                [required]="referenceStreetField">
+            </label>
+
+            <textarea
+                pTextarea
+                id="referenceStreet"
+                formControlName="referenceStreet">
+                </textarea>
+
+            <small
+                appErrorMessage
+                [dirty]="referenceStreetField.dirty"
+                [errors]="referenceStreetField.errors"
+                [touched]="referenceStreetField.touched"></small>
+        </div>
+
+        <!-- map -->
+        @if (parishField.value) {
+            <div class="md:col-span-12 custom-form-field">
+                <app-map
+                    (dataOut)="setlatLng($event)"
+                    [latitude]="parishField.value?.latitude"
+                    [longitude]="parishField.value?.longitude" />
+            </div>
+        }
+    </div>
+</form>

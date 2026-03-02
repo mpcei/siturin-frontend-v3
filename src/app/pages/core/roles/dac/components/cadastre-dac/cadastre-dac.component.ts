@@ -8,4 +8,4 @@ import { CadastreFormComponent } from '@/pages/core/shared/components/cadastre-f
     templateUrl: './cadastre-dac.component.html',
     styleUrl: './cadastre-dac.component.scss'
 })
-export class CadastreDacComponent {}
+export default class CadastreDacComponent {}

@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { BreadcrumbService } from '@layout/service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 @Component({
     selector: 'app-breadcrumb',

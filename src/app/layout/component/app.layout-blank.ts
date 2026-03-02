@@ -1,10 +1,6 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
-import { AppTopbar } from './app.topbar';
-import { AppSidebar } from './app.sidebar';
-import { LayoutService } from '../service/layout.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-blank',
@@ -12,6 +8,4 @@ import { LayoutService } from '../service/layout.service';
     imports: [CommonModule, RouterModule],
     template: `<router-outlet />`
 })
-export class AppLayoutBlank {
-
-}
+export default class AppLayoutBlank {}

@@ -16,7 +16,7 @@ import { Fluid } from 'primeng/fluid';
     templateUrl: './process.component.html',
     styleUrl: './process.component.scss'
 })
-export class ProcessComponent {
+export default class ProcessComponent {
     @ViewChildren(DownloadDocumentsComponent) private downloadDocumentsComponent!: QueryList<DownloadDocumentsComponent>;
 
     products = [

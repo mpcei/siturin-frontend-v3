@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MY_ROUTES } from '@routes';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { environment } from '@env/environment';
 import { NgClass } from '@angular/common';
 import { Fluid } from 'primeng/fluid';

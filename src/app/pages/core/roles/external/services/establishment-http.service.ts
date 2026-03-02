@@ -34,7 +34,7 @@ export class EstablishmentHttpService {
     updateSRIEstablishments(ruc: string) {
         const url = `${this._apiUrl}/sri/${ruc}`;
 
-        return this._httpClient.put<HttpResponseInterface>(url, null).pipe(
+        return this._httpClient.get<HttpResponseInterface>(url).pipe(
             map((response) => {
                 return response.data;
             })

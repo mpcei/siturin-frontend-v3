@@ -15,7 +15,7 @@ import { ColInterface } from '@utils/interfaces/col.interface';
 import { DatePipe } from '@angular/common';
 import { debounceTime } from 'rxjs';
 import { Tag } from 'primeng/tag';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 @Component({
     selector: 'app-list',

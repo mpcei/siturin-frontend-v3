@@ -1,0 +1,53 @@
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-3">
+            Establecimiento Seleccionado:
+        </div>
+
+        <div class="custom-form-field md:col-span-9">
+            <b>{{ coreSessionStorageService.establishment()?.tradeName }}</b>
+        </div>
+
+        <div class="custom-form-field md:col-span-3">
+            Trámite Seleccionado:
+        </div>
+
+        <div class="custom-form-field md:col-span-9">
+            <b>{{ coreSessionStorageService.process()?.type?.name }}</b>
+        </div>
+
+        <div class="custom-form-field md:col-span-3">
+            Número de Registro::
+        </div>
+
+        <div class="custom-form-field md:col-span-9">
+            @if (coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber) {
+                <b>{{ coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber }}</b>
+            } @else {
+                <b>Sin Registro</b>
+            }
+        </div>
+    </div>
+</div>
+
+
+<p-stepper [(value)]="activeStep" [linear]="true">
+    <p-step-list>
+        <p-step [value]="1">Datos generales del establecimiento</p-step>
+        <p-step [value]="2">Acreditación Turística</p-step>
+    </p-step-list>
+
+    <p-step-panels>
+        <p-step-panel [value]="1">
+            <ng-template #content let-activateCallback="activateCallback">
+                <app-step1 (step)="activeStep=$event" />
+            </ng-template>
+        </p-step-panel>
+
+        <p-step-panel [value]="2">
+            <ng-template #content let-activateCallback="activateCallback">
+                <app-step2 />
+            </ng-template>
+        </p-step-panel>
+    </p-step-panels>
+</p-stepper>

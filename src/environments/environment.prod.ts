@@ -1,9 +1,10 @@
 export const environment = {
     production: true,
-    URL: 'http://localhost:4200',
-    API_URL: 'http://localhost:3000/api/v1',
-    APP_NAME: '(Pruebas) Sistema de Agendamiento Inteligente',
-    APP_SHORT_NAME: '(Pruebas) Francis Nails',
-    PATH_ASSETS: 'development',
-    PATH_BACKEND_ASSETS: 'http://localhost:3000/assets',
+    APP_URL: 'https://siturin.produccion.gob.ec',
+    APP_SHORT_NAME: 'SITURIN',
+    APP_NAME: 'Sistema de Turismo Inteligente',
+    APP_PATH_ASSETS: 'production',
+    APP_VERSION: '3.0.0',
+    API_URL: 'https://api-siturin.produccion.gob.ec/api/v1',
+    API_ASSETS: 'https://api-siturin.produccion.gob.ec/assets',
 };

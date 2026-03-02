@@ -11,7 +11,6 @@ import { CoreSessionStorageService } from '@utils/services';
     selector: 'app-accreditation',
     imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step3Component],
     templateUrl: './accreditation.component.html',
-    styleUrl: './accreditation.component.scss'
 })
 export class AccreditationComponent {
     private readonly breadcrumbService = inject(BreadcrumbService);

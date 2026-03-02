@@ -24,7 +24,7 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { invalidEmailValidator } from '@utils/form-validators/custom-validator';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 @Component({
     selector: 'app-email-reset',

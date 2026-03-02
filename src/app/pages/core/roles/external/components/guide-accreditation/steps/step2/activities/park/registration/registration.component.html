@@ -1,0 +1,16 @@
+@if (loadedDataIn) {
+    <app-physical-space (dataOut)="saveForm($event)" [dataIn]="dataIn" />
+    <app-people-capacity (dataOut)="saveForm($event)" [dataIn]="dataIn" />
+    <app-regulation [modelId]="modelId" (dataOut)="saveForm($event)" />
+}
+
+<p-fluid class="custom-form-card">
+    <div class="custom-form-grid">
+        <div class="md:col-start-4 md:col-span-6 custom-form-field">
+            <p-button
+                label="Solicitar Trámite"
+                [icon]="PrimeIcons.SEND"
+                (onClick)="onSubmit()" />
+        </div>
+    </div>
+</p-fluid>

@@ -28,7 +28,7 @@ import { CatalogueInterface } from '@utils/interfaces';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Dialog } from 'primeng/dialog';
 import { Location } from '@angular/common';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 import { Tooltip } from 'primeng/tooltip';
 

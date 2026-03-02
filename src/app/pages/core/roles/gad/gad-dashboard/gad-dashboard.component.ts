@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-gad-dashboard',
-  imports: [],
-  templateUrl: './gad-dashboard.component.html',
-  styleUrl: './gad-dashboard.component.scss'
+    selector: 'app-gad-dashboard',
+    imports: [],
+    templateUrl: './gad-dashboard.component.html',
+    styleUrl: './gad-dashboard.component.scss'
 })
-export class GadDashboardComponent {
-
-}
+export default class GadDashboardComponent {}

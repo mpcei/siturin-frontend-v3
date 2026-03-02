@@ -12,7 +12,7 @@ import { InputText } from 'primeng/inputtext';
 import { CoreService } from '@utils/services';
 import { ColInterface } from '@utils/interfaces/col.interface';
 import { DatePipe } from '@angular/common';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 @Component({
     selector: 'app-list-basic',

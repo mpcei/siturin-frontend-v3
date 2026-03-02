@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { RegulationSimulatorFormComponent } from './components/regulation-simulator-form/regulation-simulator-form.component';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CtcComponent } from './components/ctc/ctc.component';
 import { Message } from 'primeng/message';
 import { AccommodationContinentComponent } from './components/accommodation-continent/accommodation.component';

@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '@layout/service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
@@ -24,7 +24,7 @@ import { MY_ROUTES } from '@routes';
                 </button>
 
                 <a class="layout-topbar-logo" routerLink="/">
-                    <img [src]="environment.PATH_ASSETS + '/logo.png'" alt="Logo" width="75px" />
+                    <img [src]="environment.APP_PATH_ASSETS + '/logo.png'" alt="Logo" width="75px" />
                 </a>
                 <!--                <p-button type="button" (onClick)="redirectProfile()" [text]="true" [outlined]="true" [rounded]="true" [label]="authService.auth.username" pTooltip="Mi Perfil" [icon]="FontAwesome.ID_CARD_CLIP_SOLID" />-->
             </div>

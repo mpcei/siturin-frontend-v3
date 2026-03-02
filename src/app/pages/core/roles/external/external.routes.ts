@@ -1,14 +1,35 @@
 import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
-import { ExternalDashboardComponent } from '@modules/core/roles/external/components/external-dashboard/external-dashboard.component';
-import { AccreditationComponent } from '@modules/core/roles/external/components/accreditation/accreditation.component';
-import { EstablishmentListComponent } from '@modules/core/roles/external/components/establishment-list/establishment-list.component';
-import RegulationSimulatorComponent
-    from '@/pages/core/shared/components/regulation-simulator/regulation-simulator.component';
 
 export default [
-    { path: MY_ROUTES.corePages.external.dashboard.base, component: ExternalDashboardComponent },
-    { path: MY_ROUTES.corePages.external.simulator.base, component: RegulationSimulatorComponent },
-    { path: MY_ROUTES.corePages.external.establishment.base, component: EstablishmentListComponent },
-    { path: MY_ROUTES.corePages.external.accreditation.base, component: AccreditationComponent }
+    {
+        path: MY_ROUTES.corePages.external.dashboard.base,
+        title: 'Dashboard',
+        loadComponent: () => import('@modules/core/roles/external/components/external-dashboard/external-dashboard.component')
+    },
+    {
+        path: MY_ROUTES.corePages.external.simulator.base,
+        title: 'Simulador',
+        loadComponent: () => import('@/pages/core/shared/components/regulation-simulator/regulation-simulator.component')
+    },
+    {
+        path: MY_ROUTES.corePages.external.establishment.base,
+        title: 'Estalblecimientos',
+        loadComponent: () => import('@modules/core/roles/external/components/establishment-list/establishment-list.component')
+    },
+    {
+        path: MY_ROUTES.corePages.external.accreditation.base,
+        title: 'Acreditación',
+        loadComponent: () => import('@/pages/core/shared/components/regulation-simulator/regulation-simulator.component')
+    },
+    {
+        path: MY_ROUTES.corePages.external.guideEstablishment.base,
+        title: 'Estalblecimientos Guías',
+        loadComponent: () => import('@modules/core/roles/external/components/guide-establishment-list/guide-establishment-list.component')
+    },
+    {
+        path: MY_ROUTES.corePages.external.guideAccreditation.base,
+        title: 'Acreditación Guianza',
+        loadComponent: () => import('@modules/core/roles/external/components/guide-accreditation/guide-accreditation.component')
+    }
 ] as Routes;

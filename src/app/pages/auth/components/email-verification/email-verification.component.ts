@@ -11,7 +11,7 @@ import { InputText } from 'primeng/inputtext';
 // Custom / Local
 import { environment } from '@env/environment';
 import { MY_ROUTES } from '@routes';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { CustomMessageService } from '@utils/services';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';

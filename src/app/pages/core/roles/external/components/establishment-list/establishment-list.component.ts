@@ -9,7 +9,7 @@ import { EstablishmentHttpService, RucHttpService } from '@modules/core/roles/ex
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Paginator, PaginatorState } from 'primeng/paginator';
 import { PaginationInterface } from '@utils/interfaces';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
@@ -20,14 +20,15 @@ import { Tag } from 'primeng/tag';
 import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } from '@/pages/core/shared/enums';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
+import { Divider } from 'primeng/divider';
 
 @Component({
     selector: 'app-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, Divider],
     templateUrl: './establishment-list.component.html',
     styleUrl: './establishment-list.component.scss'
 })
-export class EstablishmentListComponent implements OnInit {
+export default class EstablishmentListComponent implements OnInit {
     protected readonly PrimeIcons = PrimeIcons;
     protected readonly environment = environment;
     protected establishments = signal<EstablishmentInterface[]>([]);

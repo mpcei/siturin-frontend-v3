@@ -19,7 +19,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { Dialog } from 'primeng/dialog';
 import EmailResetComponent from '@/pages/auth/components/email-reset/email-reset.component';
 import { CatalogueInterface } from '@utils/interfaces';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
 
 @Component({

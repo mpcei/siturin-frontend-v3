@@ -26,12 +26,12 @@ import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { CatalogueInterface } from '@utils/interfaces';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Location } from '@angular/common';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { matchPasswords, passwordPolicesValidator } from '@utils/form-validators/custom-validator';
 import { Divider } from 'primeng/divider';
 
 @Component({
-    selector: 'app-security-question',
+    selector: 'app-password-changed',
     templateUrl: './password-changed.component.html',
     standalone: true,
     imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, ReactiveFormsModule, DatePickerModule, LabelDirective, ErrorMessageDirective, Divider]

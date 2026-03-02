@@ -113,9 +113,17 @@ export const MY_ROUTES = {
                 base: 'accreditations',
                 absolute: '/main/core/external/accreditations'
             },
+            guideAccreditation: {
+                base: 'guide-accreditations',
+                absolute: '/main/core/external/guide-accreditations'
+            },
             establishment: {
                 base: 'establishments',
                 absolute: '/main/core/external/establishments'
+            },
+            guideEstablishment: {
+                base: 'guide-establishments',
+                absolute: '/main/core/external/guide-establishments'
             }
         },
         technician: {
@@ -153,6 +161,22 @@ export const MY_ROUTES = {
         simulator: {
             base: 'simulators',
             absolute: '/public/simulators'
+        },
+        icons: {
+            base: 'icons',
+            absolute: '/public/icons'
+        },
+        terms: {
+            base: 'terms',
+            absolute: '/public/terms'
+        },
+        passwordChanged: {
+            base: 'password-changed',
+            absolute: '/public/password-changed'
+        },
+        securityQuestions: {
+            base: 'security-questions',
+            absolute: '/public/security-questions'
         }
     },
     authPages: {

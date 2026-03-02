@@ -13,7 +13,7 @@ import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Tooltip } from 'primeng/tooltip';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Textarea } from 'primeng/textarea';
 
 @Component({

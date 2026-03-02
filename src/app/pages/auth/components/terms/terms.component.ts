@@ -9,7 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MY_ROUTES } from '@routes';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ConfirmationService } from 'primeng/api';
 import { environment } from '@env/environment';

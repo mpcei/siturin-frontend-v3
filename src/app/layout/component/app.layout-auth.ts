@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Message } from 'primeng/message';
 import { environment } from '@env/environment';
 import { MY_ROUTES } from '@routes';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 
@@ -62,14 +62,14 @@ import { Tooltip } from 'primeng/tooltip';
                 <div class="lg:col-span-3 p-6 lg:p-10 flex flex-col justify-center">
                     <!-- Logo / Header -->
                     <div class="flex justify-center">
-                        <img [src]="environment.PATH_ASSETS + '/auth/images/logo.png'" alt="" class="mx-auto" />
+                        <img [src]="environment.APP_PATH_ASSETS + '/auth/images/logo.png'" alt="" class="mx-auto" />
                     </div>
 
                     <!-- Contenido dinámico -->
                     <!-- Aquí renderizas varios componentes -->
                     <ng-content select="[left-content]">
                         <router-outlet />
-                        <p-button severity="secondary" [label]="environment.VERSION" pTooltip="Versión del sistema" [icon]="FontAwesome.CODE_BRANCH_SOLID" [text]="true" />
+                        <p-button severity="secondary" [label]="environment.APP_VERSION" pTooltip="Versión del sistema" [icon]="FontAwesome.CODE_BRANCH_SOLID" [text]="true" />
                     </ng-content>
                 </div>
 
@@ -156,7 +156,7 @@ import { Tooltip } from 'primeng/tooltip';
         </div>
     `
 })
-export class AppLayoutAuth {
+export default class AppLayoutAuth {
     layoutService = inject(LayoutService);
     containerClass = computed(() => {
         const config = this.layoutService.layoutConfig();
@@ -192,13 +192,13 @@ export class AppLayoutAuth {
     downloadPDF(file: string) {
         switch (file) {
             case 'steps':
-                window.open(`${environment.PATH_ASSETS}/auth/files/steps.pdf`, '_blank');
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/steps.pdf`, '_blank');
                 break;
             case 'manual':
-                window.open(`${environment.PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
                 break;
             case 'legal':
-                window.open(`${environment.PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
                 break;
         }
     }

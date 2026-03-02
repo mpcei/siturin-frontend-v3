@@ -25,8 +25,9 @@ import { Tooltip } from 'primeng/tooltip';
 import { environment } from '@env/environment';
 import { uploadFileValidator } from '@utils/helpers/file.helper';
 import { DateLongPipe } from '@utils/pipes/date-long.pipe';
-import { FontAwesome } from '@/api/font-awesome';
+import { FontAwesome } from '@modules/public/icons/font-awesome';
 import PasswordChangeComponent from '@/pages/admin/components/user/password-change/password-change.component';
+import { MY_ROUTES } from '@routes';
 
 @Component({
     selector: 'app-user-profile',
@@ -156,7 +157,7 @@ export default class UserProfileComponent implements OnInit {
                     birthdate: dateOnlyToLocalDate(response.birthdate)
                 });
 
-                if (response.avatar) this.avatarUrl = `${environment.PATH_BACKEND_ASSETS}/${response.avatar}`;
+                if (response.avatar) this.avatarUrl = `${environment.API_ASSETS}/${response.avatar}`;
 
                 this.roles = response.roles;
             }
@@ -183,7 +184,7 @@ export default class UserProfileComponent implements OnInit {
         if (file)
             this.userHttpService.updateAvatar(this.authService.auth.id, file).subscribe({
                 next: (response: any) => {
-                    this.avatarUrl = `${environment.PATH_BACKEND_ASSETS}/${response.avatar}`;
+                    this.avatarUrl = `${environment.API_ASSETS}/${response.avatar}`;
                 }
             });
     }
@@ -211,6 +212,6 @@ export default class UserProfileComponent implements OnInit {
     }
 
     goToSecurityQuestions() {
-        this.router.navigate(['/security-questions']);
+        this.router.navigate([MY_ROUTES.publicPages.securityQuestions.absolute]);
     }
 }
