@@ -111,9 +111,9 @@ export class CustomMessageService {
                 detail = error.message.join('\n');
             }
 
-            if (error.error === 'REMAINING_TOKEN') {
-                this._modalLife = error.data.remainingSeconds * 1000;
-            }
+            // if (error.error === 'REMAINING_TOKEN') {
+            //     this._modalLife = error.data.remainingSeconds * 1000;
+            // }
 
             this._messageService.add({
                 severity: 'error',

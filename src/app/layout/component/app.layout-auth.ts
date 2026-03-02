@@ -74,7 +74,7 @@ import { Tooltip } from 'primeng/tooltip';
                 </div>
 
                 <!-- COLUMNA DERECHA -->
-                <div class="lg:col-span-4 bg-surface-50 p-6 lg:p-10 flex flex-col justify-center">
+                <div class="lg:col-span-4 bg-surface-50 p-6 lg:p-10 justify-center">
                     <!-- Bloque informativo superior -->
                     <div class="mb-6">
                         <ng-content select="[right-header]">
