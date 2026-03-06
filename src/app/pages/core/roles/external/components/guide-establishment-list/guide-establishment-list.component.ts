@@ -79,7 +79,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     buildButtonActions(item: EstablishmentInterface) {
         this.buttonActions = [];
         const hasNoTradeName = !item.tradeName;
-        const isClosed = item.state?.code === CatalogueEstablishmentsStateEnum.closed;
+        const isClosed = item.state?.code !== CatalogueEstablishmentsStateEnum.open;
         const hasCadastre = item.process?.cadastre;
         const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivated;
 
