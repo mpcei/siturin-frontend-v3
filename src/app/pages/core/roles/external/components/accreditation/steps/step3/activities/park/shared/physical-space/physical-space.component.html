@@ -16,11 +16,12 @@
                           optionLabel="name">
                 </p-select>
 
-                <p-message
+                <small
                     appErrorMessage
                     [errors]="localTypeField.errors"
                     [touched]="localTypeField.touched"
-                    [dirty]="localTypeField.dirty" />
+                    [dirty]="localTypeField.dirty" >
+                </small>
             </div>
 
             <!-- isProtectedArea -->
@@ -28,8 +29,8 @@
                 <label
                     appLabel
                     for="isProtectedArea"
-                    label="¿Realiza actividades autorizadas por la Autoridad Ambiental Nacional en el Subsistema Estatal del Sistema de Áreas Naturales Protegidas, de conformidad con lo establecido en los artículos 8 y 9 de la Ley de Turismo dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas?"
-                    [required]="isProtectedAreaField">
+                    [required]="isProtectedAreaField"
+                    label="¿Realiza actividades autorizadas por la Autoridad Ambiental Nacional en el Subsistema Estatal del Sistema de Áreas Naturales Protegidas, de conformidad con lo establecido en los artículos 8 y 9 de la Ley de Turismo dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas?">
                 </label>
 
                 <p-toggleswitch id="isProtectedArea" formControlName="isProtectedArea" />
