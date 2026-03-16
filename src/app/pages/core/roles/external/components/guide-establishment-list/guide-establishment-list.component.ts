@@ -162,7 +162,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
             type: { id: '52457d82-3f64-4959-9d1a-1b0e4b75603d', code: 'a', name: 'Registro' }
         });
 
-        this.router.navigate([MY_ROUTES.corePages.external.accreditation.absolute]);
+        this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }
 
     private delete(id: string) {}

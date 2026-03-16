@@ -11,7 +11,7 @@ import { Step2Component } from '@modules/core/roles/external/components/guide-ac
     imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step2Component],
     templateUrl: './guide-accreditation.component.html'
 })
-export class GuideAccreditationComponent {
+export default class GuideAccreditationComponent {
     private readonly breadcrumbService = inject(BreadcrumbService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected activeStep: number = 1;

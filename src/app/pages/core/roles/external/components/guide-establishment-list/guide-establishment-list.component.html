@@ -27,6 +27,7 @@
                         <th>Opciones</th>
                         <th style="width:3rem">Nro.</th>
                         <th>Nombre Comercial</th>
+                        <th>Estado Establecimiento</th>
                         <th>Ubicación</th>
                         <th>Actividad</th>
                         <th>Número de Registro</th>
@@ -61,19 +62,18 @@
                             @if (item.tradeName) {
                                 <p>
                                     {{ item.tradeName }}
-                                    <p-divider />
                                 </p>
                             }
 
-                            @if (item?.state?.code !== CatalogueEstablishmentsStateEnum.open) {
+                            @if (!item?.tradeName) {
+                                <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
+                            }
+                        </td>
+                        <td>
+                            @if (item?.state?.code === CatalogueEstablishmentsStateEnum.open) {
                                 <p-tag severity="info" value="ABIERTO SRI" />
                             } @else {
                                 <p-tag severity="danger" value="CERRADO SRI" />
-                            }
-
-                            @if (!item?.tradeName) {
-                                <p-divider />
-                                <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
                             }
                         </td>
                         <td>
