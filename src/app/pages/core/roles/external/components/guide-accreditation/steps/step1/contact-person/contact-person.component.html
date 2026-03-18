@@ -1,128 +1,115 @@
-<p-fluid class="custom-form-card">
-    <form [formGroup]="form" class="custom-form-grid">
-            <!-- Section Name -->
-            <div class="md:col-span-12 custom-form-field">
-                <div class="custom-section-title-form">Persona de Contacto en el Establecimiento:</div>
-            </div>
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- hasDisability -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="hasDisability"
+                [required]="hasDisabilityField"
+                label="Discapacidad">
+            </label>
 
-            <!-- identification -->
-            <div class="md:col-span-4 custom-form-field">
-                <label
-                    appLabel
-                    for="identification"
-                    label="Cédula de identidad"
-                    [required]="identificationField">
-                </label>
+            <app-toggle-switch id="hasDisability" formControlName="hasDisability" />
 
-                <p-inputgroup>
-                    <p-inputgroup-addon>
-                        <i [class]="PrimeIcons.SEARCH"></i>
-                    </p-inputgroup-addon>
+            <small
+                appErrorMessage
+                [dirty]="hasDisabilityField.dirty"
+                [errors]="hasDisabilityField.errors"
+                [touched]="hasDisabilityField.touched"></small>
+        </div>
 
-                    <input
-                        pInputText
-                        id="identification"
-                        formControlName="identification"
-                        maxlength="10"
-                        placeholder="Ingrese número de cédula" />
-                </p-inputgroup>
+        <!-- bloodType -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="bloodType"
+                [required]="bloodTypeField"
+                label="Tipo de sangre">
+            </label>
 
-                <p-message
-                    appErrorMessage
-                    [dirty]="identificationField.dirty"
-                    [errors]="identificationField.errors"
-                    [touched]="identificationField.touched" />
-            </div>
+            <p-select
+                id="bloodType"
+                dataKey="id"
+                [options]="bloodTypes"
+                formControlName="bloodType"
+                optionLabel="name"
+                appendTo="body" />
 
-            <!-- name -->
-            <div class="md:col-span-8 custom-form-field">
-                <label
-                    appLabel
-                    for="name"
-                    label="Datos del registro civil"
-                    [required]="nameField">
-                </label>
+            <small
+                appErrorMessage
+                [dirty]="bloodTypeField.dirty"
+                [errors]="bloodTypeField.errors"
+                [touched]="bloodTypeField.touched"></small>
+        </div>
 
-                <input
-                    pInputText
-                    id="name"
-                    formControlName="name"
-                    placeholder="Datos obtenidos del registro civil" />
+        <!-- email -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="email"
+                label="Correo electrónico secundario"
+                [required]="emailField">
+            </label>
 
-                <p-message
-                    appErrorMessage
-                    [dirty]="nameField.dirty"
-                    [errors]="nameField.errors"
-                    [touched]="nameField.touched" />
-            </div>
+            <input
+                pInputText
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="ejemplo@dominio.com" />
 
-            <!-- phone -->
-            <div class="md:col-span-4 custom-form-field">
-                <label
-                    appLabel
-                    for="phone"
-                    label="Número de teléfono principal"
-                    [required]="phoneField">
-                </label>
+            <small
+                appErrorMessage
+                [dirty]="emailField.dirty"
+                [errors]="emailField.errors"
+                [touched]="emailField.touched"></small>
+        </div>
 
-                <input
-                    pInputText
-                    id="phone"
-                    formControlName="phone"
-                    placeholder="Ej: 0961789810"
-                    maxlength="10" />
+        <!-- phone -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="phone"
+                [required]="phoneField"
+                label="Número de teléfono principal">
+            </label>
 
-                <p-message
-                    appErrorMessage
-                    [dirty]="phoneField.dirty"
-                    [errors]="phoneField.errors"
-                    [touched]="phoneField.touched" />
-            </div>
+            <input
+                pInputText
+                id="phone"
+                formControlName="phone"
+                placeholder="Ej: 0961789810"
+                maxlength="10" />
 
-            <!-- secondaryPhone -->
-            <div class="md:col-span-4 custom-form-field">
-                <label
-                    appLabel
-                    for="secondaryPhone"
-                    label="Número de teléfono secundario"
-                    [required]="secondaryPhoneField">
-                </label>
+            <small
+                appErrorMessage
+                [dirty]="phoneField.dirty"
+                [errors]="phoneField.errors"
+                [touched]="phoneField.touched"></small>
+        </div>
 
-                <input
-                    pInputText
-                    id="secondaryPhone"
-                    formControlName="secondaryPhone"
-                    placeholder="Ej: 0961789810"
-                    maxlength="10" />
+        <!-- secondaryPhone -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="secondaryPhone"
+                [required]="secondaryPhoneField"
+                label="Número de teléfono secundario">
+            </label>
 
-                <p-message
-                    appErrorMessage
-                    [dirty]="secondaryPhoneField.dirty"
-                    [errors]="secondaryPhoneField.errors"
-                    [touched]="secondaryPhoneField.touched" />
-            </div>
+            <input
+                pInputText
+                id="secondaryPhone"
+                formControlName="secondaryPhone"
+                placeholder="Ej: 0961789810"
+                maxlength="10" />
 
-            <!-- email -->
-            <div class="md:col-span-4 custom-form-field">
-                <label
-                    appLabel
-                    for="email"
-                    label="Correo electrónico"
-                    [required]="emailField">
-                </label>
-
-                <input
-                    pInputText
-                    type="email"
-                    id="email"
-                    formControlName="email"
-                    placeholder="ejemplo@dominio.com" />
-
-                <p-message
-                    appErrorMessage
-                    [dirty]="emailField.dirty"
-                    [errors]="emailField.errors"
-                    [touched]="emailField.touched" />
-            </div>
+            <small
+                appErrorMessage
+                [dirty]="secondaryPhoneField.dirty"
+                [errors]="secondaryPhoneField.errors"
+                [touched]="secondaryPhoneField.touched"></small>
+        </div>
     </form>
-</p-fluid>
+</div>
+

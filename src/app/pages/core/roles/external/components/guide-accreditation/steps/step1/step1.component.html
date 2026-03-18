@@ -1,12 +1,11 @@
-<app-business-info-component (dataOut)="saveForm($event,ChildStep2FormEnum.establishment)" [dataIn]="step2Data()" />
+<!--<app-business-info-component (dataOut)="saveForm($event,ChildStep2FormEnum.establishment)" [dataIn]="step2Data()" />-->
 
-<app-staff (dataOut)="saveForm($event,ChildStep2FormEnum.establishment)" [dataIn]="step2Data()" />
+<app-contact-person (dataOut)="saveForm($event,'guideInformation')" [dataIn]="step2Data()" />
 
-<app-address (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentAddress)" [dataIn]="step2Data()" />
+<app-address (dataOut)="saveForm($event,'establishmentAddress')" [dataIn]="step2Data()" />
 
-<app-contact-person (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentContactPerson)" [dataIn]="step2Data()" />
 
-<p-fluid class="custom-form-card">
+<div class="custom-form-card">
     <div class="custom-form-grid">
         <div class="md:col-span-3 custom-form-field">
             <p-button
@@ -24,4 +23,4 @@
                 (onClick)="onSubmit()" />
         </div>
     </div>
-</p-fluid>
+</div>

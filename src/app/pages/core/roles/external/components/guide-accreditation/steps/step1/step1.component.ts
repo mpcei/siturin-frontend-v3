@@ -1,25 +1,23 @@
-import { Component, EventEmitter, inject, OnInit, output, Output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
 import { BusinessInfoComponent } from './business-info-component/business-info-component.component';
-import { StaffComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/staff/staff.component';
-import { ContactPersonComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/contact-person/contact-person.component';
-import { Fluid } from 'primeng/fluid';
-import { AddressComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/address/address.component';
+import { ContactPersonComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
+import { AddressComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
 import { ChildStep2FormEnum, CoreEnum } from '@utils/enums';
 import { ProcessHttpService } from '@/pages/core/shared/services';
+import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
+import { FormStateService } from '@modules/core/roles/external/services';
 
 @Component({
     selector: 'app-step1',
-    imports: [Button, BusinessInfoComponent, StaffComponent, ContactPersonComponent, Fluid, AddressComponent],
+    imports: [Button, ContactPersonComponent, AddressComponent],
     templateUrl: './step1.component.html'
 })
 export class Step1Component implements OnInit {
     @ViewChildren(BusinessInfoComponent) private businessInfoComponent!: QueryList<BusinessInfoComponent>;
     @ViewChildren(ContactPersonComponent) private contactPersonComponent!: QueryList<ContactPersonComponent>;
-    @ViewChildren(StaffComponent) private staffComponent!: QueryList<StaffComponent>;
     @ViewChildren(AddressComponent) private addressComponent!: QueryList<AddressComponent>;
 
     public step: OutputEmitterRef<number> = output<number>();
@@ -31,21 +29,17 @@ export class Step1Component implements OnInit {
 
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    protected readonly formStateService = inject(FormStateService);
     private readonly processHttpService = inject(ProcessHttpService);
 
-    constructor() {
-        this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, {
-            processId: '6f32b01d-c0be-47fe-b896-90b38b91c498',
-            establishmentId: '9aa53a63-3546-4e08-ae7f-e8d14c77a01a'
-        });
-    }
+    constructor() {}
 
     async ngOnInit() {
         await this.loadData();
     }
 
     async loadData() {
-        this.step2Data.set(await this.coreSessionStorageService.getEncryptedValue(CoreEnum.step2));
+        this.step2Data.set(this.formStateService.formState());
     }
 
     protected saveForm(data: any, objectName?: string) {
@@ -67,17 +61,12 @@ export class Step1Component implements OnInit {
         });
     }
 
-    onSubmit() {
-        if (this.checkFormErrors()) this.saveProcess();
+    async onSubmit() {
+        if (this.checkFormErrors()) await this.saveProcess();
     }
 
     checkFormErrors() {
-        const errors: string[] = [
-            ...this.businessInfoComponent.toArray().flatMap((c) => c.getFormErrors()),
-            ...this.contactPersonComponent.toArray().flatMap((c) => c.getFormErrors()),
-            ...this.staffComponent.toArray().flatMap((c) => c.getFormErrors()),
-            ...this.addressComponent.toArray().flatMap((c) => c.getFormErrors())
-        ];
+        const errors: string[] = collectFormErrors([this.businessInfoComponent, this.contactPersonComponent, this.addressComponent]);
 
         if (errors.length > 0) {
             this.customMessageService.showFormErrors(errors);
@@ -88,21 +77,13 @@ export class Step1Component implements OnInit {
     }
 
     async saveProcess() {
-        await this.coreSessionStorageService.setEncryptedValue(CoreEnum.step2, { ...this.mainData() });
-
-        const { processId, establishmentId } = await this.coreSessionStorageService.getEncryptedValue(CoreEnum.process);
-
+        console.log('saveProcess', this.mainData()['establishmentAddress']);
+        this.formStateService.updateSection('establishmentAddress', { ...this.mainData()['establishmentAddress'] });
         const payload = {
-            ...this.mainData(),
-            establishmentId,
-            processId
+            ...this.mainData()
         };
 
-        this.processHttpService.createStep2(payload).subscribe({
-            next: () => {
-                this.step.emit(3);
-            }
-        });
+        console.log(payload);
     }
 
     back() {

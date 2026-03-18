@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, input, OnInit, output, Output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
@@ -15,12 +15,11 @@ import { MapComponent } from '@utils/components/map/map.component';
 @Component({
     selector: 'app-address',
     imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, Textarea, MapComponent],
-    templateUrl: './address.component.html',
-    styleUrl: './address.component.scss'
+    templateUrl: './address.component.html'
 })
 export class AddressComponent implements OnInit {
     dataIn = input<any>(null);
-    @Output() dataOut = new EventEmitter<FormGroup>();
+    dataOut: OutputEmitterRef<any> = output<any>();
 
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -47,8 +46,8 @@ export class AddressComponent implements OnInit {
     }
 
     async ngOnInit() {
-        this.loadData();
         await this.loadDpa();
+        this.loadData();
     }
 
     buildForm() {

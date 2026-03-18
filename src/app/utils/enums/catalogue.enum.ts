@@ -22,6 +22,7 @@ export enum CatalogueTypeEnum {
     adventure_tourism_modalities_water = 'adventure_tourism_modalities_water',
     process_agency_permanent_physical_space = 'process_agency_permanent_physical_space',
     processes_local_type = 'processes_local_type',
+    processes_type = 'processes_type',
     internal_inactivation_causes = 'internal_inactivation_causes',
     inactivation_cause_type = 'inactivation_cause_type',
     complementary_services_model = 'complementary_services_model',

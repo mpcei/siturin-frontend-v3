@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, input, OnInit, output, Output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
@@ -9,12 +9,11 @@ import { Message } from 'primeng/message';
 @Component({
     selector: 'app-business-info-component',
     imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Message],
-    templateUrl: './business-info-component.component.html',
-    styleUrl: './business-info-component.component.scss'
+    templateUrl: './business-info-component.component.html'
 })
 export class BusinessInfoComponent implements OnInit {
     dataIn = input<any>(null);
-    @Output() dataOut = new EventEmitter<FormGroup>();
+    dataOut: OutputEmitterRef<any> = output<any>();
 
     private readonly formBuilder = inject(FormBuilder);
 
@@ -38,7 +37,7 @@ export class BusinessInfoComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            tradeName: [null],
+            ruc: [null],
             webPage: [null]
         });
 

@@ -146,7 +146,7 @@ export class ErrorMessageDirective implements OnChanges {
     }
 
     private fieldInvalidEmailDomain(errors: ValidationErrors): string {
-        return `Correo electrónico no puede pertencer a ${errors['invalidEmailDomain']['disallowedDomain']}.`;
+        return `El correo electrónico no puede pertencer al Ministerio de Producción, Comercio Exterior e Inversiones.`;
     }
 
     private get fieldPhoneNotAvailable(): string {

@@ -1,12 +1,12 @@
 <form [formGroup]="form" class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
         <!-- Section Name -->
-        <div class="md:col-span-12 custom-form-field">
-            <div class="custom-section-title-form">Datos de Ubicación del Establecimiento:</div>
+        <div class="custom-form-title md:col-span-12">
+            Datos de Ubicación del Establecimiento:
         </div>
 
         <!-- province -->
-        <div class="md:col-span-4 custom-form-field">
+        <div class="custom-form-field md:col-span-4">
             <label
                 appLabel
                 for="province"
@@ -31,7 +31,7 @@
 
         <!-- canton -->
         @if (provinceField.value) {
-            <div class="md:col-span-4 custom-form-field">
+            <div class="custom-form-field md:col-span-4">
                 <label
                     appLabel
                     for="canton"
@@ -58,7 +58,7 @@
 
         <!-- parish -->
         @if (cantonField.value) {
-            <div class="md:col-span-4 custom-form-field">
+            <div class="custom-form-field md:col-span-4">
                 <label
                     appLabel
                     for="parish"
@@ -90,11 +90,7 @@
                     [touched]="parishField.touched"></small>
             </div>
         }
-    </div>
-</form>
 
-<form [formGroup]="form" class="custom-form-card">
-    <div class="custom-form-grid md:grid-cols-12">
         <!-- mainStreet -->
         <div class="md:col-span-4 custom-form-field">
             <label

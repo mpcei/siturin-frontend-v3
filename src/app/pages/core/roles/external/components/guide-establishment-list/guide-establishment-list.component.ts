@@ -1,11 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Message } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
-import { EstablishmentInterface } from '@modules/core/interfaces';
-import { EstablishmentHttpService, RucHttpService } from '@modules/core/roles/external/services';
+import { EstablishmentInterface } from '@modules/core/shared/interfaces';
+import { EstablishmentHttpService, FormStateService, RucHttpService } from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
@@ -20,11 +20,13 @@ import { Tag } from 'primeng/tag';
 import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } from '@/pages/core/shared/enums';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
-import { Divider } from 'primeng/divider';
+import { CatalogueService } from '@utils/services/catalogue.service';
+import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, Divider],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe],
     templateUrl: './guide-establishment-list.component.html'
 })
 export default class GuideEstablishmentListComponent implements OnInit {
@@ -42,8 +44,11 @@ export default class GuideEstablishmentListComponent implements OnInit {
     private readonly establishmentHttpService = inject(EstablishmentHttpService);
     private readonly rucHttpService = inject(RucHttpService);
     private readonly authService = inject(AuthService);
+    private readonly catalogueService = inject(CatalogueService);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    private readonly formStateService = inject(FormStateService);
+    private readonly destroyRef = inject(DestroyRef);
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Establecimientos' }]);
@@ -56,13 +61,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     findEstablishmentsByRuc(page = 1, search = null) {
         this.rucHttpService.findEstablishmentsByRuc(page, search, this.authService.auth.identification!).subscribe({
             next: (response) => {
-                const data = response.data.map((item: any) => {
-                    return {
-                        ...item,
-                        number: item.number.toString().padStart(3, '0')
-                    };
-                });
-                this.establishments.set(data);
+                this.establishments.set(response.data);
                 this.pagination = response.pagination!;
             }
         });
@@ -121,7 +120,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     findEstablishment(id: string) {
         this.establishmentHttpService.findOne(id).subscribe({
             next: (response) => {
-                console.log(response);
+                console.log('response', response);
                 this.selectedItem = response;
                 this.buildButtonActions(response);
 
@@ -153,16 +152,23 @@ export default class GuideEstablishmentListComponent implements OnInit {
         if (paginatorState?.page || paginatorState.page === 0) this.findEstablishmentsByRuc(paginatorState.page + 1);
     }
 
-    private createProcess(establishment: EstablishmentInterface) {
+    private async createProcess(establishment: EstablishmentInterface) {
         this.coreSessionStorageService.setEstablishment({
             ...establishment
         });
 
-        this.coreSessionStorageService.setProcess({
-            type: { id: '52457d82-3f64-4959-9d1a-1b0e4b75603d', code: 'a', name: 'Registro' }
-        });
+        this.formStateService.updateSection('establishment', establishment);
 
-        this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
+        const type = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.registration, CatalogueTypeEnum.processes_type);
+
+        if (!type) {
+            this.customMessageService.showModalError({ summary: 'El tipo de trámite no existe', detail: 'Intente de nuevo' });
+            return;
+        }
+
+        this.formStateService.updateSection('process', { type });
+
+        await this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }
 
     private delete(id: string) {}

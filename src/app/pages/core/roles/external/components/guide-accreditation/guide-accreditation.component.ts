@@ -5,19 +5,25 @@ import { BreadcrumbService } from '@layout/service';
 import { CoreSessionStorageService } from '@utils/services';
 import { Step1Component } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/step1.component';
 import { Step2Component } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/step2.component';
+import { FormStateService } from '@modules/core/roles/external/services';
+import { Message } from 'primeng/message';
+import { EstablishmentNumberPipe } from '@/pages/core/shared/pipes';
+import {
+    ContactPersonComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
 
 @Component({
     selector: 'app-accreditation',
-    imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step2Component],
+    imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step2Component, Message, EstablishmentNumberPipe, ContactPersonComponent],
     templateUrl: './guide-accreditation.component.html'
 })
 export default class GuideAccreditationComponent {
     private readonly breadcrumbService = inject(BreadcrumbService);
-    protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    protected readonly formStateService = inject(FormStateService);
     protected activeStep: number = 1;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Proceso de Acreditación de Actividades Turísticas' }]);
-        console.log(this.coreSessionStorageService.establishment());
+        console.log(this.formStateService.establishment());
     }
 }

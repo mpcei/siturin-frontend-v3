@@ -1,31 +1,40 @@
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-field md:col-span-3">
-            Establecimiento Seleccionado:
+        <div class="custom-form-field md:col-span-6">
+            RUC: <b>{{ formStateService.establishment()?.number }}</b>
         </div>
 
-        <div class="custom-form-field md:col-span-9">
-            <b>{{ coreSessionStorageService.establishment()?.tradeName }}</b>
+        <div class="custom-form-field md:col-span-6">
+            Estado del RUC: <b>{{ formStateService.establishment()?.number }}</b>
         </div>
 
-        <div class="custom-form-field md:col-span-3">
-            Trámite Seleccionado:
+        <div class="custom-form-field md:col-span-6">
+            Establecimiento Seleccionado: <b>{{ formStateService.establishment()?.number | establishmentNumber }}</b>
         </div>
 
-        <div class="custom-form-field md:col-span-9">
-            <b>{{ coreSessionStorageService.process()?.type?.name }}</b>
-        </div>
-
-        <div class="custom-form-field md:col-span-3">
-            Número de Registro::
-        </div>
-
-        <div class="custom-form-field md:col-span-9">
-            @if (coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber) {
-                <b>{{ coreSessionStorageService.establishment()?.process?.cadastre?.registerNumber }}</b>
+        <div class="custom-form-field md:col-span-6">
+            Número de Registro:
+            @if (formStateService.establishment()?.process?.cadastre?.registerNumber) {
+                <b>{{ formStateService.establishment()?.process?.cadastre?.registerNumber }}</b>
             } @else {
-                <b>Sin Registro</b>
+                <b>No cuenta con Registro de Turismo</b>
             }
+        </div>
+
+        <div class="custom-form-field md:col-span-6">
+            Trámite Seleccionado: <b>{{ formStateService.process()?.type?.name }}</b>
+        </div>
+
+        <div class="custom-form-field md:col-span-12">
+            <p-message>
+                <b>Declaración de veracidad de la información:</b>
+
+                <div>
+                    Declaro, bajo juramento, que los datos consignados en este sistema reflejan la realidad y autorizo
+                    al Ministerio de Producción, Comercio Exterior e Inversiones a verificar la información en cualquier
+                    momento, al tiempo que me sujeto, a las sanciones previstas en la ley en caso de falsedad o perjurio
+                </div>
+            </p-message>
         </div>
     </div>
 </div>
