@@ -11,6 +11,8 @@ import { EstablishmentNumberPipe } from '@/pages/core/shared/pipes';
 import {
     ContactPersonComponent
 } from '@/pages/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
+import FontAwesomeIcons from '@/pages/public/icons/font-awesome-icons';
+import { FontAwesome } from '@/pages/public/icons/font-awesome';
 
 @Component({
     selector: 'app-accreditation',
@@ -23,7 +25,10 @@ export default class GuideAccreditationComponent {
     protected activeStep: number = 1;
 
     constructor() {
-        this.breadcrumbService.setItems([{ label: 'Proceso de Acreditación de Actividades Turísticas' }]);
+        this.breadcrumbService.setItems([{ label: 'PROCESO DE ACREDITACIÓN DE GUIANZA TURÍSTICA' }]);
         console.log(this.formStateService.establishment());
     }
+
+    protected readonly FontAwesomeIcons = FontAwesomeIcons;
+    protected readonly FontAwesome = FontAwesome;
 }

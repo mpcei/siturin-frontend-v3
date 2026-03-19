@@ -1,5 +1,92 @@
 <div class="custom-form-card">
     <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-title md:col-span-12">
+            DATOS DEL GUÍA DE TURISMO:
+        </div>
+        <!-- legalName -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="legalName"
+                [required]="legalNameField"
+                label="Razón social">">
+            </label>
+
+            <input
+                pInputText
+                id="legalName"
+                formControlName="legalName" />
+
+            <small
+                appErrorMessage
+                [dirty]="legalNameField.dirty"
+                [errors]="legalNameField.errors"
+                [touched]="legalNameField.touched"></small>
+        </div>
+
+        <!-- nationality -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="nationality"
+                [required]="nationalityField"
+                label="Nacionalidad">">
+            </label>
+
+            <input
+                pInputText
+                id="nationality"
+                formControlName="nationality" />
+
+            <small
+                appErrorMessage
+                [dirty]="nationalityField.dirty"
+                [errors]="nationalityField.errors"
+                [touched]="nationalityField.touched"></small>
+        </div>
+
+        <!-- sex -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="sex"
+                [required]="sexField"
+                label="Sexo">">
+            </label>
+
+            <input
+                pInputText
+                id="sex"
+                formControlName="sex" />
+
+            <small
+                appErrorMessage
+                [dirty]="sexField.dirty"
+                [errors]="sexField.errors"
+                [touched]="sexField.touched"></small>
+        </div>
+
+        <!-- birthdate -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="birthdate"
+                [required]="birthdateField"
+                label="Fecha de nacimiento">">
+            </label>
+
+            <input
+                pInputText
+                id="birthdate"
+                formControlName="birthdate" />
+
+            <small
+                appErrorMessage
+                [dirty]="birthdateField.dirty"
+                [errors]="birthdateField.errors"
+                [touched]="birthdateField.touched"></small>
+        </div>
+
         <!-- hasDisability -->
         <div class="custom-form-field md:col-span-12">
             <label

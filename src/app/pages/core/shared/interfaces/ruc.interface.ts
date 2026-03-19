@@ -5,5 +5,7 @@ export interface RucInterface {
     id?: string;
     tradeName?: CatalogueInterface;
     legalName?: string;
+    number?: string;
     establishments?: EstablishmentInterface[];
+    state?: CatalogueInterface;
 }

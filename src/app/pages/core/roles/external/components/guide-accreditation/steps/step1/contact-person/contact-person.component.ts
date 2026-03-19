@@ -58,7 +58,11 @@ export class ContactPersonComponent implements OnInit {
             bloodType: [null, [Validators.required]],
             phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
-            email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]]
+            email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
+            legalName: [{ value: null, disabled: true }],
+            nationality: [{ value: null, disabled: true }],
+            sex: [{ value: null, disabled: true }],
+            birthdate: [{ value: null, disabled: true }]
         });
 
         this.watchFormChanges();
@@ -97,6 +101,22 @@ export class ContactPersonComponent implements OnInit {
         if (this.dataIn()) {
             this.form.patchValue(this.dataIn()?.guideInformation);
         }
+    }
+
+    get legalNameField(): AbstractControl {
+        return this.form.controls['legalName'];
+    }
+
+    get nationalityField(): AbstractControl {
+        return this.form.controls['nationality'];
+    }
+
+    get sexField(): AbstractControl {
+        return this.form.controls['sex'];
+    }
+
+    get birthdateField(): AbstractControl {
+        return this.form.controls['birthdate'];
     }
 
     get hasDisabilityField(): AbstractControl {

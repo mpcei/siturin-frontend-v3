@@ -1,28 +1,31 @@
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-field md:col-span-6">
-            RUC: <b>{{ formStateService.establishment()?.number }}</b>
+        <div class="custom-form-field md:col-span-4">
+            <div>RUC: <b>{{ formStateService.establishment()?.ruc?.number }}</b></div>
+        </div>
+
+        <div class="custom-form-field md:col-span-4">
+            <div>Estado del RUC: <b>{{ formStateService.establishment()?.ruc?.state?.name }}</b></div>
+        </div>
+
+        <div class="custom-form-field md:col-span-4">
+            <div>Establecimiento Seleccionado:
+                <b>{{ formStateService.establishment()?.number | establishmentNumber }}</b></div>
+        </div>
+
+        <div class="custom-form-field md:col-span-4">
+            <div>Trámite Seleccionado: <b>{{ formStateService.process()?.type?.name }}</b></div>
         </div>
 
         <div class="custom-form-field md:col-span-6">
-            Estado del RUC: <b>{{ formStateService.establishment()?.number }}</b>
-        </div>
-
-        <div class="custom-form-field md:col-span-6">
-            Establecimiento Seleccionado: <b>{{ formStateService.establishment()?.number | establishmentNumber }}</b>
-        </div>
-
-        <div class="custom-form-field md:col-span-6">
-            Número de Registro:
-            @if (formStateService.establishment()?.process?.cadastre?.registerNumber) {
-                <b>{{ formStateService.establishment()?.process?.cadastre?.registerNumber }}</b>
-            } @else {
-                <b>No cuenta con Registro de Turismo</b>
-            }
-        </div>
-
-        <div class="custom-form-field md:col-span-6">
-            Trámite Seleccionado: <b>{{ formStateService.process()?.type?.name }}</b>
+            <div>
+                Número de Registro:
+                @if (formStateService.establishment()?.process?.cadastre?.registerNumber) {
+                    <b>{{ formStateService.establishment()?.process?.cadastre?.registerNumber }}</b>
+                } @else {
+                    <b>No cuenta con Registro de Turismo</b>
+                }
+            </div>
         </div>
 
         <div class="custom-form-field md:col-span-12">
@@ -42,13 +45,18 @@
 
 <p-stepper [(value)]="activeStep" [linear]="true">
     <p-step-list>
-        <p-step [value]="1">Datos generales del establecimiento</p-step>
+        <p-step [value]="1">DATOS GENERALES DEL GUÍA DE TURISMO</p-step>
         <p-step [value]="2">Acreditación Turística</p-step>
     </p-step-list>
 
     <p-step-panels>
         <p-step-panel [value]="1">
             <ng-template #content let-activateCallback="activateCallback">
+                <p-message severity="warn">
+                    <b>NOTA IMPORTANTE:</b>
+                    Los requisitos marcados con <i [class]="FontAwesome.ASTERISK_SOLID"></i> son
+                    obligatorios
+                </p-message>
                 <app-step1 (step)="activeStep=$event" />
             </ng-template>
         </p-step-panel>

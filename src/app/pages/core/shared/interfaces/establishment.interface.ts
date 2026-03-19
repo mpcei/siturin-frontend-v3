@@ -1,9 +1,10 @@
 import { CatalogueInterface } from '@utils/interfaces';
 import { ProcessInterface } from '@/pages/core/interfaces';
+import { RucInterface } from '@/pages/core/shared/interfaces/ruc.interface';
 
 export interface EstablishmentInterface {
     id?: string;
-    ruc?: string;
+    ruc?: RucInterface;
     state?: CatalogueInterface;
     number?: string;
     tradeName?: string;

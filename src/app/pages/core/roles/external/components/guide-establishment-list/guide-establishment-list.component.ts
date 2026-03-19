@@ -153,10 +153,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     private async createProcess(establishment: EstablishmentInterface) {
-        this.coreSessionStorageService.setEstablishment({
-            ...establishment
-        });
-
         this.formStateService.updateSection('establishment', establishment);
 
         const type = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.registration, CatalogueTypeEnum.processes_type);

@@ -6,19 +6,21 @@
 
 
 <div class="custom-form-card">
-    <div class="custom-form-grid">
+    <div class="custom-form-grid md:grid-cols-12">
         <div class="md:col-span-3 custom-form-field">
             <p-button
                 label="Atrás"
                 severity="warn"
+                styleClass="w-full"
                 [icon]="PrimeIcons.ARROW_LEFT"
                 (onClick)="back()" />
         </div>
 
-        <div class="md:col-start-10 md:col-span-3 custom-form-field">
+        <div class="custom-form-field md:col-start-10 md:col-span-3">
             <p-button
                 label="Siguiente"
                 iconPos="right"
+                styleClass="w-full"
                 [icon]="PrimeIcons.ARROW_RIGHT"
                 (onClick)="onSubmit()" />
         </div>
