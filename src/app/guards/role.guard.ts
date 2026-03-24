@@ -2,13 +2,14 @@ import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '@/pages/auth/auth.service';
 import { RoleInterface } from '@/pages/auth/interfaces';
+import { MY_ROUTES } from '@routes';
 
 export const roleGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
     const authService = inject(AuthService);
 
     if (!authService.auth) {
-        return router.createUrlTree(['/common/403']);
+        return router.createUrlTree([MY_ROUTES.errorPages.forbidden]);
     }
 
     const authRole: RoleInterface = authService.role;
@@ -19,5 +20,5 @@ export const roleGuard: CanActivateFn = (route, state) => {
         }
     }
 
-    return router.createUrlTree(['/common/403']);
+    return router.createUrlTree([MY_ROUTES.errorPages.forbidden]);
 };

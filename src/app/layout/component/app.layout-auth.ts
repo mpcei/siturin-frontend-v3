@@ -80,6 +80,8 @@ import { Tooltip } from 'primeng/tooltip';
                         <ng-content select="[right-header]">
                             <div class="font-semibold text-xl text-center">{{ environment.APP_NAME }}</div>
 
+                            <p-divider/>
+
                             <p-message severity="info">
                                 <p>
                                     <i [class]="FontAwesome.TRIANGLE_EXCLAMATION_SOLID"></i>
