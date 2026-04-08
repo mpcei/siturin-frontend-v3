@@ -3,23 +3,27 @@ import { EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface
 
 export interface AppFormState {
     establishment: EstablishmentInterface | null;
+    establishmentTemp: EstablishmentInterface | null;
     process: ProcessInterface | null;
+    processTemp: ProcessInterface | null;
     ruc: RucInterface | null;
     civilRegistry: ProcessInterface | null;
-    guideInformation: any | null;
+    user: any | null;
     establishmentAddress: EstablishmentAddressInterface | null;
 }
 
 const STORAGE_KEY = 'formState';
-const INITIAL_STATE: AppFormState = { ruc: null, civilRegistry: null, establishment: null, process: null, guideInformation: null, establishmentAddress: null };
+const INITIAL_STATE: AppFormState = { ruc: null, civilRegistry: null, establishment: null, establishmentTemp: null, process: null, processTemp: null, user: null, establishmentAddress: null };
 
 @Injectable({ providedIn: 'root' })
 export class FormStateService {
     readonly formState = signal<AppFormState>(this.loadFromStorage());
 
     readonly establishment = computed(() => this.formState().establishment);
+    readonly establishmentTemp = computed(() => this.formState().establishmentTemp);
     readonly process = computed(() => this.formState().process);
-    readonly guideInformation = computed(() => this.formState().guideInformation);
+    readonly processTemp = computed(() => this.formState().processTemp);
+    readonly user = computed(() => this.formState().user);
     readonly establishmentAddress = computed(() => this.formState().establishmentAddress);
 
     constructor() {
@@ -28,10 +32,13 @@ export class FormStateService {
         });
     }
 
-    updateSection<K extends keyof AppFormState>(section: K, data: AppFormState[K]) {
+    updateSection<K extends keyof AppFormState>(section: K, data: Partial<AppFormState[K]>) {
         this.formState.update((state) => ({
             ...state,
-            [section]: data
+            [section]: {
+                ...state[section], // 👈 lo anterior
+                ...data // 👈 lo nuevo
+            }
         }));
     }
 

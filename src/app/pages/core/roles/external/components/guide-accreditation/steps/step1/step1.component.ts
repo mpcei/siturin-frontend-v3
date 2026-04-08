@@ -5,7 +5,6 @@ import { CoreSessionStorageService, CustomMessageService } from '@utils/services
 import { BusinessInfoComponent } from './business-info-component/business-info-component.component';
 import { ContactPersonComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
 import { AddressComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
-import { ChildStep2FormEnum, CoreEnum } from '@utils/enums';
 import { ProcessHttpService } from '@/pages/core/shared/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { FormStateService } from '@modules/core/roles/external/services';
@@ -35,6 +34,7 @@ export class Step1Component implements OnInit {
     constructor() {}
 
     async ngOnInit() {
+        console.log(this.formStateService.establishment());
         await this.loadData();
     }
 
@@ -42,7 +42,8 @@ export class Step1Component implements OnInit {
         this.step2Data.set(this.formStateService.formState());
     }
 
-    protected saveForm(data: any, objectName?: string) {
+    saveForm(data: any, objectName?: string) {
+        console.log(objectName, data);
         this.mainData.update((currentData) => {
             let newData = { ...currentData };
 
@@ -77,10 +78,12 @@ export class Step1Component implements OnInit {
     }
 
     async saveProcess() {
-        console.log('saveProcess', this.mainData()['establishmentAddress']);
-        this.formStateService.updateSection('establishmentAddress', { ...this.mainData()['establishmentAddress'] });
+        this.formStateService.updateSection('establishment', { ...this.mainData()['establishment'] });
+        this.formStateService.updateSection('user', { ...this.mainData()['user'] });
+
         const payload = {
-            ...this.mainData()
+            establishment: this.formStateService.establishment(),
+            user: this.formStateService.user()
         };
 
         console.log(payload);
@@ -89,7 +92,4 @@ export class Step1Component implements OnInit {
     back() {
         this.step.emit(1);
     }
-
-    protected readonly CoreEnum = CoreEnum;
-    protected readonly ChildStep2FormEnum = ChildStep2FormEnum;
 }

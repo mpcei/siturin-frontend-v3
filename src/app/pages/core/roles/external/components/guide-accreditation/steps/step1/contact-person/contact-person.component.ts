@@ -55,13 +55,13 @@ export class ContactPersonComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             hasDisability: [false],
-            bloodType: [null, [Validators.required]],
+            bloodTypeId: [null, [Validators.required]],
             phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
             email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
             legalName: [{ value: null, disabled: true }],
             nationality: [{ value: null, disabled: true }],
-            sex: [{ value: null, disabled: true }],
+            sexId: [{ value: null, disabled: true }],
             birthdate: [{ value: null, disabled: true }]
         });
 
@@ -70,7 +70,7 @@ export class ContactPersonComponent implements OnInit {
 
     watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
-            if (this.form.valid) this.dataOut.emit(this.form.getRawValue());
+            if (this.form.valid) this.dataOut.emit(this.form.value);
         });
     }
 
@@ -83,7 +83,7 @@ export class ContactPersonComponent implements OnInit {
 
         if (this.hasDisabilityField.invalid) errors.push('Discapacidad');
 
-        if (this.bloodTypeField.invalid) errors.push('Tipo de Sangre');
+        if (this.bloodTypeIdField.invalid) errors.push('Tipo de Sangre');
 
         if (this.phoneField.invalid) errors.push('Número de Teléfono Principal');
 
@@ -111,8 +111,8 @@ export class ContactPersonComponent implements OnInit {
         return this.form.controls['nationality'];
     }
 
-    get sexField(): AbstractControl {
-        return this.form.controls['sex'];
+    get sexIdField(): AbstractControl {
+        return this.form.controls['sexId'];
     }
 
     get birthdateField(): AbstractControl {
@@ -123,8 +123,8 @@ export class ContactPersonComponent implements OnInit {
         return this.form.controls['hasDisability'];
     }
 
-    get bloodTypeField(): AbstractControl {
-        return this.form.controls['bloodType'];
+    get bloodTypeIdField(): AbstractControl {
+        return this.form.controls['bloodTypeId'];
     }
 
     get phoneField(): AbstractControl {

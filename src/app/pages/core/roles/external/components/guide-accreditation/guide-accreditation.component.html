@@ -1,16 +1,16 @@
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
         <div class="custom-form-field md:col-span-4">
-            <div>RUC: <b>{{ formStateService.establishment()?.ruc?.number }}</b></div>
+            <div>RUC: <b>{{ formStateService.establishmentTemp()?.ruc?.number }}</b></div>
         </div>
 
         <div class="custom-form-field md:col-span-4">
-            <div>Estado del RUC: <b>{{ formStateService.establishment()?.ruc?.state?.name }}</b></div>
+            <div>Estado del RUC: <b>{{ formStateService.establishmentTemp()?.ruc?.state?.name }}</b></div>
         </div>
 
         <div class="custom-form-field md:col-span-4">
             <div>Establecimiento Seleccionado:
-                <b>{{ formStateService.establishment()?.number | establishmentNumber }}</b></div>
+                <b>{{ formStateService.establishmentTemp()?.number | establishmentNumber }}</b></div>
         </div>
 
         <div class="custom-form-field md:col-span-4">
@@ -20,8 +20,8 @@
         <div class="custom-form-field md:col-span-6">
             <div>
                 Número de Registro:
-                @if (formStateService.establishment()?.process?.cadastre?.registerNumber) {
-                    <b>{{ formStateService.establishment()?.process?.cadastre?.registerNumber }}</b>
+                @if (formStateService.establishmentTemp()?.process?.cadastre?.registerNumber) {
+                    <b>{{ formStateService.establishmentTemp()?.process?.cadastre?.registerNumber }}</b>
                 } @else {
                     <b>No cuenta con Registro de Turismo</b>
                 }

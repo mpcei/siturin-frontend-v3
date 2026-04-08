@@ -52,9 +52,9 @@ export class AddressComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            province: [null, [Validators.required]],
-            canton: [null, [Validators.required]],
-            parish: [null, [Validators.required]],
+            provinceId: [null, [Validators.required]],
+            cantonId: [null, [Validators.required]],
+            parishId: [null, [Validators.required]],
             mainStreet: [null, [Validators.required]],
             numberStreet: [null, [Validators.required]],
             secondaryStreet: [null, [Validators.required]],
@@ -71,26 +71,26 @@ export class AddressComponent implements OnInit {
             if (this.form.valid) this.dataOut.emit(this.form.value);
         });
 
-        this.provinceField.valueChanges.subscribe(async (value) => {
+        this.provinceIdField.valueChanges.subscribe(async (value) => {
             if (value) {
-                this.cantonField.reset();
-                this.parishField.reset();
+                this.cantonIdField.reset();
+                this.parishIdField.reset();
                 this.latitudeField.reset();
                 this.longitudeField.reset();
-                this.cantons = await this.dpaService.findDpaByParentId(value.id);
+                this.cantons = await this.dpaService.findDpaByParentId(value);
             }
         });
 
-        this.cantonField.valueChanges.subscribe(async (value) => {
+        this.cantonIdField.valueChanges.subscribe(async (value) => {
             if (value) {
-                this.parishField.reset();
+                this.parishIdField.reset();
                 this.latitudeField.reset();
                 this.longitudeField.reset();
-                this.parishes = await this.dpaService.findDpaByParentId(value.id);
+                this.parishes = await this.dpaService.findDpaByParentId(value);
             }
         });
 
-        this.parishField.valueChanges.subscribe((value) => {
+        this.parishIdField.valueChanges.subscribe((value) => {
             if (value) {
                 this.latitudeField.patchValue(value.latitude);
                 this.longitudeField.patchValue(value.longitude);
@@ -106,11 +106,11 @@ export class AddressComponent implements OnInit {
     getFormErrors(): string[] {
         const errors: string[] = [];
 
-        if (this.provinceField.invalid) errors.push('Provincia');
+        if (this.provinceIdField.invalid) errors.push('Provincia');
 
-        if (this.cantonField.invalid) errors.push('Cantón');
+        if (this.cantonIdField.invalid) errors.push('Cantón');
 
-        if (this.parishField.invalid) errors.push('Parroquia');
+        if (this.parishIdField.invalid) errors.push('Parroquia');
 
         if (this.mainStreetField.invalid) errors.push('Calle Principal');
 
@@ -142,16 +142,16 @@ export class AddressComponent implements OnInit {
         this.provinces = await this.dpaService.findProvinces();
     }
 
-    get provinceField(): AbstractControl {
-        return this.form.controls['province'];
+    get provinceIdField(): AbstractControl {
+        return this.form.controls['provinceId'];
     }
 
-    get cantonField(): AbstractControl {
-        return this.form.controls['canton'];
+    get cantonIdField(): AbstractControl {
+        return this.form.controls['cantonId'];
     }
 
-    get parishField(): AbstractControl {
-        return this.form.controls['parish'];
+    get parishIdField(): AbstractControl {
+        return this.form.controls['parishId'];
     }
 
     get mainStreetField(): AbstractControl {

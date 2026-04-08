@@ -45,25 +45,25 @@
                 [touched]="nationalityField.touched"></small>
         </div>
 
-        <!-- sex -->
+        <!-- sexId -->
         <div class="custom-form-field md:col-span-3">
             <label
                 appLabel
-                for="sex"
-                [required]="sexField"
+                for="sexId"
+                [required]="sexIdField"
                 label="Sexo">">
             </label>
 
             <input
                 pInputText
-                id="sex"
-                formControlName="sex" />
+                id="sexId"
+                formControlName="sexId" />
 
             <small
                 appErrorMessage
-                [dirty]="sexField.dirty"
-                [errors]="sexField.errors"
-                [touched]="sexField.touched"></small>
+                [dirty]="sexIdField.dirty"
+                [errors]="sexIdField.errors"
+                [touched]="sexIdField.touched"></small>
         </div>
 
         <!-- birthdate -->
@@ -105,28 +105,31 @@
                 [touched]="hasDisabilityField.touched"></small>
         </div>
 
-        <!-- bloodType -->
+        <!-- bloodTypeId -->
         <div class="custom-form-field md:col-span-6">
             <label
                 appLabel
-                for="bloodType"
-                [required]="bloodTypeField"
+                for="bloodTypeId"
+                [required]="bloodTypeIdField"
                 label="Tipo de sangre">
             </label>
 
             <p-select
-                id="bloodType"
-                dataKey="id"
+                id="bloodTypeId"
+                formControlName="bloodTypeId"
                 [options]="bloodTypes"
-                formControlName="bloodType"
+                optionValue="id"
                 optionLabel="name"
-                appendTo="body" />
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione un tipo de sangre" />
 
             <small
                 appErrorMessage
-                [dirty]="bloodTypeField.dirty"
-                [errors]="bloodTypeField.errors"
-                [touched]="bloodTypeField.touched"></small>
+                [dirty]="bloodTypeIdField.dirty"
+                [errors]="bloodTypeIdField.errors"
+                [touched]="bloodTypeIdField.touched"></small>
         </div>
 
         <!-- email -->

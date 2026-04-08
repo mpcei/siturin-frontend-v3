@@ -26,7 +26,6 @@ export default class GuideAccreditationComponent {
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'PROCESO DE ACREDITACIÓN DE GUIANZA TURÍSTICA' }]);
-        console.log(this.formStateService.establishment());
     }
 
     protected readonly FontAwesomeIcons = FontAwesomeIcons;
