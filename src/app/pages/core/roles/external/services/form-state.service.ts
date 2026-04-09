@@ -9,11 +9,22 @@ export interface AppFormState {
     ruc: RucInterface | null;
     civilRegistry: ProcessInterface | null;
     user: any | null;
+    userTemp: any | null;
     establishmentAddress: EstablishmentAddressInterface | null;
 }
 
 const STORAGE_KEY = 'formState';
-const INITIAL_STATE: AppFormState = { ruc: null, civilRegistry: null, establishment: null, establishmentTemp: null, process: null, processTemp: null, user: null, establishmentAddress: null };
+const INITIAL_STATE: AppFormState = {
+    ruc: null,
+    civilRegistry: null,
+    establishment: null,
+    establishmentTemp: null,
+    process: null,
+    processTemp: null,
+    user: null,
+    userTemp: null,
+    establishmentAddress: null
+};
 
 @Injectable({ providedIn: 'root' })
 export class FormStateService {
@@ -24,6 +35,7 @@ export class FormStateService {
     readonly process = computed(() => this.formState().process);
     readonly processTemp = computed(() => this.formState().processTemp);
     readonly user = computed(() => this.formState().user);
+    readonly userTemp = computed(() => this.formState().userTemp);
     readonly establishmentAddress = computed(() => this.formState().establishmentAddress);
 
     constructor() {

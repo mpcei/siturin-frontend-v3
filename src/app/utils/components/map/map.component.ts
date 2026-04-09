@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, input, Input, OnChanges, OnInit, output, Output, SimpleChanges } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 import { GoogleMapsModule } from '@angular/google-maps';
 
@@ -15,11 +15,9 @@ interface Coordinate {
     standalone: true
 })
 export class MapComponent implements OnInit, OnChanges {
-    @Input({ required: true }) latitude: number = -0.22985;
-    @Input({ required: true }) longitude: number = -78.52495;
-    @Output() dataOut: EventEmitter<Coordinate> = new EventEmitter<Coordinate>(false);
-
-
+    latitude = input<number>(-0.22985);
+    longitude = input<number>(-78.52495);
+    dataOut = output<Coordinate>();
 
     protected zoom = 15;
     protected center: Coordinate = { lat: -0.22985, lng: -78.52495 };
@@ -43,8 +41,8 @@ export class MapComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if ((changes['latitude'] || changes['longitude']) && this.latitude && this.longitude) {
-            this.center = { lat: this.latitude, lng: this.longitude };
-            this.markerPosition = { lat: this.latitude, lng: this.longitude };
+            this.center = { lat: this.latitude(), lng: this.longitude() };
+            this.markerPosition = { lat: this.latitude(), lng: this.longitude() };
         }
     }
 

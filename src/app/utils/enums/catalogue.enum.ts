@@ -89,6 +89,8 @@ export enum CatalogueActivitiesCodeEnum {
     event_galapagos = 'event_galapagos',
     food_drink_continent = 'food_drink_continent',
     food_drink_galapagos = 'food_drink_galapagos',
+    guide_continent = 'guide_continent',
+    guide_galapagos = 'guide_galapagos',
     park_continent = 'park_continent',
     park_galapagos = 'park_galapagos',
     transport_continent = 'transport_continent',

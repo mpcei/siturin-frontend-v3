@@ -156,7 +156,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
         this.formStateService.updateSection('establishment', { id: establishment.id });
         this.formStateService.updateSection('establishmentTemp', establishment);
 
-
         const type = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.registration, CatalogueTypeEnum.processes_type);
 
         if (!type) {

@@ -4,10 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
-import { InputGroup } from 'primeng/inputgroup';
-import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import { Message } from 'primeng/message';
 import { invalidEmailDomainValidator, invalidEmailValidator } from '@utils/form-validators/custom-validator';
 import { PrimeIcons } from 'primeng/api';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
@@ -18,7 +15,7 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, InputGroup, InputGroupAddon, ErrorMessageDirective, Message, ToggleSwitchComponent, Select],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, ToggleSwitchComponent, Select],
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {
@@ -55,13 +52,13 @@ export class ContactPersonComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             hasDisability: [false],
-            bloodTypeId: [null, [Validators.required]],
+            bloodType: [null, [Validators.required]],
             phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
             email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
             legalName: [{ value: null, disabled: true }],
             nationality: [{ value: null, disabled: true }],
-            sexId: [{ value: null, disabled: true }],
+            sex: [{ value: null, disabled: true }],
             birthdate: [{ value: null, disabled: true }]
         });
 
@@ -70,7 +67,7 @@ export class ContactPersonComponent implements OnInit {
 
     watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
-            if (this.form.valid) this.dataOut.emit(this.form.value);
+            this.dataOut.emit(this.form.value);
         });
     }
 
@@ -83,7 +80,7 @@ export class ContactPersonComponent implements OnInit {
 
         if (this.hasDisabilityField.invalid) errors.push('Discapacidad');
 
-        if (this.bloodTypeIdField.invalid) errors.push('Tipo de Sangre');
+        if (this.bloodTypeField.invalid) errors.push('Tipo de Sangre');
 
         if (this.phoneField.invalid) errors.push('Número de Teléfono Principal');
 
@@ -99,7 +96,7 @@ export class ContactPersonComponent implements OnInit {
 
     loadData() {
         if (this.dataIn()) {
-            this.form.patchValue(this.dataIn()?.guideInformation);
+            this.form.patchValue(this.dataIn());
         }
     }
 
@@ -111,8 +108,8 @@ export class ContactPersonComponent implements OnInit {
         return this.form.controls['nationality'];
     }
 
-    get sexIdField(): AbstractControl {
-        return this.form.controls['sexId'];
+    get sexField(): AbstractControl {
+        return this.form.controls['sex'];
     }
 
     get birthdateField(): AbstractControl {
@@ -123,8 +120,8 @@ export class ContactPersonComponent implements OnInit {
         return this.form.controls['hasDisability'];
     }
 
-    get bloodTypeIdField(): AbstractControl {
-        return this.form.controls['bloodTypeId'];
+    get bloodTypeField(): AbstractControl {
+        return this.form.controls['bloodType'];
     }
 
     get phoneField(): AbstractControl {

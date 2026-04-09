@@ -5,20 +5,19 @@
             DATOS DE UBICACIÓN DE DOMICILIO/ RESIDENCIA DEL GUÍA DE TURISMO:
         </div>
 
-        <!-- provinceId -->
+        <!-- province -->
         <div class="custom-form-field md:col-span-4">
             <label
                 appLabel
-                for="provinceId"
+                for="province"
                 label="Provincia"
-                [required]="provinceIdField">
+                [required]="provinceField">
             </label>
 
             <p-select
-                id="provinceId"
-                formControlName="provinceId"
+                id="province"
+                formControlName="province"
                 [options]="provinces"
-                optionValue="id"
                 optionLabel="name"
                 appendTo="body"
                 [filter]="true"
@@ -27,26 +26,25 @@
 
             <small
                 appErrorMessage
-                [dirty]="provinceIdField.dirty"
-                [errors]="provinceIdField.errors"
-                [touched]="provinceIdField.touched"></small>
+                [dirty]="provinceField.dirty"
+                [errors]="provinceField.errors"
+                [touched]="provinceField.touched"></small>
         </div>
 
-        <!-- cantonId -->
-        @if (provinceIdField.value) {
+        <!-- canton -->
+        @if (provinceField.value) {
             <div class="custom-form-field md:col-span-4">
                 <label
                     appLabel
-                    for="cantonId"
-                    [required]="cantonIdField"
+                    for="canton"
+                    [required]="cantonField"
                     label="Cantón">
                 </label>
 
                 <p-select
-                    id="cantonId"
-                    formControlName="cantonId"
+                    id="canton"
+                    formControlName="canton"
                     [options]="cantons"
-                    optionValue="id"
                     optionLabel="name"
                     appendTo="body"
                     [filter]="true"
@@ -55,27 +53,26 @@
 
                 <small
                     appErrorMessage
-                    [dirty]="cantonIdField.dirty"
-                    [errors]="cantonIdField.errors"
-                    [touched]="cantonIdField.touched"></small>
+                    [dirty]="cantonField.dirty"
+                    [errors]="cantonField.errors"
+                    [touched]="cantonField.touched"></small>
             </div>
         }
 
-        <!-- parishId -->
-        @if (cantonIdField.value) {
+        <!-- parish -->
+        @if (cantonField.value) {
             <div class="custom-form-field md:col-span-4">
                 <label
                     appLabel
-                    for="parishId"
+                    for="parish"
                     label="Parroquia"
-                    [required]="parishIdField">
+                    [required]="parishField">
                 </label>
 
                 <p-select
-                    id="parishId"
-                    formControlName="parishId"
+                    id="parish"
+                    formControlName="parish"
                     [options]="parishes"
-                    optionValue="id"
                     optionLabel="name"
                     appendTo="body"
                     [filter]="true"
@@ -92,9 +89,9 @@
 
                 <small
                     appErrorMessage
-                    [dirty]="parishIdField.dirty"
-                    [errors]="parishIdField.errors"
-                    [touched]="parishIdField.touched"></small>
+                    [dirty]="parishField.dirty"
+                    [errors]="parishField.errors"
+                    [touched]="parishField.touched"></small>
             </div>
         }
 
@@ -184,12 +181,12 @@
         </div>
 
         <!-- map -->
-        @if (parishIdField.value) {
+        @if (parishField.value) {
             <div class="md:col-span-12 custom-form-field">
                 <app-map
-                    (dataOut)="setlatLng($event)"
-                    [latitude]="parishIdField.value?.latitude"
-                    [longitude]="parishIdField.value?.longitude" />
+                    (dataOut)="setLatLng($event)"
+                    [latitude]="parishField.value?.latitude"
+                    [longitude]="parishField.value?.longitude" />
             </div>
         }
     </div>

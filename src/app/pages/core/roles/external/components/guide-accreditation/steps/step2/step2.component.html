@@ -1,136 +1,115 @@
-<p-fluid>
-    <form [formGroup]="form" class="custom-form-card">
-        <div class="custom-form-grid">
+<form [formGroup]="form" class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
 
-            <!-- Section Name -->
-            <div class="md:col-span-12 custom-form-field">
-                <div class="custom-section-title-form">
-                    Seleccione la Actividad y/o Modalidad Turística; clasificación y categoría de ser el caso
-                </div>
-            </div>
-
-            <!-- geographicArea -->
-            <div class="md:col-span-6 custom-form-field">
-                <label
-                    appLabel
-                    for="geographicArea"
-                    label="Zona Geográfica"
-                    [required]="geographicAreaField">
-                </label>
-
-                <p-select
-                    id="geographicArea"
-                    dataKey="id"
-                    [options]="geographicAreas"
-                    optionLabel="name"
-                    placeholder="Seleccione"
-                    formControlName="geographicArea"
-                    [required]="true" />
-
-                <p-message
-                    appErrorMessage
-                    [errors]="geographicAreaField.errors"
-                    [touched]="geographicAreaField.touched"
-                    [dirty]="geographicAreaField.dirty" />
-            </div>
-
-            <!-- activity -->
-            <div class="md:col-span-6 custom-form-field">
-                <label
-                    appLabel for="activity"
-                    label="Actividad"
-                    [required]="activityField">
-                </label>
-
-                <p-select
-                    id="actividad"
-                    dataKey="id"
-                    [options]="activities"
-                    optionLabel="name"
-                    placeholder="Seleccione"
-                    formControlName="activity"
-                    [required]="true"
-                    appendTo="body" />
-
-                <p-message
-                    appErrorMessage
-                    [errors]="activityField.errors"
-                    [touched]="activityField.touched"
-                    [dirty]="activityField.dirty" />
-            </div>
-
-            <!-- classification -->
-            <div class="md:col-span-6 custom-form-field">
-                <label
-                    appLabel for="classification"
-                    label="Clasificación"
-                    [required]="classificationField">
-                </label>
-
-                <p-select
-                    id="clasificacion"
-                    dataKey="id"
-                    [options]="classifications"
-                    optionLabel="name"
-                    placeholder="Seleccione"
-                    formControlName="classification"
-                    [required]="true"
-                    appendTo="body" />
-
-                <p-message
-                    appErrorMessage
-                    [errors]="classificationField.errors"
-                    [touched]="classificationField.touched"
-                    [dirty]="classificationField.dirty" />
-            </div>
-
-            <!-- category -->
-            <div class="md:col-span-6 custom-form-field">
-                <label appLabel for="category" label="Categoría" [required]="categoryField">
-                </label>
-
-                <p-select
-                    id="categoria"
-                    dataKey="id"
-                    [options]="categories"
-                    optionLabel="name"
-                    placeholder="Seleccione"
-                    formControlName="category"
-                    [required]="true"
-                    appendTo="body" />
-
-                <p-message
-                    appErrorMessage
-                    [dirty]="categoryField.dirty"
-                    [errors]="categoryField.errors"
-                    [touched]="categoryField.touched" />
+        <!-- Section Name -->
+        <div class="md:col-span-12 custom-form-field">
+            <div class="custom-section-title-form">
+                Seleccione la Actividad y/o Modalidad Turística; clasificación y categoría de ser el caso
             </div>
         </div>
-    </form>
 
-    @if (activityField.value && classificationField.value && categoryField.value) {
-        @switch (activityField.value.code) {
-            @case (CatalogueActivitiesCodeEnum.accommodation_continent || CatalogueActivitiesCodeEnum.accommodation_galapagos) {
-                <app-accommodation [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.agency_continent || CatalogueActivitiesCodeEnum.agency_galapagos) {
-                <app-agency [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.ctc_continent || CatalogueActivitiesCodeEnum.ctc_galapagos) {
-                <app-ctc [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.event_continent || CatalogueActivitiesCodeEnum.event_galapagos) {
-                <app-event [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.food_drink_continent || CatalogueActivitiesCodeEnum.food_drink_galapagos) {
-                <app-food-drink [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.park_continent || CatalogueActivitiesCodeEnum.park_galapagos) {
-                <app-park [processTypeCode]="process.type?.code!" />
-            }
-            @case (CatalogueActivitiesCodeEnum.transport_continent || CatalogueActivitiesCodeEnum.transport_galapagos) {
-                <app-transport [processTypeCode]="process.type?.code!" />
-            }
-        }
-    }
-</p-fluid>
+        <!-- geographicArea -->
+        <div class="md:col-span-6 custom-form-field">
+            <label
+                appLabel
+                for="geographicArea"
+                label="Ámbito Territorial"
+                [required]="geographicAreaField">
+            </label>
+
+            <p-select
+                id="geographicArea"
+                formControlName="geographicArea"
+                [options]="geographicAreas"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione" />
+
+            <small
+                appErrorMessage
+                [errors]="geographicAreaField.errors"
+                [touched]="geographicAreaField.touched"
+                [dirty]="geographicAreaField.dirty"></small>
+        </div>
+
+        <!-- activity -->
+        <div class="md:col-span-6 custom-form-field">
+            <label
+                appLabel for="activity"
+                label="Actividad"
+                [required]="activityField">
+            </label>
+
+            <p-select
+                id="actividad"
+                formControlName="activity"
+                [options]="activities"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione" />
+
+            <small
+                appErrorMessage
+                [errors]="activityField.errors"
+                [touched]="activityField.touched"
+                [dirty]="activityField.dirty"></small>
+        </div>
+
+        <!--        &lt;!&ndash; classification &ndash;&gt;-->
+        <!--        <div class="md:col-span-6 custom-form-field">-->
+        <!--            <label-->
+        <!--                appLabel for="classification"-->
+        <!--                label="Clasificación"-->
+        <!--                [required]="classificationField">-->
+        <!--            </label>-->
+        <!--            {{ classificationField.value|json }}-->
+        <!--            <p-select-->
+        <!--                id="clasificacion"-->
+        <!--                formControlName="classification"-->
+        <!--                [options]="classifications"-->
+        <!--                optionLabel="name"-->
+        <!--                appendTo="body"-->
+        <!--                [filter]="true"-->
+        <!--                filterBy="name"-->
+        <!--                placeholder="Seleccione" />-->
+
+        <!--            <small-->
+        <!--                appErrorMessage-->
+        <!--                [errors]="classificationField.errors"-->
+        <!--                [touched]="classificationField.touched"-->
+        <!--                [dirty]="classificationField.dirty"></small>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash; category &ndash;&gt;-->
+        <!--        <div class="md:col-span-6 custom-form-field">-->
+        <!--            <label appLabel for="category" label="Categoría" [required]="categoryField">-->
+        <!--            </label>-->
+
+        <!--            {{ categoryField.value|json }}-->
+        <!--            <p-select-->
+        <!--                id="categoria"-->
+        <!--                formControlName="category"-->
+        <!--                [options]="categories"-->
+        <!--                optionLabel="name"-->
+        <!--                appendTo="body"-->
+        <!--                [filter]="true"-->
+        <!--                filterBy="name"-->
+        <!--                placeholder="Seleccione" />-->
+
+        <!--            <small-->
+        <!--                appErrorMessage-->
+        <!--                [dirty]="categoryField.dirty"-->
+        <!--                [errors]="categoryField.errors"-->
+        <!--                [touched]="categoryField.touched"></small>-->
+        <!--        </div>-->
+    </div>
+</form>
+
+@if (activityField.value) {
+    <app-guide [processTypeCode]="process?.type?.code!" />
+}
+

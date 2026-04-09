@@ -1,51 +1,45 @@
-import { Component, effect, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { Select } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Fluid } from 'primeng/fluid';
 import { LabelDirective } from '@utils/directives/label.directive';
-import { Message } from 'primeng/message';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { PrimeIcons } from 'primeng/api';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { CatalogueActivitiesCodeEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum, CoreEnum } from '@utils/enums';
-import { CoreSessionStorageService } from '@utils/services';
-import { ActivityInterface, CategoryInterface, ClassificationInterface } from '@modules/core/shared/interfaces';
+import { CatalogueActivitiesCodeEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import {
+    ActivityInterface,
+    CategoryInterface,
+    ClassificationInterface,
+    EstablishmentInterface
+} from '@modules/core/shared/interfaces';
 import { ActivityService } from '@modules/core/shared/services';
 import { ProcessI } from '@utils/services/core-session-storage.service';
-import { AgencyComponent } from '@modules/core/roles/external/components/accreditation/steps/step3/activities/agency/agency.component';
-import { CtcComponent } from '@modules/core/roles/external/components/accreditation/steps/step3/activities/ctc/ctc.component';
-import { EventComponent } from '@modules/core/roles/external/components/accreditation/steps/step3/activities/event/event.component';
-import { TransportComponent } from '@modules/core/roles/external/components/accreditation/steps/step3/activities/transport/transport.component';
-import { ParkComponent } from '@modules/core/roles/external/components/accreditation/steps/step3/activities/park/park.component';
-import { FoodDrinkComponent } from '@/pages/core/roles/external/components/accreditation/steps/step3/activities/food-drink/food-drink.component';
-import { AccommodationComponent } from '@/pages/core/roles/external/components/accreditation/steps/step3/activities/accommodation/accommodation.component';
-
-interface CatalogMode {
-    code: 'registration' | 'update' | 'reclassification' | 'readmission' | string;
-    name?: string;
-}
+import { FormStateService } from '@/pages/core/roles/external/services';
+import {
+    GuideComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
 
 @Component({
     selector: 'app-step2',
     standalone: true,
-    imports: [Select, FormsModule, Fluid, ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, AgencyComponent, CtcComponent, AccommodationComponent, EventComponent, TransportComponent, ParkComponent, FoodDrinkComponent],
-    templateUrl: './step2.component.html',
+    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent],
+    templateUrl: './step2.component.html'
 })
 export class Step2Component implements OnInit {
-    @Output() dataOut = new EventEmitter<FormGroup>();
-    @Output() fieldErrorsOut = new EventEmitter<string[]>();
+    dataOut = output<FormGroup>();
 
     protected readonly PrimeIcons = PrimeIcons;
     private readonly formBuilder = inject(FormBuilder);
     protected form!: FormGroup;
-    protected process!: ProcessI;
+    protected process!: ProcessI | null;
+    protected establishment!: EstablishmentInterface | null;
     protected dataIn!: any;
 
     private readonly activityService = inject(ActivityService);
-    private readonly coreSessionStorageService = inject(CoreSessionStorageService);
     private readonly catalogueService = inject(CatalogueService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected readonly CatalogueActivitiesCodeEnum = CatalogueActivitiesCodeEnum;
 
@@ -56,26 +50,19 @@ export class Step2Component implements OnInit {
 
     constructor() {
         this.buildForm();
-
-        effect(async () => {
-            const processSignal = this.coreSessionStorageService.processSignal();
-
-            if (processSignal) {
-            }
-        });
     }
 
     async ngOnInit() {
-        this.process = await this.coreSessionStorageService.getEncryptedValue(CoreEnum.process);
+        this.establishment = this.formStateService.establishment();
+        this.process = this.formStateService.process();
         await this.loadCatalogues();
-        await this.loadActivities();
-        await this.watchFormChanges();
         await this.loadData();
+        await this.watchFormChanges();
     }
 
     buildForm() {
         this.form = this.formBuilder.group({
-            geographicArea: [{ value: null, disabled: true }, [Validators.required]],
+            geographicArea: [null, [Validators.required]],
             activity: [null, [Validators.required]],
             classification: [null, [Validators.required]],
             category: [null, [Validators.required]]
@@ -84,14 +71,19 @@ export class Step2Component implements OnInit {
 
     async watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(async () => {
-            if (this.form.valid) {
-                await this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, { ...this.form.getRawValue() });
-            }
+            this.formStateService.updateSection('process', this.form.value);
+        });
+
+        this.geographicAreaField.valueChanges.subscribe((value) => {
+            if (value) this.loadActivities();
+            this.activityField.reset();
+            this.classificationField.reset();
+            this.categoryField.reset();
         });
 
         this.activityField.valueChanges.subscribe(async (activity) => {
             if (activity) {
-                if (this.process.type?.code === CatalogueProcessesTypeEnum.registration || this.process.type?.code === CatalogueProcessesTypeEnum.readmission || this.process.type?.code === CatalogueProcessesTypeEnum.new_classification) {
+                if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
                     this.classificationField.reset();
                     this.categoryField.reset();
                 }
@@ -103,10 +95,10 @@ export class Step2Component implements OnInit {
         this.classificationField.valueChanges.subscribe(async (classification) => {
             if (classification) {
                 if (
-                    this.process.type?.code === CatalogueProcessesTypeEnum.registration ||
-                    this.process.type?.code === CatalogueProcessesTypeEnum.readmission ||
-                    this.process.type?.code === CatalogueProcessesTypeEnum.new_classification ||
-                    this.process.type?.code === CatalogueProcessesTypeEnum.reclassification
+                    this.process?.type?.code === CatalogueProcessesTypeEnum.registration ||
+                    this.process?.type?.code === CatalogueProcessesTypeEnum.readmission ||
+                    this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification ||
+                    this.process?.type?.code === CatalogueProcessesTypeEnum.reclassification
                 ) {
                     this.categoryField.reset();
                 }
@@ -165,25 +157,19 @@ export class Step2Component implements OnInit {
     }
 
     async loadActivities() {
-        this.geographicAreaField.patchValue(this.geographicAreas.find((x) => x.code === 'continent'));
-
-        if (this.process.province?.code === '20') {
-            this.geographicAreaField.patchValue(this.geographicAreas.find((x) => x.code === 'galapagos'));
-        }
-
-        this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.getRawValue().id);
+        this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
     }
 
     async loadData() {
-        switch (this.process.type?.code!) {
+        switch (this.process?.type?.code!) {
             case CatalogueProcessesTypeEnum.update:
-                this.form.patchValue(this.process);
+                this.form.patchValue(this.process!);
                 await this.loadActivities();
                 this.disableAll();
                 break;
 
             case CatalogueProcessesTypeEnum.reclassification:
-                this.form.patchValue(this.process);
+                this.form.patchValue(this.process!);
                 await this.loadActivities();
                 this.activityField.disable();
                 this.classificationField.reset();
@@ -191,7 +177,7 @@ export class Step2Component implements OnInit {
                 break;
 
             case CatalogueProcessesTypeEnum.recategorization:
-                this.form.patchValue(this.process);
+                this.form.patchValue(this.process!);
                 await this.loadActivities();
                 this.activityField.disable();
                 this.classificationField.disable();
@@ -199,7 +185,8 @@ export class Step2Component implements OnInit {
                 break;
 
             case CatalogueProcessesTypeEnum.registration:
-                this.form.patchValue(this.process);
+                this.form.patchValue(this.process!);
+                await this.loadActivities();
                 break;
         }
     }

@@ -13,7 +13,7 @@ export const coreInterceptor: HttpInterceptorFn = (req, next) => {
 
     if (params.get('page')) {
         if (!params.get('limit')) {
-            params = params.append('limit', '10');
+            params = params.append('limit', 10);
         }
     }
 
