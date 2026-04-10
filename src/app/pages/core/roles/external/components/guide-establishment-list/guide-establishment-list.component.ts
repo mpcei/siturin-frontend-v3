@@ -153,6 +153,8 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     private async createProcess(establishment: EstablishmentInterface) {
+        this.formStateService.clearState();
+
         this.formStateService.updateSection('establishment', { id: establishment.id });
         this.formStateService.updateSection('establishmentTemp', establishment);
 

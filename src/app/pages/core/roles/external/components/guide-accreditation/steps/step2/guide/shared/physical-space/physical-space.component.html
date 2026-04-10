@@ -1,88 +1,80 @@
-<p-fluid>
-    <form [formGroup]="form" class="card flex flex-col gap-6 w-full">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <!-- localType -->
-            <div class="md:col-span-6 flex flex-col gap-2">
-                <label
-                    appLabel
-                    for="localType"
-                    [required]="localTypeField"
-                    label="Su local es">
-                </label>
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- ruc -->
+        <div class="md:col-span-12 custom-form-field">
+            <label
+                appLabel
+                for="ruc"
+                [required]="rucField">
+                Registro Único de Contribuyentes (RUC) u otro que determine la Autoridad Nacional Tributaria, en
+                el que conste como actividad económica la guianza turística.
+            </label>
 
-                <p-select id="localType"
-                          [options]="localTypes"
-                          formControlName="localType"
-                          optionLabel="name">
-                </p-select>
+            <p-fileupload
+                id="file"
+                name="ruc"
+                mode="basic"
+                chooseLabel="Buscar RUC"
+                [chooseIcon]="PrimeIcons.SEARCH"
+                uploadLabel="Subir archivo"
+                accept="application/pdf"
+                [maxFileSize]="10485760"
+                [auto]="true"
+                [customUpload]="true"
+                (uploadHandler)="onFileSelect('ruc',$event)">
+            </p-fileupload>
 
-                <p-message
-                    appErrorMessage
-                    [errors]="localTypeField.errors"
-                    [touched]="localTypeField.touched"
-                    [dirty]="localTypeField.dirty" />
-            </div>
-
-            <!-- permanentPhysicalSpace -->
-            <div class="md:col-span-6 flex flex-col gap-2">
-                <label
-                    appLabel
-                    for="permanentPhysicalSpace"
-                    label="Espacio físico Permanente"
-                    [required]="permanentPhysicalSpaceField">
-                </label>
-
-                <p-select
-                    id="permanentPhysicalSpace"
-                    [options]="permanentPhysicalSpaces"
-                    formControlName="permanentPhysicalSpace"
-                    optionLabel="name">
-                </p-select>
-
-                <p-message
-                    appErrorMessage
-                    [errors]="permanentPhysicalSpaceField.errors"
-                    [touched]="permanentPhysicalSpaceField.touched"
-                    [dirty]="permanentPhysicalSpaceField.dirty" />
-            </div>
-
-            <!-- isProtectedArea -->
-            <div class="md:col-span-12 flex flex-col gap-2">
-                <label
-                    appLabel
-                    for="isProtectedArea"
-                    label="¿Realiza actividades autorizadas por la Autoridad Ambiental Nacional en el Subsistema Estatal del Sistema de Áreas Naturales Protegidas, de conformidad con lo establecido en los artículos 8 y 9 de la Ley de Turismo dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas?"
-                    [required]="isProtectedAreaField">
-                </label>
-
-                <p-toggleswitch id="isProtectedArea" formControlName="isProtectedArea" />
-
-                <p-message
-                    appErrorMessage
-                    [errors]="isProtectedAreaField.errors"
-                    [touched]="isProtectedAreaField.touched"
-                    [dirty]="isProtectedAreaField.dirty" />
-            </div>
-
-            <!-- hasProtectedAreaContract -->
-            @if (hasProtectedAreaContractField.hasValidator(Validators.required)) {
-                <div class="md:col-span-12 flex flex-col gap-2">
-                    <label
-                        appLabel
-                        for="hasProtectedAreaContract"
-                        label="Al momento de la inspección se presentará la licencia única de funcionamiento"
-                        [required]="hasProtectedAreaContractField">
-                    </label>
-
-                    <p-toggleswitch id="hasProtectedAreaContract" formControlName="hasProtectedAreaContract" />
-
-                    <p-message
-                        appErrorMessage
-                        [errors]="hasProtectedAreaContractField.errors"
-                        [touched]="hasProtectedAreaContractField.touched"
-                        [dirty]="hasProtectedAreaContractField.dirty" />
-                </div>
+            @if (rucField.value) {
+                {{ rucField.value.file.name | json }}
             }
+
+            <small
+                appErrorMessage
+                [errors]="rucField.errors"
+                [touched]="rucField.touched"
+                [dirty]="rucField.dirty"></small>
+        </div>
+
+        <!-- photo -->
+        <div class="md:col-span-12 custom-form-field">
+            <label
+                appLabel
+                for="photo"
+                [required]="photoField">
+                Fotografía emitida en los últimos 6 meses, con las siguientes características:
+                <ul class="list-disc pl-5">
+                    <li>Rostro (cabeza recta, mirando al frente)</li>
+                    <li>Tipo carné (dimensiones: 30 milímetros de ancho x 45 milímetros de alto)</li>
+                    <li>Fondo blanco</li>
+                    <li>Sin accesorios (gorra, sombrero, gafas, lentes, joyas, entre otros)</li>
+                    <li>Cabello recogido</li>
+                    <li>Máximo 1 megabyte de peso</li>
+                </ul>
+            </label>
+
+            <p-fileupload
+                id="photo"
+                name="photo"
+                mode="basic"
+                chooseLabel="Buscar fotografía"
+                [chooseIcon]="PrimeIcons.SEARCH"
+                uploadLabel="Subir archivo"
+                accept="image/*"
+                [maxFileSize]="10485760"
+                [auto]="true"
+                [customUpload]="true"
+                (uploadHandler)="onFileSelect('photo',$event)">
+            </p-fileupload>
+
+            @if (photoField.value) {
+                {{ photoField.value.file.name | json }}
+            }
+
+            <small
+                appErrorMessage
+                [errors]="photoField.errors"
+                [touched]="photoField.touched"
+                [dirty]="photoField.dirty"></small>
         </div>
     </form>
-</p-fluid>
+</div>

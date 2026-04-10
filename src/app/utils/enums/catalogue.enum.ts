@@ -78,6 +78,12 @@ export enum CatalogueProcessesStateEnum {
     completed = 'completed'
 }
 
+export enum CatalogueActivitiesGeographicAreaEnum {
+    continent = 'continent',
+    galapagos = 'galapagos',
+    galapagos_code = '20',
+}
+
 export enum CatalogueActivitiesCodeEnum {
     accommodation_continent = 'accommodation_continent',
     accommodation_galapagos = 'accommodation_galapagos',

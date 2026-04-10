@@ -1,33 +1,24 @@
-<app-physical-space (dataOut)="saveForm($event)" />
+<app-physical-space (dataOut)="saveForm($event,'processGuides')" (filesOut)="saveFiles($event,'files')" />
 
-<app-accredited-staff-language (dataOut)="saveForm($event)" />
 
-<app-tourist-guide (dataOut)="saveForm($event)" />
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="md:col-span-3 custom-form-field">
+            <p-button
+                label="Atrás"
+                severity="warn"
+                styleClass="w-full"
+                [icon]="PrimeIcons.ARROW_LEFT"
+                (onClick)="back()" />
+        </div>
 
-<app-adventure-tourism-modality (dataOut)="saveForm($event)" />
-
-<app-sales-representative (dataOut)="saveForm($event)" />
-
-<app-tourist-transport-company (dataOut)="saveForm($event)" />
-
-<p-fluid>
-    <div class="card flex flex-col gap-6 w-full">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div class="md:col-span-3 flex flex-col gap-2">
-                <p-button
-                    label="Atrás"
-                    severity="warn"
-                    [icon]="PrimeIcons.ARROW_LEFT"
-                    (onClick)="back()" />
-            </div>
-
-            <div class="md:col-start-10 md:col-span-3 flex flex-col gap-2">
-                <p-button
-                    class="w-full"
-                    label="Guardar"
-                    [icon]="PrimeIcons.SAVE"
-                    (onClick)="onSubmit()" />
-            </div>
+        <div class="custom-form-field md:col-start-10 md:col-span-3">
+            <p-button
+                class="w-full"
+                label="Guardar"
+                styleClass="w-full"
+                [icon]="PrimeIcons.SAVE"
+                (onClick)="onSubmit()" />
         </div>
     </div>
-</p-fluid>
+</div>

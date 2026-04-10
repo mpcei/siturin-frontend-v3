@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
@@ -30,7 +30,8 @@ export class AddressComponent implements OnInit {
     protected form!: FormGroup;
     protected formInitialized = false;
 
-    protected provinces: DpaInterface[] = [];
+    // protected provinces: DpaInterface[] = [];
+    protected provinces = signal<DpaInterface[]>([]);
     protected cantons: DpaInterface[] = [];
     protected parishes: DpaInterface[] = [];
 
@@ -139,7 +140,7 @@ export class AddressComponent implements OnInit {
     }
 
     async loadDpa() {
-        this.provinces = await this.dpaService.findProvinces();
+        this.provinces.set(await this.dpaService.findProvinces());
     }
 
     get provinceField(): AbstractControl {

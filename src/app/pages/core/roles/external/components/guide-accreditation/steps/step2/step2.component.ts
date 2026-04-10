@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { Select } from 'primeng/select';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LabelDirective } from '@utils/directives/label.directive';
@@ -7,19 +7,12 @@ import { PrimeIcons } from 'primeng/api';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { CatalogueActivitiesCodeEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
-import {
-    ActivityInterface,
-    CategoryInterface,
-    ClassificationInterface,
-    EstablishmentInterface
-} from '@modules/core/shared/interfaces';
+import { CatalogueActivitiesCodeEnum, CatalogueActivitiesGeographicAreaEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { ActivityInterface, CategoryInterface, ClassificationInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
 import { ActivityService } from '@modules/core/shared/services';
 import { ProcessI } from '@utils/services/core-session-storage.service';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import {
-    GuideComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
+import { GuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
 
 @Component({
     selector: 'app-step2',
@@ -29,6 +22,7 @@ import {
 })
 export class Step2Component implements OnInit {
     dataOut = output<FormGroup>();
+    public step: OutputEmitterRef<number> = output<number>();
 
     protected readonly PrimeIcons = PrimeIcons;
     private readonly formBuilder = inject(FormBuilder);
@@ -82,6 +76,7 @@ export class Step2Component implements OnInit {
         });
 
         this.activityField.valueChanges.subscribe(async (activity) => {
+            console.log(activity);
             if (activity) {
                 if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
                     this.classificationField.reset();
@@ -154,10 +149,24 @@ export class Step2Component implements OnInit {
 
     async loadCatalogues() {
         this.geographicAreas = await this.catalogueService.findByType(CatalogueTypeEnum.activities_geographic_area);
+
+        this.geographicAreaField.patchValue(
+            this.geographicAreas.find((x) => {
+                if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
+                    return x.code === CatalogueActivitiesGeographicAreaEnum.galapagos;
+                } else {
+                    return x.code === CatalogueActivitiesGeographicAreaEnum.continent;
+                }
+            })
+        );
     }
 
     async loadActivities() {
         this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
+        this.activities = this.activities.filter((x) => x.code?.includes('guide'));
+        this.activityField.patchValue(this.activities[0]);
+
+        this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
     }
 
     async loadData() {

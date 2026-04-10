@@ -17,7 +17,7 @@
             <p-select
                 id="province"
                 formControlName="province"
-                [options]="provinces"
+                [options]="provinces()"
                 optionLabel="name"
                 appendTo="body"
                 [filter]="true"
@@ -32,71 +32,69 @@
         </div>
 
         <!-- canton -->
-        @if (provinceField.value) {
-            <div class="custom-form-field md:col-span-4">
-                <label
-                    appLabel
-                    for="canton"
-                    [required]="cantonField"
-                    label="Cantón">
-                </label>
+        <div class="custom-form-field md:col-span-4">
+            <label
+                appLabel
+                for="canton"
+                [required]="cantonField"
+                label="Cantón">
+            </label>
 
-                <p-select
-                    id="canton"
-                    formControlName="canton"
-                    [options]="cantons"
-                    optionLabel="name"
-                    appendTo="body"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Seleccione un cantón" />
+            <p-select
+                id="canton"
+                formControlName="canton"
+                [options]="cantons"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione un cantón"
+                emptyMessage="Debe seleccionar una provincia" />
 
-                <small
-                    appErrorMessage
-                    [dirty]="cantonField.dirty"
-                    [errors]="cantonField.errors"
-                    [touched]="cantonField.touched"></small>
-            </div>
-        }
+            <small
+                appErrorMessage
+                [dirty]="cantonField.dirty"
+                [errors]="cantonField.errors"
+                [touched]="cantonField.touched"></small>
+        </div>
 
         <!-- parish -->
-        @if (cantonField.value) {
-            <div class="custom-form-field md:col-span-4">
-                <label
-                    appLabel
-                    for="parish"
-                    label="Parroquia"
-                    [required]="parishField">
-                </label>
+        <div class="custom-form-field md:col-span-4">
+            <label
+                appLabel
+                for="parish"
+                label="Parroquia"
+                [required]="parishField">
+            </label>
 
-                <p-select
-                    id="parish"
-                    formControlName="parish"
-                    [options]="parishes"
-                    optionLabel="name"
-                    appendTo="body"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Seleccione una parroquia">
-                    <ng-template #item let-item>
-                        {{ item.name }} ({{ item.zoneType }})
-                    </ng-template>
+            <p-select
+                id="parish"
+                formControlName="parish"
+                [options]="parishes"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione una parroquia"
+                emptyMessage="Debe seleccionar un cantón">
+                <ng-template #item let-item>
+                    {{ item.name }} ({{ item.zoneType }})
+                </ng-template>
 
-                    <ng-template #selectedItem let-selectedItem>
-                        {{ selectedItem.name }} ({{ selectedItem.zoneType }})
-                    </ng-template>
-                </p-select>
+                <ng-template #selectedItem let-selectedItem>
+                    {{ selectedItem.name }} ({{ selectedItem.zoneType }})
+                </ng-template>
+            </p-select>
 
-                <small
-                    appErrorMessage
-                    [dirty]="parishField.dirty"
-                    [errors]="parishField.errors"
-                    [touched]="parishField.touched"></small>
-            </div>
-        }
+            <small
+                appErrorMessage
+                [dirty]="parishField.dirty"
+                [errors]="parishField.errors"
+                [touched]="parishField.touched"></small>
+        </div>
 
         <!-- mainStreet -->
-        <div class="md:col-span-4 custom-form-field">
+        <div class="md:col-span-5 custom-form-field">
             <label
                 appLabel
                 for="mainStreet"
@@ -116,29 +114,8 @@
                 [touched]="mainStreetField.touched"></small>
         </div>
 
-        <!-- numberStreet -->
-        <div class="md:col-span-4 custom-form-field">
-            <label
-                appLabel
-                for="numberStreet"
-                label="Numeración"
-                [required]="numberStreetField">
-            </label>
-
-            <input
-                pInputText
-                id="numberStreet"
-                formControlName="numberStreet" />
-
-            <small
-                appErrorMessage
-                [dirty]="numberStreetField.dirty"
-                [errors]="numberStreetField.errors"
-                [touched]="numberStreetField.touched"></small>
-        </div>
-
         <!-- secondaryStreet -->
-        <div class="md:col-span-4 custom-form-field">
+        <div class="md:col-span-5 custom-form-field">
             <label
                 appLabel
                 for="secondaryStreet"
@@ -156,6 +133,27 @@
                 [dirty]="secondaryStreetField.dirty"
                 [errors]="secondaryStreetField.errors"
                 [touched]="secondaryStreetField.touched"></small>
+        </div>
+
+        <!-- numberStreet -->
+        <div class="md:col-span-2 custom-form-field">
+            <label
+                appLabel
+                for="numberStreet"
+                label="Numeración"
+                [required]="numberStreetField">
+            </label>
+
+            <input
+                pInputText
+                id="numberStreet"
+                formControlName="numberStreet" />
+
+            <small
+                appErrorMessage
+                [dirty]="numberStreetField.dirty"
+                [errors]="numberStreetField.errors"
+                [touched]="numberStreetField.touched"></small>
         </div>
 
         <!-- referenceStreet -->

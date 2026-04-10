@@ -63,7 +63,9 @@
 
         <p-step-panel [value]="2">
             <ng-template #content let-activateCallback="activateCallback">
-                <app-step2 />
+                @if (activeStep === 2) {
+                    <app-step2 (step)="activeStep=$event"/>
+                }
             </ng-template>
         </p-step-panel>
     </p-step-panels>

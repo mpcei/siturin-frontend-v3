@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, Input, OnInit, output, Output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
@@ -12,16 +12,18 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
+import { FileUpload } from 'primeng/fileupload';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-physical-space',
-    imports: [Fluid, ReactiveFormsModule, LabelDirective, Select, Message, ErrorMessageDirective, ToggleSwitch],
-    templateUrl: './physical-space.component.html',
-    styleUrl: './physical-space.component.scss'
+    imports: [Fluid, ReactiveFormsModule, LabelDirective, Select, Message, ErrorMessageDirective, ToggleSwitch, FileUpload, JsonPipe],
+    templateUrl: './physical-space.component.html'
 })
 export class PhysicalSpaceComponent implements OnInit {
-    @Input() data!: string | undefined;
-    @Output() dataOut = new EventEmitter<Record<string, any>>();
+    public data = input<string>();
+    public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
+    public filesOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
 
     protected readonly Validators = Validators;
     protected readonly PrimeIcons = PrimeIcons;
@@ -34,7 +36,8 @@ export class PhysicalSpaceComponent implements OnInit {
 
     protected localTypes: CatalogueInterface[] = [];
     protected permanentPhysicalSpaces: CatalogueInterface[] = [];
-
+    protected requirements: Map<string, any> = new Map<string, any>();
+    protected payload: FormData = new FormData();
     constructor() {}
 
     async ngOnInit() {
@@ -45,45 +48,37 @@ export class PhysicalSpaceComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            localType: [null, [Validators.required]],
-            permanentPhysicalSpace: [null, [Validators.required]],
-            isProtectedArea: [false, [Validators.required]],
-            hasProtectedAreaContract: [false]
+            ruc: [null, [Validators.required]],
+            photo: [null, [Validators.required]],
+            certificationGuideLocal: [false, Validators.required],
+            professionalTitle: [false, Validators.required],
+            domicileDeclaration: [false, Validators.required]
         });
 
         this.watchFormChanges();
     }
 
     watchFormChanges() {
-        this.dataOut.emit(this.form.value);
-
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
-            if (this.form.valid) {
-                this.dataOut.emit(this.form.value);
-            }
-        });
+            const files = Array.from(this.requirements.entries()).map(([key, value]) => ({
+                key,
+                ...value
+            }));
 
-        this.isProtectedAreaField.valueChanges.subscribe((value) => {
-            this.hasProtectedAreaContractField.clearValidators();
-            this.hasProtectedAreaContractField.reset();
+            this.dataOut.emit(Array.from(this.form.value));
 
-            if (value) {
-                this.hasProtectedAreaContractField.setValidators(Validators.required);
-            }
+            this.filesOut.emit(Array.from(this.requirements.values()));
         });
     }
 
     getFormErrors(): string[] {
         const errors: string[] = [];
 
-        if (this.localTypeField.invalid) errors.push('Su local es');
-
-        if (this.isProtectedAreaField.invalid)
-            errors.push(
-                '¿Realiza actividades autorizadas por la Autoridad Ambiental Nacional en el Subsistema Estatal del Sistema de Áreas Naturales Protegidas, de conformidad con lo establecido en los artículos 8 y 9 de la Ley de Turismo dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas?'
-            );
-
-        if (this.hasProtectedAreaContractField.invalid) errors.push('Al momento de la inspección se presentará la licencia única de funcionamiento');
+        if (this.rucField.invalid) errors.push('RUC');
+        if (this.photoField.invalid) errors.push('Fotografía');
+        if (this.certificationGuideLocalField.invalid) errors.push('Certificado Guia Local');
+        if (this.professionalTitleField.invalid) errors.push('Titulo Profesional');
+        if (this.domicileDeclarationField.invalid) errors.push('Declaración de Domicilio');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -95,24 +90,54 @@ export class PhysicalSpaceComponent implements OnInit {
 
     loadData() {}
 
+    onFileSelect(requirement: string, event: any) {
+        let file = { file: event.files[0], requirement };
+
+        switch (requirement) {
+            case 'ruc':
+                this.rucField.patchValue(file);
+                break;
+            case 'photo':
+                this.photoField.patchValue(file);
+                break;
+            case 'certificationGuideLocal':
+                this.certificationGuideLocalField.patchValue(file);
+                break;
+            case 'professionalTitle':
+                this.professionalTitleField.patchValue(file);
+                break;
+            case 'domicileDeclaration':
+                this.domicileDeclarationField.patchValue(file);
+                break;
+        }
+
+        this.requirements.set(requirement, file);
+
+        console.log(this.requirements);
+    }
+
     async loadCatalogues() {
         this.localTypes = await this.catalogueService.findByType(CatalogueTypeEnum.processes_local_type);
         this.permanentPhysicalSpaces = await this.catalogueService.findByType(CatalogueTypeEnum.process_agency_permanent_physical_space);
     }
 
-    get localTypeField(): AbstractControl {
-        return this.form.controls['localType'];
+    get rucField(): AbstractControl {
+        return this.form.controls['ruc'];
     }
 
-    get permanentPhysicalSpaceField(): AbstractControl {
-        return this.form.controls['permanentPhysicalSpace'];
+    get photoField(): AbstractControl {
+        return this.form.controls['photo'];
     }
 
-    get isProtectedAreaField(): AbstractControl {
-        return this.form.controls['isProtectedArea'];
+    get certificationGuideLocalField(): AbstractControl {
+        return this.form.controls['certificationGuideLocal'];
     }
 
-    get hasProtectedAreaContractField(): AbstractControl {
-        return this.form.controls['hasProtectedAreaContract'];
+    get professionalTitleField(): AbstractControl {
+        return this.form.controls['professionalTitle'];
+    }
+
+    get domicileDeclarationField(): AbstractControl {
+        return this.form.controls['domicileDeclaration'];
     }
 }

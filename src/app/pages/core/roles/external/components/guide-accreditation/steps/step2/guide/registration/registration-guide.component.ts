@@ -1,5 +1,5 @@
 import { Component, inject, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
-import { PhysicalSpaceComponent } from '@/pages/core/roles/external/components/accreditation/steps/step3/activities/agency/shared/physical-space/physical-space.component';
+import { PhysicalSpaceComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/physical-space/physical-space.component';
 import { AccreditedStaffLanguageComponent } from '@/pages/core/roles/external/components/accreditation/steps/step3/activities/agency/shared/accredited-staff-language/accredited-staff-language.component';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
@@ -7,15 +7,13 @@ import { CustomMessageService } from '@utils/services';
 import { TouristGuideComponent } from '@/pages/core/shared';
 import { AdventureTourismModalityComponent } from '@/pages/core/shared/components/adventure-tourism-modality/adventure-tourism-modality.component';
 import { Fluid } from 'primeng/fluid';
-import { SalesRepresentativeComponent } from '@/pages/core/shared/components/sales-representative/sales-representative.component';
-import { TouristTransportCompanyComponent } from '@/pages/core/shared/components/tourist-transport-company/tourist-transport-company.component';
 import { RegulationComponent } from '@/pages/core/shared/components/regulation/regulation.component';
 import { AgencyHttpService, FormStateService } from '@/pages/core/roles/external/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 
 @Component({
     selector: 'app-registration',
-    imports: [PhysicalSpaceComponent, AccreditedStaffLanguageComponent, Button, TouristGuideComponent, AdventureTourismModalityComponent, Fluid, SalesRepresentativeComponent, TouristTransportCompanyComponent, RegulationComponent],
+    imports: [PhysicalSpaceComponent, Button, Fluid],
     templateUrl: './registration-guide.component.html'
 })
 export class RegistrationGuideComponent {
@@ -61,7 +59,11 @@ export class RegistrationGuideComponent {
             return newData;
         });
 
-        this.formStateService.updateSection('process', this.mainData()['process']);
+        if (objectName) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
+    }
+
+    saveFiles(data: any, objectName?: string) {
+        if (objectName) this.formStateService.updateSection('files', data);
     }
 
     onSubmit() {
@@ -71,9 +73,10 @@ export class RegistrationGuideComponent {
     }
 
     saveProcess() {
-        this.agencyHttpService.createRegistration(this.formStateService.formState()).subscribe({
-            next: () => {}
-        });
+        console.log(this.formStateService.formState());
+        // this.agencyHttpService.createRegistration(this.formStateService.formState()).subscribe({
+        //     next: () => {}
+        // });
     }
 
     checkFormErrors() {
