@@ -23,7 +23,6 @@ import { JsonPipe } from '@angular/common';
 export class PhysicalSpaceComponent implements OnInit {
     public data = input<string>();
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
-    public filesOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
 
     protected readonly Validators = Validators;
     protected readonly PrimeIcons = PrimeIcons;
@@ -34,9 +33,11 @@ export class PhysicalSpaceComponent implements OnInit {
 
     protected form!: FormGroup;
 
+    protected requirements: CatalogueInterface[] = [];
     protected localTypes: CatalogueInterface[] = [];
     protected permanentPhysicalSpaces: CatalogueInterface[] = [];
-    protected requirements: Map<string, any> = new Map<string, any>();
+    protected responses: Map<string, any> = new Map<string, any>();
+    protected requirementItems: Map<any, any> = new Map();
     protected payload: FormData = new FormData();
     constructor() {}
 
@@ -60,14 +61,7 @@ export class PhysicalSpaceComponent implements OnInit {
 
     watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
-            const files = Array.from(this.requirements.entries()).map(([key, value]) => ({
-                key,
-                ...value
-            }));
-
-            this.dataOut.emit(Array.from(this.form.value));
-
-            this.filesOut.emit(Array.from(this.requirements.values()));
+            this.dataOut.emit(Array.from(this.responses.values()));
         });
     }
 
@@ -90,10 +84,13 @@ export class PhysicalSpaceComponent implements OnInit {
 
     loadData() {}
 
-    onFileSelect(requirement: string, event: any) {
-        let file = { file: event.files[0], requirement };
+    onFileSelect(requirement: CatalogueInterface, event: any) {
+        let file = {
+            file: event.files[0],
+            requirement
+        };
 
-        switch (requirement) {
+        switch (requirement.code) {
             case 'ruc':
                 this.rucField.patchValue(file);
                 break;
@@ -111,14 +108,17 @@ export class PhysicalSpaceComponent implements OnInit {
                 break;
         }
 
-        this.requirements.set(requirement, file);
-
-        console.log(this.requirements);
+        this.responses.set(requirement.id!, file);
     }
 
     async loadCatalogues() {
+        this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
         this.localTypes = await this.catalogueService.findByType(CatalogueTypeEnum.processes_local_type);
         this.permanentPhysicalSpaces = await this.catalogueService.findByType(CatalogueTypeEnum.process_agency_permanent_physical_space);
+
+        this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
+        console.log(this.requirements);
+        console.log(this.requirementItems);
     }
 
     get rucField(): AbstractControl {

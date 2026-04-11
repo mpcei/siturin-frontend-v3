@@ -99,6 +99,8 @@ export class Step2Component implements OnInit {
                 }
 
                 this.categories = await this.activityService.findCategoriesByClassification(classification.id);
+                console.log(this.categories);
+                this.categoryField.patchValue(this.categories[0]);
             }
         });
 

@@ -6,4 +6,5 @@ export { ParkHttpService } from './park-http.service';
 export { CtcHttpService } from './ctc-http.service';
 export { EventHttpService } from './event-http.service';
 export { FoodDrinkHttpService } from './food-drink-http.service';
+export { GuideHttpService } from './guide-http.service';
 export { FormStateService } from './form-state.service';

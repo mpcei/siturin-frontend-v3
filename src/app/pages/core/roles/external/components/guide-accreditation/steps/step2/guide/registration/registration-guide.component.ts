@@ -5,15 +5,14 @@ import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
 import { TouristGuideComponent } from '@/pages/core/shared';
-import { AdventureTourismModalityComponent } from '@/pages/core/shared/components/adventure-tourism-modality/adventure-tourism-modality.component';
-import { Fluid } from 'primeng/fluid';
 import { RegulationComponent } from '@/pages/core/shared/components/regulation/regulation.component';
-import { AgencyHttpService, FormStateService } from '@/pages/core/roles/external/services';
+import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
+import { AdventureTourismModalityComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
 
 @Component({
     selector: 'app-registration',
-    imports: [PhysicalSpaceComponent, Button, Fluid],
+    imports: [PhysicalSpaceComponent, Button, AdventureTourismModalityComponent],
     templateUrl: './registration-guide.component.html'
 })
 export class RegistrationGuideComponent {
@@ -29,7 +28,7 @@ export class RegistrationGuideComponent {
     private mainData: WritableSignal<Record<string, any>> = signal({});
 
     protected readonly customMessageService = inject(CustomMessageService);
-    protected readonly agencyHttpService = inject(AgencyHttpService);
+    protected readonly guideHttpService = inject(GuideHttpService);
     protected readonly formStateService = inject(FormStateService);
 
     constructor() {
@@ -59,11 +58,8 @@ export class RegistrationGuideComponent {
             return newData;
         });
 
-        if (objectName) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
-    }
-
-    saveFiles(data: any, objectName?: string) {
-        if (objectName) this.formStateService.updateSection('files', data);
+        if (objectName?.includes('processGuides')) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
+        if (objectName?.includes('adventureModality')) this.formStateService.updateSection('adventureModality', this.mainData()[objectName]);
     }
 
     onSubmit() {
@@ -73,10 +69,41 @@ export class RegistrationGuideComponent {
     }
 
     saveProcess() {
-        console.log(this.formStateService.formState());
-        // this.agencyHttpService.createRegistration(this.formStateService.formState()).subscribe({
-        //     next: () => {}
-        // });
+        const processGuides: any[] = [];
+        const adventureModalities: any[] = [];
+
+        const formData = new FormData();
+
+        Object.values(this.formStateService.processGuides()).forEach((x: any) => {
+            processGuides.push({ requirement: x.requirement, value: '1' });
+
+            formData.append(x.requirement.id, x.file);
+        });
+
+        // processGuides.push({ requirement: x.requirement, value: '1' });
+
+        Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
+            adventureModalities.push({
+                modalityCode: x.type.code,
+                modalityName: x.type.name,
+                modalityCertificateCode: x.certifier.code,
+                modalityCertificateName: x.certifier.name
+            });
+
+            formData.append(x.type.code, x.file);
+        });
+
+        const payload = {
+            user: this.formStateService.user(),
+            process: this.formStateService.process(),
+            establishment: this.formStateService.establishment(),
+            processGuides: processGuides
+        };
+
+        formData.append('payload', JSON.stringify(payload));
+        this.guideHttpService.createRegistration(formData).subscribe({
+            next: () => {}
+        });
     }
 
     checkFormErrors() {

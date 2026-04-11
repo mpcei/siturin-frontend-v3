@@ -1,13 +1,20 @@
 <div class="custom-form-card">
     <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12">
+            <h3>
+                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO PARA
+                "GUÍA DE TURISMO LOCAL POR PRIMERA VEZ"
+            </h3>
+        </div>
+
         <!-- ruc -->
-        <div class="md:col-span-12 custom-form-field">
+        <div class="custom-form-field md:col-span-12">
             <label
                 appLabel
                 for="ruc"
                 [required]="rucField">
-                Registro Único de Contribuyentes (RUC) u otro que determine la Autoridad Nacional Tributaria, en
-                el que conste como actividad económica la guianza turística.
+                <div [innerHTML]="requirementItems.get('ruc')?.name"></div>
             </label>
 
             <p-fileupload
@@ -21,7 +28,7 @@
                 [maxFileSize]="10485760"
                 [auto]="true"
                 [customUpload]="true"
-                (uploadHandler)="onFileSelect('ruc',$event)">
+                (uploadHandler)="onFileSelect(requirementItems.get('ruc'),$event)">
             </p-fileupload>
 
             @if (rucField.value) {
@@ -36,20 +43,12 @@
         </div>
 
         <!-- photo -->
-        <div class="md:col-span-12 custom-form-field">
+        <div class="custom-form-field md:col-span-12">
             <label
                 appLabel
                 for="photo"
                 [required]="photoField">
-                Fotografía emitida en los últimos 6 meses, con las siguientes características:
-                <ul class="list-disc pl-5">
-                    <li>Rostro (cabeza recta, mirando al frente)</li>
-                    <li>Tipo carné (dimensiones: 30 milímetros de ancho x 45 milímetros de alto)</li>
-                    <li>Fondo blanco</li>
-                    <li>Sin accesorios (gorra, sombrero, gafas, lentes, joyas, entre otros)</li>
-                    <li>Cabello recogido</li>
-                    <li>Máximo 1 megabyte de peso</li>
-                </ul>
+                <div [innerHTML]="requirementItems.get('photo')?.name"></div>
             </label>
 
             <p-fileupload
@@ -63,7 +62,7 @@
                 [maxFileSize]="10485760"
                 [auto]="true"
                 [customUpload]="true"
-                (uploadHandler)="onFileSelect('photo',$event)">
+                (uploadHandler)="onFileSelect(requirementItems.get('photo'),$event)">
             </p-fileupload>
 
             @if (photoField.value) {

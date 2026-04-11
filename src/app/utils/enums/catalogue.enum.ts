@@ -20,6 +20,8 @@ export enum CatalogueTypeEnum {
     adventure_tourism_modalities_air = 'adventure_tourism_modalities_air',
     adventure_tourism_modalities_land = 'adventure_tourism_modalities_land',
     adventure_tourism_modalities_water = 'adventure_tourism_modalities_water',
+    adventure_tourism_modalities_name = 'adventure_tourism_modalities_name',
+    adventure_tourism_modalities_certifier = 'adventure_tourism_modalities_certifier',
     process_agency_permanent_physical_space = 'process_agency_permanent_physical_space',
     processes_local_type = 'processes_local_type',
     processes_type = 'processes_type',
@@ -37,7 +39,8 @@ export enum CatalogueTypeEnum {
     process_food_drinks_establishment_type = 'process_food_drinks_establishment_type',
     service_types_continent = 'service_types_continent',
     transport_vehicle_types = 'transporte_tipo_vehiculos',
-    process_transport_airline_type = 'process_transport_airline_type'
+    process_transport_airline_type = 'process_transport_airline_type',
+    requirement_item = 'requirement_item'
 }
 
 export enum CatalogueStateEnum {
@@ -81,7 +84,7 @@ export enum CatalogueProcessesStateEnum {
 export enum CatalogueActivitiesGeographicAreaEnum {
     continent = 'continent',
     galapagos = 'galapagos',
-    galapagos_code = '20',
+    galapagos_code = '20'
 }
 
 export enum CatalogueActivitiesCodeEnum {

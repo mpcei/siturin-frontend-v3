@@ -65,12 +65,10 @@
             }
 
             <td>
-                <app-button-action
-                    [buttonActions]="buttonActions()"
-                    [enabled]="isButtonActionsEnabled()"
-                    (isHide)="isButtonActionsEnabled.set($event)"
-                    (click)="selectItem(item,rowIndex)">
-                </app-button-action>
+                <p-button
+                    [raised]="true"
+                    [icon]="FontAwesome.ELLIPSIS_VERTICAL_SOLID"
+                    (click)="onSelect.emit({item,rowIndex})" />
             </td>
         </tr>
     </ng-template>
