@@ -3,24 +3,14 @@
         <!-- title -->
         <div class="custom-form-title md:col-span-12">
             <h3>MODALIDADES DE AVENTURA</h3>
-
-            <p-message severity="info">
-                <p class="font-bold text-lg">Importante:</p>
-
-                <p>
-                    En caso de que realice las modalidades de aventura de senderismo, cabalgata, espeleología,
-                    cicloturismo y las demás que determine la Autoridad Nacional de Turismo. Adjuntar el certificado
-                    de aprobación del curso de capacitación específico de la modalidad de aventura que
-                    corresponda
-                </p>
-            </p-message>
         </div>
 
         <!-- hasAdventureTourismModality -->
         <div class="custom-form-field md:col-span-12">
             <label appLabel for="hasAdventureTourismModality"
-                   label="¿Su Establecimiento oferta alguna modalidad de turismo de aventura?"
-                   [required]="hasAdventureTourismModalityField"></label>
+                   [required]="hasAdventureTourismModalityField">
+                <div [innerHTML]="requirementField.value?.name"></div>
+            </label>
 
             <app-toggle-switch id="hasAdventureTourismModality" formControlName="hasAdventureTourismModality" />
 
@@ -54,7 +44,7 @@
     [(visible)]="isVisibleModal"
     [modal]="true"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-    [style]="{ width: '25vw' }"
+    [style]="{ width: '40vw' }"
     [draggable]="false"
     (onHide)="closeModal()"
     [resizable]="false"
@@ -67,26 +57,26 @@
 
     <div class="custom-form-card">
         <form [formGroup]="modalityForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
-            <!-- type -->
+            <!-- modality -->
             <div class="md:col-span-12 flex flex-col gap-2">
                 <label
                     appLabel
-                    for="type"
+                    for="modality"
                     label="Modalidad"
-                    [required]="typeField"></label>
+                    [required]="modalityField"></label>
 
                 <p-select
                     id="modality"
-                    formControlName="type"
+                    formControlName="modality"
                     [options]="availableModalities"
                     optionLabel="name"
                     appendTo="body" />
 
                 <small
                     appErrorMessage
-                    [errors]="typeField.errors"
-                    [touched]="typeField.touched"
-                    [dirty]="typeField.dirty"></small>
+                    [errors]="modalityField.errors"
+                    [touched]="modalityField.touched"
+                    [dirty]="modalityField.dirty"></small>
             </div>
 
             <!-- certifier -->
@@ -130,11 +120,13 @@
                     [maxFileSize]="10485760"
                     [auto]="true"
                     [customUpload]="true"
-                    (uploadHandler)="onFileSelect(typeField.value,$event)">
+                    (uploadHandler)="onFileSelect(modalityField.value,$event)">
                 </p-fileupload>
 
                 @if (fileField.value) {
-                    {{ fileField.value.name | json }}
+                    <p-message severity="info">
+                        {{ fileField.value.file.name | json }}
+                    </p-message>
                 }
 
                 <small

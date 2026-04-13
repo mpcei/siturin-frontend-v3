@@ -18,7 +18,6 @@ import { deleteButtonAction } from '@utils/components/button-action/consts';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { RegulationComponent } from '@/pages/core/shared/components/regulation/regulation.component';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
@@ -26,7 +25,7 @@ import { ButtonActionComponent } from '@utils/components/button-action/button-ac
 export interface AdventureTourismModalityInterface {
     id?: string;
     certifier?: CatalogueInterface;
-    type?: CatalogueInterface;
+    modality?: CatalogueInterface;
     file?: any;
 }
 
@@ -47,7 +46,6 @@ export interface AdventureTourismModalityInterface {
         ConfirmDialogModule,
         ListBasicComponent,
         DialogModule,
-        RegulationComponent,
         ToggleSwitchComponent,
         FileUpload,
         ButtonActionComponent
@@ -76,12 +74,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     protected isButtonActionsEnabled: boolean = false;
 
     protected availableModalities: CatalogueInterface[] = [];
-    protected classModalities: CatalogueInterface[] = [];
-    protected waterModalities: CatalogueInterface[] = [];
-    protected landModalities: CatalogueInterface[] = [];
-    protected airModalities: CatalogueInterface[] = [];
     protected certifiers: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
+    protected requirements: CatalogueInterface[] = [];
 
     constructor() {
         effect(async () => {
@@ -115,7 +110,7 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     buildColumns() {
         this.cols = [
-            { header: 'Modalidad', field: 'type', type: 'object' },
+            { header: 'Modalidad', field: 'modality', type: 'object' },
             { header: 'Organismos Certificadores', field: 'certifier', type: 'object' },
             { header: 'Certificación de habilidad o el certificado de aprobación', field: 'file', type: 'object' }
         ];
@@ -125,12 +120,13 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.modalityForm = this.formBuilder.group({
             id: [null],
             className: [null],
-            type: [null, Validators.required],
+            modality: [null, Validators.required],
             certifier: [null, Validators.required],
             file: [null, Validators.required]
         });
 
         this.form = this.formBuilder.group({
+            requirement: [null, Validators.required],
             hasAdventureTourismModality: false,
             adventureTourismModalities: []
         });
@@ -142,18 +138,19 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.hasAdventureTourismModalityField.valueChanges.subscribe((value) => {
             this.adventureTourismModalitiesField.setValue(this.items);
 
+            console.log(this.form.value);
+
             this.dataOut.emit(this.form.value);
         });
     }
 
     async loadCatalogues() {
-        this.classModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities);
-        this.airModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_air);
-        this.landModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_land);
-        this.waterModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_water);
         this.availableModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name);
         this.certifiers = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name); //review cambiar por el catalogo correspondiente
-        console.log(this.availableModalities);
+        this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
+        console.log(this.requirements);
+        console.log(this.requirements.find((x) => x.code === 'modality_aventure'));
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure'));
     }
 
     onSubmit() {
@@ -165,8 +162,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     validateModalityForm() {
         const errors: string[] = [];
 
-        if (this.classNameField.invalid) errors.push('Clase');
-        if (this.typeField.invalid) errors.push('Modalidad');
+        if (this.modalityField.invalid) errors.push('Modalidad');
         if (this.certifierField.invalid) errors.push('Organismos Certificadores');
         if (this.fileField.invalid) errors.push('Certificación de habilidad o el certificado de aprobación');
 
@@ -203,7 +199,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     createAdventureTourismModality() {
-        const exists = this.items.some((item) => item.type?.code === this.typeField.value?.code);
+        const exists = this.items.some((item) => item.modality?.code === this.modalityField.value?.code);
 
         if (exists) {
             this.customMessageService.showError({
@@ -215,7 +211,7 @@ export class AdventureTourismModalityComponent implements OnInit {
 
         this.items.push({
             certifier: this.certifierField.value,
-            type: this.typeField.value,
+            modality: this.modalityField.value,
             file: this.fileField.value
         });
 
@@ -241,7 +237,7 @@ export class AdventureTourismModalityComponent implements OnInit {
                 label: 'Sí, Eliminar'
             },
             accept: () => {
-                this.items = this.items.filter((item) => item.type?.id !== modality?.type?.id);
+                this.items = this.items.filter((item) => item.modality?.id !== modality?.modality?.id);
 
                 this.adventureTourismModalitiesField.setValue(this.items);
 
@@ -263,18 +259,13 @@ export class AdventureTourismModalityComponent implements OnInit {
         };
 
         this.fileField.patchValue(event.files[0]);
-        console.log(this.fileField.value);
 
         this.responses.set(modality.id!, file);
     }
 
     // Getter Modality Form
-    get classNameField(): AbstractControl {
-        return this.modalityForm.get('className')!;
-    }
-
-    get typeField(): AbstractControl {
-        return this.modalityForm.get('type')!;
+    get modalityField(): AbstractControl {
+        return this.modalityForm.get('modality')!;
     }
 
     get certifierField(): AbstractControl {
@@ -284,7 +275,12 @@ export class AdventureTourismModalityComponent implements OnInit {
     get fileField(): AbstractControl {
         return this.modalityForm.controls['file'];
     }
+
     // Getters Form
+    get requirementField(): AbstractControl {
+        return this.form.controls['requirement'];
+    }
+
     get hasAdventureTourismModalityField(): AbstractControl {
         return this.form.controls['hasAdventureTourismModality'];
     }

@@ -80,27 +80,30 @@ export class RegistrationGuideComponent {
             formData.append(x.requirement.id, x.file);
         });
 
-        // processGuides.push({ requirement: x.requirement, value: '1' });
+        processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
 
         Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
             adventureModalities.push({
-                modalityCode: x.type.code,
-                modalityName: x.type.name,
+                modalityCode: x.modality.code,
+                modalityName: x.modality.name,
                 modalityCertificateCode: x.certifier.code,
                 modalityCertificateName: x.certifier.name
             });
 
-            formData.append(x.type.code, x.file);
+            formData.append(x.modality.id, x.file);
         });
 
         const payload = {
             user: this.formStateService.user(),
             process: this.formStateService.process(),
             establishment: this.formStateService.establishment(),
-            processGuides: processGuides
+            processGuides: processGuides,
+            adventureModalities: adventureModalities
         };
 
         formData.append('payload', JSON.stringify(payload));
+        console.log(formData.values());
+        console.log(payload);
         this.guideHttpService.createRegistration(formData).subscribe({
             next: () => {}
         });

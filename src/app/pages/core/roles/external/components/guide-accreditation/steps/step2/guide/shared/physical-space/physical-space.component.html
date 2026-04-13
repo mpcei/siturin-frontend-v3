@@ -32,7 +32,9 @@
             </p-fileupload>
 
             @if (rucField.value) {
-                {{ rucField.value.file.name | json }}
+                <p-message severity="info">
+                    {{ rucField.value.file.name | json }}
+                </p-message>
             }
 
             <small
@@ -66,7 +68,10 @@
             </p-fileupload>
 
             @if (photoField.value) {
-                {{ photoField.value.file.name | json }}
+                <img [src]="photoField.value.img" width="300px" alt="">
+                <p-message severity="info">
+                    {{ photoField.value.file.name | json }}
+                </p-message>
             }
 
             <small

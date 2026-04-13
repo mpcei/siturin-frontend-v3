@@ -34,10 +34,8 @@ export class PhysicalSpaceComponent implements OnInit {
     protected form!: FormGroup;
 
     protected requirements: CatalogueInterface[] = [];
-    protected localTypes: CatalogueInterface[] = [];
-    protected permanentPhysicalSpaces: CatalogueInterface[] = [];
-    protected responses: Map<string, any> = new Map<string, any>();
     protected requirementItems: Map<any, any> = new Map();
+    protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     constructor() {}
 
@@ -87,7 +85,8 @@ export class PhysicalSpaceComponent implements OnInit {
     onFileSelect(requirement: CatalogueInterface, event: any) {
         let file = {
             file: event.files[0],
-            requirement
+            requirement,
+            img: URL.createObjectURL(event.files[0])
         };
 
         switch (requirement.code) {
@@ -113,12 +112,7 @@ export class PhysicalSpaceComponent implements OnInit {
 
     async loadCatalogues() {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
-        this.localTypes = await this.catalogueService.findByType(CatalogueTypeEnum.processes_local_type);
-        this.permanentPhysicalSpaces = await this.catalogueService.findByType(CatalogueTypeEnum.process_agency_permanent_physical_space);
-
         this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
-        console.log(this.requirements);
-        console.log(this.requirementItems);
     }
 
     get rucField(): AbstractControl {
