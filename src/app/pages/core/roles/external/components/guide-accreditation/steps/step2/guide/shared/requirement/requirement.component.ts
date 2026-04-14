@@ -1,10 +1,7 @@
-import { Component, EventEmitter, inject, input, Input, OnInit, output, Output, OutputEmitterRef } from '@angular/core';
+import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { Fluid } from 'primeng/fluid';
 import { PrimeIcons } from 'primeng/api';
-import { Select } from 'primeng/select';
-import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Message } from 'primeng/message';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
@@ -16,11 +13,11 @@ import { FileUpload } from 'primeng/fileupload';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-physical-space',
-    imports: [Fluid, ReactiveFormsModule, LabelDirective, Select, Message, ErrorMessageDirective, ToggleSwitch, FileUpload, JsonPipe],
-    templateUrl: './physical-space.component.html'
+    selector: 'app-requirement',
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe],
+    templateUrl: './requirement.component.html'
 })
-export class PhysicalSpaceComponent implements OnInit {
+export class RequirementComponent implements OnInit {
     public data = input<string>();
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
 
@@ -83,6 +80,32 @@ export class PhysicalSpaceComponent implements OnInit {
     loadData() {}
 
     onFileSelect(requirement: CatalogueInterface, event: any) {
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(event.files[0]);
+
+        img.onload = () => {
+            const width = img.width;
+            const height = img.height;
+
+            // Dimensiones esperadas (aprox)
+            const expectedWidth = 354;
+            const expectedHeight = 531;
+
+            // Tolerancia (opcional)
+            const tolerance = 10;
+
+            if (Math.abs(width - expectedWidth) <= tolerance && Math.abs(height - expectedHeight) <= tolerance) {
+                console.log('Imagen válida ✅');
+            } else {
+                console.error('Imagen NO válida ❌');
+                alert('La imagen debe ser tipo carné (30mm x 45mm)');
+            }
+
+            URL.revokeObjectURL(objectUrl);
+        };
+
+        img.src = objectUrl;
+
         let file = {
             file: event.files[0],
             requirement,

@@ -9,10 +9,13 @@ import { RegulationComponent } from '@/pages/core/shared/components/regulation/r
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { AdventureTourismModalityComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
+import {
+    RequirementComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
 
 @Component({
     selector: 'app-registration',
-    imports: [PhysicalSpaceComponent, Button, AdventureTourismModalityComponent],
+    imports: [PhysicalSpaceComponent, Button, AdventureTourismModalityComponent, RequirementComponent],
     templateUrl: './registration-guide.component.html'
 })
 export class RegistrationGuideComponent {
@@ -90,7 +93,7 @@ export class RegistrationGuideComponent {
                 modalityCertificateName: x.certifier.name
             });
 
-            formData.append(x.modality.id, x.file);
+            formData.append(x.modality.code, x.file);
         });
 
         const payload = {
@@ -102,8 +105,7 @@ export class RegistrationGuideComponent {
         };
 
         formData.append('payload', JSON.stringify(payload));
-        console.log(formData.values());
-        console.log(payload);
+
         this.guideHttpService.createRegistration(formData).subscribe({
             next: () => {}
         });

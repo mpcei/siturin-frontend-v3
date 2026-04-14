@@ -119,7 +119,6 @@ export class AdventureTourismModalityComponent implements OnInit {
     buildForm() {
         this.modalityForm = this.formBuilder.group({
             id: [null],
-            className: [null],
             modality: [null, Validators.required],
             certifier: [null, Validators.required],
             file: [null, Validators.required]
@@ -148,8 +147,6 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.availableModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name);
         this.certifiers = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name); //review cambiar por el catalogo correspondiente
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
-        console.log(this.requirements);
-        console.log(this.requirements.find((x) => x.code === 'modality_aventure'));
         this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure'));
     }
 
@@ -260,12 +257,12 @@ export class AdventureTourismModalityComponent implements OnInit {
 
         this.fileField.patchValue(event.files[0]);
 
-        this.responses.set(modality.id!, file);
+        this.responses.set(modality.code!, file);
     }
 
     // Getter Modality Form
     get modalityField(): AbstractControl {
-        return this.modalityForm.get('modality')!;
+        return this.modalityForm.controls['modality'];
     }
 
     get certifierField(): AbstractControl {
