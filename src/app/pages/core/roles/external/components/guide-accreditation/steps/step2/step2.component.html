@@ -1,11 +1,8 @@
 <form [formGroup]="form" class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-
         <!-- Section Name -->
-        <div class="md:col-span-12 custom-form-field">
-            <div class="custom-section-title-form">
-                Seleccione la Actividad y/o Modalidad Turística; clasificación y categoría de ser el caso
-            </div>
+        <div class="md:col-span-12 custom-form-title">
+            Seleccione la Actividad y/o Modalidad Turística; clasificación y categoría de ser el caso
         </div>
 
         <!-- geographicArea -->
@@ -108,6 +105,6 @@
 </form>
 
 @if (activityField.value && classificationField.value) {
-    <app-guide [processTypeCode]="process?.type?.code!"  />
+    <app-guide [processTypeCode]="process?.type?.code!" />
 }
 

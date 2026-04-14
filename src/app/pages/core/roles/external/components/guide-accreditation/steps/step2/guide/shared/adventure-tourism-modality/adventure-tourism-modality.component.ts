@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Fluid } from 'primeng/fluid';
@@ -15,7 +15,7 @@ import { ListBasicComponent } from '@utils/components/list-basic/list-basic.comp
 import { DialogModule } from 'primeng/dialog';
 import { CatalogueInterface, ColInterface } from '@utils/interfaces';
 import { deleteButtonAction } from '@utils/components/button-action/consts';
-import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
+import { CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
@@ -53,8 +53,7 @@ export interface AdventureTourismModalityInterface {
     templateUrl: './adventure-tourism-modality.component.html'
 })
 export class AdventureTourismModalityComponent implements OnInit {
-    @Output() dataOut = new EventEmitter<Record<string, any>>();
-    @Input() modelId!: string | undefined;
+    public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
 
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -62,7 +61,6 @@ export class AdventureTourismModalityComponent implements OnInit {
     private readonly confirmationService = inject(ConfirmationService);
     private readonly catalogueService = inject(CatalogueService);
     protected readonly customMessageService = inject(CustomMessageService);
-    protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
 
     protected form!: FormGroup;
     protected modalityForm!: FormGroup;
@@ -75,24 +73,15 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     protected availableModalities: CatalogueInterface[] = [];
     protected certifiers: CatalogueInterface[] = [];
-    protected responses: Map<string, any> = new Map<string, any>();
     protected requirements: CatalogueInterface[] = [];
+    protected responses: Map<string, any> = new Map<string, any>();
 
-    constructor() {
-        effect(async () => {
-            const processSignal = this.coreSessionStorageService.processSignal();
-
-            if (processSignal) {
-                if (processSignal.classification?.hasRegulation) this.modelId = processSignal.classification.id;
-                if (processSignal.category?.hasRegulation) this.modelId = processSignal.category.id;
-            }
-        });
-    }
+    constructor() {}
 
     async ngOnInit() {
         this.buildForm();
         this.buildColumns();
-        this.loadCatalogues();
+        await this.loadCatalogues();
     }
 
     buildButtonActions(item: any, index: number) {
@@ -134,19 +123,23 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     watchFormChanges() {
-        this.hasAdventureTourismModalityField.valueChanges.subscribe((value) => {
-            this.adventureTourismModalitiesField.setValue(this.items);
-
-            console.log(this.form.value);
-
-            this.dataOut.emit(this.form.value);
+        this.hasAdventureTourismModalityField.valueChanges.subscribe((_) => {
+            this.updateFormAndEmit();
         });
     }
 
     async loadCatalogues() {
-        this.availableModalities = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name);
-        this.certifiers = await this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name); //review cambiar por el catalogo correspondiente
-        this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
+        const [modalities, certifiers, requirements] = await Promise.all([
+            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name),
+            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), //review cambiar por el catalogo correspondiente
+            this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
+        ]);
+
+        this.availableModalities = modalities;
+        this.certifiers = certifiers;
+        this.requirements = requirements;
+
+        console.log(requirements);
         this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure'));
     }
 
@@ -196,25 +189,26 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     createAdventureTourismModality() {
-        const exists = this.items.some((item) => item.modality?.code === this.modalityField.value?.code);
+        const modality = this.modalityField.value;
 
-        if (exists) {
+        if (this.items.some((i) => i.modality?.code === modality?.code)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
-                detail: 'La modalidad ya fue agregada'
+                detail: 'La modalidad ya existe'
             });
             return;
         }
 
-        this.items.push({
-            certifier: this.certifierField.value,
-            modality: this.modalityField.value,
-            file: this.fileField.value
-        });
+        this.items = [
+            ...this.items,
+            {
+                certifier: this.certifierField.value,
+                modality,
+                file: this.fileField.value
+            }
+        ];
 
-        this.adventureTourismModalitiesField.setValue(this.items);
-
-        this.dataOut.emit(this.form.value);
+        this.updateFormAndEmit();
 
         this.closeModal();
     }
@@ -236,9 +230,7 @@ export class AdventureTourismModalityComponent implements OnInit {
             accept: () => {
                 this.items = this.items.filter((item) => item.modality?.id !== modality?.modality?.id);
 
-                this.adventureTourismModalitiesField.setValue(this.items);
-
-                this.dataOut.emit(this.form.value);
+                this.updateFormAndEmit();
             },
             key: 'confirmdialog'
         });
@@ -250,14 +242,21 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     onFileSelect(modality: CatalogueInterface, event: any) {
-        let file = {
-            file: event.files[0],
+        const file = event.files?.[0] as File;
+
+        if (!file) return;
+
+        this.fileField.patchValue(file);
+
+        this.responses.set(modality.code!, {
+            file,
             modality
-        };
+        });
+    }
 
-        this.fileField.patchValue(event.files[0]);
-
-        this.responses.set(modality.code!, file);
+    private updateFormAndEmit() {
+        this.adventureTourismModalitiesField.setValue(this.items);
+        this.dataOut.emit(this.form.getRawValue());
     }
 
     // Getter Modality Form
