@@ -69,23 +69,26 @@ export class RegistrationGuideComponent {
         const formData = new FormData();
 
         Object.values(this.formStateService.processGuides()).forEach((x: any) => {
-            processGuides.push({ requirement: x.requirement, value: '1' });
+            processGuides.push({ requirement: x.requirement, value: x.requirement.value });
 
             formData.append(x.requirement.id, x.file);
         });
 
-        processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
+        console.log(this.formStateService.adventureModality());
+        if (this.formStateService.adventureModality()) {
+            processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
 
-        Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
-            adventureModalities.push({
-                modalityCode: x.modality.code,
-                modalityName: x.modality.name,
-                modalityCertificateCode: x.certifier.code,
-                modalityCertificateName: x.certifier.name
+            Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
+                adventureModalities.push({
+                    modalityCode: x.modality.code,
+                    modalityName: x.modality.name,
+                    modalityCertificateCode: x.certifier.code,
+                    modalityCertificateName: x.certifier.name
+                });
+
+                formData.append(x.modality.code, x.file);
             });
-
-            formData.append(x.modality.code, x.file);
-        });
+        }
 
         const payload = {
             user: this.formStateService.user(),

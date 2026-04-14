@@ -11,10 +11,12 @@ import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { FileUpload } from 'primeng/fileupload';
 import { JsonPipe } from '@angular/common';
+import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
+import { Divider } from 'primeng/divider';
 
 @Component({
     selector: 'app-requirement',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, ToggleSwitchComponent, Divider],
     templateUrl: './requirement.component.html'
 })
 export class RequirementComponent implements OnInit {
@@ -45,10 +47,11 @@ export class RequirementComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
+            titleBachiller: ['Guia de Turismo', Validators.required],
             photo: [null, [Validators.required]],
-            certificationGuideLocal: [false, Validators.required],
-            professionalTitle: [false, Validators.required],
-            domicileDeclaration: [false, Validators.required]
+            certificationGuideLocal: [null, Validators.required],
+            certificationAuxWild24: [null, Validators.required],
+            domicileDeclaration: [null, Validators.requiredTrue]
         });
 
         this.watchFormChanges();
@@ -56,18 +59,34 @@ export class RequirementComponent implements OnInit {
 
     watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
+            console.log(Array.from(this.responses.values()));
+
             this.dataOut.emit(Array.from(this.responses.values()));
+        });
+
+        this.domicileDeclarationField.valueChanges.subscribe((value) => {
+            if (value) {
+                let data = {
+                    requirement: {
+                        ...this.requirementItems.get('domicile_declaration'),
+                        value
+                    }
+                };
+
+                this.responses.set(value.id!, data);
+            }
         });
     }
 
     getFormErrors(): string[] {
         const errors: string[] = [];
 
-        if (this.rucField.invalid) errors.push('RUC');
-        if (this.photoField.invalid) errors.push('Fotografía');
-        if (this.certificationGuideLocalField.invalid) errors.push('Certificado Guia Local');
-        if (this.professionalTitleField.invalid) errors.push('Titulo Profesional');
-        if (this.domicileDeclarationField.invalid) errors.push('Declaración de Domicilio');
+        if (this.rucField.invalid) errors.push('Registro Único de Contribuyentes (RUC)');
+        if (this.photoField.invalid) errors.push('Fotografía emitida en los últimos 6 meses');
+        if (this.certificationGuideLocalField.invalid) errors.push('Certificado  de  aprobación del  curso  para  guía  de  turismo local  del  cantón  en  la  que realizará la actividad de guianza');
+        if (this.certificationAuxWild24Field.invalid) errors.push('Certificado vigente de aprobación del curso de primeros auxilios en zonas agrestes en modalidad presencial');
+        if (this.titleBachillerField.invalid) errors.push('Título de bachiller reconocido por la autoridad nacional competente a nivel nacional ');
+        if (this.domicileDeclarationField.invalid) errors.push('Declaración responsable del domicilio del solicitante que ejercerá la actividad de guianza turística');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -77,6 +96,12 @@ export class RequirementComponent implements OnInit {
         return [];
     }
 
+    changeDomicileDeclaration(event: any) {
+        this.domicileDeclarationField.patchValue({
+            ...this.domicileDeclarationField.value,
+            value: event.target.checked
+        });
+    }
     loadData() {}
 
     onFileSelect(requirement: CatalogueInterface, event: any) {
@@ -106,40 +131,45 @@ export class RequirementComponent implements OnInit {
 
         img.src = objectUrl;
 
-        let file = {
+        let data = {
             file: event.files[0],
-            requirement,
+            requirement: { ...requirement, value: 'file' },
             img: URL.createObjectURL(event.files[0])
         };
 
         switch (requirement.code) {
             case 'ruc':
-                this.rucField.patchValue(file);
+                this.rucField.patchValue(data);
+                break;
+            case 'title_bachiller':
+                this.titleBachillerField.patchValue(data);
                 break;
             case 'photo':
-                this.photoField.patchValue(file);
+                this.photoField.patchValue(data);
                 break;
-            case 'certificationGuideLocal':
-                this.certificationGuideLocalField.patchValue(file);
+            case 'certification_guide_local':
+                this.certificationGuideLocalField.patchValue(data);
                 break;
-            case 'professionalTitle':
-                this.professionalTitleField.patchValue(file);
-                break;
-            case 'domicileDeclaration':
-                this.domicileDeclarationField.patchValue(file);
+            case 'certification_aux_wild_24':
+                this.certificationAuxWild24Field.patchValue(data);
                 break;
         }
 
-        this.responses.set(requirement.id!, file);
+        this.responses.set(requirement.id!, data);
     }
 
     async loadCatalogues() {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
+
         this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
     }
 
     get rucField(): AbstractControl {
         return this.form.controls['ruc'];
+    }
+
+    get titleBachillerField(): AbstractControl {
+        return this.form.controls['titleBachiller'];
     }
 
     get photoField(): AbstractControl {
@@ -150,8 +180,8 @@ export class RequirementComponent implements OnInit {
         return this.form.controls['certificationGuideLocal'];
     }
 
-    get professionalTitleField(): AbstractControl {
-        return this.form.controls['professionalTitle'];
+    get certificationAuxWild24Field(): AbstractControl {
+        return this.form.controls['certificationAuxWild24'];
     }
 
     get domicileDeclarationField(): AbstractControl {

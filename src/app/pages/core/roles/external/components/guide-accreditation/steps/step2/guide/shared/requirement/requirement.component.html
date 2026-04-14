@@ -14,14 +14,14 @@
                 appLabel
                 for="ruc"
                 [required]="rucField">
-                <span [innerHTML]="requirementItems.get('ruc')?.name"></span>
+                <div [innerHTML]="requirementItems.get('ruc')?.name"></div>
             </label>
 
             <p-fileupload
-                id="file"
+                id="ruc"
                 name="ruc"
                 mode="basic"
-                chooseLabel="Buscar RUC"
+                chooseLabel="Examinar"
                 [chooseIcon]="PrimeIcons.SEARCH"
                 uploadLabel="Subir archivo"
                 accept="application/pdf"
@@ -33,7 +33,7 @@
 
             @if (rucField.value) {
                 <p-message severity="info">
-                    {{ rucField.value.file.name | json }}
+                    {{ rucField.value.file.name }}
                 </p-message>
             }
 
@@ -42,6 +42,32 @@
                 [errors]="rucField.errors"
                 [touched]="rucField.touched"
                 [dirty]="rucField.dirty"></small>
+
+            <p-divider/>
+        </div>
+
+        <!-- titleBachiller -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="titleBachiller"
+                [required]="titleBachillerField">
+                <div [innerHTML]="requirementItems.get('title_bachiller')?.name"></div>
+            </label>
+
+            @if (titleBachillerField.value) {
+                <p-message severity="info">
+                    {{ titleBachillerField.value }}
+                </p-message>
+            }
+
+            <small
+                appErrorMessage
+                [errors]="titleBachillerField.errors"
+                [touched]="titleBachillerField.touched"
+                [dirty]="titleBachillerField.dirty"></small>
+
+            <p-divider/>
         </div>
 
         <!-- photo -->
@@ -57,7 +83,7 @@
                 id="photo"
                 name="photo"
                 mode="basic"
-                chooseLabel="Buscar fotografía"
+                chooseLabel="Examinar"
                 [chooseIcon]="PrimeIcons.SEARCH"
                 uploadLabel="Subir archivo"
                 accept="image/*"
@@ -79,6 +105,102 @@
                 [errors]="photoField.errors"
                 [touched]="photoField.touched"
                 [dirty]="photoField.dirty"></small>
+
+            <p-divider/>
+        </div>
+
+        <!-- certificationGuideLocal -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="certificationGuideLocal"
+                [required]="certificationGuideLocalField">
+                <div [innerHTML]="requirementItems.get('certification_guide_local')?.name"></div>
+            </label>
+
+            <p-fileupload
+                id="certificationGuideLocal"
+                name="certificationGuideLocal"
+                mode="basic"
+                chooseLabel="Examinar"
+                [chooseIcon]="PrimeIcons.SEARCH"
+                uploadLabel="Subir archivo"
+                accept="application/pdf"
+                [maxFileSize]="10485760"
+                [auto]="true"
+                [customUpload]="true"
+                (uploadHandler)="onFileSelect(requirementItems.get('certification_guide_local'),$event)">
+            </p-fileupload>
+
+            @if (certificationGuideLocalField.value) {
+                <p-message severity="info">
+                    {{ certificationGuideLocalField.value.file.name }}
+                </p-message>
+            }
+
+            <small
+                appErrorMessage
+                [errors]="certificationGuideLocalField.errors"
+                [touched]="certificationGuideLocalField.touched"
+                [dirty]="certificationGuideLocalField.dirty"></small>
+
+            <p-divider/>
+        </div>
+
+        <!-- certificationAuxWild24 -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="certificationAuxWild24"
+                [required]="certificationAuxWild24Field">
+                <div [innerHTML]="requirementItems.get('certification_aux_wild_24')?.name"></div>
+            </label>
+
+            <p-fileupload
+                id="certificationAuxWild24"
+                name="certificationAuxWild24"
+                mode="basic"
+                chooseLabel="Examinar"
+                [chooseIcon]="PrimeIcons.SEARCH"
+                uploadLabel="Subir archivo"
+                accept="application/pdf"
+                [maxFileSize]="10485760"
+                [auto]="true"
+                [customUpload]="true"
+                (uploadHandler)="onFileSelect(requirementItems.get('certification_aux_wild_24'),$event)">
+            </p-fileupload>
+
+            @if (certificationAuxWild24Field.value) {
+                <p-message severity="info">
+                    {{ certificationAuxWild24Field.value.file.name }}
+                </p-message>
+            }
+
+            <small
+                appErrorMessage
+                [errors]="certificationAuxWild24Field.errors"
+                [touched]="certificationAuxWild24Field.touched"
+                [dirty]="certificationAuxWild24Field.dirty"></small>
+
+            <p-divider/>
+        </div>
+
+        <!-- domicileDeclaration -->
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="domicileDeclaration"
+                [required]="domicileDeclarationField">
+                <div [innerHTML]="requirementItems.get('domicile_declaration')?.name"></div>
+            </label>
+
+            <app-toggle-switch id="domicileDeclaration" formControlName="domicileDeclaration" />
+
+            <small
+                appErrorMessage
+                [errors]="domicileDeclarationField.errors"
+                [touched]="certificationAuxWild24Field.touched"
+                [dirty]="domicileDeclarationField.dirty"></small>
         </div>
     </form>
 </div>
