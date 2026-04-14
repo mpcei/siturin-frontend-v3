@@ -1,32 +1,23 @@
 import { Component, inject, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
-import { PhysicalSpaceComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/physical-space/physical-space.component';
-import { AccreditedStaffLanguageComponent } from '@/pages/core/roles/external/components/accreditation/steps/step3/activities/agency/shared/accredited-staff-language/accredited-staff-language.component';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
-import { TouristGuideComponent } from '@/pages/core/shared';
-import { RegulationComponent } from '@/pages/core/shared/components/regulation/regulation.component';
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { AdventureTourismModalityComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
-import {
-    RequirementComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
+import { RequirementComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
 
 @Component({
     selector: 'app-registration',
-    imports: [PhysicalSpaceComponent, Button, AdventureTourismModalityComponent, RequirementComponent],
+    imports: [Button, AdventureTourismModalityComponent, RequirementComponent],
     templateUrl: './registration-guide.component.html'
 })
 export class RegistrationGuideComponent {
     protected readonly PrimeIcons = PrimeIcons;
     public step: OutputEmitterRef<number> = output<number>();
 
-    @ViewChildren(AccreditedStaffLanguageComponent) private accreditedStaffLanguageComponent!: QueryList<AccreditedStaffLanguageComponent>;
-    @ViewChildren(PhysicalSpaceComponent) private physicalSpaceComponent!: QueryList<PhysicalSpaceComponent>;
+    @ViewChildren(RequirementComponent) private requirementComponent!: QueryList<RequirementComponent>;
     @ViewChildren(AdventureTourismModalityComponent) private adventureTourismModalityComponent!: QueryList<AdventureTourismModalityComponent>;
-    @ViewChildren(TouristGuideComponent) private touristGuideComponent!: QueryList<TouristGuideComponent>;
-    @ViewChildren(RegulationComponent) private regulationComponent!: QueryList<RegulationComponent>;
 
     private mainData: WritableSignal<Record<string, any>> = signal({});
 
@@ -112,7 +103,7 @@ export class RegistrationGuideComponent {
     }
 
     checkFormErrors() {
-        const errors: string[] = collectFormErrors([this.accreditedStaffLanguageComponent, this.physicalSpaceComponent, this.adventureTourismModalityComponent, this.touristGuideComponent, this.regulationComponent]);
+        const errors: string[] = collectFormErrors([this.requirementComponent, this.adventureTourismModalityComponent]);
 
         if (errors.length > 0) {
             this.customMessageService.showFormErrors(errors);
