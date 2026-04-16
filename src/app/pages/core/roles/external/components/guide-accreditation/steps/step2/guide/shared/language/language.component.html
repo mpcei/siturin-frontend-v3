@@ -1,0 +1,156 @@
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12">
+            <h3>IDIOMAS</h3>
+        </div>
+
+        <!-- hasAdventureTourismModality -->
+        <div class="custom-form-field md:col-span-12">
+            <label appLabel for="hasLanguage"
+                   [required]="hasLanguageField">
+                <div [innerHTML]="requirementField.value?.name"></div>
+            </label>
+
+            <app-toggle-switch id="hasLanguage" formControlName="hasLanguage" />
+
+            <p-message
+                appErrorMessage
+                [errors]="hasLanguageField.errors"
+                [touched]="hasLanguageField.touched"
+                [dirty]="hasLanguageField.dirty"
+            />
+        </div>
+    </form>
+</div>
+
+<p-fluid>
+    @if (hasLanguageField.value) {
+        <div class="md:col-span-12">
+            <app-list-basic
+                title="Idiomas"
+                [items]="items"
+                [cols]="cols"
+                [buttonActions]="buttonActions"
+                (onCreate)="isVisibleModal = true"
+                (onSelect)="onSelect($event)"
+            />
+        </div>
+    }
+</p-fluid>
+
+<p-dialog
+    [(visible)]="isVisibleModal"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [style]="{ width: '40vw' }"
+    [draggable]="false"
+    (onHide)="closeModal()"
+    [resizable]="false"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Agregar Modalidad</span>
+        </div>
+    </ng-template>
+
+    <div class="custom-form-card">
+        <form [formGroup]="modalityForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
+            <!-- modality -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="language"
+                    [required]="languageField"
+                    label="Tipo de idioma extranjero"></label>
+
+                <p-select
+                    id="language"
+                    formControlName="language"
+                    [options]="availableModalities"
+                    optionLabel="name"
+                    appendTo="body" />
+
+                <small
+                    appErrorMessage
+                    [errors]="languageField.errors"
+                    [touched]="languageField.touched"
+                    [dirty]="languageField.dirty"></small>
+            </div>
+
+            <!-- certifier -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="level"
+                    [required]="levelField"
+                    label="Nivel de conocimiento del idioma extranjero"></label>
+
+                <p-select
+                    id="level"
+                    formControlName="level"
+                    [options]="levels"
+                    optionLabel="name"
+                    appendTo="body" />
+
+                <small
+                    appErrorMessage
+                    [errors]="levelField.errors"
+                    [touched]="levelField.touched"
+                    [dirty]="levelField.dirty"></small>
+            </div>
+
+            <!-- file -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="file"
+                    [required]="fileField"
+                    label="Certificado de idiomas">
+                </label>
+
+                <p-fileupload
+                    id="file"
+                    name="file"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect(languageField.value,$event)">
+                </p-fileupload>
+
+                @if (fileField.value) {
+                    <p-message severity="info">
+                        {{ fileField.value.name }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="fileField.errors"
+                    [touched]="fileField.touched"
+                    [dirty]="fileField.dirty"></small>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="custom-form-field md:col-span-12">
+                <p-button
+                    type="submit"
+                    label="Agregar"
+                    severity="success"
+                    styleClass="w-full"
+                    [icon]="PrimeIcons.PLUS" />
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+<app-button-action
+    [buttonActions]="buttonActions"
+    [enabled]="isButtonActionsEnabled"
+    (isHide)="isButtonActionsEnabled = $event">
+</app-button-action>

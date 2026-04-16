@@ -1,0 +1,86 @@
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12">
+            <h3>GUIANZA TURÍSTICA DENTRO DEL PATRIMONIO DE ÁREAS NATURALES DEL ESTADO</h3>
+        </div>
+
+        <!-- hasAdventureTourismModality -->
+        <div class="custom-form-field md:col-span-12">
+            <label appLabel for="hasProtectedArea"
+                   [required]="hasProtectedAreaField">
+                <div [innerHTML]="requirementField.value?.name"></div>
+            </label>
+
+            <app-toggle-switch id="hasProtectedArea" formControlName="hasProtectedArea" />
+
+            <p-message
+                appErrorMessage
+                [errors]="hasProtectedAreaField.errors"
+                [touched]="hasProtectedAreaField.touched"
+                [dirty]="hasProtectedAreaField.dirty"
+            />
+        </div>
+
+        <!-- province -->
+        <div class="custom-form-field md:col-span-4">
+            <label
+                appLabel
+                for="province"
+                label="Provincia"
+                [required]="provinceField">
+            </label>
+
+            <p-select
+                id="province"
+                formControlName="province"
+                [options]="provinces()"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione una provincia" />
+
+            <small
+                appErrorMessage
+                [dirty]="provinceField.dirty"
+                [errors]="provinceField.errors"
+                [touched]="provinceField.touched"></small>
+        </div>
+
+        <!-- canton -->
+        <div class="custom-form-field md:col-span-4">
+            <label
+                appLabel
+                for="canton"
+                [required]="cantonField"
+                label="Cantón">
+            </label>
+
+            <p-select
+                id="canton"
+                formControlName="canton"
+                [options]="cantons"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione un cantón"
+                emptyMessage="Debe seleccionar una provincia" />
+
+            <small
+                appErrorMessage
+                [dirty]="cantonField.dirty"
+                [errors]="cantonField.errors"
+                [touched]="cantonField.touched"></small>
+        </div>
+    </form>
+</div>
+
+<p-fluid>
+    @if (hasProtectedAreaField.value) {
+
+    } @else {
+
+    }
+</p-fluid>

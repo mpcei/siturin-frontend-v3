@@ -1,6 +1,16 @@
 <app-requirement (dataOut)="saveForm($event,'processGuides')" />
 
-<app-adventure-tourism-modality (dataOut)="saveForm($event,'adventureModality')" />
+<app-protected-area
+    [classification]="{}"
+    (dataOut)="saveForm($event,'protectedArea')" />
+
+<app-adventure-tourism-modality
+    [classification]="{}"
+    (dataOut)="saveForm($event,'adventureModality')" />
+
+<app-language
+    [classification]="{}"
+    (dataOut)="saveForm($event,'language')" />
 
 
 <div class="custom-form-card">

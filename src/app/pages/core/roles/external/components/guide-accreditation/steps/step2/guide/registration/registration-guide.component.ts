@@ -6,10 +6,12 @@ import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { AdventureTourismModalityComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
 import { RequirementComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
+import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
+import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
 
 @Component({
     selector: 'app-registration',
-    imports: [Button, AdventureTourismModalityComponent, RequirementComponent],
+    imports: [Button, AdventureTourismModalityComponent, RequirementComponent, ProtectedAreaComponent, LanguageComponent],
     templateUrl: './registration-guide.component.html'
 })
 export class RegistrationGuideComponent {
@@ -54,6 +56,8 @@ export class RegistrationGuideComponent {
 
         if (objectName?.includes('processGuides')) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
         if (objectName?.includes('adventureModality')) this.formStateService.updateSection('adventureModality', this.mainData()[objectName]);
+        if (objectName?.includes('language')) this.formStateService.updateSection('language', this.mainData()[objectName]);
+        if (objectName?.includes('protectedArea')) this.formStateService.updateSection('protectedArea', this.mainData()[objectName]);
     }
 
     onSubmit() {
@@ -65,6 +69,8 @@ export class RegistrationGuideComponent {
     saveProcess() {
         const processGuides: any[] = [];
         const adventureModalities: any[] = [];
+        const languages: any[] = [];
+        const protectedAreas: any[] = [];
 
         const formData = new FormData();
 
@@ -74,7 +80,21 @@ export class RegistrationGuideComponent {
             formData.append(x.requirement.id, x.file);
         });
 
-        console.log(this.formStateService.adventureModality());
+        if (this.formStateService.protectedArea()) {
+            processGuides.push({ requirement: this.formStateService.protectedArea().requirement, value: this.formStateService.protectedArea().hasAdventureTourismModality });
+
+            Object.values(this.formStateService.protectedArea().protectedAreas).forEach((x: any) => {
+                protectedAreas.push({
+                    modalityCode: x.modality.code,
+                    modalityName: x.modality.name,
+                    modalityCertificateCode: x.certifier.code,
+                    modalityCertificateName: x.certifier.name
+                });
+
+                formData.append(x.modality.code, x.file);
+            });
+        }
+
         if (this.formStateService.adventureModality()) {
             processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
 
@@ -90,12 +110,29 @@ export class RegistrationGuideComponent {
             });
         }
 
+        if (this.formStateService.language()) {
+            processGuides.push({ requirement: this.formStateService.language().requirement, value: this.formStateService.language().hasLanguage });
+
+            Object.values(this.formStateService.language().languages).forEach((x: any) => {
+                languages.push({
+                    languageCode: x.language.code,
+                    languageName: x.language.name,
+                    levelCode: x.level.code,
+                    levelName: x.level.name
+                });
+
+                formData.append(x.language.code, x.file);
+            });
+        }
+
         const payload = {
             user: this.formStateService.user(),
             process: this.formStateService.process(),
             establishment: this.formStateService.establishment(),
             processGuides: processGuides,
-            adventureModalities: adventureModalities
+            adventureModalities: adventureModalities,
+            languages: languages,
+            protectedAreas: protectedAreas
         };
 
         formData.append('payload', JSON.stringify(payload));

@@ -23,15 +23,15 @@ import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 
-export interface AdventureTourismModalityInterface {
+export interface LanguageInterface {
     id?: string;
-    certifier?: CatalogueInterface;
-    modality?: CatalogueInterface;
+    level?: CatalogueInterface;
+    language?: CatalogueInterface;
     file?: any;
 }
 
 @Component({
-    selector: 'app-adventure-tourism-modality',
+    selector: 'app-language',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -51,9 +51,9 @@ export interface AdventureTourismModalityInterface {
         FileUpload,
         ButtonActionComponent
     ],
-    templateUrl: './adventure-tourism-modality.component.html'
+    templateUrl: './language.component.html'
 })
-export class AdventureTourismModalityComponent implements OnInit {
+export class LanguageComponent implements OnInit {
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
     public classification = input.required<ClassificationInterface>();
 
@@ -69,12 +69,13 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     protected isVisibleModal = false;
     protected cols: ColInterface[] = [];
-    protected items: AdventureTourismModalityInterface[] = [];
+    protected items: LanguageInterface[] = [];
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
 
     protected availableModalities: CatalogueInterface[] = [];
-    protected certifiers: CatalogueInterface[] = [];
+    protected languages: CatalogueInterface[] = [];
+    protected levels: CatalogueInterface[] = [];
     protected requirements: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
 
@@ -91,7 +92,7 @@ export class AdventureTourismModalityComponent implements OnInit {
             {
                 ...deleteButtonAction,
                 command: () => {
-                    if (item) this.deleteAdventureTourismModality(item);
+                    if (item) this.deleteItem(item);
                 }
             }
         ];
@@ -101,65 +102,62 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     buildColumns() {
         this.cols = [
-            { header: 'Modalidad', field: 'modality', type: 'object' },
-            { header: 'Organismos Certificadores', field: 'certifier', type: 'object' },
-            { header: 'Certificación de habilidad o el certificado de aprobación', field: 'file', type: 'object' }
+            { header: 'Tipo de idioma extranjero', field: 'language', type: 'object' },
+            { header: 'Nivel de conocimiento del idioma extranjero', field: 'level', type: 'object' },
+            { header: 'Certificado de idiomas', field: 'file', type: 'object' }
         ];
     }
 
     buildForm() {
         this.modalityForm = this.formBuilder.group({
             id: [null],
-            modality: [null, Validators.required],
-            certifier: [null, Validators.required],
+            language: [null, Validators.required],
+            level: [null, Validators.required],
             file: [null, Validators.required]
         });
 
         this.form = this.formBuilder.group({
             requirement: [null, Validators.required],
-            hasAdventureTourismModality: false,
-            adventureTourismModalities: []
+            hasLanguage: false,
+            languages: []
         });
 
         this.watchFormChanges();
     }
 
     watchFormChanges() {
-        this.hasAdventureTourismModalityField.valueChanges.subscribe((_) => {
+        this.hasLanguageField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
     }
 
     async loadCatalogues() {
-        const [modalities, certifiers, requirements] = await Promise.all([
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name),
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), //review cambiar por el catalogo correspondiente
+        const [languages, levels, requirements] = await Promise.all([
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_languages_name),
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_languages_level),
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
         ]);
 
-
-        this.availableModalities = modalities.filter((x) => x.code !== 'modality_aventure');
-        this.certifiers = certifiers;
+        this.availableModalities = languages;
+        this.levels = levels;
         this.requirements = requirements;
 
         console.log(requirements);
-        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure'));//review cambiar en la base por adventure
-
-
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'certification_language')); //review cambiar en la base por adventure
     }
 
     onSubmit() {
         if (this.validateModalityForm()) {
-            this.createAdventureTourismModality();
+            this.createItem();
         }
     }
 
     validateModalityForm() {
         const errors: string[] = [];
 
-        if (this.modalityField.invalid) errors.push('Modalidad');
-        if (this.certifierField.invalid) errors.push('Organismos Certificadores');
-        if (this.fileField.invalid) errors.push('Certificación de habilidad o el certificado de aprobación');
+        if (this.languageField.invalid) errors.push('Tipo de idioma extranjero');
+        if (this.levelField.invalid) errors.push('Nivel de conocimiento del idioma extranjero');
+        if (this.fileField.invalid) errors.push('Certificado de idiomas');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -173,7 +171,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Modalidades de Turismo Aventura');
+        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Idiomas');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -193,10 +191,10 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.buildButtonActions(item, index);
     }
 
-    createAdventureTourismModality() {
-        const modality = this.modalityField.value;
+    createItem() {
+        const language = this.languageField.value;
 
-        if (this.items.some((i) => i.modality?.code === modality?.code)) {
+        if (this.items.some((i) => i.language?.code === language?.code)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
                 detail: 'La modalidad ya existe'
@@ -207,8 +205,8 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.items = [
             ...this.items,
             {
-                certifier: this.certifierField.value,
-                modality,
+                level: this.levelField.value,
+                language,
                 file: this.fileField.value
             }
         ];
@@ -218,7 +216,7 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.closeModal();
     }
 
-    deleteAdventureTourismModality(modality: AdventureTourismModalityInterface) {
+    deleteItem(language: LanguageInterface) {
         this.confirmationService.confirm({
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
@@ -233,7 +231,7 @@ export class AdventureTourismModalityComponent implements OnInit {
                 label: 'Sí, Eliminar'
             },
             accept: () => {
-                this.items = this.items.filter((item) => item.modality?.id !== modality?.modality?.id);
+                this.items = this.items.filter((item) => item.language?.id !== language?.language?.id);
 
                 this.updateFormAndEmit();
             },
@@ -260,17 +258,17 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     private updateFormAndEmit() {
-        this.adventureTourismModalitiesField.setValue(this.items);
+        this.languagesField.setValue(this.items);
         this.dataOut.emit(this.form.getRawValue());
     }
 
     // Getter Modality Form
-    get modalityField(): AbstractControl {
-        return this.modalityForm.controls['modality'];
+    get languageField(): AbstractControl {
+        return this.modalityForm.controls['language'];
     }
 
-    get certifierField(): AbstractControl {
-        return this.modalityForm.controls['certifier'];
+    get levelField(): AbstractControl {
+        return this.modalityForm.controls['level'];
     }
 
     get fileField(): AbstractControl {
@@ -282,11 +280,11 @@ export class AdventureTourismModalityComponent implements OnInit {
         return this.form.controls['requirement'];
     }
 
-    get hasAdventureTourismModalityField(): AbstractControl {
-        return this.form.controls['hasAdventureTourismModality'];
+    get hasLanguageField(): AbstractControl {
+        return this.form.controls['hasLanguage'];
     }
 
-    get adventureTourismModalitiesField(): AbstractControl {
-        return this.form.controls['adventureTourismModalities'];
+    get languagesField(): AbstractControl {
+        return this.form.controls['languages'];
     }
 }

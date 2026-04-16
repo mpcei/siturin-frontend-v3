@@ -40,7 +40,9 @@ export enum CatalogueTypeEnum {
     service_types_continent = 'service_types_continent',
     transport_vehicle_types = 'transporte_tipo_vehiculos',
     process_transport_airline_type = 'process_transport_airline_type',
-    requirement_item = 'requirement_item'
+    requirement_item = 'requirement_item',
+    guide_languages_name = 'guide_languages_name',
+    guide_languages_level = 'guide_languages_level'
 }
 
 export enum CatalogueStateEnum {
