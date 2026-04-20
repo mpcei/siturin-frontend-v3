@@ -42,7 +42,8 @@ export enum CatalogueTypeEnum {
     process_transport_airline_type = 'process_transport_airline_type',
     requirement_item = 'requirement_item',
     guide_languages_name = 'guide_languages_name',
-    guide_languages_level = 'guide_languages_level'
+    guide_languages_level = 'guide_languages_level',
+    protected_areas_name = 'protected_areas_name'
 }
 
 export enum CatalogueStateEnum {

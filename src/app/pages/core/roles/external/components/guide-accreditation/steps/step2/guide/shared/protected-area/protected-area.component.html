@@ -12,68 +12,88 @@
                 <div [innerHTML]="requirementField.value?.name"></div>
             </label>
 
-            <app-toggle-switch id="hasProtectedArea" formControlName="hasProtectedArea" />
+            <p-select
+                id="hasProtectedArea"
+                formControlName="hasProtectedArea"
+                [options]="options"
+                optionValue="code"
+                optionLabel="name"
+                appendTo="body"
+                placeholder="Seleccione..." />
 
-            <p-message
+            <small
                 appErrorMessage
                 [errors]="hasProtectedAreaField.errors"
                 [touched]="hasProtectedAreaField.touched"
-                [dirty]="hasProtectedAreaField.dirty"
-            />
+                [dirty]="hasProtectedAreaField.dirty"></small>
         </div>
 
-        <!-- province -->
-        <div class="custom-form-field md:col-span-4">
-            <label
-                appLabel
-                for="province"
-                label="Provincia"
-                [required]="provinceField">
-            </label>
+        @if (hasProtectedAreaField.value) {
+            <div class="custom-form-field md:col-span-12">
+                <div class="card flex items-center gap-2 flex-wrap">
+                    @for (protectedArea of availableProtectedAreas; track protectedArea) {
+                        <p-chip [label]="protectedArea.name" />
+                    }
+                </div>
+            </div>
+        }
 
-            <p-select
-                id="province"
-                formControlName="province"
-                [options]="provinces()"
-                optionLabel="name"
-                appendTo="body"
-                [filter]="true"
-                filterBy="name"
-                placeholder="Seleccione una provincia" />
+        @if (hasProtectedAreaField.value === false) {
+            <div class="custom-form-field md:col-span-12" [innerHTML]="paneNo?.name">
+            </div>
+            <!-- province -->
+            <div class="custom-form-field md:col-span-4">
+                <label
+                    appLabel
+                    for="province"
+                    label="Provincia"
+                    [required]="provinceField">
+                </label>
 
-            <small
-                appErrorMessage
-                [dirty]="provinceField.dirty"
-                [errors]="provinceField.errors"
-                [touched]="provinceField.touched"></small>
-        </div>
+                <p-select
+                    id="province"
+                    formControlName="province"
+                    [options]="provinces()"
+                    optionLabel="name"
+                    appendTo="body"
+                    [filter]="true"
+                    filterBy="name"
+                    placeholder="Seleccione una provincia" />
 
-        <!-- canton -->
-        <div class="custom-form-field md:col-span-4">
-            <label
-                appLabel
-                for="canton"
-                [required]="cantonField"
-                label="Cantón">
-            </label>
+                <small
+                    appErrorMessage
+                    [dirty]="provinceField.dirty"
+                    [errors]="provinceField.errors"
+                    [touched]="provinceField.touched"></small>
+            </div>
 
-            <p-select
-                id="canton"
-                formControlName="canton"
-                [options]="cantons"
-                optionLabel="name"
-                appendTo="body"
-                [filter]="true"
-                filterBy="name"
-                placeholder="Seleccione un cantón"
-                emptyMessage="Debe seleccionar una provincia" />
+            <!-- canton -->
+            <div class="custom-form-field md:col-span-4">
+                <label
+                    appLabel
+                    for="canton"
+                    [required]="cantonField"
+                    label="Cantón">
+                </label>
 
-            <small
-                appErrorMessage
-                [dirty]="cantonField.dirty"
-                [errors]="cantonField.errors"
-                [touched]="cantonField.touched"></small>
-        </div>
+                <p-select
+                    id="canton"
+                    formControlName="canton"
+                    [options]="cantons"
+                    optionLabel="name"
+                    appendTo="body"
+                    [filter]="true"
+                    filterBy="name"
+                    placeholder="Seleccione un cantón"
+                    emptyMessage="Debe seleccionar una provincia" />
+
+                <small
+                    appErrorMessage
+                    [dirty]="cantonField.dirty"
+                    [errors]="cantonField.errors"
+                    [touched]="cantonField.touched"></small>
+            </div>
+        }
     </form>
 </div>
 

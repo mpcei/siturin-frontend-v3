@@ -19,7 +19,9 @@ export class RegistrationGuideComponent {
     public step: OutputEmitterRef<number> = output<number>();
 
     @ViewChildren(RequirementComponent) private requirementComponent!: QueryList<RequirementComponent>;
+    @ViewChildren(ProtectedAreaComponent) private protectedAreaComponent!: QueryList<ProtectedAreaComponent>;
     @ViewChildren(AdventureTourismModalityComponent) private adventureTourismModalityComponent!: QueryList<AdventureTourismModalityComponent>;
+    @ViewChildren(LanguageComponent) private languageComponent!: QueryList<LanguageComponent>;
 
     private mainData: WritableSignal<Record<string, any>> = signal({});
 
@@ -58,6 +60,8 @@ export class RegistrationGuideComponent {
         if (objectName?.includes('adventureModality')) this.formStateService.updateSection('adventureModality', this.mainData()[objectName]);
         if (objectName?.includes('language')) this.formStateService.updateSection('language', this.mainData()[objectName]);
         if (objectName?.includes('protectedArea')) this.formStateService.updateSection('protectedArea', this.mainData()[objectName]);
+
+        console.log(this.formStateService.protectedArea());
     }
 
     onSubmit() {
@@ -81,17 +85,15 @@ export class RegistrationGuideComponent {
         });
 
         if (this.formStateService.protectedArea()) {
-            processGuides.push({ requirement: this.formStateService.protectedArea().requirement, value: this.formStateService.protectedArea().hasAdventureTourismModality });
+            processGuides.push({ requirement: this.formStateService.protectedArea().requirement, value: this.formStateService.protectedArea().hasProtectedArea });
 
             Object.values(this.formStateService.protectedArea().protectedAreas).forEach((x: any) => {
                 protectedAreas.push({
-                    modalityCode: x.modality.code,
-                    modalityName: x.modality.name,
-                    modalityCertificateCode: x.certifier.code,
-                    modalityCertificateName: x.certifier.name
+                    areaCode: x.area.code,
+                    areaName: x.area.name,
+                    province: x.province,
+                    canton: x.canton
                 });
-
-                formData.append(x.modality.code, x.file);
             });
         }
 
@@ -143,7 +145,7 @@ export class RegistrationGuideComponent {
     }
 
     checkFormErrors() {
-        const errors: string[] = collectFormErrors([this.requirementComponent, this.adventureTourismModalityComponent]);
+        const errors: string[] = collectFormErrors([this.requirementComponent, this.protectedAreaComponent, this.adventureTourismModalityComponent, this.languageComponent]);
 
         if (errors.length > 0) {
             this.customMessageService.showFormErrors(errors);
