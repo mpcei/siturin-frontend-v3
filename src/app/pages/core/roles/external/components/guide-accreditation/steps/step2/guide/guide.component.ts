@@ -1,4 +1,4 @@
-import { Component, Input, output, OutputEmitterRef } from '@angular/core';
+import { Component, input, Input, output, OutputEmitterRef } from '@angular/core';
 import { RegistrationGuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/registration/registration-guide.component';
 
 @Component({
@@ -8,5 +8,5 @@ import { RegistrationGuideComponent } from '@/pages/core/roles/external/componen
 })
 export class GuideComponent {
     public step: OutputEmitterRef<number> = output<number>();
-    @Input() processTypeCode: string = 'registration';
+    public processTypeCode = input.required<string>();
 }

@@ -1,4 +1,4 @@
-@switch (processTypeCode) {
+@switch (processTypeCode()) {
     @case ('registration') {
         <app-registration (step)="$event"/>
     }

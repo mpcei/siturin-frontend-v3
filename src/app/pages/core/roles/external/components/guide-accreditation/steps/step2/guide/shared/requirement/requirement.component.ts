@@ -13,6 +13,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { JsonPipe } from '@angular/common';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { Divider } from 'primeng/divider';
+import { FormStateService } from '@/pages/core/roles/external/services';
 
 @Component({
     selector: 'app-requirement',
@@ -29,6 +30,7 @@ export class RequirementComponent implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
 
     private readonly catalogueService = inject(CatalogueService);
+    private readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
 
@@ -36,18 +38,22 @@ export class RequirementComponent implements OnInit {
     protected requirementItems: Map<any, any> = new Map();
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
+    protected degree = this.formStateService.degree();
+    protected degreeName: string | null = null;
+
     constructor() {}
 
     async ngOnInit() {
         this.buildForm();
         await this.loadCatalogues();
         this.loadData();
+        this.checkRequiredForm();
     }
 
     buildForm() {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
-            titleBachiller: ['Guia de Turismo', Validators.required],
+            titleBachiller: [this.degree.name, Validators.required],
             photo: [null, [Validators.required]],
             certificationGuideLocal: [null, Validators.required],
             certificationAuxWild24: [null, Validators.required],
@@ -55,6 +61,22 @@ export class RequirementComponent implements OnInit {
         });
 
         this.watchFormChanges();
+    }
+
+    checkRequiredForm() {
+        console.log(this.degree);
+
+        switch (this.degree.type) {
+            case 'guide':
+                this.degreeName = this.requirementItems.get('title_turismo')?.name;
+                break;
+            case 'related':
+                this.degreeName = this.requirementItems.get('title_afin')?.name;
+                break;
+            case 'bachiller':
+                this.degreeName = this.requirementItems.get('title_bachiller')?.name;
+                break;
+        }
     }
 
     watchFormChanges() {
@@ -102,6 +124,7 @@ export class RequirementComponent implements OnInit {
             value: event.target.checked
         });
     }
+
     loadData() {}
 
     onFileSelect(requirement: CatalogueInterface, event: any) {
@@ -160,7 +183,6 @@ export class RequirementComponent implements OnInit {
 
     async loadCatalogues() {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
-
         this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
     }
 

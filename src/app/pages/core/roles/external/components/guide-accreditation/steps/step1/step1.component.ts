@@ -6,7 +6,7 @@ import { ContactPersonComponent } from '@modules/core/roles/external/components/
 import { AddressComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
 import { ProcessHttpService } from '@/pages/core/shared/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
-import { FormStateService } from '@modules/core/roles/external/services';
+import { EstablishmentHttpService, FormStateService } from '@modules/core/roles/external/services';
 
 @Component({
     selector: 'app-step1',
@@ -24,10 +24,13 @@ export class Step1Component implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected readonly formStateService = inject(FormStateService);
+    private readonly establishmentHttpService = inject(EstablishmentHttpService);
 
     constructor() {}
 
-    async ngOnInit() {}
+    ngOnInit() {
+        this.findDegreesByCedula();
+    }
 
     saveForm(data: any, objectName?: string) {
         this.mainData.update((currentData) => {
@@ -66,5 +69,14 @@ export class Step1Component implements OnInit {
 
     back() {
         this.step.emit(1);
+    }
+
+    findDegreesByCedula() {
+        // this.establishmentHttpService.findDegreesByCedula(this.establishmentTemp?.ruc?.number!?.substring(0, 10)).subscribe({
+        this.establishmentHttpService.findDegreesByCedula('1234567891').subscribe({
+            next: (response) => {
+                this.formStateService.updateSection('degrees', response);
+            }
+        });
     }
 }

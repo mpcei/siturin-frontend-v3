@@ -15,6 +15,8 @@ export interface AppFormState {
     adventureModality: any | null;
     language: any | null;
     protectedArea: any | null;
+    degrees: any[];
+    degree: any | null;
     files: any[];
 }
 
@@ -33,6 +35,8 @@ const INITIAL_STATE: AppFormState = {
     adventureModality: null,
     language: null,
     protectedArea: null,
+    degrees: [],
+    degree: null,
     files: []
 };
 
@@ -51,6 +55,8 @@ export class FormStateService {
     readonly adventureModality = computed(() => this.formState().adventureModality);
     readonly language = computed(() => this.formState().language);
     readonly protectedArea = computed(() => this.formState().protectedArea);
+    readonly degrees = computed(() => this.formState().degrees);
+    readonly degree = computed(() => this.formState().degree);
     readonly files = computed(() => this.formState().files);
 
     constructor() {

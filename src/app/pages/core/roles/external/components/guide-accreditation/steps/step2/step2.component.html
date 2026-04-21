@@ -1,3 +1,4 @@
+<h1>{{degreeType}}</h1>
 <form [formGroup]="form" class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
         <!-- Section Name -->
@@ -43,8 +44,6 @@
                 [options]="activities"
                 optionLabel="name"
                 appendTo="body"
-                [filter]="true"
-                filterBy="name"
                 placeholder="Seleccione" />
 
             <small
@@ -104,7 +103,7 @@
     </div>
 </form>
 
-@if (activityField.value && classificationField.value) {
+@if (activityField.value && classificationField.value && degreeType) {
     <app-guide [processTypeCode]="process?.type?.code!" />
 }
 

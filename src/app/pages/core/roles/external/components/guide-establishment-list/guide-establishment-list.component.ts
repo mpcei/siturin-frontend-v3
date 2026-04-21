@@ -21,7 +21,7 @@ import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } fr
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueActivitiesGeographicAreaEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
 
 @Component({
@@ -120,7 +120,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
     findEstablishment(id: string) {
         this.establishmentHttpService.findOne(id).subscribe({
             next: (response) => {
-                console.log('response', response);
                 this.selectedItem = response;
                 this.buildButtonActions(response);
 

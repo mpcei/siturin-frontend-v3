@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { HttpResponseInterface } from '@modules/auth/interfaces';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { Observable } from 'rxjs';
+import { CatalogueActivitiesGeographicAreaEnum, CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueService } from '@utils/services/catalogue.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +15,7 @@ export class GuideHttpService {
     private readonly _httpClient = inject(HttpClient);
     private readonly _apiUrl = `${environment.API_URL}/core/external/process-guides`;
     private readonly _customMessageService = inject(CustomMessageService);
+    private readonly catalogueService = inject(CatalogueService);
 
     createRegistration(payload: FormData): Observable<any> {
         const url = `${this._apiUrl}/registrations`;
@@ -21,5 +24,73 @@ export class GuideHttpService {
                 return response.data;
             })
         );
+    }
+
+    async validateDegreeType(degrees: any[], geographicAreaCode: string): Promise<any | null> {
+        if (degrees.length > 0) {
+            const relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
+
+            if (degrees.every((item) => item.level === 'Bachiller')) {
+                return {
+                    name: degrees[0].name,
+                    type: 'bachiller'
+                };
+            }
+
+            const normalize = (text: string) =>
+                text
+                    .normalize('NFD') // separa letras y tildes
+                    .replace(/[\u0300-\u036f]/g, '') // elimina tildes
+                    .toLowerCase();
+
+            const thirdLevelDegrees = degrees.filter((item) => {
+                return ['tercer', 'tercero', 'tecnico', 'tecnologo'].some((word) => normalize(item.level).includes(word));
+            });
+
+            let guideTourismDegrees = [];
+
+            switch (geographicAreaCode) {
+                case CatalogueActivitiesGeographicAreaEnum.continent:
+                    guideTourismDegrees = thirdLevelDegrees.filter((item) => normalize(item.name).includes('guia'));
+                    break;
+
+                case CatalogueActivitiesGeographicAreaEnum.galapagos:
+                    guideTourismDegrees = thirdLevelDegrees.filter((item) => ['guia', 'turismo'].some((word) => normalize(item.name).includes(word)));
+                    break;
+            }
+
+            if (guideTourismDegrees.length > 0) {
+                return {
+                    name: guideTourismDegrees[0].name,
+                    type: 'guide'
+                };
+            }
+
+            if (thirdLevelDegrees.length === 0) {
+                return {
+                    name: thirdLevelDegrees[0].name,
+                    type: 'bachiller'
+                };
+            }
+
+            const hasMatch = thirdLevelDegrees.some((t1) => relatedDegrees.some((t2) => normalize(t1.name) === normalize(t2.name!)));
+
+            if (hasMatch) {
+                return {
+                    name: thirdLevelDegrees[0].name,
+                    type: 'related'
+                };
+            }
+
+            return {
+                name: thirdLevelDegrees[0].name,
+                type: 'bachiller'
+            };
+        }
+
+        return {
+            name: null,
+            type: null
+        };
     }
 }

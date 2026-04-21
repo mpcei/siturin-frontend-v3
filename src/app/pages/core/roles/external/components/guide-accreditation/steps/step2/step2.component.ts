@@ -11,8 +11,9 @@ import { CatalogueActivitiesCodeEnum, CatalogueActivitiesGeographicAreaEnum, Cat
 import { ActivityInterface, CategoryInterface, ClassificationInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
 import { ActivityService } from '@modules/core/shared/services';
 import { ProcessI } from '@utils/services/core-session-storage.service';
-import { FormStateService } from '@/pages/core/roles/external/services';
+import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { GuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
+import { AuthService } from '@/pages/auth/auth.service';
 
 @Component({
     selector: 'app-step2',
@@ -29,11 +30,15 @@ export class Step2Component implements OnInit {
     protected form!: FormGroup;
     protected process!: ProcessI | null;
     protected establishment!: EstablishmentInterface | null;
+    protected establishmentTemp!: EstablishmentInterface | null;
     protected dataIn!: any;
 
     private readonly activityService = inject(ActivityService);
     private readonly catalogueService = inject(CatalogueService);
+    protected readonly establishmentHttpService = inject(EstablishmentHttpService);
     protected readonly formStateService = inject(FormStateService);
+    protected readonly authService = inject(AuthService);
+    protected readonly guideHttpService = inject(GuideHttpService);
 
     protected readonly CatalogueActivitiesCodeEnum = CatalogueActivitiesCodeEnum;
 
@@ -41,13 +46,18 @@ export class Step2Component implements OnInit {
     protected activities: ActivityInterface[] = [];
     protected classifications: ClassificationInterface[] = [];
     protected categories: CategoryInterface[] = [];
+    protected relatedDegrees: CategoryInterface[] = [];
+    protected degrees: any[] = [];
+    protected degreeType!: string | null;
 
     constructor() {
         this.buildForm();
     }
 
     async ngOnInit() {
+        this.degrees = Object.values(this.formStateService.degrees());
         this.establishment = this.formStateService.establishment();
+        this.establishmentTemp = this.formStateService.establishmentTemp();
         this.process = this.formStateService.process();
         await this.loadCatalogues();
         await this.loadData();
@@ -68,22 +78,24 @@ export class Step2Component implements OnInit {
             this.formStateService.updateSection('process', this.form.value);
         });
 
-        this.geographicAreaField.valueChanges.subscribe((value) => {
-            if (value) this.loadActivities();
+        this.geographicAreaField.valueChanges.subscribe(async (value) => {
+            if (value) {
+                await this.loadActivities();
+                await this.validateDegree();
+            }
             this.activityField.reset();
             this.classificationField.reset();
             this.categoryField.reset();
         });
 
         this.activityField.valueChanges.subscribe(async (activity) => {
-            console.log(activity);
             if (activity) {
                 if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
                     this.classificationField.reset();
                     this.categoryField.reset();
                 }
 
-                this.classifications = await this.activityService.findClassificationsByActivity(activity.id);
+                await this.loadClassifications();
             }
         });
 
@@ -99,7 +111,7 @@ export class Step2Component implements OnInit {
                 }
 
                 this.categories = await this.activityService.findCategoriesByClassification(classification.id);
-                console.log(this.categories);
+
                 this.categoryField.patchValue(this.categories[0]);
             }
         });
@@ -137,6 +149,12 @@ export class Step2Component implements OnInit {
         return errors;
     }
 
+    async validateDegree() {
+        const { name, type } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
+        this.degreeType = type;
+        this.formStateService.updateSection('degree', {name, type: this.degreeType });
+    }
+
     private enableAll(): void {
         this.activityField.enable();
         this.classificationField.enable();
@@ -151,6 +169,7 @@ export class Step2Component implements OnInit {
 
     async loadCatalogues() {
         this.geographicAreas = await this.catalogueService.findByType(CatalogueTypeEnum.activities_geographic_area);
+        this.relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
 
         this.geographicAreaField.patchValue(
             this.geographicAreas.find((x) => {
@@ -167,8 +186,14 @@ export class Step2Component implements OnInit {
         this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
+    }
 
+    async loadClassifications() {
         this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
+
+        if (this.degreeType === 'bachiller') {
+            this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
+        }
     }
 
     async loadData() {

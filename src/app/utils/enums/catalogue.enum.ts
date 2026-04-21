@@ -43,7 +43,8 @@ export enum CatalogueTypeEnum {
     requirement_item = 'requirement_item',
     guide_languages_name = 'guide_languages_name',
     guide_languages_level = 'guide_languages_level',
-    protected_areas_name = 'protected_areas_name'
+    protected_areas_name = 'protected_areas_name',
+    related_degrees = 'related_degrees'
 }
 
 export enum CatalogueStateEnum {
