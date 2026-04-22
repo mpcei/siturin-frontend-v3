@@ -14,11 +14,14 @@ import { ProcessI } from '@utils/services/core-session-storage.service';
 import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { GuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
 import { AuthService } from '@/pages/auth/auth.service';
+import { Button } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-step2',
     standalone: true,
-    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent],
+    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip, JsonPipe],
     templateUrl: './step2.component.html'
 })
 export class Step2Component implements OnInit {
@@ -32,6 +35,7 @@ export class Step2Component implements OnInit {
     protected establishment!: EstablishmentInterface | null;
     protected establishmentTemp!: EstablishmentInterface | null;
     protected dataIn!: any;
+    protected isEdit: boolean = true;
 
     private readonly activityService = inject(ActivityService);
     private readonly catalogueService = inject(CatalogueService);
@@ -59,8 +63,10 @@ export class Step2Component implements OnInit {
         this.establishment = this.formStateService.establishment();
         this.establishmentTemp = this.formStateService.establishmentTemp();
         this.process = this.formStateService.process();
+
         await this.loadCatalogues();
         await this.loadData();
+        await this.validateDegree();
         await this.watchFormChanges();
     }
 
@@ -74,7 +80,7 @@ export class Step2Component implements OnInit {
     }
 
     async watchFormChanges() {
-        this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(async () => {
+        this.form.valueChanges.subscribe(async () => {
             this.formStateService.updateSection('process', this.form.value);
         });
 
@@ -83,16 +89,20 @@ export class Step2Component implements OnInit {
                 await this.loadActivities();
                 await this.validateDegree();
             }
-            this.activityField.reset();
-            this.classificationField.reset();
-            this.categoryField.reset();
+
+            if (this.geographicAreaField.enabled) {
+                this.classificationField.reset();
+                this.categoryField.reset();
+            }
         });
 
         this.activityField.valueChanges.subscribe(async (activity) => {
             if (activity) {
                 if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
-                    this.classificationField.reset();
-                    this.categoryField.reset();
+                    if (this.geographicAreaField.enabled) {
+                        this.classificationField.reset();
+                        this.categoryField.reset();
+                    }
                 }
 
                 await this.loadClassifications();
@@ -107,7 +117,9 @@ export class Step2Component implements OnInit {
                     this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification ||
                     this.process?.type?.code === CatalogueProcessesTypeEnum.reclassification
                 ) {
-                    this.categoryField.reset();
+                    if (this.geographicAreaField.enabled) {
+                        this.categoryField.reset();
+                    }
                 }
 
                 this.categories = await this.activityService.findCategoriesByClassification(classification.id);
@@ -152,7 +164,8 @@ export class Step2Component implements OnInit {
     async validateDegree() {
         const { name, type } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
         this.degreeType = type;
-        this.formStateService.updateSection('degree', {name, type: this.degreeType });
+        this.formStateService.updateSection('degree', { name, type: this.degreeType });
+        await this.loadClassifications();
     }
 
     private enableAll(): void {
@@ -225,6 +238,22 @@ export class Step2Component implements OnInit {
                 await this.loadActivities();
                 break;
         }
+    }
+
+    continueRequirements() {
+        if (this.form.valid) {
+            this.isEdit = false;
+            this.geographicAreaField.disable();
+            this.activityField.disable();
+            this.classificationField.disable();
+        } else this.form.markAllAsTouched();
+    }
+
+    editRequirements() {
+        this.isEdit = true;
+        this.geographicAreaField.enable();
+        this.activityField.enable();
+        this.classificationField.enable();
     }
 
     get geographicAreaField(): AbstractControl {

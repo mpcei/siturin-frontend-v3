@@ -23,67 +23,98 @@ export enum CatalogueActivitiesCodeEnum {
     transport_galapagos = 'transport_galapagos'
 }
 
-
 export enum CatalogueCtcActivitiesCodeEnum {
-  accommodation = 'accommodation',
-  community_operation = 'community_operation',
-  food_drink = 'food_drink',
-  transport = 'transport',
+    accommodation = 'accommodation',
+    community_operation = 'community_operation',
+    food_drink = 'food_drink',
+    transport = 'transport'
 }
 
 export enum CatalogueAccommodationClassificationsCodeEnum {
-  hotel = 'hotel',
-  hostel = 'hostel',
-  inn = 'inn',
-  resort = 'resort',
-  lodge = 'lodge',
-  guest_house = 'guest_house',
-  shelter = 'shelter',
-  tourist_camp = 'tourist_camp',
-  residential_properties = 'residential_properties',
-  tourist_ranch = 'tourist_ranch',
+    hotel = 'hotel',
+    hostel = 'hostel',
+    inn = 'inn',
+    resort = 'resort',
+    lodge = 'lodge',
+    guest_house = 'guest_house',
+    shelter = 'shelter',
+    tourist_camp = 'tourist_camp',
+    residential_properties = 'residential_properties',
+    tourist_ranch = 'tourist_ranch'
 }
 
 export enum CatalogueAgencyClassificationsCodeEnum {
-  wholesale_travel_agency = 'wholesale_travel_agency',
-  international_travel_agency = 'international_travel_agency',
-  tour_operator = 'tour_operator',
-  dual_travel_agency = 'dual_travel_agency'
+    wholesale_travel_agency = 'wholesale_travel_agency',
+    international_travel_agency = 'international_travel_agency',
+    tour_operator = 'tour_operator',
+    dual_travel_agency = 'dual_travel_agency'
 }
 
 export enum CatalogueCtcClassificationsCodeEnum {
-  ctc = 'ctc'
+    ctc = 'ctc'
 }
 
 export enum CatalogueEventClassificationsCodeEnum {
-  events = 'events',
-  conventions = 'conventions',
-  rooms = 'rooms'
+    events = 'events',
+    conventions = 'conventions',
+    rooms = 'rooms'
 }
 
 export enum CatalogueFoodDrinkClassificationsCodeEnum {
-  cafeteria = 'cafeteria',
-  bar = 'bar',
-  restaurant = 'restaurant',
-  nightclub = 'nightclub',
-  mobile_establishment = 'mobile_establishment',
-  food_courts = 'food_courts',
-  catering_service = 'catering_service'
+    cafeteria = 'cafeteria',
+    bar = 'bar',
+    restaurant = 'restaurant',
+    nightclub = 'nightclub',
+    mobile_establishment = 'mobile_establishment',
+    food_courts = 'food_courts',
+    catering_service = 'catering_service'
 }
 
 export enum CatalogueParkClassificationsCodeEnum {
-  parks = 'parks',
-  bowling_alleys = 'bowling_alleys',
-  tracks = 'tracks',
-  hot_springs = 'hot_springs',
-  spas = 'spas',
-  centers = 'centers'
+    parks = 'parks',
+    bowling_alleys = 'bowling_alleys',
+    tracks = 'tracks',
+    hot_springs = 'hot_springs',
+    spas = 'spas',
+    centers = 'centers'
 }
 
 export enum CatalogueTransportClassificationsCodeEnum {
-  air_transport = 'air_transport',
-  maritime_transport = 'maritime_transport',
-  land_transport = 'land_transport'
+    air_transport = 'air_transport',
+    maritime_transport = 'maritime_transport',
+    land_transport = 'land_transport'
+}
+
+export enum CatalogueGuideClassificationsCodeEnum {
+    guide_local = 'guide_local',
+    guide_national = 'guide_national',
+    guide_national_heritage = 'guide_national_heritage',
+    guide_national_adventure = 'guide_national_adventure',
+    guide_adventure = 'guide_adventure',
+    guide_galapagos_heritage = 'guide_galapagos_heritage',
+    guide_galapagos_adventure = 'guide_galapagos_adventure'
+}
+
+export enum CatalogueGuideRequirementsCodeEnum {
+    guide = 'title_turismo',
+    related = 'title_afin',
+    bachiller = 'title_bachiller',
+    certification_aux = 'certification_aux',
+    certification_aux_24 = 'certification_aux_24',
+    certification_aux_50 = 'certification_aux_50',
+    certification_aux_wild = 'certification_aux_wild',
+    certification_aux_wild_24 = 'certification_aux_wild_24',
+    certification_guide_heritage = 'certification_guide_heritage',
+    certification_guide_local = 'certification_guide_local',
+    certification_job_skill = 'certification_job_skill',
+    certification_language = 'certification_language',
+    certification_update_course = 'certification_update_course'
+}
+
+export enum CatalogueGuideDegreesCodeEnum {
+    guide = 'guide',
+    related = 'related',
+    bachiller = 'bachiller',
 }
 
 export enum ContributorTypeEnum {

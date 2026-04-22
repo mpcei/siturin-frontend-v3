@@ -73,7 +73,7 @@ export class Step1Component implements OnInit {
 
     findDegreesByCedula() {
         // this.establishmentHttpService.findDegreesByCedula(this.establishmentTemp?.ruc?.number!?.substring(0, 10)).subscribe({
-        this.establishmentHttpService.findDegreesByCedula('1234567891').subscribe({
+        this.establishmentHttpService.findDegreesByCedula('1234567890').subscribe({
             next: (response) => {
                 this.formStateService.updateSection('degrees', response);
             }

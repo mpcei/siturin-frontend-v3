@@ -1,4 +1,4 @@
-<h1>{{degreeType}}</h1>
+<h1>{{ degreeType }}</h1>
 <form [formGroup]="form" class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
         <!-- Section Name -->
@@ -54,7 +54,7 @@
         </div>
 
         <!-- classification -->
-        <div class="md:col-span-7 custom-form-field">
+        <div class="md:col-span-6 custom-form-field">
             <label
                 appLabel for="classification"
                 label="Clasificación"
@@ -76,6 +76,17 @@
                 [errors]="classificationField.errors"
                 [touched]="classificationField.touched"
                 [dirty]="classificationField.dirty"></small>
+        </div>
+
+        <!-- actions -->
+        <div class="md:col-span-1 custom-form-field">
+            @if (isEdit) {
+                <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT" (onClick)="continueRequirements()"
+                          styleClass="w-full" class="mt-7" />
+            } @else {
+                <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn" (onClick)="editRequirements()"
+                          styleClass="w-full" class="mt-8" />
+            }
         </div>
 
         <!--        &lt;!&ndash; category &ndash;&gt;-->
@@ -103,7 +114,7 @@
     </div>
 </form>
 
-@if (activityField.value && classificationField.value && degreeType) {
+@if (!isEdit) {
     <app-guide [processTypeCode]="process?.type?.code!" />
 }
 

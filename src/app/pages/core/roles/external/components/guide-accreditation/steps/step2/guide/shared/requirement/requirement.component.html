@@ -46,26 +46,26 @@
             <p-divider />
         </div>
 
-        <!-- titleBachiller -->
+        <!-- degree -->
         <div class="custom-form-field md:col-span-12">
             <label
                 appLabel
-                for="titleBachiller"
-                [required]="titleBachillerField">
-                <div [innerHTML]="degreeName"></div>
+                for="degree"
+                [required]="degreeField">
+                <div [innerHTML]="requirementItems.get(degreeName)?.name"></div>
             </label>
 
-            @if (titleBachillerField.value) {
+            @if (degreeField.value) {
                 <p-message severity="info">
-                    {{ titleBachillerField.value }}
+                    {{ degreeField.value }}
                 </p-message>
             }
 
             <small
                 appErrorMessage
-                [errors]="titleBachillerField.errors"
-                [touched]="titleBachillerField.touched"
-                [dirty]="titleBachillerField.dirty"></small>
+                [errors]="degreeField.errors"
+                [touched]="degreeField.touched"
+                [dirty]="degreeField.dirty"></small>
 
             <p-divider />
         </div>
@@ -109,18 +109,58 @@
             <p-divider />
         </div>
 
-        <!-- certificationGuideLocal -->
+        <!-- certificationGuide -->
+        @if (certificationGuideField.enabled) {
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="certificationGuide"
+                    [required]="certificationGuideField">
+                    <div [innerHTML]="requirementItems.get(certificationGuide)?.name"></div>
+                </label>
+
+                <p-fileupload
+                    id="certificationGuide"
+                    name="certificationGuide"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect(requirementItems.get(certificationGuide),$event)">
+                </p-fileupload>
+
+                @if (certificationGuideField.value) {
+                    <p-message severity="info">
+                        {{ certificationGuideField.value.file.name }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="certificationGuideField.errors"
+                    [touched]="certificationGuideField.touched"
+                    [dirty]="certificationGuideField.dirty"></small>
+
+                <p-divider />
+            </div>
+        }
+
+        <!-- certificationAux -->
         <div class="custom-form-field md:col-span-12">
             <label
                 appLabel
-                for="certificationGuideLocal"
-                [required]="certificationGuideLocalField">
-                <div [innerHTML]="requirementItems.get('certification_guide_local')?.name"></div>
+                for="certificationAux"
+                [required]="certificationAuxField">
+                <div [innerHTML]="requirementItems.get(certificationAux)?.name"></div>
             </label>
 
             <p-fileupload
-                id="certificationGuideLocal"
-                name="certificationGuideLocal"
+                id="certificationAux"
+                name="certificationAux"
                 mode="basic"
                 chooseLabel="Examinar"
                 [chooseIcon]="PrimeIcons.SEARCH"
@@ -129,78 +169,82 @@
                 [maxFileSize]="10485760"
                 [auto]="true"
                 [customUpload]="true"
-                (uploadHandler)="onFileSelect(requirementItems.get('certification_guide_local'),$event)">
+                (uploadHandler)="onFileSelect(requirementItems.get(certificationAux),$event)">
             </p-fileupload>
 
-            @if (certificationGuideLocalField.value) {
+            @if (certificationAuxField.value) {
                 <p-message severity="info">
-                    {{ certificationGuideLocalField.value.file.name }}
+                    {{ certificationAuxField.value.file.name }}
                 </p-message>
             }
 
             <small
                 appErrorMessage
-                [errors]="certificationGuideLocalField.errors"
-                [touched]="certificationGuideLocalField.touched"
-                [dirty]="certificationGuideLocalField.dirty"></small>
+                [errors]="certificationAuxField.errors"
+                [touched]="certificationAuxField.touched"
+                [dirty]="certificationAuxField.dirty"></small>
 
             <p-divider />
         </div>
 
-        <!-- certificationAuxWild24 -->
-        <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="certificationAuxWild24"
-                [required]="certificationAuxWild24Field">
-                <div [innerHTML]="requirementItems.get('certification_aux_wild_24')?.name"></div>
-            </label>
+        <!-- certificationJobSkill -->
+        @if (certificationJobSkillField.enabled) {
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="certificationJobSkill"
+                    [required]="certificationJobSkillField">
+                    <div [innerHTML]="requirementItems.get(certificationJobSkill)?.name"></div>
+                </label>
 
-            <p-fileupload
-                id="certificationAuxWild24"
-                name="certificationAuxWild24"
-                mode="basic"
-                chooseLabel="Examinar"
-                [chooseIcon]="PrimeIcons.SEARCH"
-                uploadLabel="Subir archivo"
-                accept="application/pdf"
-                [maxFileSize]="10485760"
-                [auto]="true"
-                [customUpload]="true"
-                (uploadHandler)="onFileSelect(requirementItems.get('certification_aux_wild_24'),$event)">
-            </p-fileupload>
+                <p-fileupload
+                    id="certificationJobSkill"
+                    name="certificationJobSkill"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect(requirementItems.get(certificationJobSkill),$event)">
+                </p-fileupload>
 
-            @if (certificationAuxWild24Field.value) {
-                <p-message severity="info">
-                    {{ certificationAuxWild24Field.value.file.name }}
-                </p-message>
-            }
+                @if (certificationJobSkillField.value) {
+                    <p-message severity="info">
+                        {{ certificationJobSkillField.value.file.name }}
+                    </p-message>
+                }
 
-            <small
-                appErrorMessage
-                [errors]="certificationAuxWild24Field.errors"
-                [touched]="certificationAuxWild24Field.touched"
-                [dirty]="certificationAuxWild24Field.dirty"></small>
+                <small
+                    appErrorMessage
+                    [errors]="certificationJobSkillField.errors"
+                    [touched]="certificationJobSkillField.touched"
+                    [dirty]="certificationJobSkillField.dirty"></small>
 
-            <p-divider />
-        </div>
+                <p-divider />
+            </div>
+        }
 
         <!-- domicileDeclaration -->
-        <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="domicileDeclaration"
-                [required]="domicileDeclarationField">
-                <div [innerHTML]="requirementItems.get('domicile_declaration')?.name"></div>
-            </label>
+        @if (domicileDeclarationField.enabled) {
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="domicileDeclaration"
+                    [required]="domicileDeclarationField">
+                    <div [innerHTML]="requirementItems.get('domicile_declaration')?.name"></div>
+                </label>
 
-            <app-toggle-switch id="domicileDeclaration" formControlName="domicileDeclaration" />
+                <app-toggle-switch id="domicileDeclaration" formControlName="domicileDeclaration" />
 
-            <small
-                appErrorMessage
-                [errors]="domicileDeclarationField.errors"
-                [touched]="certificationAuxWild24Field.touched"
-                [dirty]="domicileDeclarationField.dirty"></small>
-        </div>
+                <small
+                    appErrorMessage
+                    [errors]="domicileDeclarationField.errors"
+                    [touched]="domicileDeclarationField.touched"
+                    [dirty]="domicileDeclarationField.dirty"></small>
+            </div>
+        }
     </form>
 </div>

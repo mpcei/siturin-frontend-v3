@@ -14,6 +14,7 @@ import { JsonPipe } from '@angular/common';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
+import { CatalogueFoodDrinkClassificationsCodeEnum, CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
     selector: 'app-requirement',
@@ -39,7 +40,11 @@ export class RequirementComponent implements OnInit {
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     protected degree = this.formStateService.degree();
+    protected process = this.formStateService.process;
     protected degreeName: string | null = null;
+    protected certificationAux: string | null = null;
+    protected certificationGuide: string | null = null;
+    protected certificationJobSkill: string | null = null;
 
     constructor() {}
 
@@ -53,36 +58,101 @@ export class RequirementComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
-            titleBachiller: [this.degree.name, Validators.required],
+            degree: [this.degree.name, Validators.required],
             photo: [null, [Validators.required]],
-            certificationGuideLocal: [null, Validators.required],
-            certificationAuxWild24: [null, Validators.required],
-            domicileDeclaration: [null, Validators.requiredTrue]
+            certificationGuide: [null, Validators.required],
+            certificationJobSkill: [null, Validators.required],
+            certificationAux: [null, Validators.required],
+            domicileDeclaration: [{ value: null, disabled: true }, Validators.required]
         });
 
         this.watchFormChanges();
     }
 
     checkRequiredForm() {
-        console.log(this.degree);
+        switch (this.process()?.classification?.code) {
+            case CatalogueGuideClassificationsCodeEnum.guide_local:
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.bachiller || this.degree.type === CatalogueGuideDegreesCodeEnum.related || this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.bachiller;
+                    this.certificationGuide = CatalogueGuideRequirementsCodeEnum.certification_guide_local;
+                    this.certificationJobSkill = null;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_24;
 
-        switch (this.degree.type) {
-            case 'guide':
-                this.degreeName = this.requirementItems.get('title_turismo')?.name;
+                    this.domicileDeclarationField.enable();
+                }
+
                 break;
-            case 'related':
-                this.degreeName = this.requirementItems.get('title_afin')?.name;
+            case CatalogueGuideClassificationsCodeEnum.guide_national:
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.guide;
+                    this.certificationGuide = null;
+                    this.certificationJobSkill = null;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_24;
+                }
+
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.related) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.related;
+                    this.certificationGuide = null;
+                    this.certificationJobSkill = CatalogueGuideRequirementsCodeEnum.certification_job_skill;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_24;
+                }
+
                 break;
-            case 'bachiller':
-                this.degreeName = this.requirementItems.get('title_bachiller')?.name;
+            case CatalogueGuideClassificationsCodeEnum.guide_national_heritage:
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.guide;
+                    this.certificationGuide = CatalogueGuideRequirementsCodeEnum.certification_guide_heritage;
+                    this.certificationJobSkill = null;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
+                }
+
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.related) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.related;
+                    this.certificationGuide = CatalogueGuideRequirementsCodeEnum.certification_guide_heritage;
+                    this.certificationJobSkill = CatalogueGuideRequirementsCodeEnum.certification_job_skill;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
+                }
+
+                break;
+            case CatalogueGuideClassificationsCodeEnum.guide_national_adventure:
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.guide;
+                    this.certificationGuide = null;
+                    this.certificationJobSkill = null;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
+                }
+
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.related) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.related;
+                    this.certificationGuide = null;
+                    this.certificationJobSkill = CatalogueGuideRequirementsCodeEnum.certification_job_skill;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
+                }
+                break;
+            case CatalogueGuideClassificationsCodeEnum.guide_adventure:
+                if (this.degree.type === CatalogueGuideDegreesCodeEnum.bachiller || this.degree.type === CatalogueGuideDegreesCodeEnum.related || this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.guide;
+                    this.certificationGuide = null;
+                    this.certificationJobSkill = CatalogueGuideRequirementsCodeEnum.certification_job_skill;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
+                }
+                break;
+            case CatalogueGuideClassificationsCodeEnum.guide_galapagos_adventure:
+                this.degreeName = 'title_bachiller';
+                this.certificationAux = 'certification_guide_local';
+                break;
+            case CatalogueGuideClassificationsCodeEnum.guide_galapagos_heritage:
+                this.degreeName = 'title_bachiller';
+                this.certificationAux = 'certification_guide_local';
                 break;
         }
+
+        if (!this.certificationGuide) this.certificationGuideField.disable();
+        if (!this.certificationJobSkill) this.certificationJobSkillField.disable();
     }
 
     watchFormChanges() {
         this.form.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((_) => {
-            console.log(Array.from(this.responses.values()));
-
             this.dataOut.emit(Array.from(this.responses.values()));
         });
 
@@ -105,9 +175,10 @@ export class RequirementComponent implements OnInit {
 
         if (this.rucField.invalid) errors.push('Registro Único de Contribuyentes (RUC)');
         if (this.photoField.invalid) errors.push('Fotografía emitida en los últimos 6 meses');
-        if (this.certificationGuideLocalField.invalid) errors.push('Certificado  de  aprobación del  curso  para  guía  de  turismo local  del  cantón  en  la  que realizará la actividad de guianza');
-        if (this.certificationAuxWild24Field.invalid) errors.push('Certificado vigente de aprobación del curso de primeros auxilios en zonas agrestes en modalidad presencial');
-        if (this.titleBachillerField.invalid) errors.push('Título de bachiller reconocido por la autoridad nacional competente a nivel nacional ');
+        if (this.certificationGuideField.invalid) errors.push(this.requirementItems.get(this.certificationGuide)?.name);
+        if (this.certificationAuxField.invalid) errors.push(this.requirementItems.get(this.certificationAux)?.name);
+        if (this.certificationJobSkillField.invalid) errors.push(this.requirementItems.get(this.certificationJobSkill)?.name);
+        if (this.degreeField.invalid) errors.push(this.requirementItems.get(this.degreeName)?.name);
         if (this.domicileDeclarationField.invalid) errors.push('Declaración responsable del domicilio del solicitante que ejercerá la actividad de guianza turística');
 
         if (errors.length > 0) {
@@ -165,16 +236,16 @@ export class RequirementComponent implements OnInit {
                 this.rucField.patchValue(data);
                 break;
             case 'title_bachiller':
-                this.titleBachillerField.patchValue(data);
+                this.degreeField.patchValue(data);
                 break;
             case 'photo':
                 this.photoField.patchValue(data);
                 break;
             case 'certification_guide_local':
-                this.certificationGuideLocalField.patchValue(data);
+                this.certificationGuideField.patchValue(data);
                 break;
             case 'certification_aux_wild_24':
-                this.certificationAuxWild24Field.patchValue(data);
+                this.certificationAuxField.patchValue(data);
                 break;
         }
 
@@ -190,20 +261,24 @@ export class RequirementComponent implements OnInit {
         return this.form.controls['ruc'];
     }
 
-    get titleBachillerField(): AbstractControl {
-        return this.form.controls['titleBachiller'];
+    get degreeField(): AbstractControl {
+        return this.form.controls['degree'];
     }
 
     get photoField(): AbstractControl {
         return this.form.controls['photo'];
     }
 
-    get certificationGuideLocalField(): AbstractControl {
-        return this.form.controls['certificationGuideLocal'];
+    get certificationGuideField(): AbstractControl {
+        return this.form.controls['certificationGuide'];
     }
 
-    get certificationAuxWild24Field(): AbstractControl {
-        return this.form.controls['certificationAuxWild24'];
+    get certificationAuxField(): AbstractControl {
+        return this.form.controls['certificationAux'];
+    }
+
+    get certificationJobSkillField(): AbstractControl {
+        return this.form.controls['certificationJobSkill'];
     }
 
     get domicileDeclarationField(): AbstractControl {

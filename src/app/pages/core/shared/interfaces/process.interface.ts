@@ -9,6 +9,7 @@ export interface ProcessInterface {
     code?: string;
     name?: string;
     classifications?: ClassificationInterface[];
+    classification?: ClassificationInterface;
     cadastre?: CadastreInterface;
     type?: CatalogueInterface;
 }

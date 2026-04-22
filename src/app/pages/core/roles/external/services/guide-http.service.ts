@@ -68,7 +68,7 @@ export class GuideHttpService {
 
             if (thirdLevelDegrees.length === 0) {
                 return {
-                    name: thirdLevelDegrees[0].name,
+                    name: degrees[0].name,
                     type: 'bachiller'
                 };
             }
@@ -83,7 +83,7 @@ export class GuideHttpService {
             }
 
             return {
-                name: thirdLevelDegrees[0].name,
+                name: degrees[0].name,
                 type: 'bachiller'
             };
         }
