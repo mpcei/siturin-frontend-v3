@@ -89,8 +89,8 @@ export class RegistrationGuideComponent {
 
             Object.values(this.formStateService.protectedArea().protectedAreas).forEach((x: any) => {
                 protectedAreas.push({
-                    areaCode: x.area.code,
-                    areaName: x.area.name,
+                    areaCode: x.area?.code,
+                    areaName: x.area?.name,
                     province: x.province,
                     canton: x.canton
                 });
