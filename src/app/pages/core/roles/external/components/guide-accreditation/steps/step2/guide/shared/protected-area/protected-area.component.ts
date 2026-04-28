@@ -95,6 +95,7 @@ export class ProtectedAreaComponent implements OnInit {
                 });
 
                 this.createItems();
+            } else {
             }
 
             this.updateFormAndEmit();
@@ -134,7 +135,7 @@ export class ProtectedAreaComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (!this.hasProtectedAreaField.value || this.items.length === 0) errors.push('Áreas Protegidas');
+        if (!this.hasProtectedAreaField.value && this.items.length === 0) errors.push('Áreas Protegidas');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
