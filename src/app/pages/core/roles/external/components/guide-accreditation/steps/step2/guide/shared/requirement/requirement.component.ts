@@ -76,7 +76,7 @@ export class RequirementComponent implements OnInit {
                     this.degreeName = CatalogueGuideRequirementsCodeEnum.bachiller;
                     this.certificationGuide = CatalogueGuideRequirementsCodeEnum.certification_guide_local;
                     this.certificationJobSkill = null;
-                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_24;
+                    this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_wild_24;
 
                     this.domicileDeclarationField.enable();
                 }
