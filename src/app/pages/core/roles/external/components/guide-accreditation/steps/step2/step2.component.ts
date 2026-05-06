@@ -162,9 +162,11 @@ export class Step2Component implements OnInit {
     }
 
     async validateDegree() {
-        const { name, type } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
+        const { degree, type } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
         this.degreeType = type;
-        this.formStateService.updateSection('degree', { name, type: this.degreeType });
+        this.formStateService.updateSection('degree', { ...degree, type: this.degreeType });
+        this.formStateService.updateSection('process', { professionalTitle: degree });
+
         await this.loadClassifications();
     }
 

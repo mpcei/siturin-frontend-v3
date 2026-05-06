@@ -21,7 +21,7 @@ import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } fr
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { CatalogueActivitiesGeographicAreaEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
 
 @Component({
@@ -164,7 +164,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
             return;
         }
 
-        this.formStateService.updateSection('process', { type });
+        this.formStateService.updateSection('process', { type, startedAt: new Date() });
 
         await this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }

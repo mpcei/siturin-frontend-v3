@@ -58,7 +58,7 @@ export class RequirementComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
-            degree: [this.degree.name, Validators.required],
+            degree: [this.degree, Validators.required],
             photo: [null, [Validators.required]],
             certificationGuide: [null, Validators.required],
             certificationJobSkill: [null, Validators.required],

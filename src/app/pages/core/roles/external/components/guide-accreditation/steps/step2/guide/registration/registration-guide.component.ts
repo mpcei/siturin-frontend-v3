@@ -127,6 +127,8 @@ export class RegistrationGuideComponent {
             });
         }
 
+        this.formStateService.updateSection('process', { endedAt: new Date() });
+
         const payload = {
             user: this.formStateService.user(),
             process: this.formStateService.process(),
@@ -137,6 +139,7 @@ export class RegistrationGuideComponent {
             protectedAreas: protectedAreas
         };
 
+        console.log(payload);
         formData.append('payload', JSON.stringify(payload));
 
         this.guideHttpService.createRegistration(formData).subscribe({

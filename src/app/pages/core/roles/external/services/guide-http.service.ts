@@ -32,7 +32,7 @@ export class GuideHttpService {
 
             if (degrees.every((item) => item.level === 'Bachiller')) {
                 return {
-                    name: degrees[0].name,
+                    degree: degrees[0],
                     type: 'bachiller'
                 };
             }
@@ -61,14 +61,14 @@ export class GuideHttpService {
 
             if (guideTourismDegrees.length > 0) {
                 return {
-                    name: guideTourismDegrees[0].name,
+                    degree: guideTourismDegrees[0],
                     type: 'guide'
                 };
             }
 
             if (thirdLevelDegrees.length === 0) {
                 return {
-                    name: degrees[0].name,
+                    degree: degrees[0],
                     type: 'bachiller'
                 };
             }
@@ -77,19 +77,19 @@ export class GuideHttpService {
 
             if (hasMatch) {
                 return {
-                    name: thirdLevelDegrees[0].name,
+                    degree: thirdLevelDegrees[0],
                     type: 'related'
                 };
             }
 
             return {
-                name: degrees[0].name,
+                degree: degrees[0],
                 type: 'bachiller'
             };
         }
 
         return {
-            name: null,
+            degree: null,
             type: null
         };
     }

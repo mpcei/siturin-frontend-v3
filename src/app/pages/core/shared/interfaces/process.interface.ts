@@ -12,4 +12,7 @@ export interface ProcessInterface {
     classification?: ClassificationInterface;
     cadastre?: CadastreInterface;
     type?: CatalogueInterface;
+    startedAt?: Date;
+    endedAt?: Date;
+    professionalTitle?: any;
 }
