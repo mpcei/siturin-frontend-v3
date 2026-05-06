@@ -75,6 +75,7 @@ export class RegistrationGuideComponent {
         const adventureModalities: any[] = [];
         const languages: any[] = [];
         const protectedAreas: any[] = [];
+        const vehicles: any[] = [];
 
         const formData = new FormData();
 
@@ -99,6 +100,21 @@ export class RegistrationGuideComponent {
 
         if (this.formStateService.adventureModality()) {
             processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
+            processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.requirement, value: this.formStateService.adventureModality().vehicle?.hasVehicle });
+
+            Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any) => {
+                vehicles.push({
+                    type: x.type,
+                    registration: x.registration,
+                    registrationAt: x.registrationAt,
+                    registrationExpirationAt: x.registrationExpirationAt,
+                    plate: x.plate,
+                    year: x.plate
+                });
+
+                formData.append(x.modality.code, x.file);
+                formData.append('', x.file);
+            });
 
             Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
                 adventureModalities.push({

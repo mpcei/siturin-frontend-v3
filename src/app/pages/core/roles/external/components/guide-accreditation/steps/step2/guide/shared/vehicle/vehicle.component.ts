@@ -1,7 +1,6 @@
-import { Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -21,24 +20,23 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { ClassificationInterface, EstablishmentInterface } from '@/pages/core/shared/interfaces';
-import { CatalogueGuideDegreesCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
-import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputText } from 'primeng/inputtext';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
-    certifier?: CatalogueInterface;
-    modality?: CatalogueInterface;
+    plate?: string;
+    type?: CatalogueInterface;
+    year?: number;
     file?: any;
 }
 
 @Component({
-    selector: 'app-adventure-tourism-modality',
+    selector: 'app-vehicle',
     standalone: true,
     imports: [
         ReactiveFormsModule,
         CommonModule,
-        Fluid,
         LabelDirective,
         Select,
         ButtonModule,
@@ -52,13 +50,13 @@ export interface AdventureTourismModalityInterface {
         ToggleSwitchComponent,
         FileUpload,
         ButtonActionComponent,
-        VehicleComponent
+        InputNumber,
+        InputText
     ],
-    templateUrl: './adventure-tourism-modality.component.html'
+    templateUrl: './vehicle.component.html'
 })
-export class AdventureTourismModalityComponent implements OnInit {
+export class VehicleComponent implements OnInit {
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
-    public classification = input.required<ClassificationInterface>();
 
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -68,7 +66,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
 
     protected form!: FormGroup;
-    protected modalityForm!: FormGroup;
+    protected vehicleForm!: FormGroup;
 
     protected isVisibleModal = false;
     protected cols: ColInterface[] = [];
@@ -76,11 +74,10 @@ export class AdventureTourismModalityComponent implements OnInit {
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
 
-    protected availableModalities: CatalogueInterface[] = [];
-    protected certifiers: CatalogueInterface[] = [];
+    protected driverLicenses: CatalogueInterface[] = [];
+    protected types: CatalogueInterface[] = [];
     protected requirements: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
-    protected hasVehicle = signal<boolean>(false);
 
     constructor() {}
 
@@ -105,61 +102,45 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     buildColumns() {
         this.cols = [
-            { header: 'Modalidad', field: 'modality', type: 'object' },
-            { header: 'Organismos Certificadores', field: 'certifier', type: 'object' },
-            { header: 'Certificación de habilidad o el certificado de aprobación', field: 'file', type: 'object' }
+            { header: 'Placa', field: 'plate' },
+            { header: ' Año del vehículo', field: 'year' },
+            { header: ' Tipo de vehículo', field: 'type', type: 'object' }
         ];
     }
 
     buildForm() {
-        this.modalityForm = this.formBuilder.group({
+        this.vehicleForm = this.formBuilder.group({
             id: [null],
-            modality: [null, Validators.required],
-            certifier: [null, Validators.required],
+            plate: [null, Validators.required],
+            type: [null, Validators.required],
+            year: [null, Validators.required],
             file: [null, Validators.required]
         });
 
         this.form = this.formBuilder.group({
             requirement: [null, Validators.required],
-            vehicle: [null],
-            hasAdventureTourismModality: false,
-            adventureTourismModalities: []
+            hasVehicle: false,
+            driverLicense: [null, Validators.required],
+            vehicles: []
         });
 
         this.watchFormChanges();
     }
 
     watchFormChanges() {
-        this.hasAdventureTourismModalityField.valueChanges.subscribe((_) => {
+        this.hasVehicleField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
     }
 
-    checkVehicles(): void {
-        console.log(this.items);
-        const hasVehicle =
-            this.items?.some(({ modality }) => {
-                console.log(modality);
-                return [CatalogueGuideModalitiesCodeEnum.alm, CatalogueGuideModalitiesCodeEnum.mem].includes(modality?.code as CatalogueGuideModalitiesCodeEnum);
-            }) ?? false;
-
-        console.log(hasVehicle);
-        this.hasVehicle.set(hasVehicle);
-    }
-
     async loadCatalogues() {
-        const [modalities, certifiers, requirements] = await Promise.all([
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name),
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), //review cambiar por el catalogo correspondiente
-            this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
-        ]);
+        const [requirements, types] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.requirement_item), this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type)]);
 
-        this.availableModalities = modalities.filter((x) => x.code !== 'modality_aventure');
-        this.certifiers = certifiers;
         this.requirements = requirements;
+        this.types = types;
 
-        console.log(requirements);
-        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure')); //review cambiar en la base por adventure
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'selection_type_mountain'));
+        this.driverLicenseField.patchValue(this.requirements.find((x) => x.code === 'driver_license'));
     }
 
     onSubmit() {
@@ -171,8 +152,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     validateModalityForm() {
         const errors: string[] = [];
 
-        if (this.modalityField.invalid) errors.push('Modalidad');
-        if (this.certifierField.invalid) errors.push('Organismos Certificadores');
+        if (this.plateField.invalid) errors.push('Placa');
+        if (this.typeField.invalid) errors.push('Tipo de vehículo');
+        if (this.yearField.invalid) errors.push('Año del vehículo');
         if (this.fileField.invalid) errors.push('Certificación de habilidad o el certificado de aprobación');
 
         if (errors.length > 0) {
@@ -187,7 +169,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Modalidades de Turismo Aventura');
+        if (this.hasVehicleField.value && this.items.length === 0) errors.push('Vehículos');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -208,9 +190,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     createAdventureTourismModality() {
-        const modality = this.modalityField.value;
+        const plate = this.plateField.value;
 
-        if (this.items.some((i) => i.modality?.code === modality?.code)) {
+        if (this.items.some((i) => i.plate === plate)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
                 detail: 'La modalidad ya existe'
@@ -221,19 +203,19 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.items = [
             ...this.items,
             {
-                certifier: this.certifierField.value,
-                modality,
+                year: this.yearField.value,
+                type: this.typeField.value,
+                plate,
                 file: this.fileField.value
             }
         ];
 
-        this.checkVehicles();
         this.updateFormAndEmit();
 
         this.closeModal();
     }
 
-    deleteAdventureTourismModality(modality: AdventureTourismModalityInterface) {
+    deleteAdventureTourismModality(plate: string) {
         this.confirmationService.confirm({
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
@@ -248,9 +230,8 @@ export class AdventureTourismModalityComponent implements OnInit {
                 label: 'Sí, Eliminar'
             },
             accept: () => {
-                this.items = this.items.filter((item) => item.modality?.id !== modality?.modality?.id);
+                this.items = this.items.filter((item) => item.plate !== plate);
 
-                this.checkVehicles();
                 this.updateFormAndEmit();
             },
             key: 'confirmdialog'
@@ -259,42 +240,42 @@ export class AdventureTourismModalityComponent implements OnInit {
 
     closeModal() {
         this.isVisibleModal = false;
-        this.modalityForm.reset();
+        this.vehicleForm.reset();
     }
 
-    onFileSelect(modality: CatalogueInterface, event: any) {
+    onFileSelect(code: string, event: any) {
         const file = event.files?.[0] as File;
 
         if (!file) return;
 
         this.fileField.patchValue(file);
 
-        this.responses.set(modality.code!, {
+        this.responses.set(code, {
             file,
-            modality
+            code
         });
     }
 
-    saveVehicles(data: any) {
-        this.vehicleField.patchValue(data);
-    }
-
     private updateFormAndEmit() {
-        this.adventureTourismModalitiesField.setValue(this.items);
+        this.vehiclesField.setValue(this.items);
         this.dataOut.emit(this.form.getRawValue());
     }
 
     // Getter Modality Form
-    get modalityField(): AbstractControl {
-        return this.modalityForm.controls['modality'];
+    get plateField(): AbstractControl {
+        return this.vehicleForm.controls['plate'];
     }
 
-    get certifierField(): AbstractControl {
-        return this.modalityForm.controls['certifier'];
+    get typeField(): AbstractControl {
+        return this.vehicleForm.controls['type'];
+    }
+
+    get yearField(): AbstractControl {
+        return this.vehicleForm.controls['year'];
     }
 
     get fileField(): AbstractControl {
-        return this.modalityForm.controls['file'];
+        return this.vehicleForm.controls['file'];
     }
 
     // Getters Form
@@ -302,15 +283,15 @@ export class AdventureTourismModalityComponent implements OnInit {
         return this.form.controls['requirement'];
     }
 
-    get vehicleField(): AbstractControl {
-        return this.form.controls['vehicle'];
+    get hasVehicleField(): AbstractControl {
+        return this.form.controls['hasVehicle'];
     }
 
-    get hasAdventureTourismModalityField(): AbstractControl {
-        return this.form.controls['hasAdventureTourismModality'];
+    get driverLicenseField(): AbstractControl {
+        return this.form.controls['driverLicense'];
     }
 
-    get adventureTourismModalitiesField(): AbstractControl {
-        return this.form.controls['adventureTourismModalities'];
+    get vehiclesField(): AbstractControl {
+        return this.form.controls['vehicles'];
     }
 }

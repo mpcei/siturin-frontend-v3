@@ -117,6 +117,11 @@ export enum CatalogueGuideDegreesCodeEnum {
     bachiller = 'bachiller',
 }
 
+export enum CatalogueGuideModalitiesCodeEnum {
+    alm = 'alm',
+    mem = 'mem'
+}
+
 export enum ContributorTypeEnum {
     natural_person = 'natural_person',
     both = 'both',

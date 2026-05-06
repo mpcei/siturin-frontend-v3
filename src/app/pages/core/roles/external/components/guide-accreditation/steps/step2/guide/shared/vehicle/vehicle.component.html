@@ -2,23 +2,24 @@
     <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
         <!-- title -->
         <div class="custom-form-title md:col-span-12">
-            <h3>MODALIDADES DE AVENTURA</h3>
+            <h6>REQUISITOS PARA LOS GUÍAS DE TURISMO NACIONALES ESPECIALIZADOS EN AVENTURA DE MEDIA O ALTA
+                MONTAÑA QUE TRASLADEN A TURISTAS O VISITANTES EN SU VEHÍCULO PROPIO </h6>
         </div>
 
         <!-- hasAdventureTourismModality -->
         <div class="custom-form-field md:col-span-12">
-            <label appLabel for="hasAdventureTourismModality"
-                   [required]="hasAdventureTourismModalityField">
+            <label appLabel for="hasVehicle"
+                   [required]="hasVehicleField">
                 <div [innerHTML]="requirementField.value?.name"></div>
             </label>
 
-            <app-toggle-switch id="hasAdventureTourismModality" formControlName="hasAdventureTourismModality" />
+            <app-toggle-switch id="hasVehicle" formControlName="hasVehicle" />
 
             <p-message
                 appErrorMessage
-                [errors]="hasAdventureTourismModalityField.errors"
-                [touched]="hasAdventureTourismModalityField.touched"
-                [dirty]="hasAdventureTourismModalityField.dirty"
+                [errors]="hasVehicleField.errors"
+                [touched]="hasVehicleField.touched"
+                [dirty]="hasVehicleField.dirty"
             />
         </div>
 
@@ -26,10 +27,10 @@
 </div>
 
 
-@if (hasAdventureTourismModalityField.value) {
+@if (hasVehicleField.value) {
     <div class="custom-form-card">
         <app-list-basic
-            title="Modalidades de Turismo de Aventura"
+            title="Vehículos"
             [items]="items"
             [cols]="cols"
             [buttonActions]="buttonActions"
@@ -37,11 +38,6 @@
             (onSelect)="onSelect($event)"
         />
     </div>
-}
-
-
-@if (hasVehicle()) {
-    <app-vehicle (dataOut)="saveVehicles($event)"/>
 }
 
 <p-dialog
@@ -60,52 +56,59 @@
     </ng-template>
 
     <div class="custom-form-card">
-        <form [formGroup]="modalityForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
-            <!-- modality -->
+        <form [formGroup]="vehicleForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
+            <!-- plate -->
             <div class="md:col-span-12 flex flex-col gap-2">
                 <label
                     appLabel
                     for="modality"
                     label="Modalidad"
-                    [required]="modalityField"></label>
+                    [required]="plateField"></label>
 
-                <p-select
-                    id="modality"
-                    formControlName="modality"
-                    [options]="availableModalities"
-                    optionLabel="name"
-                    [filter]="true"
-                    filterBy="name"
-                    appendTo="body" />
+                <input pInputText id="plate" formControlName="plate">
 
                 <small
                     appErrorMessage
-                    [errors]="modalityField.errors"
-                    [touched]="modalityField.touched"
-                    [dirty]="modalityField.dirty"></small>
+                    [errors]="plateField.errors"
+                    [touched]="plateField.touched"
+                    [dirty]="plateField.dirty"></small>
             </div>
 
-            <!-- certifier -->
+            <!-- type -->
             <div class="md:col-span-12 flex flex-col gap-2">
                 <label
-                    appLabel for="certifier"
-                    [required]="certifierField"
+                    appLabel for="type"
+                    [required]="typeField"
                     label="Organismos Certificadores de Habilidad Acreditados"></label>
 
                 <p-select
                     id="certifier"
-                    formControlName="certifier"
-                    [options]="certifiers"
+                    formControlName="type"
+                    [options]="types"
                     optionLabel="name"
-                    [filter]="true"
-                    filterBy="name"
                     appendTo="body" />
 
                 <small
                     appErrorMessage
-                    [errors]="certifierField.errors"
-                    [touched]="certifierField.touched"
-                    [dirty]="certifierField.dirty"></small>
+                    [errors]="typeField.errors"
+                    [touched]="typeField.touched"
+                    [dirty]="typeField.dirty"></small>
+            </div>
+
+            <!-- year -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label
+                    appLabel for="year"
+                    [required]="yearField"
+                    label="Organismos Certificadores de Habilidad Acreditados"></label>
+
+                <p-inputNumber id="year" formControlName="year"/>
+
+                <small
+                    appErrorMessage
+                    [errors]="typeField.errors"
+                    [touched]="typeField.touched"
+                    [dirty]="typeField.dirty"></small>
             </div>
 
             <!-- ruc -->
@@ -128,7 +131,7 @@
                     [maxFileSize]="10485760"
                     [auto]="true"
                     [customUpload]="true"
-                    (uploadHandler)="onFileSelect(modalityField.value,$event)">
+                    (uploadHandler)="onFileSelect('',$event)">
                 </p-fileupload>
 
                 @if (fileField.value) {
