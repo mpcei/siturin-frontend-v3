@@ -21,14 +21,17 @@ import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-sw
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { InputNumber } from 'primeng/inputnumber';
-import { InputText } from 'primeng/inputtext';
+import { InputMask } from 'primeng/inputmask';
+import { getYear } from 'date-fns';
 
-export interface AdventureTourismModalityInterface {
+export interface VehicleInterface {
     id?: string;
     plate?: string;
     type?: CatalogueInterface;
     year?: number;
-    file?: any;
+    vehicleRegistrationFile?: any;
+    documentVehicleInspectionFile?: any;
+    accidentPolicyFile?: any;
 }
 
 @Component({
@@ -51,7 +54,7 @@ export interface AdventureTourismModalityInterface {
         FileUpload,
         ButtonActionComponent,
         InputNumber,
-        InputText
+        InputMask
     ],
     templateUrl: './vehicle.component.html'
 })
@@ -70,7 +73,7 @@ export class VehicleComponent implements OnInit {
 
     protected isVisibleModal = false;
     protected cols: ColInterface[] = [];
-    protected items: AdventureTourismModalityInterface[] = [];
+    protected items: VehicleInterface[] = [];
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
 
@@ -92,7 +95,7 @@ export class VehicleComponent implements OnInit {
             {
                 ...deleteButtonAction,
                 command: () => {
-                    if (item) this.deleteAdventureTourismModality(item);
+                    if (item) this.deleteVehicle(item);
                 }
             }
         ];
@@ -109,18 +112,24 @@ export class VehicleComponent implements OnInit {
     }
 
     buildForm() {
+        const minYear = getYear(new Date()) - 15;
+        const maxYear = getYear(new Date());
+
         this.vehicleForm = this.formBuilder.group({
             id: [null],
             plate: [null, Validators.required],
             type: [null, Validators.required],
-            year: [null, Validators.required],
-            file: [null, Validators.required]
+            year: [null, [Validators.required, Validators.min(minYear), Validators.max(maxYear)]],
+            vehicleRegistrationFile: [null, Validators.required],
+            documentVehicleInspectionFile: [null, Validators.required],
+            accidentPolicyFile: [null, Validators.required]
         });
 
         this.form = this.formBuilder.group({
             requirement: [null, Validators.required],
             hasVehicle: false,
             driverLicense: [null, Validators.required],
+            driverLicenseFile: [null, Validators.required],
             vehicles: []
         });
 
@@ -131,31 +140,45 @@ export class VehicleComponent implements OnInit {
         this.hasVehicleField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
+
+        // this.plateField.valueChanges.subscribe((value) => {
+        //     if (value) {
+        //         this.plateField.setValue(value.toUpperCase(), {
+        //             emitEvent: false
+        //         });
+        //     }
+        // });
     }
 
     async loadCatalogues() {
-        const [requirements, types] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.requirement_item), this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type)]);
+        const [requirements, types, driverLicenses] = await Promise.all([
+            this.catalogueService.findByType(CatalogueTypeEnum.requirement_item),
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type),
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type) //review cambiar por el tipo que es
+        ]);
 
         this.requirements = requirements;
         this.types = types;
+        this.driverLicenses = driverLicenses;
 
         this.requirementField.patchValue(this.requirements.find((x) => x.code === 'selection_type_mountain'));
-        this.driverLicenseField.patchValue(this.requirements.find((x) => x.code === 'driver_license'));
     }
 
     onSubmit() {
-        if (this.validateModalityForm()) {
-            this.createAdventureTourismModality();
+        if (this.validateVehicleForm()) {
+            this.createVehicle();
         }
     }
 
-    validateModalityForm() {
+    validateVehicleForm() {
         const errors: string[] = [];
 
         if (this.plateField.invalid) errors.push('Placa');
         if (this.typeField.invalid) errors.push('Tipo de vehículo');
         if (this.yearField.invalid) errors.push('Año del vehículo');
-        if (this.fileField.invalid) errors.push('Certificación de habilidad o el certificado de aprobación');
+        if (this.vehicleRegistrationFileField.invalid) errors.push('Matrícula vigente del vehículo');
+        if (this.documentVehicleInspectionFileField.invalid) errors.push('Distintivo o documento de aprobación de la revisión técnica vehicular anual');
+        if (this.accidentPolicyFileField.invalid) errors.push('Póliza de seguros de accidentes vigente ');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -189,13 +212,13 @@ export class VehicleComponent implements OnInit {
         this.buildButtonActions(item, index);
     }
 
-    createAdventureTourismModality() {
+    createVehicle() {
         const plate = this.plateField.value;
 
         if (this.items.some((i) => i.plate === plate)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
-                detail: 'La modalidad ya existe'
+                detail: 'El vehículo ya existe'
             });
             return;
         }
@@ -203,10 +226,12 @@ export class VehicleComponent implements OnInit {
         this.items = [
             ...this.items,
             {
-                year: this.yearField.value,
-                type: this.typeField.value,
                 plate,
-                file: this.fileField.value
+                type: this.typeField.value,
+                year: this.yearField.value,
+                vehicleRegistrationFile: this.vehicleRegistrationFileField.value,
+                documentVehicleInspectionFile: this.documentVehicleInspectionFileField.value,
+                accidentPolicyFile: this.accidentPolicyFileField.value
             }
         ];
 
@@ -215,7 +240,7 @@ export class VehicleComponent implements OnInit {
         this.closeModal();
     }
 
-    deleteAdventureTourismModality(plate: string) {
+    deleteVehicle(plate: string) {
         this.confirmationService.confirm({
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
@@ -248,7 +273,20 @@ export class VehicleComponent implements OnInit {
 
         if (!file) return;
 
-        this.fileField.patchValue(file);
+        switch (code) {
+            case 'vehicleRegistrationFile':
+                this.vehicleRegistrationFileField.patchValue(file);
+                break;
+            case 'documentVehicleInspectionFile':
+                this.documentVehicleInspectionFileField.patchValue(file);
+                break;
+            case 'accidentPolicyFile':
+                this.accidentPolicyFileField.patchValue(file);
+                break;
+            case 'driverLicenseFile':
+                this.driverLicenseFileField.patchValue(file);
+                break;
+        }
 
         this.responses.set(code, {
             file,
@@ -261,7 +299,7 @@ export class VehicleComponent implements OnInit {
         this.dataOut.emit(this.form.getRawValue());
     }
 
-    // Getter Modality Form
+    // Getter Form
     get plateField(): AbstractControl {
         return this.vehicleForm.controls['plate'];
     }
@@ -274,8 +312,15 @@ export class VehicleComponent implements OnInit {
         return this.vehicleForm.controls['year'];
     }
 
-    get fileField(): AbstractControl {
-        return this.vehicleForm.controls['file'];
+    get vehicleRegistrationFileField(): AbstractControl {
+        return this.vehicleForm.controls['vehicleRegistrationFile'];
+    }
+
+    get documentVehicleInspectionFileField(): AbstractControl {
+        return this.vehicleForm.controls['documentVehicleInspectionFile'];
+    }
+    get accidentPolicyFileField(): AbstractControl {
+        return this.vehicleForm.controls['accidentPolicyFile'];
     }
 
     // Getters Form
@@ -289,6 +334,10 @@ export class VehicleComponent implements OnInit {
 
     get driverLicenseField(): AbstractControl {
         return this.form.controls['driverLicense'];
+    }
+
+    get driverLicenseFileField(): AbstractControl {
+        return this.form.controls['driverLicenseFile'];
     }
 
     get vehiclesField(): AbstractControl {

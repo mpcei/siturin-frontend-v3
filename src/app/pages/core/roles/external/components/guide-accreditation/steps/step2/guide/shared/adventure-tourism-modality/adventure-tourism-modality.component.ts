@@ -276,7 +276,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     saveVehicles(data: any) {
+        console.log(data);
         this.vehicleField.patchValue(data);
+        this.updateFormAndEmit();
     }
 
     private updateFormAndEmit() {

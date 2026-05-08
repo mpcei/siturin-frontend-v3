@@ -45,7 +45,8 @@ export enum CatalogueTypeEnum {
     guide_languages_level = 'guide_languages_level',
     protected_areas_name = 'protected_areas_name',
     related_degrees = 'related_degrees',
-    guide_vehicles_type = 'guide_vehicles_type'
+    guide_vehicles_type = 'guide_vehicles_type',
+    processes_driver_licenses = 'processes_driver_licenses'
 }
 
 export enum CatalogueStateEnum {

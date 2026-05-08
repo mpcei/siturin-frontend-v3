@@ -61,7 +61,7 @@ export class RegistrationGuideComponent {
         if (objectName?.includes('language')) this.formStateService.updateSection('language', this.mainData()[objectName]);
         if (objectName?.includes('protectedArea')) this.formStateService.updateSection('protectedArea', this.mainData()[objectName]);
 
-        console.log(this.formStateService.protectedArea());
+        console.log(this.formStateService.adventureModality());
     }
 
     onSubmit() {
@@ -75,7 +75,7 @@ export class RegistrationGuideComponent {
         const adventureModalities: any[] = [];
         const languages: any[] = [];
         const protectedAreas: any[] = [];
-        const vehicles: any[] = [];
+        const landTransports: any[] = [];
 
         const formData = new FormData();
 
@@ -102,18 +102,18 @@ export class RegistrationGuideComponent {
             processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
             processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.requirement, value: this.formStateService.adventureModality().vehicle?.hasVehicle });
 
-            Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any) => {
-                vehicles.push({
+            formData.append('driver_license', this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
+
+            Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any, index: number) => {
+                landTransports.push({
                     type: x.type,
-                    registration: x.registration,
-                    registrationAt: x.registrationAt,
-                    registrationExpirationAt: x.registrationExpirationAt,
                     plate: x.plate,
-                    year: x.plate
+                    year: x.year
                 });
 
-                formData.append(x.modality.code, x.file);
-                formData.append('', x.file);
+                formData.append('vehicle_registration' + index, x.vehicleRegistrationFile); //review cambiar por enum
+                formData.append('document_vehicle_inspection' + index, x.documentVehicleInspectionFile); //review cambiar por enum
+                formData.append('accident_policy' + index, x.accidentPolicyFile); //review cambiar por enum
             });
 
             Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
@@ -152,7 +152,8 @@ export class RegistrationGuideComponent {
             processGuides: processGuides,
             adventureModalities: adventureModalities,
             languages: languages,
-            protectedAreas: protectedAreas
+            protectedAreas: protectedAreas,
+            landTransports: landTransports
         };
 
         console.log(payload);

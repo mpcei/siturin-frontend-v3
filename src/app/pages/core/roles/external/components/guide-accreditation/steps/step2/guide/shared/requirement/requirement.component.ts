@@ -241,10 +241,16 @@ export class RequirementComponent implements OnInit {
             case 'photo':
                 this.photoField.patchValue(data);
                 break;
-            case 'certification_guide_local':
+            case CatalogueGuideRequirementsCodeEnum.certification_guide_local:
                 this.certificationGuideField.patchValue(data);
                 break;
-            case 'certification_aux_wild_24':
+            case CatalogueGuideRequirementsCodeEnum.certification_job_skill:
+                this.certificationJobSkillField.patchValue(data);
+                break;
+            case CatalogueGuideRequirementsCodeEnum.certification_aux_wild:
+            case CatalogueGuideRequirementsCodeEnum.certification_aux_wild_24:
+            case CatalogueGuideRequirementsCodeEnum.certification_aux_24:
+            case CatalogueGuideRequirementsCodeEnum.certification_aux_50:
                 this.certificationAuxField.patchValue(data);
                 break;
         }

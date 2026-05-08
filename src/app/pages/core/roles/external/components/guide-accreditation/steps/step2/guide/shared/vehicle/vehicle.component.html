@@ -23,9 +23,67 @@
             />
         </div>
 
+        <!-- driverLicense -->
+        @if (hasVehicleField.value) {
+            <div class="custom-form-field md:col-span-12">
+                <label appLabel for="driverLicense"
+                       [required]="driverLicenseField">
+                    Licencia de conducir vigente, al menos tipo B.
+                </label>
+
+                <p-select
+                    id="driverLicense"
+                    formControlName="driverLicense"
+                    [options]="driverLicenses"
+                    optionLabel="name"
+                    appendTo="body" />
+
+                <p-message
+                    appErrorMessage
+                    [errors]="driverLicenseField.errors"
+                    [touched]="driverLicenseField.touched"
+                    [dirty]="driverLicenseField.dirty"
+                />
+            </div>
+
+            <!-- driverLicenseFile -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="driverLicenseFile"
+                    [required]="driverLicenseFileField">
+                    Licencia
+                </label>
+
+                <p-fileupload
+                    id="driverLicenseFile"
+                    name="driverLicenseFile"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect('driverLicenseFile',$event)">
+                </p-fileupload>
+
+                @if (driverLicenseFileField.value) {
+                    <p-message severity="info">
+                        {{ driverLicenseFileField.value.name | json }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="driverLicenseFileField.errors"
+                    [touched]="driverLicenseFileField.touched"
+                    [dirty]="driverLicenseFileField.dirty"></small>
+            </div>
+        }
     </form>
 </div>
-
 
 @if (hasVehicleField.value) {
     <div class="custom-form-card">
@@ -61,11 +119,12 @@
             <div class="md:col-span-12 flex flex-col gap-2">
                 <label
                     appLabel
-                    for="modality"
-                    label="Modalidad"
+                    for="plate"
+                    label="Placa"
                     [required]="plateField"></label>
 
-                <input pInputText id="plate" formControlName="plate">
+                <p-inputmask mask="aaa-9999" formControlName="plate" placeholder="ABC-1234" [unmask]="true" styleClass="w-full" />
+                <!--                <input pInputText id="plate" formControlName="plate">-->
 
                 <small
                     appErrorMessage
@@ -79,7 +138,7 @@
                 <label
                     appLabel for="type"
                     [required]="typeField"
-                    label="Organismos Certificadores de Habilidad Acreditados"></label>
+                    label="Tipo de vehículo"></label>
 
                 <p-select
                     id="certifier"
@@ -100,51 +159,125 @@
                 <label
                     appLabel for="year"
                     [required]="yearField"
-                    label="Organismos Certificadores de Habilidad Acreditados"></label>
+                    label="Año del vehículo"></label>
 
-                <p-inputNumber id="year" formControlName="year"/>
+                <p-inputNumber id="year" formControlName="year" [useGrouping]="false" />
 
                 <small
                     appErrorMessage
-                    [errors]="typeField.errors"
-                    [touched]="typeField.touched"
-                    [dirty]="typeField.dirty"></small>
+                    [errors]="yearField.errors"
+                    [touched]="yearField.touched"
+                    [dirty]="yearField.dirty"></small>
             </div>
 
-            <!-- ruc -->
+            <!-- vehicleRegistrationFile -->
             <div class="custom-form-field md:col-span-12">
                 <label
                     appLabel
-                    for="ruc"
-                    [required]="fileField"
-                    label="Certificación de habilidad o el certificado de aprobación del curso de capacitación específico de aventura de la modalidad referida">
+                    for="vehicleRegistrationFile"
+                    [required]="vehicleRegistrationFileField">
+                    Matrícula vigente del vehículo de propiedad del guía. El vehículo deberá ser utilitario SUV 4x2 o
+                    4x4. El vehículo no podrá tener más de 15 años de fabricación.
                 </label>
 
                 <p-fileupload
-                    id="file"
-                    name="file"
+                    id="vehicleRegistrationFile"
+                    name="vehicleRegistrationFile"
                     mode="basic"
-                    chooseLabel="Buscar archivo"
+                    chooseLabel="Examinar"
                     [chooseIcon]="PrimeIcons.SEARCH"
                     uploadLabel="Subir archivo"
                     accept="application/pdf"
                     [maxFileSize]="10485760"
                     [auto]="true"
                     [customUpload]="true"
-                    (uploadHandler)="onFileSelect('',$event)">
+                    (uploadHandler)="onFileSelect('vehicleRegistrationFile',$event)">
                 </p-fileupload>
 
-                @if (fileField.value) {
+                @if (vehicleRegistrationFileField.value) {
                     <p-message severity="info">
-                        {{ fileField.value.name | json }}
+                        {{ vehicleRegistrationFileField.value.name | json }}
                     </p-message>
                 }
 
                 <small
                     appErrorMessage
-                    [errors]="fileField.errors"
-                    [touched]="fileField.touched"
-                    [dirty]="fileField.dirty"></small>
+                    [errors]="vehicleRegistrationFileField.errors"
+                    [touched]="vehicleRegistrationFileField.touched"
+                    [dirty]="vehicleRegistrationFileField.dirty"></small>
+            </div>
+
+            <!-- documentVehicleInspectionFile -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="documentVehicleInspectionFile"
+                    [required]="documentVehicleInspectionFileField">
+                    Distintivo o documento de aprobación de la revisión técnica vehicular anual.
+                </label>
+
+                <p-fileupload
+                    id="documentVehicleInspectionFile"
+                    name="documentVehicleInspectionFile"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect('documentVehicleInspectionFile',$event)">
+                </p-fileupload>
+
+                @if (documentVehicleInspectionFileField.value) {
+                    <p-message severity="info">
+                        {{ documentVehicleInspectionFileField.value.name | json }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="documentVehicleInspectionFileField.errors"
+                    [touched]="documentVehicleInspectionFileField.touched"
+                    [dirty]="documentVehicleInspectionFileField.dirty"></small>
+            </div>
+
+            <!-- accidentPolicyFile -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="accidentPolicyFile"
+                    [required]="accidentPolicyFileField">
+                    Póliza de seguros de accidentes vigente que cubra al guía, a los pasajeros y a terceros, durante
+                    todo el traslado
+                </label>
+
+                <p-fileupload
+                    id="accidentPolicyFile"
+                    name="accidentPolicyFile"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect('accidentPolicyFile',$event)">
+                </p-fileupload>
+
+                @if (accidentPolicyFileField.value) {
+                    <p-message severity="info">
+                        {{ accidentPolicyFileField.value.name | json }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="accidentPolicyFileField.errors"
+                    [touched]="accidentPolicyFileField.touched"
+                    [dirty]="accidentPolicyFileField.dirty"></small>
             </div>
 
             <!-- Action Buttons -->
