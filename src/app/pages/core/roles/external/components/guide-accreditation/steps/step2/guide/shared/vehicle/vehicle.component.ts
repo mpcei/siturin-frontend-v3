@@ -129,6 +129,7 @@ export class VehicleComponent implements OnInit {
             requirement: [null, Validators.required],
             hasVehicle: false,
             driverLicense: [null, Validators.required],
+            driverLicenseType: [null, Validators.required],
             driverLicenseFile: [null, Validators.required],
             vehicles: []
         });
@@ -162,6 +163,7 @@ export class VehicleComponent implements OnInit {
         this.driverLicenses = driverLicenses;
 
         this.requirementField.patchValue(this.requirements.find((x) => x.code === 'selection_type_mountain'));
+        this.driverLicenseTypeField.patchValue(this.requirements.find((x) => x.code === 'driver_license'));
     }
 
     onSubmit() {
@@ -319,6 +321,7 @@ export class VehicleComponent implements OnInit {
     get documentVehicleInspectionFileField(): AbstractControl {
         return this.vehicleForm.controls['documentVehicleInspectionFile'];
     }
+
     get accidentPolicyFileField(): AbstractControl {
         return this.vehicleForm.controls['accidentPolicyFile'];
     }
@@ -334,6 +337,10 @@ export class VehicleComponent implements OnInit {
 
     get driverLicenseField(): AbstractControl {
         return this.form.controls['driverLicense'];
+    }
+
+    get driverLicenseTypeField(): AbstractControl {
+        return this.form.controls['driverLicenseType'];
     }
 
     get driverLicenseFileField(): AbstractControl {

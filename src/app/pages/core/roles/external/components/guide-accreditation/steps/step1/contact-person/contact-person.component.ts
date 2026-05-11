@@ -12,6 +12,7 @@ import { Select } from 'primeng/select';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
+import { AuthService } from '@/pages/auth/auth.service';
 
 @Component({
     selector: 'app-contact-person',
@@ -27,6 +28,7 @@ export class ContactPersonComponent implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly catalogueService = inject(CatalogueService);
+    protected readonly authService = inject(AuthService);
 
     protected form!: FormGroup;
     protected formInitialized = false;
@@ -57,9 +59,9 @@ export class ContactPersonComponent implements OnInit {
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
             email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
             legalName: [{ value: null, disabled: true }],
-            nationality: [{ value: null, disabled: true }],
-            sex: [{ value: null, disabled: true }],
-            birthdate: [{ value: null, disabled: true }]
+            nationality: [{ value: this.authService.auth?.nationality?.name, disabled: true }],
+            sex: [{ value: this.authService.auth?.sex?.name, disabled: true }],
+            birthdate: [{ value: this.authService.auth?.birthdate, disabled: true }]
         });
 
         this.watchFormChanges();

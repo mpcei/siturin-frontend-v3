@@ -101,8 +101,10 @@ export class RegistrationGuideComponent {
         if (this.formStateService.adventureModality()) {
             processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
             processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.requirement, value: this.formStateService.adventureModality().vehicle?.hasVehicle });
+            processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.driverLicense, value: 'sn' });
 
-            formData.append('driver_license', this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
+            this.formStateService.updateSection('process', { driverLicense: this.formStateService.adventureModality().vehicle?.driverLicense });
+            formData.append(this.formStateService.adventureModality().vehicle?.driverLicense?.id, this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
 
             Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any, index: number) => {
                 landTransports.push({

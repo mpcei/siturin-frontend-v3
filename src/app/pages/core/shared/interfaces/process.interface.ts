@@ -15,4 +15,5 @@ export interface ProcessInterface {
     startedAt?: Date;
     endedAt?: Date;
     professionalTitle?: any;
+    driverLicense?: CatalogueInterface;
 }

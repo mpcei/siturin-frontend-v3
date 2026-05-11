@@ -6,7 +6,7 @@ import { ContactPersonComponent } from '@modules/core/roles/external/components/
 import { AddressComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
 import { ProcessHttpService } from '@/pages/core/shared/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
-import { EstablishmentHttpService, FormStateService } from '@modules/core/roles/external/services';
+import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@modules/core/roles/external/services';
 
 @Component({
     selector: 'app-step1',
@@ -25,8 +25,11 @@ export class Step1Component implements OnInit {
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected readonly formStateService = inject(FormStateService);
     private readonly establishmentHttpService = inject(EstablishmentHttpService);
+    private readonly guideHttpService = inject(GuideHttpService);
 
-    constructor() {}
+    constructor() {
+        this.updateGuideInformation();
+    }
 
     ngOnInit() {
         this.findDegreesByCedula();
@@ -69,6 +72,14 @@ export class Step1Component implements OnInit {
 
     back() {
         this.step.emit(1);
+    }
+
+    updateGuideInformation() {
+        this.guideHttpService.updateGuideInformation().subscribe({
+            next: (response) => {
+                console.log(response);
+            }
+        });
     }
 
     findDegreesByCedula() {

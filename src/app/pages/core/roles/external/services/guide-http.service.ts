@@ -93,4 +93,14 @@ export class GuideHttpService {
             type: null
         };
     }
+
+    updateGuideInformation() {
+        const url = `${this._apiUrl}/information`;
+
+        return this._httpClient.post<HttpResponseInterface>(url, null).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
 }

@@ -1,4 +1,5 @@
 import { RoleInterface } from '@modules/auth/interfaces';
+import { CatalogueInterface } from '@utils/interfaces';
 
 export interface AuthInterface {
     id: string;
@@ -13,4 +14,7 @@ export interface AuthInterface {
     termsAcceptedAt?: Date;
     securityQuestionAcceptedAt?: Date;
     passwordChanged: boolean;
+    nationality: CatalogueInterface;
+    sex: CatalogueInterface;
+    birthdate: Date;
 }

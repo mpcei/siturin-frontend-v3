@@ -25,10 +25,10 @@
 
         <!-- driverLicense -->
         @if (hasVehicleField.value) {
-            <div class="custom-form-field md:col-span-12">
+            <div class="custom-form-field md:col-span-6">
                 <label appLabel for="driverLicense"
                        [required]="driverLicenseField">
-                    Licencia de conducir vigente, al menos tipo B.
+                    <div [innerHTML]="driverLicenseTypeField.value?.name"></div>
                 </label>
 
                 <p-select
@@ -47,7 +47,7 @@
             </div>
 
             <!-- driverLicenseFile -->
-            <div class="custom-form-field md:col-span-12">
+            <div class="custom-form-field md:col-span-6">
                 <label
                     appLabel
                     for="driverLicenseFile"
