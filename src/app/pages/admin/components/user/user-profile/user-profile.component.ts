@@ -32,8 +32,7 @@ import { MY_ROUTES } from '@routes';
 @Component({
     selector: 'app-user-profile',
     imports: [Button, Divider, ErrorMessageDirective, FormsModule, InputText, LabelDirective, ReactiveFormsModule, Tag, DatePicker, Select, Avatar, Tooltip, DateLongPipe, PasswordChangeComponent],
-    templateUrl: './user-profile.component.html',
-    styleUrl: './user-profile.component.scss'
+    templateUrl: './user-profile.component.html'
 })
 export default class UserProfileComponent implements OnInit {
     protected readonly FontAwesome = FontAwesome;
@@ -43,6 +42,8 @@ export default class UserProfileComponent implements OnInit {
     protected form!: FormGroup;
     protected roles: RoleInterface[] = [];
     protected identificationTypes: CatalogueInterface[] = [];
+    protected sexes: CatalogueInterface[] = [];
+    protected nationalities: CatalogueInterface[] = [];
     protected avatarUrl!: string;
     protected readonly authService = inject(AuthService);
     private readonly authHttpService = inject(AuthHttpService);
@@ -88,6 +89,14 @@ export default class UserProfileComponent implements OnInit {
         return this.form.controls['birthdate'];
     }
 
+    get sexField(): AbstractControl {
+        return this.form.controls['sex'];
+    }
+
+    get nationalityField(): AbstractControl {
+        return this.form.controls['nationality'];
+    }
+
     get personalEmailField(): AbstractControl {
         return this.form.controls['personalEmail'];
     }
@@ -115,6 +124,8 @@ export default class UserProfileComponent implements OnInit {
 
     async loadCatalogues() {
         this.identificationTypes = await this.catalogueService.findByType(CatalogueTypeEnum.users_identification_type);
+        this.sexes = await this.catalogueService.findByType(CatalogueTypeEnum.users_sex);
+        this.nationalities = await this.catalogueService.findByType(CatalogueTypeEnum.users_nationality);
     }
 
     buildForm() {
@@ -129,11 +140,13 @@ export default class UserProfileComponent implements OnInit {
             ],
             username: [null, [Validators.required]],
             name: [null, [Validators.required]],
-            lastname: [null, [Validators.required, Validators.minLength(3)]],
+            lastname: [null, [Validators.required]],
             email: [null, [Validators.required, invalidEmailValidator()]],
             cellPhone: [null, [Validators.required]],
             phone: [null],
             birthdate: [null, [Validators.required]],
+            sex: [null, [Validators.required]],
+            nationality: [null, [Validators.required]],
             personalEmail: [null],
             identificationType: [null, [Validators.required]],
             avatar: [null],
@@ -173,6 +186,13 @@ export default class UserProfileComponent implements OnInit {
     update() {
         this.userHttpService.updateProfile(this.authService.auth.id, this.form.value).subscribe({
             next: (_) => {
+                let auth = this.authService.auth;
+                auth.birthdate = this.birthdateField.value;
+                auth.nationality = this.nationalityField.value;
+                auth.sex = this.sexField.value;
+
+                this.authService.auth = auth;
+
                 this.find(this.authService.auth.id);
             }
         });
@@ -201,6 +221,8 @@ export default class UserProfileComponent implements OnInit {
         if (this.birthdateField.invalid) errors.push('Fecha de nacimiento');
         if (this.personalEmailField.invalid) errors.push('Correo personal');
         if (this.identificationTypeField.invalid) errors.push('Tipo de identificacion');
+        if (this.sexField.invalid) errors.push('Sexo');
+        if (this.nationalityField.invalid) errors.push('Nacionalidad');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();

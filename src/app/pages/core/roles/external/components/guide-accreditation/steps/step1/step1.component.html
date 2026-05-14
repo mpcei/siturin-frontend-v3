@@ -1,27 +1,68 @@
-<app-contact-person (dataOut)="saveForm($event,'user')"
-                    [dataIn]="{...formStateService.user(),...formStateService.userTemp()}" />
-
-<app-address (dataOut)="saveForm($event,'establishment')" [dataIn]="formStateService.establishment()" />
-
-
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-        <div class="md:col-span-3 custom-form-field">
-            <p-button
-                label="Atrás"
-                severity="warn"
-                styleClass="w-full"
-                [icon]="PrimeIcons.ARROW_LEFT"
-                (onClick)="back()" />
+
+        <div class="custom-form-title md:col-span-3">
+            <h3>Títulos Profesionales:</h3>
         </div>
 
-        <div class="custom-form-field md:col-start-10 md:col-span-3">
+        <div class="custom-form-title md:col-span-2">
             <p-button
-                label="Siguiente"
-                iconPos="right"
+                label="Consultar Títulos"
                 styleClass="w-full"
-                [icon]="PrimeIcons.ARROW_RIGHT"
-                (onClick)="onSubmit()" />
+                [icon]="PrimeIcons.REFRESH"
+                (onClick)="createDegreesByEstablishmentId()" />
         </div>
+
+        <div class="custom-form-field md:col-span-12">
+            <p-message severity="secondary">
+                En el caso que su título no aparezca haga click en "Consultar Títulos" para actualizar
+            </p-message>
+        </div>
+
+        @for (item of professionalTitles(); track item) {
+            <div class="custom-form-field md:col-span-4">
+                <p-message>
+                    {{ item?.name }}
+                </p-message>
+            </div>
+        } @empty {
+            <div class="custom-form-field md:col-span-12">
+                <p-message severity="error">
+                    No existe títulos activos en el sistema SITURIN por favor haga click en "Consultar Títulos" para
+                    actualizar
+                </p-message>
+            </div>
+        }
     </div>
 </div>
+
+
+@if (professionalTitles().length > 0) {
+    <app-contact-person (dataOut)="saveForm($event,'user')"
+                        [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
+
+    <app-address (dataOut)="saveForm($event,'establishment')" [dataIn]="formStateService.establishment()" />
+
+
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="md:col-span-3 custom-form-field">
+                <p-button
+                    label="Atrás"
+                    severity="warn"
+                    styleClass="w-full"
+                    [icon]="PrimeIcons.ARROW_LEFT"
+                    (onClick)="back()" />
+            </div>
+
+            <div class="custom-form-field md:col-start-10 md:col-span-3">
+                <p-button
+                    label="Siguiente"
+                    iconPos="right"
+                    styleClass="w-full"
+                    [icon]="PrimeIcons.ARROW_RIGHT"
+                    (onClick)="onSubmit()" />
+            </div>
+        </div>
+    </div>
+}

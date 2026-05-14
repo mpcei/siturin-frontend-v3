@@ -194,6 +194,11 @@ export class VehicleComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
+        console.log(this.form);
+        if (this.driverLicenseField.invalid) errors.push('Licencia de conducir vigente, al menos tipo B.');
+
+        if (this.driverLicenseFileField.invalid) errors.push('Archivo licencia');
+
         if (this.hasVehicleField.value && this.items.length === 0) errors.push('Vehículos');
 
         if (errors.length > 0) {

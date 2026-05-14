@@ -60,16 +60,6 @@ export class EstablishmentHttpService {
         );
     }
 
-    findDegreesByCedula(cedula: string) {
-        const url = `${this._apiUrl}/minedec/${cedula}`;
-
-        return this._httpClient.get<HttpResponseInterface>(url).pipe(
-            map((response) => {
-                return response.data;
-            })
-        );
-    }
-
     findProjectsByUser(userId: string) {
         const url = `${this._apiUrl}/users/${userId}`;
 

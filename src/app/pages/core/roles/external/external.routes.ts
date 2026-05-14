@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
+import { guideGuard } from '@/guards/guide.guard';
 
 export default [
     {
@@ -30,6 +31,7 @@ export default [
     {
         path: MY_ROUTES.corePages.external.guideAccreditation.base,
         title: 'Acreditación Guianza',
+        canActivate:[guideGuard],
         loadComponent: () => import('@modules/core/roles/external/components/guide-accreditation/guide-accreditation.component')
     }
 ] as Routes;

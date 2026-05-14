@@ -13,10 +13,11 @@ import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, ToggleSwitchComponent, Select],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, ToggleSwitchComponent, Select, DatePipe],
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {
@@ -98,6 +99,7 @@ export class ContactPersonComponent implements OnInit {
 
     loadData() {
         if (this.dataIn()) {
+            console.log(this.dataIn());
             this.form.patchValue(this.dataIn());
         }
     }

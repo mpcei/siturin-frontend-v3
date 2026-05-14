@@ -10,7 +10,8 @@
 
                 <!-- save action -->
                 <div class="custom-form-field md:col-span-2">
-                    <p-button pTooltip="Guardar" [icon]="FontAwesome.FLOPPY_DISK_SOLID" [outlined]="true"
+                    <p-button pTooltip="Guardar"
+                              [icon]="FontAwesome.FLOPPY_DISK_SOLID"
                               [raised]="true" (onClick)="onSubmit()" />
                 </div>
 
@@ -110,26 +111,8 @@
                         [dirty]="identificationField.dirty"></small>
                 </div>
 
-                <!-- lastnameField -->
-                <div class="md:col-span-6 custom-form-field">
-                    <label
-                        appLabel
-                        for="lastname"
-                        [required]="lastnameField"
-                        label="Apellidos">
-                    </label>
-
-                    <input type="text" pInputText formControlName="lastname">
-
-                    <small
-                        appErrorMessage
-                        [errors]="lastnameField.errors"
-                        [touched]="lastnameField.touched"
-                        [dirty]="lastnameField.dirty"></small>
-                </div>
-
                 <!-- nameField -->
-                <div class="md:col-span-6 custom-form-field">
+                <div class="md:col-span-12 custom-form-field">
                     <label
                         appLabel
                         for="name"
@@ -147,7 +130,7 @@
                 </div>
 
                 <!-- personalEmailField -->
-                <div class="md:col-span-6 custom-form-field">
+                <div class="custom-form-field md:col-span-6">
                     <label
                         appLabel
                         for="personalEmail"
@@ -165,7 +148,7 @@
                 </div>
 
                 <!-- birthdateField -->
-                <div class="md:col-span-6 custom-form-field">
+                <div class="custom-form-field md:col-span-6">
                     <label
                         appLabel
                         for="birthdate"
@@ -187,8 +170,58 @@
                         [dirty]="birthdateField.dirty"></small>
                 </div>
 
+                <!-- sexField -->
+                <div class="custom-form-field md:col-span-6">
+                    <label
+                        appLabel
+                        for="sex"
+                        [required]="sexField"
+                        label="Sexo">
+                    </label>
+
+                    <p-select
+                        id="sex"
+                        dataKey="id"
+                        [options]="sexes"
+                        formControlName="sex"
+                        optionLabel="name"
+                        appendTo="body" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="sexField.errors"
+                        [touched]="sexField.touched"
+                        [dirty]="sexField.dirty"></small>
+                </div>
+
+                <!-- nationalityField -->
+                <div class="custom-form-field md:col-span-6">
+                    <label
+                        appLabel
+                        for="nationality"
+                        [required]="nationalityField"
+                        label="Nacionalidad">
+                    </label>
+
+                    <p-select
+                        id="nationality"
+                        dataKey="id"
+                        [options]="nationalities"
+                        formControlName="nationality"
+                        optionLabel="name"
+                        filter="true"
+                        filterBy="name"
+                        appendTo="body" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="nationalityField.errors"
+                        [touched]="nationalityField.touched"
+                        [dirty]="nationalityField.dirty"></small>
+                </div>
+
                 <!-- cellPhoneField -->
-                <div class="md:col-span-6 custom-form-field">
+                <div class="custom-form-field md:col-span-6">
                     <label
                         appLabel
                         for="cellPhone"
@@ -206,7 +239,7 @@
                 </div>
 
                 <!-- phoneField -->
-                <div class="md:col-span-6 custom-form-field">
+                <div class="custom-form-field md:col-span-6">
                     <label
                         appLabel
                         for="phone"
@@ -232,13 +265,13 @@
         <div class="custom-form-card">
             <form [formGroup]="form" class="custom-form-grid  md:grid-cols-12">
                 <!-- title -->
-                <div class="md:col-span-12 custom-form-title">
+                <div class="custom-form-title md:col-span-12 ">
                     Preguntas de seguridad:
                     <p-divider />
                 </div>
 
                 <!-- securityQuestions -->
-                <div class="md:col-span-12 custom-form-field">
+                <div class="custom-form-field md:col-span-12 ">
                     <label
                         appLabel
                         for="securityQuestions">
@@ -261,7 +294,7 @@
                     </label>
                 </div>
 
-                <div class="md:col-span-12 custom-form-field">
+                <div class="custom-form-field md:col-span-12 ">
                     <p-button
                         label="Cambiar Preguntas"
                         severity="info"

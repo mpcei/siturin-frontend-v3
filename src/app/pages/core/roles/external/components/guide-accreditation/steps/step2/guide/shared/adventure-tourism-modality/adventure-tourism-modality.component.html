@@ -25,7 +25,6 @@
     </form>
 </div>
 
-
 @if (hasAdventureTourismModalityField.value) {
     <div class="custom-form-card">
         <app-list-basic
@@ -39,8 +38,7 @@
     </div>
 }
 
-
-@if (hasVehicle()) {
+@if (hasVehicle() && classification().code === CatalogueGuideClassificationsCodeEnum.guide_national_adventure) {
     <app-vehicle (dataOut)="saveVehicles($event)"/>
 }
 

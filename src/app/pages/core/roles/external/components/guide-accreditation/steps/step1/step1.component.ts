@@ -7,10 +7,12 @@ import { AddressComponent } from '@modules/core/roles/external/components/guide-
 import { ProcessHttpService } from '@/pages/core/shared/services';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@modules/core/roles/external/services';
+import { Message } from 'primeng/message';
+import { AuthService } from '@/pages/auth/auth.service';
 
 @Component({
     selector: 'app-step1',
-    imports: [Button, ContactPersonComponent, AddressComponent],
+    imports: [Button, ContactPersonComponent, AddressComponent, Message],
     templateUrl: './step1.component.html'
 })
 export class Step1Component implements OnInit {
@@ -26,13 +28,14 @@ export class Step1Component implements OnInit {
     protected readonly formStateService = inject(FormStateService);
     private readonly establishmentHttpService = inject(EstablishmentHttpService);
     private readonly guideHttpService = inject(GuideHttpService);
+    private readonly authService = inject(AuthService);
 
-    constructor() {
-        this.updateGuideInformation();
-    }
+    protected professionalTitles = signal<any[]>([]);
+
+    constructor() {}
 
     ngOnInit() {
-        this.findDegreesByCedula();
+        this.findDegreesByEstablishmentId();
     }
 
     saveForm(data: any, objectName?: string) {
@@ -74,18 +77,20 @@ export class Step1Component implements OnInit {
         this.step.emit(1);
     }
 
-    updateGuideInformation() {
-        this.guideHttpService.updateGuideInformation().subscribe({
+    findDegreesByEstablishmentId() {
+        this.guideHttpService.findProfessionalTitlesByEstablishmentId(this.formStateService?.establishment()?.id!).subscribe({
             next: (response) => {
-                console.log(response);
+                this.professionalTitles.set(response);
+                this.formStateService.updateSection('degrees', response);
             }
         });
     }
 
-    findDegreesByCedula() {
-        // this.establishmentHttpService.findDegreesByCedula(this.establishmentTemp?.ruc?.number!?.substring(0, 10)).subscribe({
-        this.establishmentHttpService.findDegreesByCedula('1234567890').subscribe({
+    createDegreesByEstablishmentId() {
+        // this.guideHttpService.createProfessionalTitles(this.authService?.auth?.identification!.substring(0, 10), this.formStateService?.establishment()?.id!).subscribe({
+        this.guideHttpService.createProfessionalTitles('1724909443', this.formStateService?.establishment()?.id!).subscribe({
             next: (response) => {
+                this.findDegreesByEstablishmentId();
                 this.formStateService.updateSection('degrees', response);
             }
         });

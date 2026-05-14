@@ -8,6 +8,7 @@ import { AdventureTourismModalityComponent } from '@modules/core/roles/external/
 import { RequirementComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
 import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
 import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
+import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 
 @Component({
     selector: 'app-registration',
@@ -22,6 +23,7 @@ export class RegistrationGuideComponent {
     @ViewChildren(ProtectedAreaComponent) private protectedAreaComponent!: QueryList<ProtectedAreaComponent>;
     @ViewChildren(AdventureTourismModalityComponent) private adventureTourismModalityComponent!: QueryList<AdventureTourismModalityComponent>;
     @ViewChildren(LanguageComponent) private languageComponent!: QueryList<LanguageComponent>;
+    @ViewChildren(VehicleComponent) private vehicleComponent!: QueryList<VehicleComponent>;
 
     private mainData: WritableSignal<Record<string, any>> = signal({});
 
@@ -167,7 +169,7 @@ export class RegistrationGuideComponent {
     }
 
     checkFormErrors() {
-        const errors: string[] = collectFormErrors([this.requirementComponent, this.protectedAreaComponent, this.adventureTourismModalityComponent, this.languageComponent]);
+        const errors: string[] = collectFormErrors([this.requirementComponent, this.protectedAreaComponent, this.adventureTourismModalityComponent, this.languageComponent, this.vehicleComponent]);
 
         if (errors.length > 0) {
             this.customMessageService.showFormErrors(errors);

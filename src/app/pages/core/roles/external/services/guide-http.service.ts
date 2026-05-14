@@ -14,7 +14,7 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 export class GuideHttpService {
     private readonly _httpClient = inject(HttpClient);
     private readonly _apiUrl = `${environment.API_URL}/core/external/process-guides`;
-    private readonly _customMessageService = inject(CustomMessageService);
+    private readonly apiUrlSharedCore = `${environment.API_URL}/core/shared/guides`;
     private readonly catalogueService = inject(CatalogueService);
 
     createRegistration(payload: FormData): Observable<any> {
@@ -30,7 +30,7 @@ export class GuideHttpService {
         if (degrees.length > 0) {
             const relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
 
-            if (degrees.every((item) => item.level === 'Bachiller')) {
+            if (degrees.every((item) => item.levelCode === 'bachiller')) {
                 return {
                     degree: degrees[0],
                     type: 'bachiller'
@@ -43,9 +43,7 @@ export class GuideHttpService {
                     .replace(/[\u0300-\u036f]/g, '') // elimina tildes
                     .toLowerCase();
 
-            const thirdLevelDegrees = degrees.filter((item) => {
-                return ['tercer', 'tercero', 'tecnico', 'tecnologo'].some((word) => normalize(item.level).includes(word));
-            });
+            const thirdLevelDegrees = degrees.filter((item) => item.levelCode === 'tercer_nivel');
 
             let guideTourismDegrees = [];
 
@@ -94,10 +92,32 @@ export class GuideHttpService {
         };
     }
 
-    updateGuideInformation() {
-        const url = `${this._apiUrl}/information`;
+    updateProfessionalTilesInformation(cedula: string, establishmentId: string) {
+        const url = `${this.apiUrlSharedCore}/professional-titles`;
 
-        return this._httpClient.post<HttpResponseInterface>(url, null).pipe(
+        return this._httpClient.post<HttpResponseInterface>(url, { cedula, establishmentId }).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    findProfessionalTitlesByEstablishmentId(establishmentId: string) {
+        const url = `${this.apiUrlSharedCore}/professional-titles/${establishmentId}`;
+
+        return this._httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    createProfessionalTitles(cedula: string, establishmentId: string) {
+        const url = `${this.apiUrlSharedCore}/professional-titles`;
+
+        const params = new HttpParams().append('cedula', cedula).append('establishmentId', establishmentId);
+
+        return this._httpClient.post<HttpResponseInterface>(url, { cedula, establishmentId }).pipe(
             map((response) => {
                 return response.data;
             })

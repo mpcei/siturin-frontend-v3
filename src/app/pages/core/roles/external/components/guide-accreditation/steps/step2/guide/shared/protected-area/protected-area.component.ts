@@ -5,7 +5,6 @@ import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { Message } from 'primeng/message';
 import { PrimeIcons } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -30,7 +29,7 @@ export interface AdventureTourismModalityInterface {
 @Component({
     selector: 'app-protected-area',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, Fluid, LabelDirective, Select, ButtonModule, TooltipModule, Message, ErrorMessageDirective, ToastModule, ConfirmDialogModule, DialogModule, Chip],
+    imports: [ReactiveFormsModule, CommonModule, Fluid, LabelDirective, Select, ButtonModule, TooltipModule, ErrorMessageDirective, ToastModule, ConfirmDialogModule, DialogModule, Chip],
     templateUrl: './protected-area.component.html'
 })
 export class ProtectedAreaComponent implements OnInit {

@@ -1,7 +1,6 @@
 import { Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Fluid } from 'primeng/fluid';
 import { Select } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -21,9 +20,14 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { ClassificationInterface, EstablishmentInterface } from '@/pages/core/shared/interfaces';
-import { CatalogueGuideDegreesCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
-import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import { ClassificationInterface } from '@/pages/core/shared/interfaces';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideModalitiesCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    VehicleComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -38,7 +42,6 @@ export interface AdventureTourismModalityInterface {
     imports: [
         ReactiveFormsModule,
         CommonModule,
-        Fluid,
         LabelDirective,
         Select,
         ButtonModule,
@@ -136,14 +139,11 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     checkVehicles(): void {
-        console.log(this.items);
         const hasVehicle =
             this.items?.some(({ modality }) => {
-                console.log(modality);
                 return [CatalogueGuideModalitiesCodeEnum.alm, CatalogueGuideModalitiesCodeEnum.mem].includes(modality?.code as CatalogueGuideModalitiesCodeEnum);
             }) ?? false;
 
-        console.log(hasVehicle);
         this.hasVehicle.set(hasVehicle);
     }
 
@@ -154,7 +154,12 @@ export class AdventureTourismModalityComponent implements OnInit {
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
         ]);
 
-        this.availableModalities = modalities.filter((x) => x.code !== 'modality_aventure');
+        this.availableModalities = modalities;
+
+        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_national_adventure) {
+            this.availableModalities = modalities.filter((x) => x.code !== CatalogueGuideModalitiesCodeEnum.alm && x.code !== CatalogueGuideModalitiesCodeEnum.mem);
+        }
+
         this.certifiers = certifiers;
         this.requirements = requirements;
 
@@ -315,4 +320,6 @@ export class AdventureTourismModalityComponent implements OnInit {
     get adventureTourismModalitiesField(): AbstractControl {
         return this.form.controls['adventureTourismModalities'];
     }
+
+    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 }

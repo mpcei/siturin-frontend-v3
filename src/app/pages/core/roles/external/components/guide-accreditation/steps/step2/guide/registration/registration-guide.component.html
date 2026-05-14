@@ -5,7 +5,7 @@
     (dataOut)="saveForm($event,'protectedArea')" />
 
 <app-adventure-tourism-modality
-    [classification]="{}"
+    [classification]="formStateService.process()?.classification!"
     (dataOut)="saveForm($event,'adventureModality')" />
 
 <app-language

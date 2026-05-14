@@ -78,7 +78,9 @@
             <input
                 pInputText
                 id="birthdate"
-                formControlName="birthdate" />
+                [value]="birthdateField.value | date:'dd/MM/yyyy'"
+                disabled
+            />
 
             <small
                 appErrorMessage
