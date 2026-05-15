@@ -24,6 +24,7 @@ import { TransactionalCodeComponent } from '@utils/components/transactional-code
 import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
 import { debounceTime } from 'rxjs';
+import { AutoFocus } from 'primeng/autofocus';
 
 @Component({
     selector: 'app-sign-up',
@@ -44,7 +45,8 @@ import { debounceTime } from 'rxjs';
         KeyFilter,
         Tooltip,
         TransactionalCodeComponent,
-        Message
+        Message,
+        AutoFocus
     ]
 })
 export default class SignUpComponent implements OnInit {

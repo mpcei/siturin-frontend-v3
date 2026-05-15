@@ -140,7 +140,7 @@ export default class UserProfileComponent implements OnInit {
             ],
             username: [null, [Validators.required]],
             name: [null, [Validators.required]],
-            lastname: [null, [Validators.required]],
+            lastname: [null],
             email: [null, [Validators.required, invalidEmailValidator()]],
             cellPhone: [null, [Validators.required]],
             phone: [null],

@@ -110,7 +110,7 @@
                     label="Código de seguridad"
                     [required]="transactionalCodeControl"></label>
 
-                <app-transactional-code [formControl]="transactionalCodeControl" [requester]="emailField.value" />
+                <app-transactional-code [formControl]="transactionalCodeControl" [requester]="emailField.value" [pAutoFocus]="true"/>
 
                 <small
                     appErrorMessage

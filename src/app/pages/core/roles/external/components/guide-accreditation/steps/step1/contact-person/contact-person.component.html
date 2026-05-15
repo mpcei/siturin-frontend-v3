@@ -4,7 +4,7 @@
             DATOS DEL GUÍA DE TURISMO:
         </div>
         <!-- legalName -->
-        <div class="custom-form-field md:col-span-3">
+        <div class="custom-form-field md:col-span-6">
             <label
                 appLabel
                 for="legalName"
@@ -25,7 +25,7 @@
         </div>
 
         <!-- nationality -->
-        <div class="custom-form-field md:col-span-3">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="nationality"
@@ -46,7 +46,7 @@
         </div>
 
         <!-- sex -->
-        <div class="custom-form-field md:col-span-3">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="sex"
@@ -67,7 +67,7 @@
         </div>
 
         <!-- birthdate -->
-        <div class="custom-form-field md:col-span-3">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="birthdate"
@@ -88,7 +88,12 @@
                 [errors]="birthdateField.errors"
                 [touched]="birthdateField.touched"></small>
         </div>
+    </form>
+</div>
 
+
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
         <!-- hasDisability -->
         <div class="custom-form-field md:col-span-12">
             <label
