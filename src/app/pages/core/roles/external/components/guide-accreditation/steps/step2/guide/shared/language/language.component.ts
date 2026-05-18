@@ -73,7 +73,7 @@ export class LanguageComponent implements OnInit {
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
 
-    protected availableModalities: CatalogueInterface[] = [];
+    protected availableLanguages: CatalogueInterface[] = [];
     protected languages: CatalogueInterface[] = [];
     protected levels: CatalogueInterface[] = [];
     protected requirements: CatalogueInterface[] = [];
@@ -138,7 +138,7 @@ export class LanguageComponent implements OnInit {
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
         ]);
 
-        this.availableModalities = languages;
+        this.availableLanguages = languages;
         this.levels = levels;
         this.requirements = requirements;
 

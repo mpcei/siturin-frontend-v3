@@ -42,25 +42,39 @@ export class AuthHttpService {
         const url = `${this.apiUrl}/sign-in`;
 
         return this.catalogueHttpService.findCache().pipe(
-            concatMap((catalogues) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, catalogues)).pipe(map(() => catalogues))),
+            // 1. Guardar catálogos principales
+            concatMap((catalogues) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, catalogues))),
 
-            switchMap(() => this.dpaHttpService.findCache()),
-            concatMap((dpa) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, dpa)).pipe(map(() => dpa))),
+            // 2. Obtener y guardar Model Catalogues (Agrupado)
+            switchMap(() => this.catalogueHttpService.findCacheModelCatalogues().pipe(concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.modelCatalogues, response))))),
 
-            switchMap(() => this.activityHttpService.findCache()),
-            concatMap((response) =>
-                from(
-                    Promise.all([
-                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
-                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
-                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
-                    ])
-                ).pipe(map(() => response))
+            // 3. Obtener y guardar DPA (Agrupado)
+            switchMap(() => this.dpaHttpService.findCache().pipe(concatMap((dpa) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, dpa))))),
+
+            // 4. Obtener y guardar Actividades, clasificaciones y categorías (Agrupado)
+            switchMap(() =>
+                this.activityHttpService
+                    .findCache()
+                    .pipe(
+                        concatMap((response) =>
+                            from(
+                                Promise.all([
+                                    this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
+                                    this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
+                                    this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
+                                ])
+                            )
+                        )
+                    )
             ),
 
+            // 5. Petición HTTP final del Login
             switchMap(() => this.httpClient.post<SignInResponseInterface>(url, payload)),
-            tap((response) => {
+
+            // 6. Asignación de variables de sesión
+            tap((response: SignInResponseInterface) => {
                 const { data } = response;
+
                 this.authService.accessToken = data.accessToken;
                 this.authService.refreshToken = data.refreshToken;
                 this.authService.auth = data.auth;
@@ -70,7 +84,9 @@ export class AuthHttpService {
                     this.authService.role = data.roles[0];
                 }
             }),
-            map((response) => response.data)
+
+            // 7. Retorno de la data final
+            map((response: SignInResponseInterface) => response.data)
         );
     }
 

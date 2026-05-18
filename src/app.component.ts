@@ -64,27 +64,30 @@ export class AppComponent implements OnInit {
         this.catalogueHttpService
             .findCache()
             .pipe(
-                // Guardar catálogos
-                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, response)).pipe(map(() => response))),
+                // 1. Guardar catálogos principales
+                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.catalogues, response))),
 
-                // Obtener DPA
-                switchMap(() => this.dpaHttpService.findCache()),
+                // 2. Obtener y guardar Model Catalogues
+                switchMap(() => this.catalogueHttpService.findCacheModelCatalogues().pipe(concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.modelCatalogues, response))))),
 
-                // Guardar DPA
-                concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, response)).pipe(map(() => response))),
+                // 3. Obtener y guardar DPA
+                switchMap(() => this.dpaHttpService.findCache().pipe(concatMap((response) => from(this.coreSessionStorageService.setEncryptedValue(CoreEnum.dpa, response))))),
 
-                // Obtener actividades
-                switchMap(() => this.activityHttpService.findCache()),
-
-                // Guardar activities, classifications y categories
-                concatMap((response) =>
-                    from(
-                        Promise.all([
-                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
-                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
-                            this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
-                        ])
-                    ).pipe(map(() => response))
+                // 4. Obtener y guardar actividades, clasificaciones y categorías
+                switchMap(() =>
+                    this.activityHttpService
+                        .findCache()
+                        .pipe(
+                            concatMap((response) =>
+                                from(
+                                    Promise.all([
+                                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.activities, response.data.activities),
+                                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.classifications, response.data.classifications),
+                                        this.coreSessionStorageService.setEncryptedValue(CoreEnum.categories, response.data.categories)
+                                    ])
+                                )
+                            )
+                        )
                 )
             )
             .subscribe({

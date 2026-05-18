@@ -21,13 +21,8 @@ import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-sw
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
-import {
-    CatalogueGuideClassificationsCodeEnum,
-    CatalogueGuideModalitiesCodeEnum
-} from '@/pages/core/shared/components/regulation-simulator/enum';
-import {
-    VehicleComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -136,6 +131,11 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.hasAdventureTourismModalityField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
+
+        this.modalityField.valueChanges.subscribe(async (value) => {
+            console.log(value);
+            if (value) this.certifiers = await this.catalogueService.findByModel(value.id);
+        });
     }
 
     checkVehicles(): void {
@@ -148,11 +148,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     async loadCatalogues() {
-        const [modalities, certifiers, requirements] = await Promise.all([
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name),
-            this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), //review cambiar por el catalogo correspondiente
-            this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
-        ]);
+        const [modalities, requirements] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
 
         this.availableModalities = modalities;
 
@@ -160,11 +156,9 @@ export class AdventureTourismModalityComponent implements OnInit {
             this.availableModalities = modalities.filter((x) => x.code !== CatalogueGuideModalitiesCodeEnum.alm && x.code !== CatalogueGuideModalitiesCodeEnum.mem);
         }
 
-        this.certifiers = certifiers;
         this.requirements = requirements;
 
-        console.log(requirements);
-        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_aventure')); //review cambiar en la base por adventure
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure'));
     }
 
     onSubmit() {

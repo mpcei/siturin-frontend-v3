@@ -1,18 +1,12 @@
-import { Component, computed, effect, inject, Renderer2, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { RouterModule } from '@angular/router';
 import { AppTopbar } from './app.topbar';
 import { AppSidebar } from './app.sidebar';
 import { LayoutService } from '@layout/service';
-import { Divider } from 'primeng/divider';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Message } from 'primeng/message';
 import { environment } from '@env/environment';
 import { MY_ROUTES } from '@routes';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
-import { Button } from 'primeng/button';
-import { Tooltip } from 'primeng/tooltip';
 import { AppFooter } from '@layout/component/app.footer';
 import { AppBreadcrumb } from '@layout/component/app.breadcrumb';
 

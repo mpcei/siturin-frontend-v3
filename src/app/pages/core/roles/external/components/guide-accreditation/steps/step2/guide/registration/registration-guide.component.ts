@@ -81,6 +81,8 @@ export class RegistrationGuideComponent {
 
         const formData = new FormData();
 
+        console.log(this.formStateService.adventureModality());
+
         Object.values(this.formStateService.processGuides()).forEach((x: any) => {
             processGuides.push({ requirement: x.requirement, value: x.requirement.value });
 
@@ -102,23 +104,30 @@ export class RegistrationGuideComponent {
 
         if (this.formStateService.adventureModality()) {
             processGuides.push({ requirement: this.formStateService.adventureModality().requirement, value: this.formStateService.adventureModality().hasAdventureTourismModality });
-            processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.requirement, value: this.formStateService.adventureModality().vehicle?.hasVehicle });
-            processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.driverLicense, value: 'sn' });
 
-            this.formStateService.updateSection('process', { driverLicense: this.formStateService.adventureModality().vehicle?.driverLicense });
-            formData.append(this.formStateService.adventureModality().vehicle?.driverLicense?.id, this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
+            if (this.formStateService.adventureModality()?.vehicle) {
+                processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.requirement, value: this.formStateService.adventureModality().vehicle?.hasVehicle });
+                processGuides.push({ requirement: this.formStateService.adventureModality().vehicle?.driverLicense, value: 'sn' });
 
-            Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any, index: number) => {
-                landTransports.push({
-                    type: x.type,
-                    plate: x.plate,
-                    year: x.year
-                });
+                this.formStateService.updateSection('process', { driverLicense: this.formStateService.adventureModality().vehicle?.driverLicense });
+                formData.append(this.formStateService.adventureModality().vehicle?.driverLicense?.id, this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
 
-                formData.append('vehicle_registration' + index, x.vehicleRegistrationFile); //review cambiar por enum
-                formData.append('document_vehicle_inspection' + index, x.documentVehicleInspectionFile); //review cambiar por enum
-                formData.append('accident_policy' + index, x.accidentPolicyFile); //review cambiar por enum
-            });
+                console.log(this.formStateService.adventureModality()?.vehicle);
+
+                if (this.formStateService.adventureModality()?.vehicle?.vehicles) {
+                    Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any, index: number) => {
+                        landTransports.push({
+                            type: x.type,
+                            plate: x.plate,
+                            year: x.year
+                        });
+
+                        formData.append('vehicle_registration' + index, x.vehicleRegistrationFile); //review cambiar por enum
+                        formData.append('document_vehicle_inspection' + index, x.documentVehicleInspectionFile); //review cambiar por enum
+                        formData.append('accident_policy' + index, x.accidentPolicyFile); //review cambiar por enum
+                    });
+                }
+            }
 
             Object.values(this.formStateService.adventureModality().adventureTourismModalities).forEach((x: any) => {
                 adventureModalities.push({

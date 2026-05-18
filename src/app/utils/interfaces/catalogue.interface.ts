@@ -14,3 +14,9 @@ export interface CatalogueInterface {
     description?: string;
     parent?: CatalogueInterface;
 }
+
+export interface ModelCatalogueInterface {
+    id: string;
+    modelId: string;
+    catalogue: CatalogueInterface;
+}

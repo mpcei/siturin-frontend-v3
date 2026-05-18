@@ -155,7 +155,7 @@ export class VehicleComponent implements OnInit {
         const [requirements, types, driverLicenses] = await Promise.all([
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item),
             this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type),
-            this.catalogueService.findByType(CatalogueTypeEnum.guide_vehicles_type) //review cambiar por el tipo que es
+            this.catalogueService.findByType(CatalogueTypeEnum.processes_driver_license)
         ]);
 
         this.requirements = requirements;

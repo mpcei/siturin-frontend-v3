@@ -3,6 +3,7 @@ export enum CoreEnum {
     cadastre = 'cadastre',
     establishment = 'establishment',
     catalogues = 'catalogues',
+    modelCatalogues = 'modelCatalogues',
     dpa = 'dpa',
     activities = 'activities',
     classifications = 'classifications',
@@ -10,7 +11,7 @@ export enum CoreEnum {
     step1 = 'step1',
     step2 = 'step2',
     step3 = 'step3',
-    peopleCapacity = 'peopleCapacity',
+    peopleCapacity = 'peopleCapacity'
 }
 
 export enum ChildParkFormEnum {

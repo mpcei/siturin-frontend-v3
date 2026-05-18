@@ -11,7 +11,11 @@ export const guideGuard: CanActivateFn = (route, state) => {
 
     if (!authService.auth?.sex || !authService.auth?.nationality || !authService.auth?.birthdate) {
         customMessageService.showError({ summary: 'Completar información', detail: 'Complete la información que falta para continuar, Sexo, Nacionalidad y Fecha de Nacimiento' });
-        return router.createUrlTree([MY_ROUTES.adminPages.user.profile.absolute]);
+        return router.createUrlTree([MY_ROUTES.adminPages.user.profile.absolute], {
+            queryParams: {
+                from: 'guideEstablishment'
+            }
+        });
     }
 
     return true;

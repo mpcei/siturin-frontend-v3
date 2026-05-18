@@ -115,11 +115,7 @@ export class ProtectedAreaComponent implements OnInit {
     }
 
     async loadCatalogues() {
-        this.catalogueHttpService.findCataloguesByModel(this.province()?.id!).subscribe({
-            next: (response) => {
-                this.availableProtectedAreas = response;
-            }
-        });
+        this.availableProtectedAreas = await this.catalogueService.findByModel(this.province()?.id!);
 
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
 

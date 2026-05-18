@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { UserHttpService } from '@/pages/admin/user-http.service';
 import { BreadcrumbService } from '@layout/service';
 import { CustomMessageService } from '@utils/services';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { InputText } from 'primeng/inputtext';
@@ -39,6 +39,7 @@ export default class UserProfileComponent implements OnInit {
     protected readonly catalogueService = inject(CatalogueService);
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
     protected form!: FormGroup;
     protected roles: RoleInterface[] = [];
     protected identificationTypes: CatalogueInterface[] = [];
@@ -50,6 +51,7 @@ export default class UserProfileComponent implements OnInit {
     private readonly userHttpService = inject(UserHttpService);
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formBuilder = inject(FormBuilder);
+    private from: null | string = null;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Mi Perfil' }]);
@@ -120,6 +122,8 @@ export default class UserProfileComponent implements OnInit {
             this.find(this.authService.auth.id);
             this.identificationField.setAsyncValidators(userUpdatedValidator(this.authHttpService, this.authService.auth.id));
         }
+
+        this.from = this.route.snapshot.queryParamMap.get('from');
     }
 
     async loadCatalogues() {
@@ -192,6 +196,11 @@ export default class UserProfileComponent implements OnInit {
                 auth.sex = this.sexField.value;
 
                 this.authService.auth = auth;
+
+                if (this.from) {
+                    this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
+                    return;
+                }
 
                 this.find(this.authService.auth.id);
             }

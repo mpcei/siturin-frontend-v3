@@ -56,7 +56,7 @@
 
     <div class="custom-form-card">
         <form [formGroup]="modalityForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
-            <!-- modality -->
+            <!-- language -->
             <div class="md:col-span-12 flex flex-col gap-2">
                 <label
                     appLabel
@@ -67,8 +67,10 @@
                 <p-select
                     id="language"
                     formControlName="language"
-                    [options]="availableModalities"
+                    [options]="availableLanguages"
                     optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
                     appendTo="body" />
 
                 <small

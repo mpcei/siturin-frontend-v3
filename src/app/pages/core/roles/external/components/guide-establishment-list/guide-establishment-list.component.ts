@@ -77,24 +77,18 @@ export default class GuideEstablishmentListComponent implements OnInit {
 
     buildButtonActions(item: EstablishmentInterface) {
         this.buttonActions = [];
-        const hasNoTradeName = !item.tradeName;
         const isClosed = item.state?.code !== CatalogueEstablishmentsStateEnum.open;
         const hasCadastre = item.process?.cadastre;
         const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivated;
 
         if (!hasCadastre) {
-            if (hasNoTradeName) {
-                this.customMessageService.showModalError({ summary: 'No se puede crear un trámite', detail: 'El establecimiento no cuenta con Nombre Comercial' });
-                return;
-            }
-
             if (isClosed) {
                 this.customMessageService.showModalError({ summary: 'No se puede crear un trámite', detail: 'El establecimiento se encuentra cerrado' });
                 return;
             }
         }
 
-        const shouldShowInactivationButton = (hasNoTradeName || isClosed) && hasCadastre && isCadastreActive;
+        const shouldShowInactivationButton = isClosed && hasCadastre && isCadastreActive;
 
         if (shouldShowInactivationButton) {
             this.buttonActions.push({

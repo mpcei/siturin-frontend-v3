@@ -5,7 +5,7 @@ import { CustomMessageService } from '@utils/services/custom-message.service';
 import { HttpResponseInterface } from '@modules/auth/interfaces';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CatalogueInterface } from '@utils/interfaces';
+import { CatalogueInterface, ModelCatalogueInterface } from '@utils/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +15,7 @@ export class CatalogueHttpService {
     private readonly _apiUrl = `${environment.API_URL}/common/catalogues`;
     private readonly _customMessageService = inject(CustomMessageService);
 
-    findCache(): Observable<HttpResponseInterface> {
+    findCache(): Observable<CatalogueInterface[]> {
         const url = `${this._apiUrl}/cache`;
 
         return this._httpClient.get<HttpResponseInterface>(url).pipe(
@@ -25,8 +25,8 @@ export class CatalogueHttpService {
         );
     }
 
-    findCataloguesByModel(modelId: string): Observable<CatalogueInterface[]> {
-        const url = `${this._apiUrl}/model-catalogues/${modelId}`;
+    findCacheModelCatalogues(): Observable<ModelCatalogueInterface[]> {
+        const url = `${this._apiUrl}/model-catalogues/cache`;
 
         return this._httpClient.get<HttpResponseInterface>(url).pipe(
             map((response) => {
