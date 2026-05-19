@@ -189,6 +189,8 @@ export default class UserProfileComponent implements OnInit {
                     nationality,
                     birthdate: dateOnlyToLocalDate(response.birthdate)
                 });
+
+                this.update();
             }
         });
     }
