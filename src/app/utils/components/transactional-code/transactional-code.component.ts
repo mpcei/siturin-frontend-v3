@@ -1,13 +1,5 @@
 import { Component, forwardRef, inject, input } from '@angular/core';
-import {
-    AbstractControl,
-    AsyncValidator,
-    ControlValueAccessor,
-    FormsModule,
-    NG_ASYNC_VALIDATORS,
-    NG_VALUE_ACCESSOR,
-    ValidationErrors
-} from '@angular/forms';
+import { AbstractControl, AsyncValidator, ControlValueAccessor, FormsModule, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { InputOtp, InputOtpChangeEvent } from 'primeng/inputotp';
 import { AuthHttpService } from '@/pages/auth/auth-http.service';
 import { Observable, of } from 'rxjs';
@@ -20,8 +12,9 @@ import { InputGroup } from 'primeng/inputgroup';
     selector: 'app-transactional-code',
     template: `
         <p-inputgroup>
-            <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true" (onChange)="handleChange($event)" [disabled]="disabled" [mask]="isMask" />
-
+            <div (paste)="onContainerPaste($event)">
+                <p-inputOtp id="transactionalCode" [ngModel]="value" [length]="6" [integerOnly]="true" (onChange)="handleChange($event)" [disabled]="disabled" [mask]="isMask" />
+            </div>
             <p-button class="ml-2" [icon]="isMask ? FontAwesome.EYE_SOLID : FontAwesome.EYE_SLASH_SOLID" (onClick)="isMask = !isMask" [text]="true" [raised]="true" />
         </p-inputgroup>
     `,
@@ -41,7 +34,7 @@ import { InputGroup } from 'primeng/inputgroup';
     ]
 })
 export class TransactionalCodeComponent implements ControlValueAccessor, AsyncValidator {
-    value: string = '';
+    // value: string = '';
     disabled = false;
     isMask = true;
 
@@ -64,14 +57,14 @@ export class TransactionalCodeComponent implements ControlValueAccessor, AsyncVa
         this.disabled = isDisabled;
     }
 
-    handleChange(ev: InputOtpChangeEvent) {
-        this.value = ev.value;
-        this.onChange(this.value);
-
-        if (this.value.length === 6) {
-            this.onTouched();
-        }
-    }
+    // handleChange(ev: InputOtpChangeEvent) {
+    //     this.value = ev.value;
+    //     this.onChange(this.value);
+    //
+    //     if (this.value.length === 6) {
+    //         this.onTouched();
+    //     }
+    // }
 
     validate(control: AbstractControl): Observable<ValidationErrors | null> {
         const value = control.value;
@@ -93,6 +86,34 @@ export class TransactionalCodeComponent implements ControlValueAccessor, AsyncVa
                 return of({ invalidTransactionalCode: true });
             })
         );
+    }
+
+    private _value: string = '';
+
+    get value(): string {
+        return this._value;
+    }
+
+    set value(raw: string | undefined | null) {
+        this._value = (raw ?? '').replace(/\D/g, '').slice(0, 6);
+    }
+
+    handleChange(ev: InputOtpChangeEvent): void {
+        this.value = ev.value; // el setter sanitiza automáticamente
+        this.onChange(this._value);
+        if (this._value.length === 6) {
+            this.onTouched();
+        }
+    }
+
+    onContainerPaste(event: ClipboardEvent): void {
+        event.preventDefault();
+        const raw = event.clipboardData?.getData('text') ?? '';
+        this.value = raw; // el setter ya limpia y trunca
+        this.onChange(this._value);
+        if (this._value.length === 6) {
+            this.onTouched();
+        }
     }
 
     private onChange: (val: string) => void = () => {};

@@ -200,7 +200,7 @@ export default class UserProfileComponent implements OnInit {
     }
 
     update() {
-        this.userHttpService.updateProfile(this.authService.auth.id, this.form.value).subscribe({
+        this.userHttpService.updateProfile(this.authService.auth.id, this.form.getRawValue()).subscribe({
             next: (_) => {
                 let auth = this.authService.auth;
                 auth.birthdate = this.birthdateField.value;
