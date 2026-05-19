@@ -35,6 +35,11 @@ export class ContactPersonComponent implements OnInit {
     protected formInitialized = false;
     protected bloodTypes: CatalogueInterface[] = [];
 
+    protected options: any[] = [
+        { code: true, name: 'SI' },
+        { code: false, name: 'NO' }
+    ];
+
     constructor() {
         effect(() => {
             if (this.dataIn() && !this.formInitialized) {
@@ -54,7 +59,7 @@ export class ContactPersonComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            hasDisability: [false],
+            hasDisability: [null, [Validators.required]],
             bloodType: [null, [Validators.required]],
             phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],

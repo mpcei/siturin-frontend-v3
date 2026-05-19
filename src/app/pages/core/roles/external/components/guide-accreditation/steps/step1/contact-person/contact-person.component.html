@@ -95,7 +95,7 @@
 <div class="custom-form-card">
     <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
         <!-- hasDisability -->
-        <div class="custom-form-field md:col-span-12">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="hasDisability"
@@ -103,7 +103,14 @@
                 label="Discapacidad">
             </label>
 
-            <app-toggle-switch id="hasDisability" formControlName="hasDisability" />
+            <p-select
+                id="hasDisability"
+                formControlName="hasDisability"
+                [options]="options"
+                optionValue="code"
+                optionLabel="name"
+                appendTo="body"
+                placeholder="Seleccione..." />
 
             <small
                 appErrorMessage
@@ -113,7 +120,7 @@
         </div>
 
         <!-- bloodType -->
-        <div class="custom-form-field md:col-span-6">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="bloodType"
@@ -138,31 +145,8 @@
                 [touched]="bloodTypeField.touched"></small>
         </div>
 
-        <!-- email -->
-        <div class="custom-form-field md:col-span-6">
-            <label
-                appLabel
-                for="email"
-                label="Correo electrónico secundario"
-                [required]="emailField">
-            </label>
-
-            <input
-                pInputText
-                type="email"
-                id="email"
-                formControlName="email"
-                placeholder="ejemplo@dominio.com" />
-
-            <small
-                appErrorMessage
-                [dirty]="emailField.dirty"
-                [errors]="emailField.errors"
-                [touched]="emailField.touched"></small>
-        </div>
-
         <!-- phone -->
-        <div class="custom-form-field md:col-span-6">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="phone"
@@ -185,7 +169,7 @@
         </div>
 
         <!-- secondaryPhone -->
-        <div class="custom-form-field md:col-span-6">
+        <div class="custom-form-field md:col-span-2">
             <label
                 appLabel
                 for="secondaryPhone"
@@ -206,6 +190,30 @@
                 [errors]="secondaryPhoneField.errors"
                 [touched]="secondaryPhoneField.touched"></small>
         </div>
+
+        <!-- email -->
+        <div class="custom-form-field md:col-span-4">
+            <label
+                appLabel
+                for="email"
+                label="Correo electrónico secundario"
+                [required]="emailField">
+            </label>
+
+            <input
+                pInputText
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="ejemplo@dominio.com" />
+
+            <small
+                appErrorMessage
+                [dirty]="emailField.dirty"
+                [errors]="emailField.errors"
+                [touched]="emailField.touched"></small>
+        </div>
+
     </form>
 </div>
 
