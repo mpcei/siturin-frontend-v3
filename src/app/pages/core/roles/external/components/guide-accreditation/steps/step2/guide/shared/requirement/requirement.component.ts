@@ -63,7 +63,7 @@ export class RequirementComponent implements OnInit {
             certificationGuide: [null, Validators.required],
             certificationJobSkill: [null, Validators.required],
             certificationAux: [null, Validators.required],
-            domicileDeclaration: [{ value: null, disabled: true }, Validators.required]
+            domicileDeclaration: [{ value: null, disabled: true }, Validators.requiredTrue]
         });
 
         this.watchFormChanges();

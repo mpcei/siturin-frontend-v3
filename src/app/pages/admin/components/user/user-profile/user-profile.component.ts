@@ -28,6 +28,7 @@ import { DateLongPipe } from '@utils/pipes/date-long.pipe';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
 import PasswordChangeComponent from '@/pages/admin/components/user/password-change/password-change.component';
 import { MY_ROUTES } from '@routes';
+import { GuideHttpService } from '@/pages/core/roles/external/services';
 
 @Component({
     selector: 'app-user-profile',
@@ -49,6 +50,7 @@ export default class UserProfileComponent implements OnInit {
     protected readonly authService = inject(AuthService);
     private readonly authHttpService = inject(AuthHttpService);
     private readonly userHttpService = inject(UserHttpService);
+    private readonly guideHttpService = inject(GuideHttpService);
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formBuilder = inject(FormBuilder);
     private from: null | string = null;
@@ -121,6 +123,7 @@ export default class UserProfileComponent implements OnInit {
         if (this.authService.auth.id) {
             this.find(this.authService.auth.id);
             this.identificationField.setAsyncValidators(userUpdatedValidator(this.authHttpService, this.authService.auth.id));
+            this.findRegistroCivil();
         }
 
         this.from = this.route.snapshot.queryParamMap.get('from');
@@ -134,25 +137,18 @@ export default class UserProfileComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            identification: [
-                null,
-                {
-                    validators: [Validators.required],
-                    asyncValidators: [userUpdatedValidator(this.authHttpService)],
-                    updateOn: 'blur'
-                }
-            ],
+            identification: [{ value: null, disabled: true }, [Validators.required]],
             username: [null, [Validators.required]],
-            name: [null, [Validators.required]],
+            name: [{ value: null, disabled: true }, [Validators.required]],
             lastname: [null],
             email: [null, [Validators.required, invalidEmailValidator()]],
-            cellPhone: [null, [Validators.required]],
+            cellPhone: [null],
             phone: [null],
-            birthdate: [null, [Validators.required]],
-            sex: [null, [Validators.required]],
-            nationality: [null, [Validators.required]],
+            birthdate: [{ value: null, disabled: true }, [Validators.required]],
+            sex: [{ value: null, disabled: true }, [Validators.required]],
+            nationality: [{ value: null, disabled: true }, [Validators.required]],
             personalEmail: [null],
-            identificationType: [null, [Validators.required]],
+            identificationType: [{ value: null, disabled: true }, [Validators.required]],
             avatar: [null],
             emailVerifiedAt: [{ value: null, disabled: true }]
         });
@@ -177,6 +173,22 @@ export default class UserProfileComponent implements OnInit {
                 if (response.avatar) this.avatarUrl = `${environment.API_ASSETS}/${response.avatar}`;
 
                 this.roles = response.roles;
+            }
+        });
+    }
+
+    findRegistroCivil() {
+        this.userHttpService.findRegistroCivil(this.authService.auth.identification!.substring(0, 10)).subscribe({
+            next: (response: any) => {
+                const nationality = this.nationalities.find((item) => item.name?.trim().toLowerCase() === response.nationality?.trim().toLowerCase());
+                const sex = this.sexes.find((item) => item.name?.trim().toLowerCase() === response.sex?.trim().toLowerCase());
+                console.log(dateOnlyToLocalDate(response.birthdate));
+
+                this.form.patchValue({
+                    sex,
+                    nationality,
+                    birthdate: dateOnlyToLocalDate(response.birthdate)
+                });
             }
         });
     }

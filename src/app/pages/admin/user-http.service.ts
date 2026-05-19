@@ -79,4 +79,14 @@ export class UserHttpService {
             })
         );
     }
+
+    findRegistroCivil(cedula: string) {
+        const url = `${this.apiUrl}/registro-civil/${cedula}`;
+
+        return this.httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
 }

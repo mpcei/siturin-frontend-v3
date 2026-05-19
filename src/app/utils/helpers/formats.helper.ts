@@ -5,7 +5,13 @@ export function datePickerFormat(): string {
 export function dateOnlyToLocalDate(dateStr?: string | null): Date | null {
     if (!dateStr) return null;
 
-    const [y, m, d] = dateStr.split('-').map(Number);
+    let d: number, m: number, y: number;
 
-    return new Date(y, m - 1, d, 12, 0, 0); // mediodía local evita desfase
+    if (dateStr.includes('/')) {
+        [d, m, y] = dateStr.split('/').map(Number);
+    } else {
+        [y, m, d] = dateStr.split('-').map(Number);
+    }
+
+    return new Date(y, m - 1, d, 12, 0, 0);
 }
