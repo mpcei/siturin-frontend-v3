@@ -1,12 +1,18 @@
 <app-requirement (dataOut)="saveForm($event,'processGuides')" />
 
-<app-protected-area
-    [classification]="{}"
-    (dataOut)="saveForm($event,'protectedArea')" />
+@if (formStateService.process()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+    <app-protected-area
+        [classification]="{}"
+        (dataOut)="saveForm($event,'protectedArea')" />
+}
 
-<app-adventure-tourism-modality
-    [classification]="formStateService.process()?.classification!"
-    (dataOut)="saveForm($event,'adventureModality')" />
+@if (CatalogueGuideClassificationsCodeEnum.guide_local === formStateService.process()?.classification?.code ||
+CatalogueGuideClassificationsCodeEnum.guide_adventure === formStateService.process()?.classification?.code ||
+CatalogueGuideClassificationsCodeEnum.guide_national_adventure === formStateService.process()?.classification?.code) {
+    <app-adventure-tourism-modality
+        [classification]="formStateService.process()?.classification!"
+        (dataOut)="saveForm($event,'adventureModality')" />
+}
 
 <app-language
     [classification]="{}"

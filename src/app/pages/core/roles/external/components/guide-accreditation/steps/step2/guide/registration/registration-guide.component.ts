@@ -9,6 +9,7 @@ import { RequirementComponent } from '@/pages/core/roles/external/components/gui
 import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
 import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
 import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
     selector: 'app-registration',
@@ -62,8 +63,6 @@ export class RegistrationGuideComponent {
         if (objectName?.includes('adventureModality')) this.formStateService.updateSection('adventureModality', this.mainData()[objectName]);
         if (objectName?.includes('language')) this.formStateService.updateSection('language', this.mainData()[objectName]);
         if (objectName?.includes('protectedArea')) this.formStateService.updateSection('protectedArea', this.mainData()[objectName]);
-
-        console.log(this.formStateService.adventureModality());
     }
 
     onSubmit() {
@@ -80,8 +79,6 @@ export class RegistrationGuideComponent {
         const landTransports: any[] = [];
 
         const formData = new FormData();
-
-        console.log(this.formStateService.adventureModality());
 
         Object.values(this.formStateService.processGuides()).forEach((x: any) => {
             processGuides.push({ requirement: x.requirement, value: x.requirement.value });
@@ -111,8 +108,6 @@ export class RegistrationGuideComponent {
 
                 this.formStateService.updateSection('process', { driverLicense: this.formStateService.adventureModality().vehicle?.driverLicense });
                 formData.append(this.formStateService.adventureModality().vehicle?.driverLicense?.id, this.formStateService.adventureModality().vehicle?.driverLicenseFile); //review cambiar por enum
-
-                console.log(this.formStateService.adventureModality()?.vehicle);
 
                 if (this.formStateService.adventureModality()?.vehicle?.vehicles) {
                     Object.values(this.formStateService.adventureModality().vehicle.vehicles).forEach((x: any, index: number) => {
@@ -191,4 +186,6 @@ export class RegistrationGuideComponent {
     back() {
         this.step.emit(1);
     }
+
+    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 }
