@@ -244,6 +244,9 @@ export class RequirementComponent implements OnInit {
             case CatalogueGuideRequirementsCodeEnum.certification_guide_local:
                 this.certificationGuideField.patchValue(data);
                 break;
+            case CatalogueGuideRequirementsCodeEnum.certification_guide_heritage:
+                this.certificationGuideField.patchValue(data);
+                break;
             case CatalogueGuideRequirementsCodeEnum.certification_job_skill:
                 this.certificationJobSkillField.patchValue(data);
                 break;
