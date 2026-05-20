@@ -15,12 +15,11 @@
 
                 <app-toggle-switch id="hasLanguage" formControlName="hasLanguage" />
 
-                <p-message
+                <small
                     appErrorMessage
                     [errors]="hasLanguageField.errors"
                     [touched]="hasLanguageField.touched"
-                    [dirty]="hasLanguageField.dirty"
-                />
+                    [dirty]="hasLanguageField.dirty"></small>
             </div>
         }
     </form>

@@ -120,9 +120,14 @@ export class AdventureTourismModalityComponent implements OnInit {
         this.form = this.formBuilder.group({
             requirement: [null, Validators.required],
             vehicle: [null],
-            hasAdventureTourismModality: false,
+            hasAdventureTourismModality: [null, Validators.requiredTrue],
             adventureTourismModalities: []
         });
+
+        if (this.classification().code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+            this.hasAdventureTourismModalityField.clearValidators();
+            this.hasAdventureTourismModalityField.updateValueAndValidity();
+        }
 
         this.watchFormChanges();
     }
@@ -183,7 +188,7 @@ export class AdventureTourismModalityComponent implements OnInit {
 
         if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Modalidades de Aventura debe agregar por lo menos una modalidad');
 
-        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
+        if (!this.hasAdventureTourismModalityField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
