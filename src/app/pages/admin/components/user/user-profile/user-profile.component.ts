@@ -50,7 +50,6 @@ export default class UserProfileComponent implements OnInit {
     protected readonly authService = inject(AuthService);
     private readonly authHttpService = inject(AuthHttpService);
     private readonly userHttpService = inject(UserHttpService);
-    private readonly guideHttpService = inject(GuideHttpService);
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly formBuilder = inject(FormBuilder);
     private from: null | string = null;
@@ -123,7 +122,6 @@ export default class UserProfileComponent implements OnInit {
         if (this.authService.auth.id) {
             this.find(this.authService.auth.id);
             this.identificationField.setAsyncValidators(userUpdatedValidator(this.authHttpService, this.authService.auth.id));
-            this.findRegistroCivil();
         }
 
         this.from = this.route.snapshot.queryParamMap.get('from');
@@ -173,24 +171,6 @@ export default class UserProfileComponent implements OnInit {
                 if (response.avatar) this.avatarUrl = `${environment.API_ASSETS}/${response.avatar}`;
 
                 this.roles = response.roles;
-            }
-        });
-    }
-
-    findRegistroCivil() {
-        this.userHttpService.findRegistroCivil(this.authService.auth.identification!.substring(0, 10)).subscribe({
-            next: (response: any) => {
-                const nationality = this.nationalities.find((item) => item.name?.trim().toLowerCase() === response.nationality?.trim().toLowerCase());
-                const sex = this.sexes.find((item) => item.name?.trim().toLowerCase() === response.sex?.trim().toLowerCase());
-                console.log(dateOnlyToLocalDate(response.birthdate));
-
-                this.form.patchValue({
-                    sex,
-                    nationality,
-                    birthdate: dateOnlyToLocalDate(response.birthdate)
-                });
-
-                this.update();
             }
         });
     }

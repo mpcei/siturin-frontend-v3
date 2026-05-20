@@ -7,7 +7,6 @@ import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { invalidEmailDomainValidator, invalidEmailValidator } from '@utils/form-validators/custom-validator';
 import { PrimeIcons } from 'primeng/api';
-import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { Select } from 'primeng/select';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
@@ -17,7 +16,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, ToggleSwitchComponent, Select, DatePipe],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, DatePipe],
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {

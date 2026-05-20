@@ -5,13 +5,13 @@ import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
 import { EstablishmentInterface } from '@modules/core/shared/interfaces';
-import { EstablishmentHttpService, FormStateService, RucHttpService } from '@modules/core/roles/external/services';
+import { EstablishmentHttpService, FormStateService, GuideHttpService, RucHttpService } from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Paginator, PaginatorState } from 'primeng/paginator';
-import { PaginationInterface } from '@utils/interfaces';
+import { CatalogueInterface, PaginationInterface } from '@utils/interfaces';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { inactivationButtonAction, registrationButtonAction } from '@utils/components/button-action/consts';
 import { Tooltip } from 'primeng/tooltip';
@@ -23,6 +23,7 @@ import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
+import { UserHttpService } from '@/pages/admin/user-http.service';
 
 @Component({
     selector: 'app-guide-establishment-list',
@@ -44,11 +45,10 @@ export default class GuideEstablishmentListComponent implements OnInit {
     private readonly establishmentHttpService = inject(EstablishmentHttpService);
     private readonly rucHttpService = inject(RucHttpService);
     private readonly authService = inject(AuthService);
+    private readonly guideHttpService = inject(GuideHttpService);
     private readonly catalogueService = inject(CatalogueService);
     private readonly customMessageService = inject(CustomMessageService);
-    private readonly coreSessionStorageService = inject(CoreSessionStorageService);
     private readonly formStateService = inject(FormStateService);
-    private readonly destroyRef = inject(DestroyRef);
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Establecimientos' }]);
@@ -146,6 +146,11 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     private async createProcess(establishment: EstablishmentInterface) {
+        if (!this.authService.auth.sex || !this.authService.auth.nationality || !this.authService.auth.birthdate) {
+            this.updateGuideInformation(establishment);
+            return;
+        }
+
         this.formStateService.clearState();
 
         this.formStateService.updateSection('establishment', { id: establishment.id });
@@ -163,7 +168,18 @@ export default class GuideEstablishmentListComponent implements OnInit {
         await this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }
 
-    private delete(id: string) {}
+    updateGuideInformation(establishment: EstablishmentInterface) {
+        this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
+            next: async (response: any) => {
+                let auth = this.authService.auth;
+                auth.birthdate = response.birthdate;
+                auth.nationality = response.nationality;
+                auth.sex = response.sex;
+                this.authService.auth = auth;
+                await this.createProcess(establishment);
+            }
+        });
+    }
 
     protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
 }

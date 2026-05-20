@@ -92,16 +92,6 @@ export class GuideHttpService {
         };
     }
 
-    updateProfessionalTilesInformation(cedula: string, establishmentId: string) {
-        const url = `${this.apiUrlSharedCore}/professional-titles`;
-
-        return this._httpClient.post<HttpResponseInterface>(url, { cedula, establishmentId }).pipe(
-            map((response) => {
-                return response.data;
-            })
-        );
-    }
-
     findProfessionalTitlesByEstablishmentId(establishmentId: string) {
         const url = `${this.apiUrlSharedCore}/professional-titles/${establishmentId}`;
 
@@ -112,12 +102,20 @@ export class GuideHttpService {
         );
     }
 
-    createProfessionalTitles(cedula: string, establishmentId: string) {
+    createProfessionalTitles(ruc: string, establishmentId: string) {
         const url = `${this.apiUrlSharedCore}/professional-titles`;
 
-        const params = new HttpParams().append('cedula', cedula).append('establishmentId', establishmentId);
+        return this._httpClient.post<HttpResponseInterface>(url, { ruc, establishmentId }).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
 
-        return this._httpClient.post<HttpResponseInterface>(url, { cedula, establishmentId }).pipe(
+    updateGuideInformation(ruc: string) {
+        const url = `${this.apiUrlSharedCore}/registro-civil/${ruc}`;
+
+        return this._httpClient.patch<HttpResponseInterface>(url,null).pipe(
             map((response) => {
                 return response.data;
             })
