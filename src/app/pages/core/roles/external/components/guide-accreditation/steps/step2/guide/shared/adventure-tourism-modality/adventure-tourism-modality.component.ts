@@ -181,9 +181,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos una modalidad');
+        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Modalidades de Aventura debe agregar por lo menos una modalidad');
 
-        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Turismo Aventura');
+        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();

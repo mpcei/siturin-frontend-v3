@@ -181,7 +181,7 @@ export class LanguageComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar un idioma');
+        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos un idioma');
 
         if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
 
