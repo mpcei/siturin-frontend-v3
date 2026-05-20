@@ -6,21 +6,23 @@
         </div>
 
         <!-- hasAdventureTourismModality -->
-        <div class="custom-form-field md:col-span-12">
-            <label appLabel for="hasLanguage"
-                   [required]="hasLanguageField">
-                <div [innerHTML]="requirementField.value?.name"></div>
-            </label>
+        @if (requirementField.value) {
+            <div class="custom-form-field md:col-span-12">
+                <label appLabel for="hasLanguage"
+                       [required]="hasLanguageField">
+                    <div [innerHTML]="requirementField.value?.name"></div>
+                </label>
 
-            <app-toggle-switch id="hasLanguage" formControlName="hasLanguage" />
+                <app-toggle-switch id="hasLanguage" formControlName="hasLanguage" />
 
-            <p-message
-                appErrorMessage
-                [errors]="hasLanguageField.errors"
-                [touched]="hasLanguageField.touched"
-                [dirty]="hasLanguageField.dirty"
-            />
-        </div>
+                <p-message
+                    appErrorMessage
+                    [errors]="hasLanguageField.errors"
+                    [touched]="hasLanguageField.touched"
+                    [dirty]="hasLanguageField.dirty"
+                />
+            </div>
+        }
     </form>
 </div>
 
@@ -79,6 +81,25 @@
                     [touched]="languageField.touched"
                     [dirty]="languageField.dirty"></small>
             </div>
+
+            <!-- motherLanguage -->
+            @if (motherLanguageField.enabled) {
+                <div class="md:col-span-12 flex flex-col gap-2">
+                    <label
+                        appLabel
+                        for="motherLanguage"
+                        [required]="motherLanguageField"
+                        label="Declaro que mi lengua materna es un idioma extranjero diferente al castellano"></label>
+
+                    <app-toggle-switch id="motherLanguage" formControlName="motherLanguage" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="motherLanguageField.errors"
+                        [touched]="motherLanguageField.touched"
+                        [dirty]="motherLanguageField.dirty"></small>
+                </div>
+            }
 
             <!-- certifier -->
             <div class="md:col-span-12 flex flex-col gap-2">

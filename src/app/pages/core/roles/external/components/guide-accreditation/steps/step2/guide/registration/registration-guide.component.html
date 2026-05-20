@@ -15,7 +15,7 @@ CatalogueGuideClassificationsCodeEnum.guide_national_adventure === formStateServ
 }
 
 <app-language
-    [classification]="{}"
+    [classification]="formStateService.process()?.classification!"
     (dataOut)="saveForm($event,'language')" />
 
 

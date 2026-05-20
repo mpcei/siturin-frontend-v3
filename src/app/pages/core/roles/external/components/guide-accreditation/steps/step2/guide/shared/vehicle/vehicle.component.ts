@@ -247,7 +247,7 @@ export class VehicleComponent implements OnInit {
         this.closeModal();
     }
 
-    deleteVehicle(plate: string) {
+    deleteVehicle(vehicle: any) {
         this.confirmationService.confirm({
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
@@ -262,7 +262,7 @@ export class VehicleComponent implements OnInit {
                 label: 'Sí, Eliminar'
             },
             accept: () => {
-                this.items = this.items.filter((item) => item.plate !== plate);
+                this.items = this.items.filter((item) => item.plate !== vehicle.plate);
 
                 this.updateFormAndEmit();
             },

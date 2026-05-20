@@ -50,9 +50,10 @@ export class RequirementComponent implements OnInit {
 
     async ngOnInit() {
         this.buildForm();
-        await this.loadCatalogues();
         this.loadData();
+
         this.checkRequiredForm();
+        await this.loadCatalogues();
     }
 
     buildForm() {
@@ -149,6 +150,7 @@ export class RequirementComponent implements OnInit {
 
         if (!this.certificationGuide) this.certificationGuideField.disable();
         if (!this.certificationJobSkill) this.certificationJobSkillField.disable();
+        this.form.updateValueAndValidity();
     }
 
     watchFormChanges() {

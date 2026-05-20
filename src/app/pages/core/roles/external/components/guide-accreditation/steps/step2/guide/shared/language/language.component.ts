@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Fluid } from 'primeng/fluid';
@@ -22,6 +22,7 @@ import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-sw
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
+import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 export interface LanguageInterface {
     id?: string;
@@ -113,6 +114,7 @@ export class LanguageComponent implements OnInit {
             id: [null],
             language: [null, Validators.required],
             level: [null, Validators.required],
+            motherLanguage: [{ value: null, disabled: true }],
             file: [null, Validators.required]
         });
 
@@ -129,6 +131,14 @@ export class LanguageComponent implements OnInit {
         this.hasLanguageField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
+
+        this.languageField.valueChanges.subscribe((value) => {
+            if (value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && value.code === 'es') {
+                this.motherLanguageField.enable();
+                this.motherLanguageField.setValidators([Validators.requiredTrue]);
+                this.motherLanguageField.updateValueAndValidity();
+            }
+        });
     }
 
     async loadCatalogues() {
@@ -142,8 +152,7 @@ export class LanguageComponent implements OnInit {
         this.levels = levels;
         this.requirements = requirements;
 
-        console.log(requirements);
-        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'certification_language')); //review cambiar en la base por adventure
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'certification_language'));
     }
 
     onSubmit() {
@@ -157,6 +166,7 @@ export class LanguageComponent implements OnInit {
 
         if (this.languageField.invalid) errors.push('Tipo de idioma extranjero');
         if (this.levelField.invalid) errors.push('Nivel de conocimiento del idioma extranjero');
+        if (this.motherLanguageField.invalid) errors.push('Lengua materna');
         if (this.fileField.invalid) errors.push('Certificado de idiomas');
 
         if (errors.length > 0) {
@@ -171,7 +181,9 @@ export class LanguageComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Idiomas');
+        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar un idioma');
+
+        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -273,6 +285,10 @@ export class LanguageComponent implements OnInit {
 
     get fileField(): AbstractControl {
         return this.modalityForm.controls['file'];
+    }
+
+    get motherLanguageField(): AbstractControl {
+        return this.modalityForm.controls['motherLanguage'];
     }
 
     // Getters Form

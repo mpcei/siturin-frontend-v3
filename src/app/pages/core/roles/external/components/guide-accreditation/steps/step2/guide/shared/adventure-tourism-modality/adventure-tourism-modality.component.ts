@@ -133,7 +133,6 @@ export class AdventureTourismModalityComponent implements OnInit {
         });
 
         this.modalityField.valueChanges.subscribe(async (value) => {
-            console.log(value);
             if (value) this.certifiers = await this.catalogueService.findByModel(value.id);
         });
     }
@@ -148,13 +147,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     async loadCatalogues() {
-        const [modalities, requirements] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.adventure_tourism_modalities_name), this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
+        const [requirements] = await Promise.all([ this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
 
-        this.availableModalities = modalities;
-
-        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_national_adventure) {
-            this.availableModalities = modalities.filter((x) => x.code !== CatalogueGuideModalitiesCodeEnum.alm && x.code !== CatalogueGuideModalitiesCodeEnum.mem);
-        }
+        this.availableModalities = await this.catalogueService.findByModel(this.classification().id!);
 
         this.requirements = requirements;
 
@@ -186,7 +181,9 @@ export class AdventureTourismModalityComponent implements OnInit {
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Modalidades de Turismo Aventura');
+        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos una modalidad');
+
+        if (this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Turismo Aventura');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();

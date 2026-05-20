@@ -3,56 +3,63 @@
         <!-- title -->
         <div class="custom-form-title md:col-span-12">
             <h4>
-                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO DE {{process()?.classification?.name}} POR PRIMERA VEZ
+                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO DE {{ process()?.classification?.name }} POR PRIMERA
+                VEZ
             </h4>
         </div>
 
         <!-- ruc -->
-        <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="ruc"
-                [required]="rucField">
-                <div [innerHTML]="requirementItems.get('ruc')?.name"></div>
-            </label>
+        @if (requirementItems.get('ruc')) {
+            <div class="custom-form-field md:col-span-12">
 
-            <p-fileupload
-                id="ruc"
-                name="ruc"
-                mode="basic"
-                chooseLabel="Examinar"
-                [chooseIcon]="PrimeIcons.SEARCH"
-                uploadLabel="Subir archivo"
-                accept="application/pdf"
-                [maxFileSize]="10485760"
-                [auto]="true"
-                [customUpload]="true"
-                (uploadHandler)="onFileSelect(requirementItems.get('ruc'),$event)">
-            </p-fileupload>
+                <label
+                    appLabel
+                    for="ruc"
+                    [required]="rucField">
+                    <div [innerHTML]="requirementItems.get('ruc')?.name"></div>
+                </label>
 
-            @if (rucField.value) {
-                <p-message severity="info">
-                    {{ rucField.value.file.name }}
-                </p-message>
-            }
 
-            <small
-                appErrorMessage
-                [errors]="rucField.errors"
-                [touched]="rucField.touched"
-                [dirty]="rucField.dirty"></small>
+                <p-fileupload
+                    id="ruc"
+                    name="ruc"
+                    mode="basic"
+                    chooseLabel="Examinar"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect(requirementItems.get('ruc'),$event)">
+                </p-fileupload>
 
-            <p-divider />
-        </div>
+                @if (rucField.value) {
+                    <p-message severity="info">
+                        {{ rucField.value.file.name }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="rucField.errors"
+                    [touched]="rucField.touched"
+                    [dirty]="rucField.dirty"></small>
+
+                <p-divider />
+            </div>
+        }
 
         <!-- degree -->
         <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="degree"
-                [required]="degreeField">
-                <div [innerHTML]="requirementItems.get(degreeName)?.name"></div>
-            </label>
+            @if (requirementItems.get(degreeName)) {
+                <label
+                    appLabel
+                    for="degree"
+                    [required]="degreeField">
+                    <div [innerHTML]="requirementItems.get(degreeName)?.name"></div>
+                </label>
+            }
 
             @if (degreeField.value) {
                 <p-message severity="info">
@@ -71,13 +78,14 @@
 
         <!-- photo -->
         <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="photo"
-                [required]="photoField">
-                <div [innerHTML]="requirementItems.get('photo')?.name"></div>
-            </label>
-
+            @if (requirementItems.get('photo')) {
+                <label
+                    appLabel
+                    for="photo"
+                    [required]="photoField">
+                    <div [innerHTML]="requirementItems.get('photo')?.name"></div>
+                </label>
+            }
             <p-fileupload
                 id="photo"
                 name="photo"
@@ -111,12 +119,14 @@
         <!-- certificationGuide -->
         @if (certificationGuideField.enabled) {
             <div class="custom-form-field md:col-span-12">
-                <label
-                    appLabel
-                    for="certificationGuide"
-                    [required]="certificationGuideField">
-                    <div [innerHTML]="requirementItems.get(certificationGuide)?.name"></div>
-                </label>
+                @if (requirementItems.get(certificationGuide)) {
+                    <label
+                        appLabel
+                        for="certificationGuide"
+                        [required]="certificationGuideField">
+                        <div [innerHTML]="requirementItems.get(certificationGuide)?.name"></div>
+                    </label>
+                }
 
                 <p-fileupload
                     id="certificationGuide"
@@ -150,13 +160,14 @@
 
         <!-- certificationAux -->
         <div class="custom-form-field md:col-span-12">
-            <label
-                appLabel
-                for="certificationAux"
-                [required]="certificationAuxField">
-                <div [innerHTML]="requirementItems.get(certificationAux)?.name"></div>
-            </label>
-
+            @if (requirementItems.get(certificationAux)) {
+                <label
+                    appLabel
+                    for="certificationAux"
+                    [required]="certificationAuxField">
+                    <div [innerHTML]="requirementItems.get(certificationAux)?.name"></div>
+                </label>
+            }
             <p-fileupload
                 id="certificationAux"
                 name="certificationAux"
@@ -189,12 +200,14 @@
         <!-- certificationJobSkill -->
         @if (certificationJobSkillField.enabled) {
             <div class="custom-form-field md:col-span-12">
-                <label
-                    appLabel
-                    for="certificationJobSkill"
-                    [required]="certificationJobSkillField">
-                    <div [innerHTML]="requirementItems.get(certificationJobSkill)?.name"></div>
-                </label>
+                @if (requirementItems.get(certificationJobSkill)) {
+                    <label
+                        appLabel
+                        for="certificationJobSkill"
+                        [required]="certificationJobSkillField">
+                        <div [innerHTML]="requirementItems.get(certificationJobSkill)?.name"></div>
+                    </label>
+                }
 
                 <p-fileupload
                     id="certificationJobSkill"
@@ -229,12 +242,14 @@
         <!-- domicileDeclaration -->
         @if (domicileDeclarationField.enabled) {
             <div class="custom-form-field md:col-span-12">
-                <label
-                    appLabel
-                    for="domicileDeclaration"
-                    [required]="domicileDeclarationField">
-                    <div [innerHTML]="requirementItems.get('domicile_declaration')?.name"></div>
-                </label>
+                @if (requirementItems.get('domicile_declaration')) {
+                    <label
+                        appLabel
+                        for="domicileDeclaration"
+                        [required]="domicileDeclarationField">
+                        <div [innerHTML]="requirementItems.get('domicile_declaration')?.name"></div>
+                    </label>
+                }
 
                 <app-toggle-switch id="domicileDeclaration" formControlName="domicileDeclaration" />
 
