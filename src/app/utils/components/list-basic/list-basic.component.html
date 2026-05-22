@@ -12,18 +12,18 @@
                     <div class="custom-form-title">{{ title() }}</div>
                 </div>
 
-<!--                <div class="md:col-span-4 custom-form-field">-->
-<!--                    <p-iconfield>-->
-<!--                        <p-inputicon>-->
-<!--                            <i [class]="FontAwesome.MAGNIFYING_GLASS_SOLID"></i>-->
-<!--                        </p-inputicon>-->
+                <!--                <div class="md:col-span-4 custom-form-field">-->
+                <!--                    <p-iconfield>-->
+                <!--                        <p-inputicon>-->
+                <!--                            <i [class]="FontAwesome.MAGNIFYING_GLASS_SOLID"></i>-->
+                <!--                        </p-inputicon>-->
 
-<!--                        <input-->
-<!--                            pInputText type="text"-->
-<!--                            (input)="onGlobalFilter($event)"-->
-<!--                            placeholder="Buscar..." />-->
-<!--                    </p-iconfield>-->
-<!--                </div>-->
+                <!--                        <input-->
+                <!--                            pInputText type="text"-->
+                <!--                            (input)="onGlobalFilter($event)"-->
+                <!--                            placeholder="Buscar..." />-->
+                <!--                    </p-iconfield>-->
+                <!--                </div>-->
             </div>
         </p-fluid>
     </ng-template>
@@ -37,7 +37,10 @@
             }
 
             <th>
-                <p-button pTooltip="Crear" [icon]="FontAwesome.PLUS_SOLID" severity="success" (onClick)="create()" />
+                @if (buttonCreated()) {
+                    <p-button pTooltip="Crear" [icon]="FontAwesome.PLUS_SOLID" severity="success"
+                              (onClick)="create()" />
+                }
             </th>
         </tr>
     </ng-template>

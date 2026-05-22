@@ -141,8 +141,11 @@ export class LanguageComponent implements OnInit {
             if (value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && value.code === 'es') {
                 this.motherLanguageField.enable();
                 this.motherLanguageField.setValidators([Validators.requiredTrue]);
-                this.motherLanguageField.updateValueAndValidity();
+            } else {
+                this.motherLanguageField.disable();
+                this.motherLanguageField.clearValidators();
             }
+            this.motherLanguageField.updateValueAndValidity();
         });
     }
 
@@ -214,7 +217,7 @@ export class LanguageComponent implements OnInit {
         if (this.items.some((i) => i.language?.code === language?.code)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
-                detail: 'La modalidad ya existe'
+                detail: 'El idioma ya existe'
             });
             return;
         }

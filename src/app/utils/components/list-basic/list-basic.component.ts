@@ -25,6 +25,7 @@ export class ListBasicComponent implements OnInit {
     buttonActions = input.required<MenuItem[]>();
     title = input.required<string>();
     isButtonActionsEnabled = signal(false);
+    buttonCreated = input<boolean>(true);
 
     onCreate = output<any>();
     onEdit = output<any>();
