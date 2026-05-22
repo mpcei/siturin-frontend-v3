@@ -152,13 +152,17 @@ export class AdventureTourismModalityComponent implements OnInit {
     }
 
     async loadCatalogues() {
-        const [requirements] = await Promise.all([ this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
+        const [requirements] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
 
         this.availableModalities = await this.catalogueService.findByModel(this.classification().id!);
 
         this.requirements = requirements;
 
-        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure'));
+        if (this.classification().code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+            this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure'));
+        } else {
+            this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure_guide'));
+        }
     }
 
     onSubmit() {
