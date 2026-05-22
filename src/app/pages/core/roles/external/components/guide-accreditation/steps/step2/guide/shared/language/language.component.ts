@@ -29,6 +29,7 @@ export interface LanguageInterface {
     level?: CatalogueInterface;
     language?: CatalogueInterface;
     file?: any;
+    motherLanguage: boolean;
 }
 
 @Component({
@@ -227,7 +228,8 @@ export class LanguageComponent implements OnInit {
             {
                 level: this.levelField.value,
                 language,
-                file: this.fileField.value
+                file: this.fileField.value,
+                motherLanguage: this.motherLanguageField.value
             }
         ];
 

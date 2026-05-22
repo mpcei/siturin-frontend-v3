@@ -144,7 +144,8 @@ export class RegistrationGuideComponent {
                     languageCode: x.language.code,
                     languageName: x.language.name,
                     levelCode: x.level.code,
-                    levelName: x.level.name
+                    levelName: x.level.name,
+                    motherLanguage: x.motherLanguage
                 });
 
                 formData.append(x.language.code, x.file);
