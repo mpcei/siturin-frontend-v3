@@ -1,5 +1,11 @@
 import { Injectable, signal, effect, computed } from '@angular/core';
 import { EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface, RucInterface } from '@/pages/core/shared/interfaces';
+import { AbstractControl } from '@angular/forms';
+
+interface CatastroSiete {
+    type?: string;
+    credentials?: any[];
+}
 
 export interface AppFormState {
     establishment: EstablishmentInterface | null;
@@ -18,9 +24,9 @@ export interface AppFormState {
     degrees: any[];
     degree: any | null;
     files: any[];
+    catastroSiete: CatastroSiete | null;
 }
 
-const STORAGE_KEY = 'formState';
 const INITIAL_STATE: AppFormState = {
     ruc: null,
     civilRegistry: null,
@@ -37,12 +43,17 @@ const INITIAL_STATE: AppFormState = {
     protectedArea: null,
     degrees: [],
     degree: null,
-    files: []
+    files: [],
+    catastroSiete: null
 };
+
+const FORM_STATE_KEY = 'formState';
+const FORM_ERRORS_KEY = 'formErrors';
 
 @Injectable({ providedIn: 'root' })
 export class FormStateService {
     readonly formState = signal<AppFormState>(this.loadFromStorage());
+    readonly formErrors = signal<Record<string, string[]>>({});
 
     readonly establishment = computed(() => this.formState().establishment);
     readonly establishmentTemp = computed(() => this.formState().establishmentTemp);
@@ -58,10 +69,12 @@ export class FormStateService {
     readonly degrees = computed(() => this.formState().degrees);
     readonly degree = computed(() => this.formState().degree);
     readonly files = computed(() => this.formState().files);
+    readonly catastroSiete = computed(() => this.formState().catastroSiete);
 
     constructor() {
         effect(() => {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(this.formState()));
+            sessionStorage.setItem(FORM_STATE_KEY, JSON.stringify(this.formState()));
+            sessionStorage.setItem(FORM_ERRORS_KEY, JSON.stringify(this.formErrors()));
         });
     }
 
@@ -69,19 +82,54 @@ export class FormStateService {
         this.formState.update((state) => ({
             ...state,
             [section]: {
-                ...state[section], // 👈 lo anterior
-                ...data // 👈 lo nuevo
+                ...state[section], // lo anterior
+                ...data // lo nuevo
             }
         }));
     }
 
     clearState() {
         this.formState.set(INITIAL_STATE);
-        sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(FORM_STATE_KEY);
     }
 
     private loadFromStorage(): AppFormState {
-        const stored = sessionStorage.getItem(STORAGE_KEY);
+        const stored = sessionStorage.getItem(FORM_STATE_KEY);
         return stored ? JSON.parse(stored) : INITIAL_STATE;
+    }
+
+    setFormErrors(componentKey: string, errors: string[]): void {
+        this.formErrors.update((current) => ({
+            ...current,
+            [componentKey]: errors
+        }));
+    }
+
+     readonly allErrors = computed(() => Object.values(this.formErrors()).flat());
+
+     readonly hasErrors = computed(() => this.allErrors().length > 0);
+
+    private readonly forms = new Map<string, AbstractControl>();
+
+    registerForm(key: string, form: AbstractControl): void {
+        this.forms.set(key, form);
+    }
+
+    unregisterForm(key: string): void {
+        this.forms.delete(key);
+    }
+
+    private markAllTouched(key?: string): void {
+        if (key) {
+            this.forms.get(key)?.markAllAsTouched();
+        } else {
+            console.log(this.forms);
+            this.forms.forEach((form) => form.markAllAsTouched());
+        }
+    }
+
+    validateAll(): boolean {
+        this.markAllTouched();
+        return !this.hasErrors();
     }
 }

@@ -1,0 +1,101 @@
+import { Component, inject, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
+import { Button } from 'primeng/button';
+import { PrimeIcons } from 'primeng/api';
+import { CustomMessageService } from '@utils/services';
+import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
+import { RequirementCurrentComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-current/requirement-current.component';
+
+@Component({
+    selector: 'app-registration-guide-current',
+    imports: [Button, RequirementCurrentComponent],
+    templateUrl: './registration-guide-current.component.html'
+})
+export class RegistrationGuideCurrentComponent {
+    protected readonly PrimeIcons = PrimeIcons;
+    public step: OutputEmitterRef<number> = output<number>();
+    private mainData: WritableSignal<Record<string, any>> = signal({});
+
+    protected readonly customMessageService = inject(CustomMessageService);
+    protected readonly guideHttpService = inject(GuideHttpService);
+    protected readonly formStateService = inject(FormStateService);
+
+    constructor() {}
+
+    onSubmit() {
+        if (this.checkFormErrors()) {
+            this.saveProcess();
+        }
+    }
+
+    saveForm(data: any, objectName?: string) {
+        this.mainData.update((currentData) => {
+            let newData = { ...currentData };
+
+            if (objectName) {
+                newData[objectName] = {
+                    ...(newData[objectName] ?? {}),
+                    ...data
+                };
+            } else {
+                newData = { ...currentData, ...data };
+            }
+
+            return newData;
+        });
+
+        if (objectName?.includes('processGuides')) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
+    }
+
+    saveProcess() {
+        const processGuides: any[] = [];
+
+        const formData = new FormData();
+
+        Object.values(this.formStateService.processGuides()).forEach((x: any) => {
+            processGuides.push({ requirement: x.requirement, value: x.requirement.value });
+
+            formData.append(x.requirement.id, x.file);
+        });
+
+        const credentials = this.formStateService.catastroSiete()?.credentials?.map((item) => {
+            return {
+                classificationCode: item.code_classification,
+                startedAt: item.fecha_emision_licencia,
+                endedAt: item.fecha_caducidad_licencia,
+                languages: item.idiomas,
+                protectedAreas: item.acceso_area_protegida,
+                modalities: item.modalidad
+            };
+        });
+
+        this.formStateService.updateSection('process', { endedAt: new Date() });
+
+        const payload = {
+            user: this.formStateService.user(),
+            process: this.formStateService.process(),
+            establishment: this.formStateService.establishment(),
+            processGuides,
+            credentials
+        };
+
+        console.log(payload);
+        formData.append('payload', JSON.stringify(payload));
+
+        this.guideHttpService.createCurrentRegistration(formData).subscribe({
+            next: () => {}
+        });
+    }
+
+    checkFormErrors() {
+        if (this.formStateService.hasErrors()) {
+            this.customMessageService.showFormErrors(this.formStateService.allErrors());
+            return false;
+        }
+
+        return true;
+    }
+
+    back() {
+        this.step.emit(1);
+    }
+}

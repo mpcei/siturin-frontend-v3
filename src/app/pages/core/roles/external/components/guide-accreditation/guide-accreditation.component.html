@@ -54,8 +54,7 @@
             <ng-template #content let-activateCallback="activateCallback">
                 <p-message severity="warn">
                     <b>NOTA IMPORTANTE:</b>
-                    Los requisitos marcados con <i [class]="FontAwesome.ASTERISK_SOLID"></i> son
-                    obligatorios
+                    Los requisitos marcados con <i [class]="FontAwesome.ASTERISK_SOLID"></i> son obligatorios
                 </p-message>
                 <app-step1 (step)="activeStep=$event" />
             </ng-template>
@@ -64,7 +63,7 @@
         <p-step-panel [value]="2">
             <ng-template #content let-activateCallback="activateCallback">
                 @if (activeStep === 2) {
-                    <app-step2 (step)="activeStep=$event"/>
+                    <app-step2 (step)="activeStep=$event" />
                 }
             </ng-template>
         </p-step-panel>

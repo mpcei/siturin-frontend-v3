@@ -26,6 +26,15 @@ export class GuideHttpService {
         );
     }
 
+    createCurrentRegistration(payload: FormData): Observable<any> {
+        const url = `${this._apiUrl}/current-registrations`;
+        return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
     async validateDegreeType(degrees: any[], geographicAreaCode: string): Promise<any | null> {
         if (degrees.length > 0) {
             const relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
@@ -115,7 +124,17 @@ export class GuideHttpService {
     updateGuideInformation(ruc: string) {
         const url = `${this.apiUrlSharedCore}/registro-civil/${ruc}`;
 
-        return this._httpClient.patch<HttpResponseInterface>(url,null).pipe(
+        return this._httpClient.patch<HttpResponseInterface>(url, null).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    findGuidesSiete(ruc: string): Observable<any[]> {
+        const url = `${this.apiUrlSharedCore}/${ruc}`;
+
+        return this._httpClient.get<HttpResponseInterface>(url).pipe(
             map((response) => {
                 return response.data;
             })

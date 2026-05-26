@@ -1,0 +1,23 @@
+<app-requirement-current (dataOut)="saveForm($event,'processGuides')" />
+
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="md:col-span-3 custom-form-field">
+            <p-button
+                label="Atrás"
+                severity="warn"
+                styleClass="w-full"
+                [icon]="PrimeIcons.ARROW_LEFT"
+                (onClick)="back()" />
+        </div>
+
+        <div class="custom-form-field md:col-start-10 md:col-span-3">
+            <p-button
+                class="w-full"
+                label="Guardar"
+                styleClass="w-full"
+                [icon]="PrimeIcons.SAVE"
+                (onClick)="onSubmit()" />
+        </div>
+    </div>
+</div>

@@ -36,14 +36,12 @@
     </div>
 </div>
 
-
 @if (professionalTitles().length > 0) {
     <app-contact-person (dataOut)="saveForm($event,'user')"
                         [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
 
     <app-address (dataOut)="saveForm($event,'establishment')" [dataIn]="formStateService.establishment()" />
-
-
+    
     <div class="custom-form-card">
         <div class="custom-form-grid md:grid-cols-12">
             <div class="custom-form-field md:col-start-10 md:col-span-3">

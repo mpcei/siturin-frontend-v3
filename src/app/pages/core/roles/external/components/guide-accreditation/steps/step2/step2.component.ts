@@ -6,32 +6,22 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { PrimeIcons } from 'primeng/api';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import {
-    CatalogueActivitiesCodeEnum,
-    CatalogueActivitiesGeographicAreaEnum,
-    CatalogueProcessesTypeEnum,
-    CatalogueTypeEnum
-} from '@utils/enums';
-import {
-    ActivityInterface,
-    CategoryInterface,
-    ClassificationInterface,
-    EstablishmentInterface
-} from '@modules/core/shared/interfaces';
+import { CatalogueActivitiesCodeEnum, CatalogueActivitiesGeographicAreaEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { ActivityInterface, CategoryInterface, ClassificationInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
 import { ActivityService } from '@modules/core/shared/services';
 import { ProcessI } from '@utils/services/core-session-storage.service';
 import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
-import {
-    GuideComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
+import { GuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
+import { RegistrationGuideCurrentComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/registration-current/registration-guide-current.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-step2',
     standalone: true,
-    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip],
+    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip, RegistrationGuideCurrentComponent, JsonPipe],
     templateUrl: './step2.component.html'
 })
 export class Step2Component implements OnInit {
@@ -211,6 +201,10 @@ export class Step2Component implements OnInit {
         this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
+
+        if (this.formStateService.catastroSiete()?.type !== 'new') {
+            this.formStateService.updateSection('process', { activity: this.activityField.value });
+        }
     }
 
     async loadClassifications() {
