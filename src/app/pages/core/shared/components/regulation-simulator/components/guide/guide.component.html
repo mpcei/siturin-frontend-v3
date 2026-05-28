@@ -1,0 +1,76 @@
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-6">
+            <label for="">
+                Seleccione su nivel de instrucción:
+            </label>
+            <p-select id="localType"
+                      [options]="types"
+                      [formControl]="type"
+                      optionLabel="name">
+            </p-select>
+        </div>
+    </div>
+</div>
+
+@if (items().length > 0) {
+    <div class="custom-form-card">
+        <p-table [value]="items()" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>
+                    <th><h1>Requisito</h1></th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-item>
+                <tr>
+                    <td>
+                        @if (item.requirement.type === 'requirement_title') {
+                            <h5>{{ item.requirement.name.replace('#classification', classification().name) }}</h5>
+                        } @else {
+                            @if (item.requiredRegister) {
+                                <i [ngClass]="[FontAwesome.ASTERISK_SOLID,'form-error']">
+                                </i>
+                                <div [innerHTML]="item.requirement.name"></div>
+                            } @else {
+                                <div [innerHTML]="item.requirement.name"></div>
+                            }
+                            {{ environment.APP_PATH_ASSETS + '/simulator/' + item.requirement.code + '.jpg' }}
+                            @if (item.requirement.code==='certification_language') {
+                                <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
+                                     alt="">
+                            }
+
+                            @if (item.requirement.code==='pane') {
+                                <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
+                                     alt="">
+                            }
+
+                            @if (item.requirement.code==='modality_adventure') {
+                                <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
+                                     alt="">
+                            }
+
+                            @if (item.requirement.code==='modality_adventure_guide') {
+                                <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
+                                     alt="">
+                            }
+                        }
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+} @else {
+    @if (type.value?.code) {
+        <div class="custom-form-card">
+            <div class="custom-form-grid md:grid-cols-12">
+                <div class="custom-form-field md:col-span-12">
+                    <p-message severity="error">
+                        Con la Clasificación seleccionada y el nivel de instrucción no puede aplicar a un Registro de
+                        Turismo
+                    </p-message>
+                </div>
+            </div>
+        </div>
+    }
+}

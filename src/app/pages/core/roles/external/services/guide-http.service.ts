@@ -144,7 +144,7 @@ export class GuideHttpService {
     findRequirementConfigurations(classificationId: string, professionalTitleCode: string): Observable<any[]> {
         const url = `${this.apiUrlSharedCore}/requirement-configurations`;
 
-        const params = new HttpParams().append('cassificationId', classificationId).append('professionalTitleCode', professionalTitleCode);
+        const params = new HttpParams().append('classificationId', classificationId).append('professionalTypeCode', professionalTitleCode);
         return this._httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
                 return response.data;

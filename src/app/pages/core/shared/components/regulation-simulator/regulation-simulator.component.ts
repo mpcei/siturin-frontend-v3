@@ -18,6 +18,7 @@ import { CatalogueInterface } from '@/utils/interfaces';
 import { ActivityInterface, CategoryInterface, ClassificationInterface } from '../../interfaces';
 import { Fluid } from 'primeng/fluid';
 import { GuideComponent } from '@/pages/core/shared/components/regulation-simulator/components/guide/guide.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-regulation-simulator',
@@ -37,7 +38,8 @@ import { GuideComponent } from '@/pages/core/shared/components/regulation-simula
         EventComponent,
         RegulationComponent,
         Fluid,
-        GuideComponent
+        GuideComponent,
+        JsonPipe
     ],
     templateUrl: './regulation-simulator.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -8,9 +8,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ActivityInterface, CategoryInterface, ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueInterface } from '@/utils/interfaces';
 import { ActivityService } from '@/pages/core/shared/services';
-import { CoreSessionStorageService } from '@/utils/services';
 import { CatalogueService } from '@/utils/services/catalogue.service';
 import { CatalogueTypeEnum } from '@/utils/enums';
+import { CatalogueActivitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
     selector: 'app-regulation-simulator-form',
@@ -34,6 +34,7 @@ export class RegulationSimulatorFormComponent implements OnInit {
     protected categories: CategoryInterface[] = [];
     protected outputFormValue = output();
     protected form!: FormGroup;
+    hasCategory = false;
 
     ngOnInit(): void {
         this.buildForm();
@@ -56,18 +57,29 @@ export class RegulationSimulatorFormComponent implements OnInit {
             this.outputFormValue.emit(value);
         });
 
+        this.contributorTypeField.valueChanges.subscribe(async (geographicArea) => {
+            this.activityField.reset();
+        });
+
         this.geographicAreaField.valueChanges.subscribe(async (geographicArea) => {
             this.activities = [];
             this.classifications = [];
             this.categories = [];
 
             if (geographicArea) {
-                this.activities = await this.activityService.findActivitiesByZone(geographicArea.id);
+                const activities = await this.activityService.findActivitiesByZone(geographicArea.id);
+                this.activities = activities;
+
+                if (this.contributorTypeField.value.code === ContributorTypeEnum.juridical_person) {
+                    this.activities = activities.filter((item) => item.code != CatalogueActivitiesCodeEnum.guide_galapagos && item.code != CatalogueActivitiesCodeEnum.guide_continent);
+                }
             }
         });
 
         this.activityField.valueChanges.subscribe(async (activity) => {
             this.categories = [];
+            this.classifications = [];
+            this.classificationField.reset();
 
             if (activity) {
                 this.classifications = await this.activityService.findClassificationsByActivity(activity.id);
@@ -75,8 +87,11 @@ export class RegulationSimulatorFormComponent implements OnInit {
         });
 
         this.classificationField.valueChanges.subscribe(async (classification) => {
+            this.categories = [];
+
             if (classification) {
                 this.categories = await this.activityService.findCategoriesByClassification(classification.id);
+                this.hasCategory = !classification.code.includes('guide');
             }
         });
     }

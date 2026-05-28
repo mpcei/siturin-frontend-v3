@@ -22,7 +22,6 @@ export class FoodDrinkGalapagosComponent {
     form!: FormGroup;
 
     buildForm = effect(() => {
-        console.log(this.classification());
         if (!this.classificationInput()) return;
 
         this.classification.set(data.find((item) => item.codeClassification === this.classificationInput()?.code) ?? null);
