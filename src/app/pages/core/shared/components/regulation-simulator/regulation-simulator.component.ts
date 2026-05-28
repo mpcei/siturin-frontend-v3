@@ -17,6 +17,7 @@ import { RegulationComponent } from '@/pages/core/shared/components/regulation/r
 import { CatalogueInterface } from '@/utils/interfaces';
 import { ActivityInterface, CategoryInterface, ClassificationInterface } from '../../interfaces';
 import { Fluid } from 'primeng/fluid';
+import { GuideComponent } from '@/pages/core/shared/components/regulation-simulator/components/guide/guide.component';
 
 @Component({
     selector: 'app-regulation-simulator',
@@ -35,7 +36,8 @@ import { Fluid } from 'primeng/fluid';
         AccommodationContinentComponent,
         EventComponent,
         RegulationComponent,
-        Fluid
+        Fluid,
+        GuideComponent
     ],
     templateUrl: './regulation-simulator.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush

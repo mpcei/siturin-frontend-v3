@@ -41,6 +41,7 @@ export default class GuideAccreditationComponent implements OnInit {
                 }
 
                 this.formStateService.updateSection('catastroSiete', { credentials: response, type });
+                this.formStateService.updateSection('guideOrigin', { province: response[0].provincia, canton: response[0].canton, languages: response[0].idiomas });
             }
         });
     }

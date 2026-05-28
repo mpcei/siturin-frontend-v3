@@ -4,13 +4,16 @@ import { PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { RequirementCurrentComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-current/requirement-current.component';
+import {
+    RequirementExpiredComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-expired/requirement-expired.component';
 
 @Component({
-    selector: 'app-registration-guide-current',
-    imports: [Button, RequirementCurrentComponent],
-    templateUrl: './registration-guide-current.component.html'
+    selector: 'app-registration-guide-expired',
+    imports: [Button, RequirementCurrentComponent, RequirementExpiredComponent],
+    templateUrl: './registration-guide-expired.component.html'
 })
-export class RegistrationGuideCurrentComponent {
+export class RegistrationGuideExpiredComponent {
     protected readonly PrimeIcons = PrimeIcons;
     public step: OutputEmitterRef<number> = output<number>();
     private mainData: WritableSignal<Record<string, any>> = signal({});

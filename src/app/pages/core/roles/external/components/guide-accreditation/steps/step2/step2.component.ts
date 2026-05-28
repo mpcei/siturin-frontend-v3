@@ -17,11 +17,12 @@ import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { RegistrationGuideCurrentComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/registration-current/registration-guide-current.component';
 import { JsonPipe } from '@angular/common';
+import { RegistrationGuideExpiredComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/registration-expired/registration-guide-expired.component';
 
 @Component({
     selector: 'app-step2',
     standalone: true,
-    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip, RegistrationGuideCurrentComponent, JsonPipe],
+    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip, RegistrationGuideCurrentComponent, JsonPipe, RegistrationGuideExpiredComponent],
     templateUrl: './step2.component.html'
 })
 export class Step2Component implements OnInit {
@@ -253,6 +254,20 @@ export class Step2Component implements OnInit {
             this.activityField.disable();
             this.classificationField.disable();
         } else this.form.markAllAsTouched();
+    }
+
+    continueCurrentRequirements() {
+        this.isEdit = false;
+        this.geographicAreaField.disable();
+        this.activityField.disable();
+        this.classificationField.disable();
+    }
+
+    continueExpiredRequirements() {
+        this.isEdit = false;
+        this.geographicAreaField.disable();
+        this.activityField.disable();
+        this.classificationField.disable();
     }
 
     editRequirements() {

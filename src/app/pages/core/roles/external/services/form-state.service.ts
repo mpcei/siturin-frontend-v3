@@ -25,6 +25,7 @@ export interface AppFormState {
     degree: any | null;
     files: any[];
     catastroSiete: CatastroSiete | null;
+    guideOrigin: any | null;
 }
 
 const INITIAL_STATE: AppFormState = {
@@ -44,7 +45,8 @@ const INITIAL_STATE: AppFormState = {
     degrees: [],
     degree: null,
     files: [],
-    catastroSiete: null
+    catastroSiete: null,
+    guideOrigin: null
 };
 
 const FORM_STATE_KEY = 'formState';
@@ -70,6 +72,7 @@ export class FormStateService {
     readonly degree = computed(() => this.formState().degree);
     readonly files = computed(() => this.formState().files);
     readonly catastroSiete = computed(() => this.formState().catastroSiete);
+    readonly guideOrigin = computed(() => this.formState().guideOrigin);
 
     constructor() {
         effect(() => {
@@ -105,9 +108,9 @@ export class FormStateService {
         }));
     }
 
-     readonly allErrors = computed(() => Object.values(this.formErrors()).flat());
+    readonly allErrors = computed(() => Object.values(this.formErrors()).flat());
 
-     readonly hasErrors = computed(() => this.allErrors().length > 0);
+    readonly hasErrors = computed(() => this.allErrors().length > 0);
 
     private readonly forms = new Map<string, AbstractControl>();
 

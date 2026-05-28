@@ -42,6 +42,9 @@
                     @case (catalogueActivitiesCodeEnum.event_continent || catalogueActivitiesCodeEnum.event_galapagos) {
                         <app-event [classificationInput]="classification()" [contributorType]="contributorType()" />
                     }
+                    @case (catalogueActivitiesCodeEnum.guide_continent || catalogueActivitiesCodeEnum.guide_galapagos) {
+                        <app-guide/>
+                    }
                 }
             </div>
         </div>

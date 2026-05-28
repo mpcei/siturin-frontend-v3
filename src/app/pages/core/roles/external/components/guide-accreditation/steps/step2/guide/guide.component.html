@@ -1,9 +1,16 @@
 @switch (processTypeCode()) {
     @case ('registration') {
-        <app-registration (step)="$event"/>
-    }
+        @switch (formStateService.catastroSiete()?.type) {
+            @case ('new') {
+                <app-registration (step)="$event" />
+            }
+            @case ('current') {
+                <app-registration-guide-current (step)="$event" />
+            }
+            @case ('expired') {
+                <app-registration-guide-expired (step)="$event" />
+            }
+        }
 
-    @case ('registration') {
-        <app-registration-guide-current (step)="$event"/>
     }
 }

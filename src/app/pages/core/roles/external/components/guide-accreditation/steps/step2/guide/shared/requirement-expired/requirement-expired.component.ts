@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
@@ -13,17 +13,18 @@ import { FileUpload } from 'primeng/fileupload';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { Tag } from 'primeng/tag';
 import { isAfter } from 'date-fns';
+import { CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
-    selector: 'app-requirement-current',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, Tag, DatePipe],
-    templateUrl: './requirement-current.component.html'
+    selector: 'app-requirement-expired',
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe],
+    templateUrl: './requirement-expired.component.html'
 })
-export class RequirementCurrentComponent implements OnInit {
+export class RequirementExpiredComponent implements OnInit {
     public data = input<string>();
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
+    protected readonly isAfter = isAfter;
 
     protected readonly Validators = Validators;
     protected readonly PrimeIcons = PrimeIcons;
@@ -35,7 +36,7 @@ export class RequirementCurrentComponent implements OnInit {
     protected form!: FormGroup;
 
     protected requirements: CatalogueInterface[] = [];
-    protected requirementItems: Map<any, any> = new Map();
+    protected requirementItems = signal<Map<any, any>>(new Map());
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     protected process = this.formStateService.process;
@@ -53,7 +54,9 @@ export class RequirementCurrentComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
-            photo: [null, [Validators.required]]
+            photo: [null, [Validators.required]],
+            certificationAux: [null, Validators.required],
+            certificationAuxWild: [null, Validators.required]
         });
 
         this.formStateService.registerForm('requirement', this.form);
@@ -75,6 +78,8 @@ export class RequirementCurrentComponent implements OnInit {
 
         if (this.rucField.invalid) errors.push('Registro Único de Contribuyentes (RUC)');
         if (this.photoField.invalid) errors.push('Fotografía emitida en los últimos 6 meses');
+        if (this.certificationAuxField.invalid) errors.push('Certificado del curso de primeros auxilios vigente');
+        if (this.certificationAuxWildField.invalid) errors.push('Certificado del curso de primeros auxilios en zonas agrestes vigente');
 
         return errors;
     }
@@ -115,11 +120,17 @@ export class RequirementCurrentComponent implements OnInit {
         };
 
         switch (requirement.code) {
-            case 'ruc':
+            case CatalogueGuideRequirementsCodeEnum.ruc:
                 this.rucField.patchValue(data);
                 break;
             case 'photo':
                 this.photoField.patchValue(data);
+                break;
+            case CatalogueGuideRequirementsCodeEnum.certification_aux:
+                this.certificationAuxField.patchValue(data);
+                break;
+            case CatalogueGuideRequirementsCodeEnum.certification_aux_wild:
+                this.certificationAuxWildField.patchValue(data);
                 break;
         }
 
@@ -128,7 +139,8 @@ export class RequirementCurrentComponent implements OnInit {
 
     async loadCatalogues() {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
-        this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
+        this.requirementItems.set(new Map(this.requirements.map((item) => [item.code, item])));
+
     }
 
     get rucField(): AbstractControl {
@@ -139,5 +151,13 @@ export class RequirementCurrentComponent implements OnInit {
         return this.form.controls['photo'];
     }
 
-    protected readonly isAfter = isAfter;
+    get certificationAuxField(): AbstractControl {
+        return this.form.controls['certificationAux'];
+    }
+
+    get certificationAuxWildField(): AbstractControl {
+        return this.form.controls['certificationAuxWild'];
+    }
+
+    protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
 }

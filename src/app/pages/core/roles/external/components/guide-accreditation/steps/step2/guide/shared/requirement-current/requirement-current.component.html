@@ -3,14 +3,29 @@
         <!-- title -->
         <div class="custom-form-title md:col-span-12">
             <h4>
-                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO DE {{ process()?.classification?.name }} POR PRIMERA
-                VEZ
+                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO CON CREDENCIAL VIGENTE
             </h4>
+
+            <p-divider />
         </div>
+
+        <!-- credentials -->
+        @for (item of formStateService.catastroSiete()?.credentials; track item.cedula) {
+            <div class="custom-form-field md:col-span-4">
+                <p-message [severity]=" isAfter(currentDate,item.fecha_caducidad_licencia )?'error':'info'">
+                    <p class="mb-2">Credencial: <b>{{ item.tipo_guia }}</b></p>
+                    <p>Fecha Emisión: <b>{{ item.fecha_emision_licencia | date }}</b></p>
+                    <p>Fecha Caducidad: <b>{{ item.fecha_caducidad_licencia | date }}</b></p>
+                </p-message>
+
+            </div>
+        }
 
         <!-- ruc -->
         @if (requirementItems.get('ruc')) {
             <div class="custom-form-field md:col-span-12">
+                <p-divider />
+
                 <label
                     appLabel
                     for="ruc"

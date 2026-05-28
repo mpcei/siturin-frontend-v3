@@ -13,6 +13,8 @@ export enum CatalogueActivitiesCodeEnum {
     agency_galapagos = 'agency_galapagos',
     ctc_continent = 'ctc_continent',
     ctc_galapagos = 'ctc_galapagos',
+    guide_continent = 'guide_continent',
+    guide_galapagos = 'guide_galapagos',
     event_continent = 'event_continent',
     event_galapagos = 'event_galapagos',
     food_drink_continent = 'food_drink_continent',
@@ -96,6 +98,7 @@ export enum CatalogueGuideClassificationsCodeEnum {
 }
 
 export enum CatalogueGuideRequirementsCodeEnum {
+    ruc = 'ruc',
     guide = 'title_turismo',
     related = 'title_afin',
     bachiller = 'title_bachiller',
