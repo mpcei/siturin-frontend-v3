@@ -4,9 +4,7 @@ import { PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
 import { RequirementCurrentComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-current/requirement-current.component';
-import {
-    RequirementExpiredComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-expired/requirement-expired.component';
+import { RequirementExpiredComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-expired/requirement-expired.component';
 
 @Component({
     selector: 'app-registration-guide-expired',
@@ -57,7 +55,7 @@ export class RegistrationGuideExpiredComponent {
         Object.values(this.formStateService.processGuides()).forEach((x: any) => {
             processGuides.push({ requirement: x.requirement, value: x.requirement.value });
 
-            formData.append(x.requirement.id, x.file);
+            if (x.file) formData.append(x.requirement.id, x.file);
         });
 
         const credentials = this.formStateService.catastroSiete()?.credentials?.map((item) => {

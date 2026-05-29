@@ -186,5 +186,72 @@
             </div>
         }
 
+        <!-- hasProtectedArea -->
+        @if (formStateService.degree().type === CatalogueGuideDegreesCodeEnum.guide) {
+        <div class="custom-form-field md:col-span-12">
+            <label appLabel for="hasProtectedArea"
+                   [required]="hasProtectedAreaField">
+                <div [innerHTML]="requirement()?.name"></div>
+            </label>
+
+            <p-select
+                id="hasProtectedArea"
+                formControlName="hasProtectedArea"
+                [options]="options"
+                optionValue="code"
+                optionLabel="name"
+                appendTo="body"
+                placeholder="Seleccione..." />
+
+            <small
+                appErrorMessage
+                [errors]="hasProtectedAreaField.errors"
+                [touched]="hasProtectedAreaField.touched"
+                [dirty]="hasProtectedAreaField.dirty"></small>
+        </div>
+        }
+
+        <!-- certificationUpdateCourse -->
+        @if (hasProtectedAreaField.value || formStateService.degree().type !== CatalogueGuideDegreesCodeEnum.guide) {
+            @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course)) {
+                <div class="custom-form-field md:col-span-12">
+                    <label
+                        appLabel
+                        for="paneGuide"
+                        [required]="certificationUpdateCourseField">
+                        <div
+                            [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course)?.name"></div>
+                    </label>
+
+                    <p-fileupload
+                        id="certificationUpdateCourse"
+                        name="certificationUpdateCourse"
+                        mode="basic"
+                        chooseLabel="Examinar"
+                        [chooseIcon]="PrimeIcons.SEARCH"
+                        uploadLabel="Subir archivo"
+                        accept="application/pdf"
+                        [maxFileSize]="10485760"
+                        [auto]="true"
+                        [customUpload]="true"
+                        (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course),$event)">
+                    </p-fileupload>
+
+                    @if (certificationUpdateCourseField.value) {
+                        <p-message severity="info">
+                            {{ certificationUpdateCourseField.value.file.name }}
+                        </p-message>
+                    }
+
+                    <small
+                        appErrorMessage
+                        [errors]="certificationUpdateCourseField.errors"
+                        [touched]="certificationUpdateCourseField.touched"
+                        [dirty]="certificationUpdateCourseField.dirty"></small>
+
+                    <p-divider />
+                </div>
+            }
+        }
     </form>
 </div>

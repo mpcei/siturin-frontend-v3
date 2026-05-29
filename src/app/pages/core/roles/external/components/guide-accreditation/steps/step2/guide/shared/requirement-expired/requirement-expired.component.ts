@@ -14,11 +14,12 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
-import { CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { Select } from 'primeng/select';
 
 @Component({
     selector: 'app-requirement-expired',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select],
     templateUrl: './requirement-expired.component.html'
 })
 export class RequirementExpiredComponent implements OnInit {
@@ -40,7 +41,13 @@ export class RequirementExpiredComponent implements OnInit {
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     protected process = this.formStateService.process;
+    requirement = signal<CatalogueInterface>({})
     currentDate = new Date();
+
+    protected options: any[] = [
+        { code: true, name: 'SI' },
+        { code: false, name: 'NO' }
+    ];
 
     constructor() {}
 
@@ -56,7 +63,9 @@ export class RequirementExpiredComponent implements OnInit {
             ruc: [null, [Validators.required]],
             photo: [null, [Validators.required]],
             certificationAux: [null, Validators.required],
-            certificationAuxWild: [null, Validators.required]
+            certificationAuxWild: [null, Validators.required],
+            certificationUpdateCourse: [null, Validators.required],
+            hasProtectedArea: [null]
         });
 
         this.formStateService.registerForm('requirement', this.form);
@@ -70,7 +79,16 @@ export class RequirementExpiredComponent implements OnInit {
             this.formStateService.setFormErrors('requirement', this.getFormErrors());
         });
 
+        this.hasProtectedAreaField.valueChanges.subscribe(value => {
+            this.responses.set(value.id!, { file: null, requirement: { ...this.requirement, value: 'file' } });
+        });
+
         this.formStateService.setFormErrors('requirement', this.getFormErrors());
+
+        if(this.formStateService.degree().type===CatalogueGuideDegreesCodeEnum.guide){
+            this.hasProtectedAreaField.setValidators(Validators.required);
+            this.hasProtectedAreaField.updateValueAndValidity();
+        }
     }
 
     getFormErrors(): string[] {
@@ -80,6 +98,7 @@ export class RequirementExpiredComponent implements OnInit {
         if (this.photoField.invalid) errors.push('Fotografía emitida en los últimos 6 meses');
         if (this.certificationAuxField.invalid) errors.push('Certificado del curso de primeros auxilios vigente');
         if (this.certificationAuxWildField.invalid) errors.push('Certificado del curso de primeros auxilios en zonas agrestes vigente');
+        if (this.certificationUpdateCourseField.invalid) errors.push('Certificado de aprobación de un curso de actualización de conocimientos.');
 
         return errors;
     }
@@ -132,6 +151,9 @@ export class RequirementExpiredComponent implements OnInit {
             case CatalogueGuideRequirementsCodeEnum.certification_aux_wild:
                 this.certificationAuxWildField.patchValue(data);
                 break;
+            case CatalogueGuideRequirementsCodeEnum.certification_update_course:
+                this.certificationUpdateCourseField.patchValue(data);
+                break;
         }
 
         this.responses.set(requirement.id!, data);
@@ -141,6 +163,7 @@ export class RequirementExpiredComponent implements OnInit {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
         this.requirementItems.set(new Map(this.requirements.map((item) => [item.code, item])));
 
+        this.requirement.set(this.requirements.find((x) => x.code === 'pane_guide')!); //review cambiar por enum
     }
 
     get rucField(): AbstractControl {
@@ -159,5 +182,14 @@ export class RequirementExpiredComponent implements OnInit {
         return this.form.controls['certificationAuxWild'];
     }
 
+    get certificationUpdateCourseField(): AbstractControl {
+        return this.form.controls['certificationUpdateCourse'];
+    }
+
+    get hasProtectedAreaField(): AbstractControl {
+        return this.form.controls['hasProtectedArea'];
+    }
+
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
+    protected readonly CatalogueGuideDegreesCodeEnum = CatalogueGuideDegreesCodeEnum;
 }

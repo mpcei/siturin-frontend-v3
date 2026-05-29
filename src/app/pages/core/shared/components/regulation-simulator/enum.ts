@@ -111,7 +111,8 @@ export enum CatalogueGuideRequirementsCodeEnum {
     certification_guide_local = 'certification_guide_local',
     certification_job_skill = 'certification_job_skill',
     certification_language = 'certification_language',
-    certification_update_course = 'certification_update_course'
+    certification_update_course = 'certification_update_course',
+    pane_guide = 'pane_guide'
 }
 
 export enum CatalogueGuideDegreesCodeEnum {
