@@ -64,7 +64,9 @@ export class RegistrationGuideExpiredComponent {
                 startedAt: item.fecha_emision_licencia,
                 endedAt: item.fecha_caducidad_licencia,
                 protectedAreas: item.acceso_area_protegida,
-                modalities: item.modalidad
+                modalities: item.modalidad,
+                origin: item.origin,
+                code: item.numero_credencial
             };
         });
 
@@ -74,6 +76,7 @@ export class RegistrationGuideExpiredComponent {
             user: this.formStateService.user(),
             process: this.formStateService.process(),
             establishment: this.formStateService.establishment(),
+            guideOrigin: this.formStateService.guideOrigin(),
             processGuides,
             credentials
         };

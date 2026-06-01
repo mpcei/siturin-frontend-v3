@@ -65,7 +65,7 @@ export class RegistrationGuideCurrentComponent {
                 protectedAreas: item.acceso_area_protegida,
                 modalities: item.modalidad,
                 origin: item.origin,
-                code: item.code,
+                code: item.numero_credencial
             };
         });
 
