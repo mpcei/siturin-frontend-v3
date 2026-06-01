@@ -10,7 +10,7 @@
         </div>
 
         <!-- credentials -->
-        @for (item of formStateService.catastroSiete()?.credentials; track item.cedula) {
+        @for (item of formStateService.catastroSiete()?.credentials; track item.id) {
             <div class="custom-form-field md:col-span-4">
                 <p-message [severity]=" isAfter(currentDate,item.fecha_caducidad_licencia )?'error':'info'">
                     <p class="mb-2">Credencial: <b>{{ item.tipo_guia }}</b></p>
@@ -22,7 +22,7 @@
         }
 
         <!-- ruc -->
-        @if (requirementItems.get('ruc')) {
+        @if (requirementItems().get('ruc')) {
             <div class="custom-form-field md:col-span-12">
                 <p-divider />
 
@@ -30,7 +30,7 @@
                     appLabel
                     for="ruc"
                     [required]="rucField">
-                    <div [innerHTML]="requirementItems.get('ruc')?.name"></div>
+                    <div [innerHTML]="requirementItems().get('ruc')?.name"></div>
                 </label>
 
                 <p-fileupload
@@ -44,7 +44,7 @@
                     [maxFileSize]="10485760"
                     [auto]="true"
                     [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems.get('ruc'),$event)">
+                    (uploadHandler)="onFileSelect(requirementItems().get('ruc'),$event)">
                 </p-fileupload>
 
                 @if (rucField.value) {
@@ -64,13 +64,13 @@
         }
 
         <!-- photo -->
-        @if (requirementItems.get('photo')) {
+        @if (requirementItems().get('photo')) {
             <div class="custom-form-field md:col-span-12">
                 <label
                     appLabel
                     for="photo"
                     [required]="photoField">
-                    <div [innerHTML]="requirementItems.get('photo')?.name"></div>
+                    <div [innerHTML]="requirementItems().get('photo')?.name"></div>
                 </label>
 
                 <p-fileupload
@@ -84,7 +84,7 @@
                     [maxFileSize]="10485760"
                     [auto]="true"
                     [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems.get('photo'),$event)">
+                    (uploadHandler)="onFileSelect(requirementItems().get('photo'),$event)">
                 </p-fileupload>
 
                 @if (photoField.value) {

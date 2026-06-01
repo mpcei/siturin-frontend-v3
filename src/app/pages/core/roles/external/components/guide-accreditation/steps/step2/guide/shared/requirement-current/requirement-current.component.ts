@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
@@ -35,7 +35,7 @@ export class RequirementCurrentComponent implements OnInit {
     protected form!: FormGroup;
 
     protected requirements: CatalogueInterface[] = [];
-    protected requirementItems: Map<any, any> = new Map();
+    protected requirementItems = signal<Map<any, any>>(new Map());
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     protected process = this.formStateService.process;
@@ -128,7 +128,7 @@ export class RequirementCurrentComponent implements OnInit {
 
     async loadCatalogues() {
         this.requirements = await this.catalogueService.findByType(CatalogueTypeEnum.requirement_item);
-        this.requirementItems = new Map(this.requirements.map((item) => [item.code, item]));
+        this.requirementItems.set(new Map(this.requirements.map((item) => [item.code, item])));
     }
 
     get rucField(): AbstractControl {

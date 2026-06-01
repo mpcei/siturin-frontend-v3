@@ -69,10 +69,13 @@ export class RegistrationGuideCurrentComponent {
 
         this.formStateService.updateSection('process', { endedAt: new Date() });
 
+        const { category, classification, ...process } = this.formStateService.process()!;
+
         const payload = {
             user: this.formStateService.user(),
-            process: this.formStateService.process(),
+            process: process,
             establishment: this.formStateService.establishment(),
+            guideOrigin: this.formStateService.guideOrigin,
             processGuides,
             credentials
         };

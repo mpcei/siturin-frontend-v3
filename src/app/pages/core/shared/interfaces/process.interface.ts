@@ -1,5 +1,5 @@
 import { CatalogueInterface } from '@utils/interfaces';
-import { ActivityInterface, ClassificationInterface } from '@modules/core/shared/interfaces';
+import { ActivityInterface, CategoryInterface, ClassificationInterface } from '@modules/core/shared/interfaces';
 import { CadastreInterface } from './cadastre.interface';
 
 export interface ProcessInterface {
@@ -11,6 +11,7 @@ export interface ProcessInterface {
     activity?: ActivityInterface;
     classifications?: ClassificationInterface[];
     classification?: ClassificationInterface;
+    category?:CategoryInterface;
     cadastre?: CadastreInterface;
     type?: CatalogueInterface;
     startedAt?: Date;
