@@ -57,17 +57,6 @@ export class RegistrationGuideCurrentComponent {
             formData.append(x.requirement.id, x.file);
         });
 
-        const credentials = this.formStateService.catastroSiete()?.credentials?.map((item) => {
-            return {
-                classificationCode: item.code_classification,
-                startedAt: item.fecha_emision_licencia,
-                endedAt: item.fecha_caducidad_licencia,
-                protectedAreas: item.acceso_area_protegida,
-                modalities: item.modalidad,
-                origin: item.origin,
-                code: item.numero_credencial
-            };
-        });
 
         this.formStateService.updateSection('process', { endedAt: new Date() });
 
@@ -78,8 +67,8 @@ export class RegistrationGuideCurrentComponent {
             process: process,
             establishment: this.formStateService.establishment(),
             guideOrigin: this.formStateService.guideOrigin(),
-            processGuides,
-            credentials
+            credentials: this.formStateService.catastroSiete()?.credentials,
+            processGuides
         };
 
         console.log(payload);

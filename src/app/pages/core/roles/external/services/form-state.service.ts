@@ -2,9 +2,20 @@ import { Injectable, signal, effect, computed } from '@angular/core';
 import { EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface, RucInterface } from '@/pages/core/shared/interfaces';
 import { AbstractControl } from '@angular/forms';
 
+interface Credential {
+    classificationCode: string;
+    startedAt: Date;
+    endedAt: Date;
+    protectedAreas: any[];
+    modalities: any[];
+    origin: string;
+    code: string;
+    type: string;
+}
+
 interface CatastroSiete {
     type?: string;
-    credentials?: any[];
+    credentials?: Credential[];
 }
 
 export interface AppFormState {

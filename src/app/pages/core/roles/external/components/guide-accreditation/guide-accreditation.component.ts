@@ -40,7 +40,20 @@ export default class GuideAccreditationComponent implements OnInit {
                     type = response.some((item) => isAfter(new Date(item.fecha_caducidad_licencia), new Date())) ? 'current' : 'expired';
                 }
 
-                this.formStateService.updateSection('catastroSiete', { credentials: response, type });
+                const credentials = response.map((item) => {
+                    return {
+                        classificationCode: item.code_classification,
+                        startedAt: item.fecha_emision_licencia,
+                        endedAt: item.fecha_caducidad_licencia,
+                        protectedAreas: item.acceso_area_protegida,
+                        modalities: item.modalidad,
+                        origin: item.origin,
+                        code: item.numero_credencial,
+                        type: item.tipo_guia,
+                    };
+                });
+
+                this.formStateService.updateSection('catastroSiete', { credentials, type });
 
                 this.formStateService.updateSection('guideOrigin', { province: response[0].provincia, canton: response[0].canton, languages: response[0].idiomas});
             }

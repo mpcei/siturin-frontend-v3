@@ -58,23 +58,25 @@ export class RegistrationGuideExpiredComponent {
             if (x.file) formData.append(x.requirement.id, x.file);
         });
 
+        this.formStateService.updateSection('process', { endedAt: new Date() });
+
+        const { category, classification, ...process } = this.formStateService.process()!;
+
         const credentials = this.formStateService.catastroSiete()?.credentials?.map((item) => {
             return {
-                classificationCode: item.code_classification,
-                startedAt: item.fecha_emision_licencia,
-                endedAt: item.fecha_caducidad_licencia,
-                protectedAreas: item.acceso_area_protegida,
-                modalities: item.modalidad,
+                classificationCode: item.classificationCode,
+                startedAt: item.startedAt,
+                endedAt: item.endedAt,
+                protectedAreas: item.protectedAreas,
+                modalities: item.modalities,
                 origin: item.origin,
-                code: item.numero_credencial
+                code: item.code
             };
         });
 
-        this.formStateService.updateSection('process', { endedAt: new Date() });
-
         const payload = {
             user: this.formStateService.user(),
-            process: this.formStateService.process(),
+            process: process,
             establishment: this.formStateService.establishment(),
             guideOrigin: this.formStateService.guideOrigin(),
             processGuides,
@@ -84,7 +86,7 @@ export class RegistrationGuideExpiredComponent {
         console.log(payload);
         formData.append('payload', JSON.stringify(payload));
 
-        this.guideHttpService.createCurrentRegistration(formData).subscribe({
+        this.guideHttpService.createExpiredRegistration(formData).subscribe({
             next: () => {}
         });
     }

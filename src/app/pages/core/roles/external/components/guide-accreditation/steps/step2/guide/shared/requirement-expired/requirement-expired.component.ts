@@ -14,7 +14,7 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
-import { CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
 
 @Component({
@@ -41,7 +41,7 @@ export class RequirementExpiredComponent implements OnInit {
     protected responses: Map<string, any> = new Map<string, any>();
     protected payload: FormData = new FormData();
     protected process = this.formStateService.process;
-    requirement = signal<CatalogueInterface>({})
+    requirement = signal<CatalogueInterface>({});
     currentDate = new Date();
 
     protected options: any[] = [
@@ -79,15 +79,29 @@ export class RequirementExpiredComponent implements OnInit {
             this.formStateService.setFormErrors('requirement', this.getFormErrors());
         });
 
-        this.hasProtectedAreaField.valueChanges.subscribe(value => {
-            this.responses.set(value.id!, { file: null, requirement: { ...this.requirement, value: 'file' } });
+        this.hasProtectedAreaField.valueChanges.subscribe((value) => {
+            if(value){
+                this.certificationUpdateCourseField.setValidators(Validators.required);
+            }else{
+                this.certificationUpdateCourseField.setValidators(null);
+            }
+
+            this.responses.set(value?.id, { file: null, requirement: { ...this.requirement(), value: value } });
+            this.certificationUpdateCourseField.updateValueAndValidity();
         });
 
         this.formStateService.setFormErrors('requirement', this.getFormErrors());
 
-        if(this.formStateService.degree().type===CatalogueGuideDegreesCodeEnum.guide){
-            this.hasProtectedAreaField.setValidators(Validators.required);
-            this.hasProtectedAreaField.updateValueAndValidity();
+        if (this.formStateService.degree().type === CatalogueGuideDegreesCodeEnum.guide) {
+            console.log('1')
+            const isPane = this.formStateService.catastroSiete()?.credentials?.some((item) => item.protectedAreas);
+            const isLocalGuide = this.formStateService.catastroSiete()?.credentials?.some((item) => item.classificationCode === CatalogueGuideClassificationsCodeEnum.guide_local);
+
+            if (!isLocalGuide || !isPane) {
+                console.log('2');
+                this.hasProtectedAreaField.setValidators(Validators.required);
+                this.hasProtectedAreaField.updateValueAndValidity();
+            }
         }
     }
 
@@ -152,6 +166,7 @@ export class RequirementExpiredComponent implements OnInit {
                 this.certificationAuxWildField.patchValue(data);
                 break;
             case CatalogueGuideRequirementsCodeEnum.certification_update_course:
+                console.log(data);
                 this.certificationUpdateCourseField.patchValue(data);
                 break;
         }

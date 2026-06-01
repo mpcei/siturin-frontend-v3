@@ -12,12 +12,12 @@
         <!-- credentials -->
         @for (item of formStateService.catastroSiete()?.credentials; track item.id) {
             <div class="custom-form-field md:col-span-4">
-                <p-message [severity]=" isAfter(currentDate,item.fecha_caducidad_licencia )?'error':'info'">
-                    <p class="mb-2">Credencial: <b>{{ item.tipo_guia }}</b></p>
-                    <p>Fecha Emisión: <b>{{ item.fecha_emision_licencia | date }}</b></p>
-                    <p>Fecha Caducidad: <b>{{ item.fecha_caducidad_licencia | date }}</b></p>
+                <p-message [severity]=" isAfter(currentDate,item.endedAt )?'error':'info'">
+                    <p class="mb-2">Credencial: <b>{{ item.type }}</b></p>
+                    <p>Fecha Emisión: <b>{{ item.startedAt | date }}</b></p>
+                    <p>Fecha Caducidad: <b>{{ item.endedAt | date }}</b></p>
+                    <p>Estado: <b>{{ isAfter(currentDate, item.endedAt) ? 'Caducada' : 'Vigente' }}</b></p>
                 </p-message>
-
             </div>
         }
 
