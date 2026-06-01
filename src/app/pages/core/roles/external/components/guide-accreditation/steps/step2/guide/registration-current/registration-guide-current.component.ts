@@ -77,7 +77,7 @@ export class RegistrationGuideCurrentComponent {
             user: this.formStateService.user(),
             process: process,
             establishment: this.formStateService.establishment(),
-            guideOrigin: this.formStateService.guideOrigin,
+            guideOrigin: this.formStateService.guideOrigin(),
             processGuides,
             credentials
         };
