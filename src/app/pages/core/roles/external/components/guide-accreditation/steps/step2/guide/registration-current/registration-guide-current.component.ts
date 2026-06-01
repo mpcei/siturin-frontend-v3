@@ -63,7 +63,9 @@ export class RegistrationGuideCurrentComponent {
                 startedAt: item.fecha_emision_licencia,
                 endedAt: item.fecha_caducidad_licencia,
                 protectedAreas: item.acceso_area_protegida,
-                modalities: item.modalidad
+                modalities: item.modalidad,
+                origin: item.origin,
+                code: item.code,
             };
         });
 
