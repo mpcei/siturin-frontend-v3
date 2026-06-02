@@ -10,7 +10,7 @@
         </div>
 
         <!-- credentials -->
-        @for (item of formStateService.catastroSiete()?.credentials; track item.id) {
+        @for (item of formStateService.catastroSiete()?.credentials; track item.code) {
             <div class="custom-form-field md:col-span-4">
                 <p-message [severity]=" isAfter(currentDate,item.endedAt )?'error':'info'">
                     <p class="mb-2">Credencial: <b>{{ item.type }}</b></p>
