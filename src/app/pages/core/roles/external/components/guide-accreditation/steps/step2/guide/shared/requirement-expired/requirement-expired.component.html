@@ -106,7 +106,7 @@
         }
 
         <!-- certificationAux -->
-        @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux)) {
+        @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux) && certificationAuxField.hasValidator(Validators.required)) {
             <div class="custom-form-field md:col-span-12">
                 <label
                     appLabel

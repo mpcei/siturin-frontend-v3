@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
+import { Component, inject, input, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
@@ -62,7 +62,7 @@ export class RequirementExpiredComponent implements OnInit {
         this.form = this.formBuilder.group({
             ruc: [null, [Validators.required]],
             photo: [null, [Validators.required]],
-            certificationAux: [null, Validators.required],
+            certificationAux: [null],
             certificationAuxWild: [null, Validators.required],
             certificationUpdateCourse: [null, Validators.required],
             hasProtectedArea: [null]
@@ -80,9 +80,9 @@ export class RequirementExpiredComponent implements OnInit {
         });
 
         this.hasProtectedAreaField.valueChanges.subscribe((value) => {
-            if(value){
+            if (value) {
                 this.certificationUpdateCourseField.setValidators(Validators.required);
-            }else{
+            } else {
                 this.certificationUpdateCourseField.setValidators(null);
             }
 
@@ -93,15 +93,20 @@ export class RequirementExpiredComponent implements OnInit {
         this.formStateService.setFormErrors('requirement', this.getFormErrors());
 
         if (this.formStateService.degree().type === CatalogueGuideDegreesCodeEnum.guide) {
-            console.log('1')
             const isPane = this.formStateService.catastroSiete()?.credentials?.some((item) => item.protectedAreas);
             const isLocalGuide = this.formStateService.catastroSiete()?.credentials?.some((item) => item.classificationCode === CatalogueGuideClassificationsCodeEnum.guide_local);
 
             if (!isLocalGuide || !isPane) {
-                console.log('2');
                 this.hasProtectedAreaField.setValidators(Validators.required);
                 this.hasProtectedAreaField.updateValueAndValidity();
             }
+        }
+
+        const isNationalGuide = this.formStateService.catastroSiete()?.credentials?.some((item) => item.classificationCode === CatalogueGuideClassificationsCodeEnum.guide_national);
+
+        if(isNationalGuide){
+            this.certificationAuxField.setValidators(Validators.required);
+            this.certificationAuxField.updateValueAndValidity();
         }
     }
 

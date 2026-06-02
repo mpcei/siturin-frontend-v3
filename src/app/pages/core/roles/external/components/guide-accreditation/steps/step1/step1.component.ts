@@ -35,7 +35,7 @@ export class Step1Component implements OnInit {
     constructor() {}
 
     ngOnInit() {
-        this.findDegreesByEstablishmentId();
+        this.createDegreesByEstablishmentId();
     }
 
     saveForm(data: any, objectName?: string) {
