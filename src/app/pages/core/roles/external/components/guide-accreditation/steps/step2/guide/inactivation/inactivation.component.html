@@ -1,1 +1,30 @@
-<p>inactivation works!</p>
+<form class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-12">
+            <label
+                appLabel
+                for="inactivationCauses"
+                [required]="inactivationCauses"
+                label="Causas de Inactivación">
+            </label>
+
+            <p-multi-select
+                id="causes"
+                [options]="causes"
+                [formControl]="inactivationCauses"
+                appendTo="body"
+                optionLabel="name"
+                placeholder="Seleccione..." />
+
+            <small
+                appErrorMessage
+                [errors]="inactivationCauses.errors"
+                [touched]="inactivationCauses.touched"
+                [dirty]="inactivationCauses.dirty"></small>
+        </div>
+
+        <div class="custom-form-field md:col-span-12">
+            <p-button label="Inactivar" (onClick)="createInactivation()" />
+        </div>
+    </div>
+</form>

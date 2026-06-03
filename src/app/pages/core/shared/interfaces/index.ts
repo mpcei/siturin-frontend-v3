@@ -11,3 +11,5 @@ export * from './regulation-response.interface';
 export * from './adventure-tourism-modality.interface';
 export * from './cadastre.interface';
 export * from './cadastre-state.interface';
+export * from './credential.interface';
+export * from './inactivation-cause.interface';

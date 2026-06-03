@@ -111,4 +111,24 @@ export class EstablishmentHttpService {
             })
         );
     }
+
+    findCadastreByEstablishment(id: string) {
+        const url = `${this._apiUrl}/${id}/cadastres`;
+
+        return this._httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                const data = response.data;
+                return data;
+
+                // const startedAt = data?.startedAt ? new Date(data.startedAt) : null;
+                // const endedAt = data?.endedAt ? new Date(data.endedAt) : null;
+
+                // return {
+                //     ...data,
+                //     startedAt,
+                //     endedAt
+                // };
+            })
+        );
+    }
 }

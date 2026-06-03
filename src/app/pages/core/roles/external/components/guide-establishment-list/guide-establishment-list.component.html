@@ -15,108 +15,206 @@
     </small>
 </p-message>
 
-<div class="custom-form-card">
-    <div class="custom-form-grid md:grid-cols-12">
-        <div class=" custom-form-field md:col-span-12">
-            <p-table
-                [value]="establishments()"
-                stripedRows
-                [tableStyle]="{ 'min-width': '75rem' }">
-                <ng-template #header>
-                    <tr>
-                        <th>Opciones</th>
-                        <th style="width:3rem">Nro.</th>
-                        <th>Nombre Comercial</th>
-                        <th>Estado Establecimiento</th>
-                        <th>Ubicación</th>
-                        <th>Actividad</th>
-                        <th>Número de Registro</th>
-                        <th>Estado Catastro</th>
-                    </tr>
-                </ng-template>
+@if (establishments().length > 0) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class=" custom-form-field md:col-span-12">
+                <p-table
+                    [value]="establishments()"
+                    stripedRows
+                    [tableStyle]="{ 'min-width': '75rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th>Opciones</th>
+                            <th style="width:3rem">Nro.</th>
+                            <th>Nombre Comercial</th>
+                            <th>Estado Establecimiento</th>
+                            <th>Ubicación</th>
+                            <th>Actividad</th>
+                            <th>Número de Registro</th>
+                            <th>Estado Catastro</th>
+                        </tr>
+                    </ng-template>
 
-                <ng-template
-                    #body
-                    let-item
-                    let-rowIndex="rowIndex">
-                    <tr>
-                        <td class="justify-center">
-                            @if (item.process) {
-                                <p-button
-                                    pTooltip="Gestionar"
-                                    [icon]="FontAwesome.ELLIPSIS_VERTICAL_SOLID"
-                                    (click)="onSelect({item,index:rowIndex})" />
-                            } @else {
-                                <p-button
-                                    pTooltip="Crear Trámite"
-                                    severity="success"
-                                    [raised]="true"
-                                    [icon]="FontAwesome.PLUS_SOLID"
-                                    (click)="onSelect({item,index:rowIndex})" />
-                            }
-                        </td>
-                        <td>
-                            {{ item.number | establishmentNumber }}
-                        </td>
-                        <td>
-                            @if (item.tradeName) {
-                                <p>
-                                    {{ item.tradeName }}
-                                </p>
-                            }
+                    <ng-template
+                        #body
+                        let-item
+                        let-rowIndex="rowIndex">
+                        <tr>
+                            <td class="justify-center">
+                                @if (item.process) {
+                                    <p-button
+                                        pTooltip="Gestionar"
+                                        [icon]="FontAwesome.ELLIPSIS_VERTICAL_SOLID"
+                                        (click)="onSelect({item,index:rowIndex})" />
+                                } @else {
+                                    <p-button
+                                        pTooltip="Crear Trámite"
+                                        severity="success"
+                                        [raised]="true"
+                                        [icon]="FontAwesome.PLUS_SOLID"
+                                        (click)="onSelect({item,index:rowIndex})" />
+                                }
+                            </td>
+                            <td>
+                                {{ item.number | establishmentNumber }}
+                            </td>
+                            <td>
+                                @if (item.tradeName) {
+                                    <p>
+                                        {{ item.tradeName }}
+                                    </p>
+                                }
 
-                            @if (!item?.tradeName) {
-                                <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
-                            }
-                        </td>
-                        <td>
-                            @if (item?.state?.code === CatalogueEstablishmentsStateEnum.open) {
-                                <p-tag severity="info" value="ABIERTO SRI" />
-                            } @else {
-                                <p-tag severity="danger" value="CERRADO SRI" />
-                            }
-                        </td>
-                        <td>
-                            @if (item.process) {
-                                {{ item.province.name }}
-                                {{ item.canton.name }}
-                                {{ item.parish.name }}
-                                {{ item.mainStreet }},
-                                {{ item.numberStreet }},
-                                {{ item.secondaryStreet }}
-                            }
-                        </td>
-                        <td>
-                            @if (item.process) {
-                                {{ item.process.activity.name }}
-                            }
-                        </td>
-                        <td>
-                            @if (item.process) {
-                                {{ item.process.cadastre?.registerNumber }}
-                            } @else {
-                                Sin Registro
-                            }
-                        </td>
-                        <td>
-                            @if (item.process) {
-                                {{ item.process.cadastre?.cadastreState?.state?.name }}
-                            }
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+                                @if (!item?.tradeName) {
+                                    <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
+                                }
+                            </td>
+                            <td>
+                                @if (item?.state?.code === CatalogueEstablishmentsStateEnum.open) {
+                                    <p-tag severity="info" value="ABIERTO SRI" />
+                                } @else {
+                                    <p-tag severity="danger" value="CERRADO SRI" />
+                                }
+                            </td>
+                            <td>
+                                @if (item.process) {
+                                    {{ item.province.name }}
+                                    {{ item.canton.name }}
+                                    {{ item.parish.name }}
+                                    {{ item.mainStreet }},
+                                    {{ item.numberStreet }},
+                                    {{ item.secondaryStreet }}
+                                }
+                            </td>
+                            <td>
+                                @if (item.process) {
+                                    {{ item.process.activity.name }}
+                                }
+                            </td>
+                            <td>
+                                @if (item.process) {
+                                    {{ item.process.cadastre?.registerNumber }}
+                                } @else {
+                                    Sin Registro
+                                }
+                            </td>
+                            <td>
+                                @if (item.process) {
+                                    {{ item.process.cadastre?.cadastreState?.state?.name }}
+                                }
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        @if (pagination) {
+            <p-paginator
+                (onPageChange)="onPagination($event)"
+                [rows]="pagination.limit"
+                [totalRecords]="pagination.totalItems" />
+        }
+    </div>
+}
+
+@if (establishments().length === 0) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class=" custom-form-field md:col-span-6">
+                <p-card>
+                    <h4>Establecimiento</h4>
+                    <p><b>Código de establecimiento SRI:</b> {{ establishment().number | establishmentNumber }}</p>
+                    <p><b>Razón Social:</b> {{ establishment().ruc?.legalName }}</p>
+                    <p><b>Actividad Turística:</b> {{ establishment().process?.activity?.name }}</p>
+
+                    <p><b>Número de registro:</b> {{ establishment().process?.cadastre?.registerNumber }}</p>
+
+                    <p><b>Estado Registro:</b> {{ establishment().process?.cadastre?.state?.name }}</p>
+
+                    @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
+                        <p-button
+                            pTooltip="Actualización Datos Generales"
+                            [icon]="FontAwesome.ADDRESS_CARD_REGULAR"
+                            [raised]="true" />
+
+                        <p-button
+                            pTooltip="Nueva clasificación"
+                            class="ml-6"
+                            severity="success"
+                            [icon]="FontAwesome.PLUS_SOLID"
+                            [raised]="true" />
+
+                        <p-button
+                            pTooltip="Inactivación"
+                            class="ml-6"
+                            severity="danger"
+                            [icon]="FontAwesome.BAN_SOLID"
+                            [raised]="true"
+                            (onClick)="openInactivationModal(establishment())"
+                        />
+                    }
+
+                    @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.inactive) {
+                        <p-button
+                            label="Reingreso"
+                            [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
+                            styleClass="w-full" [raised]="true" />
+                    }
+
+                </p-card>
+            </div>
+
+            <div class=" custom-form-field md:col-span-6">
+                <p-card>
+                    <h4>Ubicación</h4>
+
+                    <p><b>Provincia:</b> {{ establishment().province?.name }}</p>
+                    <p><b>Cantón:</b> {{ establishment().canton?.name }}</p>
+                    <p><b>Parroquia:</b> {{ establishment().parish?.name }}</p>
+                    <p><b>Calle principal:</b> {{ establishment().mainStreet }}</p>
+                    <p><b>Numeración:</b> {{ establishment().numberStreet }}</p>
+                    <p><b>Calle secundaria:</b> {{ establishment().secondaryStreet }}</p>
+                </p-card>
+            </div>
+
+            <div class="custom-form-field md:col-span-12">
+                <div class="custom-form-grid md:grid-cols-12">
+
+                    @for (credential of establishment().credentials; track credential.id) {
+                        <div class=" custom-form-field md:col-span-4">
+                            <p-message [severity]="credential?.stateCode==='expired'?'error':'success'">
+                                <h4>Estado: {{ credential?.stateName }}</h4>
+
+                                <p><b>Código de Clasificación:</b> {{ credential?.code }}</p>
+                                <p><b>Clasificación:</b> {{ credential.classification?.name }}</p>
+                                <p><b>Ámbito de territorial:</b> Continente</p>
+                                <p><b>Fecha Emisión:</b> {{ credential?.startedAt |date }}</p>
+                                <p><b>Fecha Caducidad:</b> {{ credential?.endedAt |date }}</p>
+
+                                @if (credential?.stateCode === 'expired' && establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
+                                    <p-button
+                                        label="Renovación"
+                                        [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
+                                        styleClass="w-full" [raised]="true" />
+                                }
+
+                                @if (credential?.stateCode === 'currents') {
+                                    <p-button
+                                        label="Renovación"
+                                        [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
+                                        styleClass="w-full" [raised]="true" />
+                                }
+                            </p-message>
+                        </div>
+                    }
+
+                </div>
+            </div>
         </div>
     </div>
-
-    @if (pagination) {
-        <p-paginator
-            (onPageChange)="onPagination($event)"
-            [rows]="pagination.limit"
-            [totalRecords]="pagination.totalItems" />
-    }
-</div>
-
+}
 
 @if (isButtonActionsEnabled) {
     <app-button-action

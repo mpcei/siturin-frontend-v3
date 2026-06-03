@@ -1,21 +1,21 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Message } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
-import { EstablishmentInterface } from '@modules/core/shared/interfaces';
+import { EstablishmentInterface, ProcessInterface } from '@modules/core/shared/interfaces';
 import { EstablishmentHttpService, FormStateService, GuideHttpService, RucHttpService } from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { Paginator, PaginatorState } from 'primeng/paginator';
-import { CatalogueInterface, PaginationInterface } from '@utils/interfaces';
+import { PaginationInterface } from '@utils/interfaces';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { inactivationButtonAction, registrationButtonAction } from '@utils/components/button-action/consts';
 import { Tooltip } from 'primeng/tooltip';
-import { CoreService, CoreSessionStorageService, CustomMessageService } from '@utils/services';
+import { CoreService, CustomMessageService } from '@utils/services';
 import { Tag } from 'primeng/tag';
 import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } from '@/pages/core/shared/enums';
 import { Router } from '@angular/router';
@@ -23,17 +23,22 @@ import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
-import { UserHttpService } from '@/pages/admin/user-http.service';
+import { Card } from 'primeng/card';
+import { DatePipe } from '@angular/common';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe],
-    templateUrl: './guide-establishment-list.component.html'
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe],
+    templateUrl: './guide-establishment-list.component.html',
+    providers: [DialogService]
 })
 export default class GuideEstablishmentListComponent implements OnInit {
     protected readonly PrimeIcons = PrimeIcons;
     protected readonly environment = environment;
     protected establishments = signal<EstablishmentInterface[]>([]);
+    protected establishment = signal<EstablishmentInterface>({});
     protected selectedItem!: EstablishmentInterface;
     protected pagination!: PaginationInterface;
     protected readonly FontAwesome = FontAwesome;
@@ -49,6 +54,8 @@ export default class GuideEstablishmentListComponent implements OnInit {
     private readonly catalogueService = inject(CatalogueService);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly formStateService = inject(FormStateService);
+    private dialogService = inject(DialogService);
+    ref?: DynamicDialogRef | null;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Establecimientos' }]);
@@ -61,8 +68,18 @@ export default class GuideEstablishmentListComponent implements OnInit {
     findEstablishmentsByRuc(page = 1, search = null) {
         this.rucHttpService.findEstablishmentsByRuc(page, search, this.authService.auth.identification!).subscribe({
             next: (response) => {
-                this.establishments.set(response.data);
-                this.pagination = response.pagination!;
+                const establishment = (response.data as EstablishmentInterface[]).find((item) => item.isCadastre);
+
+                if (establishment && establishment.isCadastre) {
+                    this.establishmentHttpService.findCadastreByEstablishment(establishment.id!).subscribe({
+                        next: (response) => {
+                            this.establishment.set(response);
+                        }
+                    });
+                } else {
+                    this.establishments.set(response.data);
+                    this.pagination = response.pagination!;
+                }
             }
         });
     }
@@ -79,7 +96,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         this.buttonActions = [];
         const isClosed = item.state?.code !== CatalogueEstablishmentsStateEnum.open;
         const hasCadastre = item.process?.cadastre;
-        const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivated;
+        const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivate;
 
         if (!hasCadastre) {
             if (isClosed) {
@@ -181,5 +198,20 @@ export default class GuideEstablishmentListComponent implements OnInit {
         });
     }
 
+    async openInactivationModal(establishment: EstablishmentInterface) {
+        const processType = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.inactivation, CatalogueTypeEnum.processes_type);
+
+        this.ref = this.dialogService.open(InactivationComponent, {
+            header: 'Inactivación',
+            width: '50%',
+            data: {
+                establishmentId: establishment.id,
+                cadastreId: establishment.process?.cadastre?.id,
+                processType
+            }
+        });
+    }
+
     protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
+    protected readonly CatalogueCadastreStatesStateEnum = CatalogueCadastreStatesStateEnum;
 }

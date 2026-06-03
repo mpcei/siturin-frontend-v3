@@ -82,7 +82,7 @@ export default class EstablishmentListComponent implements OnInit {
         const hasNoTradeName = !item.tradeName;
         const isClosed = item.state?.code === CatalogueEstablishmentsStateEnum.closed;
         const hasCadastre = item.process?.cadastre;
-        const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivated;
+        const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivate;
 
         if (!hasCadastre) {
             if (hasNoTradeName) {

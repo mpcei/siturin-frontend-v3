@@ -8,4 +8,5 @@ export interface RucInterface {
     number?: string;
     establishments?: EstablishmentInterface[];
     state?: CatalogueInterface;
+    type?: CatalogueInterface;
 }

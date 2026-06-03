@@ -45,7 +45,9 @@ export enum CatalogueStateEnum {
 }
 
 export enum CatalogueCadastreStatesStateEnum {
-    inactivated = 'inactivated',
+    inactivate = 'inactivate',
+    inactive = 'inactive',
+    ratified = 'ratified'
 }
 
 export enum CatalogueInspectionsStateEnum {
@@ -71,7 +73,7 @@ export enum CatalogueProcessesTypeEnum {
 
 export enum CatalogueEstablishmentsStateEnum {
     open = 'abierto',
-    closed = 'cerrado',
+    closed = 'cerrado'
 }
 
 export enum CatalogueProcessFoodDrinksEstablishmentTypeEnum {
@@ -121,4 +123,9 @@ export enum CatalogueProcessFoodDrinksClassificationEnum {
     plazas_comida = 'plazas_comida',
     establecimiento_movil = 'establecimiento_movil',
     servicio_catering = 'servicio_catering'
+}
+
+export enum CatalogueRucsTypeEnum {
+    natural = 'natural',
+    juridical = 'juridical'
 }

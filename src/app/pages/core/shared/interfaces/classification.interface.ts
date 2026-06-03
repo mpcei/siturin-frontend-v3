@@ -4,6 +4,7 @@ export interface ClassificationInterface {
     id?: string;
     activityId?: string;
     activity?: ActivityInterface;
+    acronym?: string;
     code?: string;
     name?: string;
     hasRegulation?: boolean;

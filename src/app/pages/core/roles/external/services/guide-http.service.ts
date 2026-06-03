@@ -3,7 +3,6 @@ import { environment } from '@env/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { HttpResponseInterface } from '@modules/auth/interfaces';
-import { CustomMessageService } from '@utils/services/custom-message.service';
 import { Observable } from 'rxjs';
 import { CatalogueActivitiesGeographicAreaEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -155,6 +154,16 @@ export class GuideHttpService {
 
         const params = new HttpParams().append('classificationId', classificationId).append('professionalTypeCode', professionalTitleCode);
         return this._httpClient.get<HttpResponseInterface>(url, { params }).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    createInactivation(payload: any): Observable<any> {
+        const url = `${this._apiUrl}/processes/inactivated`;
+
+        return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
             map((response) => {
                 return response.data;
             })
