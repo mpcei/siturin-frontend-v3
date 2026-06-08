@@ -1,0 +1,13 @@
+services:
+    frontend-qa:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: frontend-qa
+        restart: unless-stopped
+        networks:
+            - qa_network
+
+networks:
+    qa_network:
+        external: true
