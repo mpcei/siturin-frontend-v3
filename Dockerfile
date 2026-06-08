@@ -14,7 +14,7 @@ RUN npm run build:qa
 # Etapa de producción
 FROM nginx:alpine
 
-COPY --from=build /app/dist/browser /usr/share/nginx/html
+COPY --from=build /app/dist/app/browser /usr/share/nginx/html
 
 EXPOSE 80
 
