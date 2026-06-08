@@ -19,4 +19,5 @@ export interface AuthInterface {
     nationality: CatalogueInterface;
     sex: CatalogueInterface;
     birthdate: Date;
+    hasDisability: boolean;
 }

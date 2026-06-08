@@ -13,10 +13,12 @@ import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { DatePipe } from '@angular/common';
+import { InputNumber } from 'primeng/inputnumber';
+import { InputMask } from 'primeng/inputmask';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, DatePipe],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, DatePipe, InputNumber, InputMask],
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {
@@ -60,7 +62,7 @@ export class ContactPersonComponent implements OnInit {
         this.form = this.formBuilder.group({
             hasDisability: [null, [Validators.required]],
             bloodType: [null, [Validators.required]],
-            phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+            phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^09\d{8}$/)]],
             secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
             email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
             legalName: [{ value: null, disabled: true }],

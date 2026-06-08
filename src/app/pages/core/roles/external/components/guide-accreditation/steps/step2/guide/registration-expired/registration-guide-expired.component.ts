@@ -70,7 +70,8 @@ export class RegistrationGuideExpiredComponent {
                 protectedAreas: item.protectedAreas,
                 modalities: item.modalities,
                 origin: item.origin,
-                code: item.code
+                code: item.code,
+                geographicArea: item.geographicArea
             };
         });
 

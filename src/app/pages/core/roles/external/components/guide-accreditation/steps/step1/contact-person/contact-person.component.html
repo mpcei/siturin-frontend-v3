@@ -153,12 +153,12 @@
                 label="Número de teléfono principal">
             </label>
 
-            <input
-                pInputText
+            <p-inputmask
                 id="phone"
+                mask="9999999999"
                 formControlName="phone"
-                placeholder="Ej: 0961789810"
-                maxlength="10" />
+                placeholder="09XXXXXXXX"
+                [unmask]="true" />
 
             <small
                 appErrorMessage
@@ -176,12 +176,12 @@
                 label="Número de teléfono secundario">
             </label>
 
-            <input
-                pInputText
+            <p-inputmask
                 id="secondaryPhone"
+                mask="9999999999"
                 formControlName="secondaryPhone"
-                placeholder="Ej: 0961789810"
-                maxlength="10" />
+                placeholder="09XXXXXXXX"
+                [unmask]="true" />
 
             <small
                 appErrorMessage

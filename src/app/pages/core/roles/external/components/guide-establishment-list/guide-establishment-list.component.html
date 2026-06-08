@@ -119,7 +119,7 @@
     </div>
 }
 
-@if (establishments().length === 0) {
+@if (establishments().length === 0 && establishment()) {
     <div class="custom-form-card">
         <div class="custom-form-grid md:grid-cols-12">
             <div class=" custom-form-field md:col-span-6">
@@ -144,7 +144,8 @@
                             class="ml-6"
                             severity="success"
                             [icon]="FontAwesome.PLUS_SOLID"
-                            [raised]="true" />
+                            [raised]="true"
+                            (onClick)="createProcess(establishment(), CatalogueProcessesTypeEnum.new_classification_update)" />
 
                         <p-button
                             pTooltip="Inactivación"

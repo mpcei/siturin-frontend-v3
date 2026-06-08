@@ -1,6 +1,7 @@
 import { Injectable, signal, effect, computed } from '@angular/core';
 import { EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface, RucInterface } from '@/pages/core/shared/interfaces';
 import { AbstractControl } from '@angular/forms';
+import { CatalogueInterface } from '@utils/interfaces';
 
 interface Credential {
     classificationCode: string;
@@ -11,6 +12,7 @@ interface Credential {
     origin: string;
     code: string;
     type: string;
+    geographicArea: CatalogueInterface;
 }
 
 interface CatastroSiete {

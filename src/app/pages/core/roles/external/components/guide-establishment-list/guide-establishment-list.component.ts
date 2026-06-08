@@ -27,10 +27,11 @@ import { Card } from 'primeng/card';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Dialog, InactivationComponent],
     templateUrl: './guide-establishment-list.component.html',
     providers: [DialogService]
 })
@@ -110,7 +111,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         if (shouldShowInactivationButton) {
             this.buttonActions.push({
                 ...inactivationButtonAction,
-                command: () => this.createProcess(item)
+                command: () => this.createProcess(item, CatalogueProcessesTypeEnum.registration)
             });
             return;
         }
@@ -118,7 +119,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         if (!hasCadastre) {
             this.buttonActions.push({
                 ...registrationButtonAction,
-                command: () => this.createProcess(item)
+                command: () => this.createProcess(item, CatalogueProcessesTypeEnum.registration)
             });
             return;
         }
@@ -162,9 +163,9 @@ export default class GuideEstablishmentListComponent implements OnInit {
         if (paginatorState?.page || paginatorState.page === 0) this.findEstablishmentsByRuc(paginatorState.page + 1);
     }
 
-    private async createProcess(establishment: EstablishmentInterface) {
+    protected async createProcess(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         if (!this.authService.auth.sex || !this.authService.auth.nationality || !this.authService.auth.birthdate) {
-            this.updateGuideInformation(establishment);
+            this.updateGuideInformation(establishment, processType);
             return;
         }
 
@@ -173,7 +174,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         this.formStateService.updateSection('establishment', { id: establishment.id });
         this.formStateService.updateSection('establishmentTemp', establishment);
 
-        const type = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.registration, CatalogueTypeEnum.processes_type);
+        const type = await this.catalogueService.findByCode(processType, CatalogueTypeEnum.processes_type);
 
         if (!type) {
             this.customMessageService.showModalError({ summary: 'El tipo de trámite no existe', detail: 'Intente de nuevo' });
@@ -185,7 +186,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         await this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }
 
-    updateGuideInformation(establishment: EstablishmentInterface) {
+    updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {
                 let auth = this.authService.auth;
@@ -193,7 +194,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
                 auth.nationality = response.nationality;
                 auth.sex = response.sex;
                 this.authService.auth = auth;
-                await this.createProcess(establishment);
+                await this.createProcess(establishment, processType);
             }
         });
     }
@@ -214,4 +215,5 @@ export default class GuideEstablishmentListComponent implements OnInit {
 
     protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
     protected readonly CatalogueCadastreStatesStateEnum = CatalogueCadastreStatesStateEnum;
+    protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
 }

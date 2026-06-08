@@ -26,7 +26,7 @@
                 </p-message>
             </div>
         } @empty {
-            @if(!formStateService.catastroSiete()?.credentials?.length){
+            @if (!formStateService.catastroSiete()?.credentials?.length) {
                 <div class="custom-form-field md:col-span-12">
                     <p-message severity="error">
                         No existe títulos activos en el sistema SITURIN por favor haga click en "Consultar Títulos" para
@@ -39,10 +39,12 @@
 </div>
 
 @if (professionalTitles().length > 0 || formStateService.catastroSiete()?.credentials?.length) {
-    <app-contact-person (dataOut)="saveForm($event,'user')"
-                        [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
+    <app-contact-person
+        (dataOut)="saveForm($event,'user')"
+        [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
 
-    <app-address (dataOut)="saveForm($event,'establishment')" [dataIn]="formStateService.establishment()" />
+    <app-address (dataOut)="saveForm($event,'establishment')"
+                 [dataIn]="formStateService.establishmentTemp()" />
 
     <div class="custom-form-card">
         <div class="custom-form-grid md:grid-cols-12">

@@ -11,10 +11,11 @@ import { DpaInterface } from '@utils/interfaces';
 import { Textarea } from 'primeng/textarea';
 import { DpaService } from '@utils/services';
 import { MapComponent } from '@utils/components/map/map.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-address',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, Textarea, MapComponent],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, Textarea, MapComponent, JsonPipe],
     templateUrl: './address.component.html'
 })
 export class AddressComponent implements OnInit {
@@ -134,6 +135,8 @@ export class AddressComponent implements OnInit {
     }
 
     loadData() {
+        console.log(this.dataIn());
+
         if (this.dataIn()) {
             this.form.patchValue(this.dataIn());
         }

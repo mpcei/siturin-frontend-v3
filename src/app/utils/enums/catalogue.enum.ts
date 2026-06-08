@@ -48,7 +48,7 @@ export enum CatalogueTypeEnum {
     guide_vehicles_type = 'guide_vehicles_type',
     processes_driver_license = 'processes_driver_license',
     process_guides_professional_type = 'process_guides_professional_type',
-external_inactivation_causes = 'external_inactivation_causes'
+    external_inactivation_causes = 'external_inactivation_causes'
 }
 
 export enum CatalogueStateEnum {
@@ -74,7 +74,10 @@ export enum CatalogueProcessesTypeEnum {
     new_activity = 'new_activity',
     readmission = 'readmission',
     reclassification = 'reclassification',
-    recategorization = 'recategorization'
+    recategorization = 'recategorization',
+    new_classification_update = 'new_classification_update',
+    general_data_update = 'general_data_update',
+    renewal_classification_update = 'renewal_classification_update'
 }
 
 export enum CatalogueProcessFoodDrinksEstablishmentTypeEnum {
