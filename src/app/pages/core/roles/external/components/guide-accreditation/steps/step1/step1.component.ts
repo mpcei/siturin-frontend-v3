@@ -26,7 +26,6 @@ export class Step1Component implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected readonly formStateService = inject(FormStateService);
-    private readonly establishmentHttpService = inject(EstablishmentHttpService);
     private readonly guideHttpService = inject(GuideHttpService);
     private readonly authService = inject(AuthService);
 
