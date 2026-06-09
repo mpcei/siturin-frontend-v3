@@ -25,22 +25,24 @@
     </form>
 </div>
 
-<div class="custom-form-card">
-    <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-title md:col-span-12">
-            <h4>Idiomas Registrados:</h4>
-        </div>
+@if (formStateService.establishmentTemp()?.languages?.length) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="custom-form-title md:col-span-12">
+                <h4>Idiomas Registrados:</h4>
+            </div>
 
-        <div class="custom-form-title md:col-span-12">
-            @for(language of formStateService.establishmentTemp()?.languages; track language.id){
-                <p-tag [value]="language?.languageName" class="mr-2" severity="info"/>
-            }
+            <div class="custom-form-title md:col-span-12">
+                @for (language of formStateService.establishmentTemp()?.languages; track language.id) {
+                    <p-tag [value]="language?.languageName" class="mr-2" severity="info" />
+                }
+            </div>
         </div>
     </div>
-</div>
+}
 
-<div class="custom-form-card">
-    @if (hasLanguageField.value) {
+@if (hasLanguageField.value) {
+    <div class="custom-form-card">
         <div class="md:col-span-12">
             <app-list-basic
                 title="Idiomas"
@@ -51,9 +53,8 @@
                 (onSelect)="onSelect($event)"
             />
         </div>
-    }
-</div>
-
+    </div>
+}
 <p-dialog
     [(visible)]="isVisibleModal"
     [modal]="true"

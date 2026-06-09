@@ -23,6 +23,8 @@ import { ButtonActionComponent } from '@utils/components/button-action/button-ac
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import { Tag } from 'primeng/tag';
+import { FormStateService } from '@/pages/core/roles/external/services';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -50,7 +52,8 @@ export interface AdventureTourismModalityInterface {
         ToggleSwitchComponent,
         FileUpload,
         ButtonActionComponent,
-        VehicleComponent
+        VehicleComponent,
+        Tag
     ],
     templateUrl: './adventure-tourism-modality.component.html'
 })
@@ -64,6 +67,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     private readonly confirmationService = inject(ConfirmationService);
     private readonly catalogueService = inject(CatalogueService);
     protected readonly customMessageService = inject(CustomMessageService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
     protected modalityForm!: FormGroup;
@@ -156,6 +160,10 @@ export class AdventureTourismModalityComponent implements OnInit {
 
         this.availableModalities = await this.catalogueService.findByModel(this.classification().id!);
 
+        if (this.formStateService.establishmentTemp()?.adventureModalities) {
+            this.availableModalities = this.availableModalities.filter((c) => !this.formStateService.establishmentTemp()?.adventureModalities!.some((mc) => mc.modalityCode === c.code));
+        }
+
         this.requirements = requirements;
 
         if (this.classification().code === CatalogueGuideClassificationsCodeEnum.guide_local) {
@@ -192,8 +200,9 @@ export class AdventureTourismModalityComponent implements OnInit {
 
         if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Modalidades de Aventura debe agregar por lo menos una modalidad');
 
-        if (!this.hasAdventureTourismModalityField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
-
+        if (!this.formStateService.establishmentTemp()?.adventureModalities?.length) {
+            if (!this.hasAdventureTourismModalityField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
+        }
         if (errors.length > 0) {
             this.form.markAllAsTouched();
             return errors;

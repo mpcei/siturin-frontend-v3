@@ -25,6 +25,22 @@
     </form>
 </div>
 
+@if (formStateService.establishmentTemp()?.adventureModalities?.length) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="custom-form-title md:col-span-12">
+                <h4>Modalidades Registradas:</h4>
+            </div>
+
+            <div class="custom-form-title md:col-span-12">
+                @for (modality of formStateService.establishmentTemp()?.adventureModalities; track modality.id) {
+                    <p-tag [value]="modality?.modalityName" class="mr-2" severity="info" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
 @if (hasAdventureTourismModalityField.value) {
     <div class="custom-form-card">
         <app-list-basic

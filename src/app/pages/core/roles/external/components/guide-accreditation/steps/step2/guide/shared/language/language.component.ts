@@ -134,6 +134,11 @@ export class LanguageComponent implements OnInit {
             this.hasLanguageField.updateValueAndValidity();
         }
 
+        if (this.formStateService.establishmentTemp()?.languages?.length) {
+            this.hasLanguageField.clearValidators();
+            this.hasLanguageField.updateValueAndValidity();
+        }
+
         this.watchFormChanges();
     }
 
@@ -161,7 +166,11 @@ export class LanguageComponent implements OnInit {
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
         ]);
 
-        this.availableLanguages = languages.filter((c) => !this.formStateService.establishmentTemp()?.languages!.some((mc) => mc.languageCode === c.code));
+        this.availableLanguages = languages;
+
+        if (this.formStateService.establishmentTemp()?.languages) {
+            this.availableLanguages = languages.filter((c) => !this.formStateService.establishmentTemp()?.languages!.some((mc) => mc.languageCode === c.code));
+        }
 
         this.levels = levels;
         this.requirements = requirements;
@@ -197,7 +206,9 @@ export class LanguageComponent implements OnInit {
 
         if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos un idioma');
 
-        if (!this.hasLanguageField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
+        if (!this.formStateService.establishmentTemp()?.languages?.length) {
+            if (!this.hasLanguageField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
+        }
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();

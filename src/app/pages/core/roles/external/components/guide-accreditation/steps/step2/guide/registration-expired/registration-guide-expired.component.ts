@@ -57,7 +57,7 @@ export class RegistrationGuideExpiredComponent {
     saveProcess() {
         this.confirmationService.confirm({
             message: `
-            ¿Está seguro de gestionar el trámite: [tipo de trámite] ante el Ministerio de Producción, Comercio Exterior
+            ¿Está seguro de gestionar el trámite: ${this.formStateService.process()?.type?.name} ante el Ministerio de Producción, Comercio Exterior
             e Inversiones? Recuerde que, una vez enviada la solicitud, esta no podrá ser modificada y estará sujeta a
             verificación`,
             header: 'GUARDAR Y FINALIZAR',
