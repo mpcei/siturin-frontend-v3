@@ -192,7 +192,7 @@ export class RegistrationGuideComponent {
 
                 this.guideHttpService.createRegistration(formData).subscribe({
                     next: () => {
-                        this.router.navigate([MY_ROUTES.corePages.external.establishment.absolute]);
+                        this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
                     }
                 });
             },

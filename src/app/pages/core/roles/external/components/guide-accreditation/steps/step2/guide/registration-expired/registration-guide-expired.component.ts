@@ -113,7 +113,7 @@ export class RegistrationGuideExpiredComponent {
 
                 this.guideHttpService.createExpiredRegistration(formData).subscribe({
                     next: () => {
-                        this.router.navigate([MY_ROUTES.corePages.external.establishment.absolute]);
+                        this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
                     }
                 });
             },
