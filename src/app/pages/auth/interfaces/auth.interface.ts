@@ -17,7 +17,9 @@ export interface AuthInterface {
     securityQuestionAcceptedAt?: Date;
     passwordChanged: boolean;
     nationality: CatalogueInterface;
+    bloodType: CatalogueInterface;
     sex: CatalogueInterface;
     birthdate: Date;
     hasDisability: boolean;
+    phone: string;
 }

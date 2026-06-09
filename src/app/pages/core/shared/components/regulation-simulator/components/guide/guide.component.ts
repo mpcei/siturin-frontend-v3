@@ -5,9 +5,6 @@ import { GuideHttpService } from '@/pages/core/roles/external/services';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { Message } from 'primeng/message';
 import { CatalogueInterface } from '@utils/interfaces';
-import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { Divider } from 'primeng/divider';
-import { FormField } from '@angular/forms/signals';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { NgClass } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -24,7 +21,7 @@ interface RequirementConfiguration {
 
 @Component({
     selector: 'app-guide',
-    imports: [ToggleSwitchModule, ReactiveFormsModule, Message, ToggleSwitchComponent, Divider, FormField, NgClass, TableModule, Select],
+    imports: [ToggleSwitchModule, ReactiveFormsModule, Message, NgClass, TableModule, Select],
     templateUrl: './guide.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -4,7 +4,6 @@ import { InactivationCauseInterface } from '@/pages/core/shared/interfaces';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { LabelDirective } from '@utils/directives/label.directive';
-import { Select } from 'primeng/select';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -16,7 +15,7 @@ import { ConfirmationService } from 'primeng/api';
 
 @Component({
     selector: 'app-inactivation',
-    imports: [ErrorMessageDirective, LabelDirective, ReactiveFormsModule, Select, Button, MultiSelect],
+    imports: [ErrorMessageDirective, LabelDirective, ReactiveFormsModule, Button, MultiSelect],
     templateUrl: './inactivation.component.html'
 })
 export class InactivationComponent implements OnInit {

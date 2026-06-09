@@ -32,15 +32,14 @@ export class Step1Component implements OnInit {
     protected professionalTitles = signal<any[]>([]);
 
     constructor() {
-        // console.log(this.formStateService.user());
-        // console.log(this.authService.auth);
-        // if (!this.formStateService.user()) {
-        //
-        //     this.formStateService.updateSection('user', {
-        //         ...this.authService.auth
-        //     });
-        // }
-        // console.log(this.formStateService.user());
+        if (!this.formStateService.user()) {
+            const { birthdate, hasDisability, bloodType, phone } = this.authService.auth;
+            this.formStateService.updateSection('user', {
+                bloodType,
+                hasDisability
+            });
+        }
+        console.log(this.formStateService.user());
     }
 
     ngOnInit() {

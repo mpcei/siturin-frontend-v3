@@ -6,24 +6,12 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { PrimeIcons } from 'primeng/api';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import {
-    CatalogueActivitiesCodeEnum,
-    CatalogueActivitiesGeographicAreaEnum,
-    CatalogueProcessesTypeEnum,
-    CatalogueTypeEnum
-} from '@utils/enums';
-import {
-    ActivityInterface,
-    CategoryInterface,
-    ClassificationInterface,
-    EstablishmentInterface
-} from '@modules/core/shared/interfaces';
+import { CatalogueActivitiesCodeEnum, CatalogueActivitiesGeographicAreaEnum, CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
+import { ActivityInterface, CategoryInterface, ClassificationInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
 import { ActivityService } from '@modules/core/shared/services';
 import { ProcessI } from '@utils/services/core-session-storage.service';
 import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
-import {
-    GuideComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
+import { GuideComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/guide.component';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
@@ -73,6 +61,7 @@ export class Step2Component implements OnInit {
         this.establishment = this.formStateService.establishment();
         this.establishmentTemp = this.formStateService.establishmentTemp();
         this.process = this.formStateService.process();
+        console.log(this.process);
 
         await this.loadCatalogues();
         await this.loadData();
@@ -209,6 +198,7 @@ export class Step2Component implements OnInit {
 
     async loadActivities() {
         this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
+        console.log(this.activities);
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
 
@@ -220,8 +210,19 @@ export class Step2Component implements OnInit {
     async loadClassifications() {
         this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
 
-        if (this.degreeType === 'bachiller') {
-            this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
+        switch (this.formStateService.process()?.type?.code) {
+            case CatalogueProcessesTypeEnum.registration: {
+                if (this.degreeType === 'bachiller') {
+                    this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
+                }
+                break;
+            }
+            case CatalogueProcessesTypeEnum.new_classification_update: {
+                this.classifications  = this.classifications.filter(
+                    c => !this.formStateService.establishmentTemp()?.credentials!.some(mc => mc.classification?.id === c.id)
+                );
+                break;
+            }
         }
     }
 
@@ -233,7 +234,7 @@ export class Step2Component implements OnInit {
                 this.disableAll();
                 break;
 
-            case CatalogueProcessesTypeEnum.reclassification:
+            case CatalogueProcessesTypeEnum.new_classification_update:
                 this.form.patchValue(this.process!);
                 await this.loadActivities();
                 this.activityField.disable();
@@ -301,4 +302,6 @@ export class Step2Component implements OnInit {
     get categoryField(): AbstractControl {
         return this.form.controls['category'];
     }
+
+    protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
 }

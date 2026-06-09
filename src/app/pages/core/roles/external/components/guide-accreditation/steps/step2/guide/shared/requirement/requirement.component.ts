@@ -219,7 +219,7 @@ export class RequirementComponent implements OnInit {
                 console.log('Imagen válida ✅');
             } else {
                 console.error('Imagen NO válida ❌');
-                alert('La imagen debe ser tipo carné (30mm x 45mm)');
+                // alert('La imagen debe ser tipo carné (30mm x 45mm)');
             }
 
             URL.revokeObjectURL(objectUrl);

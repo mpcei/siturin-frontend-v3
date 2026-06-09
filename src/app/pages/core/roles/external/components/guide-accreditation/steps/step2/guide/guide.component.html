@@ -1,5 +1,5 @@
 @switch (processTypeCode()) {
-    @case ('registration') {
+    @case (CatalogueProcessesTypeEnum.registration) {
         @switch (formStateService.catastroSiete()?.type) {
             @case ('new') {
                 <app-registration (step)="$event" />
@@ -12,5 +12,9 @@
             }
         }
 
+    }
+
+    @case (CatalogueProcessesTypeEnum.new_classification_update) {
+        <app-registration (step)="$event" />
     }
 }

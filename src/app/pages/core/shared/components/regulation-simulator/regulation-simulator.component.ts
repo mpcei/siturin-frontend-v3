@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
-import { RegulationSimulatorFormComponent } from './components/regulation-simulator-form/regulation-simulator-form.component';
+import {
+    RegulationSimulatorFormComponent
+} from './components/regulation-simulator-form/regulation-simulator-form.component';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
 import { CtcComponent } from './components/ctc/ctc.component';
@@ -18,7 +20,6 @@ import { CatalogueInterface } from '@/utils/interfaces';
 import { ActivityInterface, CategoryInterface, ClassificationInterface } from '../../interfaces';
 import { Fluid } from 'primeng/fluid';
 import { GuideComponent } from '@/pages/core/shared/components/regulation-simulator/components/guide/guide.component';
-import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-regulation-simulator',
@@ -38,8 +39,7 @@ import { JsonPipe } from '@angular/common';
         EventComponent,
         RegulationComponent,
         Fluid,
-        GuideComponent,
-        JsonPipe
+        GuideComponent
     ],
     templateUrl: './regulation-simulator.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush

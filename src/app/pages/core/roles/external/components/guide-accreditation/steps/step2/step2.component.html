@@ -1,6 +1,256 @@
-<h1>{{ degreeType }}</h1>
-<h1>{{formStateService.catastroSiete()?.type}}</h1>
-@if (formStateService.catastroSiete()?.type === 'new') {
+@if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.registration) {
+    @if (formStateService.catastroSiete()?.type === 'new') {
+        <form [formGroup]="form" class="custom-form-card">
+            <div class="custom-form-grid md:grid-cols-12">
+                <!-- Section Name -->
+                <div class="md:col-span-12 custom-form-title">
+                    Seleccione la Actividad y/o Modalidad Turística; clasificación y categoría de ser el caso
+                </div>
+
+                <!-- geographicArea -->
+                <div class="md:col-span-2 custom-form-field">
+                    <label
+                        appLabel
+                        for="geographicArea"
+                        label="Ámbito Territorial"
+                        [required]="geographicAreaField">
+                    </label>
+
+                    <p-select
+                        id="geographicArea"
+                        formControlName="geographicArea"
+                        [options]="geographicAreas"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="geographicAreaField.errors"
+                        [touched]="geographicAreaField.touched"
+                        [dirty]="geographicAreaField.dirty"></small>
+                </div>
+
+                <!-- activity -->
+                <div class="md:col-span-3 custom-form-field">
+                    <label
+                        appLabel for="activity"
+                        label="Actividad"
+                        [required]="activityField">
+                    </label>
+
+                    <p-select
+                        id="actividad"
+                        formControlName="activity"
+                        [options]="activities"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="activityField.errors"
+                        [touched]="activityField.touched"
+                        [dirty]="activityField.dirty"></small>
+                </div>
+
+                <!-- classification -->
+                <div class="md:col-span-6 custom-form-field">
+                    <label
+                        appLabel for="classification"
+                        label="Clasificación"
+                        [required]="classificationField">
+                    </label>
+
+                    <p-select
+                        id="clasificacion"
+                        formControlName="classification"
+                        [options]="classifications"
+                        optionLabel="name"
+                        appendTo="body"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="classificationField.errors"
+                        [touched]="classificationField.touched"
+                        [dirty]="classificationField.dirty"></small>
+                </div>
+
+                <!-- actions -->
+                <div class="md:col-span-1 custom-form-field">
+                    @if (isEdit) {
+                        <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
+                                  (onClick)="continueRequirements()"
+                                  styleClass="w-full" class="mt-7" />
+                    } @else {
+                        <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
+                                  (onClick)="editRequirements()"
+                                  styleClass="w-full" class="mt-8" />
+                    }
+                </div>
+
+                <!--        &lt;!&ndash; category &ndash;&gt;-->
+                <!--        <div class="md:col-span-6 custom-form-field">-->
+                <!--            <label appLabel for="category" label="Categoría" [required]="categoryField">-->
+                <!--            </label>-->
+
+                <!--            {{ categoryField.value|json }}-->
+                <!--            <p-select-->
+                <!--                id="categoria"-->
+                <!--                formControlName="category"-->
+                <!--                [options]="categories"-->
+                <!--                optionLabel="name"-->
+                <!--                appendTo="body"-->
+                <!--                [filter]="true"-->
+                <!--                filterBy="name"-->
+                <!--                placeholder="Seleccione" />-->
+
+                <!--            <small-->
+                <!--                appErrorMessage-->
+                <!--                [dirty]="categoryField.dirty"-->
+                <!--                [errors]="categoryField.errors"-->
+                <!--                [touched]="categoryField.touched"></small>-->
+                <!--        </div>-->
+            </div>
+        </form>
+    }
+
+    @if (formStateService.catastroSiete()?.type === 'current') {
+        <form [formGroup]="form" class="custom-form-card">
+            <div class="custom-form-grid md:grid-cols-12">
+                <!-- geographicArea -->
+                <div class="md:col-span-2 custom-form-field">
+                    <label
+                        appLabel
+                        for="geographicArea"
+                        label="Ámbito Territorial"
+                        [required]="geographicAreaField">
+                    </label>
+
+                    <p-select
+                        id="geographicArea"
+                        formControlName="geographicArea"
+                        [options]="geographicAreas"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="geographicAreaField.errors"
+                        [touched]="geographicAreaField.touched"
+                        [dirty]="geographicAreaField.dirty"></small>
+                </div>
+
+                <!-- activity -->
+                <div class="md:col-span-3 custom-form-field">
+                    <label
+                        appLabel for="activity"
+                        label="Actividad"
+                        [required]="activityField">
+                    </label>
+
+                    <p-select
+                        id="actividad"
+                        formControlName="activity"
+                        [options]="activities"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="activityField.errors"
+                        [touched]="activityField.touched"
+                        [dirty]="activityField.dirty"></small>
+                </div>
+
+                <!-- actions -->
+                <div class="md:col-span-1 custom-form-field">
+                    @if (isEdit) {
+                        <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
+                                  (onClick)="continueCurrentRequirements()"
+                                  styleClass="w-full" class="mt-7" />
+                    } @else {
+                        <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
+                                  (onClick)="editRequirements()"
+                                  styleClass="w-full" class="mt-8" />
+                    }
+                </div>
+            </div>
+        </form>
+    }
+
+    @if (formStateService.catastroSiete()?.type === 'expired') {
+        <form [formGroup]="form" class="custom-form-card">
+            <div class="custom-form-grid md:grid-cols-12">
+                <!-- geographicArea -->
+                <div class="md:col-span-2 custom-form-field">
+                    <label
+                        appLabel
+                        for="geographicArea"
+                        label="Ámbito Territorial"
+                        [required]="geographicAreaField">
+                    </label>
+
+                    <p-select
+                        id="geographicArea"
+                        formControlName="geographicArea"
+                        [options]="geographicAreas"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="geographicAreaField.errors"
+                        [touched]="geographicAreaField.touched"
+                        [dirty]="geographicAreaField.dirty"></small>
+                </div>
+
+                <!-- activity -->
+                <div class="md:col-span-3 custom-form-field">
+                    <label
+                        appLabel for="activity"
+                        label="Actividad"
+                        [required]="activityField">
+                    </label>
+
+                    <p-select
+                        id="actividad"
+                        formControlName="activity"
+                        [options]="activities"
+                        optionLabel="name"
+                        appendTo="body"
+                        placeholder="Seleccione" />
+
+                    <small
+                        appErrorMessage
+                        [errors]="activityField.errors"
+                        [touched]="activityField.touched"
+                        [dirty]="activityField.dirty"></small>
+                </div>
+
+                <!-- actions -->
+                <div class="md:col-span-1 custom-form-field">
+                    @if (isEdit) {
+                        <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
+                                  (onClick)="continueExpiredRequirements()"
+                                  styleClass="w-full" class="mt-7" />
+                    } @else {
+                        <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
+                                  (onClick)="editRequirements()"
+                                  styleClass="w-full" class="mt-8" />
+                    }
+                </div>
+            </div>
+        </form>
+    }
+}
+@if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.new_classification_update) {
     <form [formGroup]="form" class="custom-form-card">
         <div class="custom-form-grid md:grid-cols-12">
             <!-- Section Name -->
@@ -85,161 +335,6 @@
                 @if (isEdit) {
                     <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
                               (onClick)="continueRequirements()"
-                              styleClass="w-full" class="mt-7" />
-                } @else {
-                    <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
-                              (onClick)="editRequirements()"
-                              styleClass="w-full" class="mt-8" />
-                }
-            </div>
-
-            <!--        &lt;!&ndash; category &ndash;&gt;-->
-            <!--        <div class="md:col-span-6 custom-form-field">-->
-            <!--            <label appLabel for="category" label="Categoría" [required]="categoryField">-->
-            <!--            </label>-->
-
-            <!--            {{ categoryField.value|json }}-->
-            <!--            <p-select-->
-            <!--                id="categoria"-->
-            <!--                formControlName="category"-->
-            <!--                [options]="categories"-->
-            <!--                optionLabel="name"-->
-            <!--                appendTo="body"-->
-            <!--                [filter]="true"-->
-            <!--                filterBy="name"-->
-            <!--                placeholder="Seleccione" />-->
-
-            <!--            <small-->
-            <!--                appErrorMessage-->
-            <!--                [dirty]="categoryField.dirty"-->
-            <!--                [errors]="categoryField.errors"-->
-            <!--                [touched]="categoryField.touched"></small>-->
-            <!--        </div>-->
-        </div>
-    </form>
-}
-
-@if (formStateService.catastroSiete()?.type === 'current') {
-    <form [formGroup]="form" class="custom-form-card">
-        <div class="custom-form-grid md:grid-cols-12">
-            <!-- geographicArea -->
-            <div class="md:col-span-2 custom-form-field">
-                <label
-                    appLabel
-                    for="geographicArea"
-                    label="Ámbito Territorial"
-                    [required]="geographicAreaField">
-                </label>
-
-                <p-select
-                    id="geographicArea"
-                    formControlName="geographicArea"
-                    [options]="geographicAreas"
-                    optionLabel="name"
-                    appendTo="body"
-                    placeholder="Seleccione" />
-
-                <small
-                    appErrorMessage
-                    [errors]="geographicAreaField.errors"
-                    [touched]="geographicAreaField.touched"
-                    [dirty]="geographicAreaField.dirty"></small>
-            </div>
-
-            <!-- activity -->
-            <div class="md:col-span-3 custom-form-field">
-                <label
-                    appLabel for="activity"
-                    label="Actividad"
-                    [required]="activityField">
-                </label>
-
-                <p-select
-                    id="actividad"
-                    formControlName="activity"
-                    [options]="activities"
-                    optionLabel="name"
-                    appendTo="body"
-                    placeholder="Seleccione" />
-
-                <small
-                    appErrorMessage
-                    [errors]="activityField.errors"
-                    [touched]="activityField.touched"
-                    [dirty]="activityField.dirty"></small>
-            </div>
-
-            <!-- actions -->
-            <div class="md:col-span-1 custom-form-field">
-                @if (isEdit) {
-                    <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
-                              (onClick)="continueCurrentRequirements()"
-                              styleClass="w-full" class="mt-7" />
-                } @else {
-                    <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
-                              (onClick)="editRequirements()"
-                              styleClass="w-full" class="mt-8" />
-                }
-            </div>
-        </div>
-    </form>
-}
-
-@if (formStateService.catastroSiete()?.type === 'expired') {
-    <form [formGroup]="form" class="custom-form-card">
-        <div class="custom-form-grid md:grid-cols-12">
-            <!-- geographicArea -->
-            <div class="md:col-span-2 custom-form-field">
-                <label
-                    appLabel
-                    for="geographicArea"
-                    label="Ámbito Territorial"
-                    [required]="geographicAreaField">
-                </label>
-
-                <p-select
-                    id="geographicArea"
-                    formControlName="geographicArea"
-                    [options]="geographicAreas"
-                    optionLabel="name"
-                    appendTo="body"
-                    placeholder="Seleccione" />
-
-                <small
-                    appErrorMessage
-                    [errors]="geographicAreaField.errors"
-                    [touched]="geographicAreaField.touched"
-                    [dirty]="geographicAreaField.dirty"></small>
-            </div>
-
-            <!-- activity -->
-            <div class="md:col-span-3 custom-form-field">
-                <label
-                    appLabel for="activity"
-                    label="Actividad"
-                    [required]="activityField">
-                </label>
-
-                <p-select
-                    id="actividad"
-                    formControlName="activity"
-                    [options]="activities"
-                    optionLabel="name"
-                    appendTo="body"
-                    placeholder="Seleccione" />
-
-                <small
-                    appErrorMessage
-                    [errors]="activityField.errors"
-                    [touched]="activityField.touched"
-                    [dirty]="activityField.dirty"></small>
-            </div>
-
-            <!-- actions -->
-            <div class="md:col-span-1 custom-form-field">
-                @if (isEdit) {
-                    <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
-                              (onClick)="continueExpiredRequirements()"
                               styleClass="w-full" class="mt-7" />
                 } @else {
                     <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"

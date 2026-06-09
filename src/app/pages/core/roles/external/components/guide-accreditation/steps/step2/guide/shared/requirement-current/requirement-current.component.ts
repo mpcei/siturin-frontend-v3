@@ -13,12 +13,11 @@ import { FileUpload } from 'primeng/fileupload';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { Tag } from 'primeng/tag';
 import { isAfter } from 'date-fns';
 
 @Component({
     selector: 'app-requirement-current',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, Tag, DatePipe],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe],
     templateUrl: './requirement-current.component.html'
 })
 export class RequirementCurrentComponent implements OnInit {
@@ -100,7 +99,7 @@ export class RequirementCurrentComponent implements OnInit {
                 console.log('Imagen válida ✅');
             } else {
                 console.error('Imagen NO válida ❌');
-                alert('La imagen debe ser tipo carné (30mm x 45mm)');
+                // alert('La imagen debe ser tipo carné (30mm x 45mm)');
             }
 
             URL.revokeObjectURL(objectUrl);

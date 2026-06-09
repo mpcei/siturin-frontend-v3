@@ -25,7 +25,21 @@
     </form>
 </div>
 
-<p-fluid>
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-title md:col-span-12">
+            <h4>Idiomas Registrados:</h4>
+        </div>
+
+        <div class="custom-form-title md:col-span-12">
+            @for(language of formStateService.establishmentTemp()?.languages; track language.id){
+                <p-tag [value]="language?.languageName" class="mr-2" severity="info"/>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="custom-form-card">
     @if (hasLanguageField.value) {
         <div class="md:col-span-12">
             <app-list-basic
@@ -38,7 +52,7 @@
             />
         </div>
     }
-</p-fluid>
+</div>
 
 <p-dialog
     [(visible)]="isVisibleModal"

@@ -4,8 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
-import { EstablishmentInterface, ProcessInterface } from '@modules/core/shared/interfaces';
-import { EstablishmentHttpService, FormStateService, GuideHttpService, RucHttpService } from '@modules/core/roles/external/services';
+import { EstablishmentInterface } from '@modules/core/shared/interfaces';
+import {
+    EstablishmentHttpService,
+    FormStateService,
+    GuideHttpService,
+    RucHttpService
+} from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
@@ -26,12 +31,13 @@ import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
 import { Card } from 'primeng/card';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
-import { Dialog } from 'primeng/dialog';
+import {
+    InactivationComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Dialog, InactivationComponent],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe],
     templateUrl: './guide-establishment-list.component.html',
     providers: [DialogService]
 })

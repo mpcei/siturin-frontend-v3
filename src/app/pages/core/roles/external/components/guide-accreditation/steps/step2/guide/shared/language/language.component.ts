@@ -23,6 +23,8 @@ import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { FormStateService } from '@/pages/core/roles/external/services';
+import { Tag } from 'primeng/tag';
 
 export interface LanguageInterface {
     id?: string;
@@ -51,7 +53,8 @@ export interface LanguageInterface {
         DialogModule,
         ToggleSwitchComponent,
         FileUpload,
-        ButtonActionComponent
+        ButtonActionComponent,
+        Tag
     ],
     templateUrl: './language.component.html'
 })
@@ -65,6 +68,7 @@ export class LanguageComponent implements OnInit {
     private readonly confirmationService = inject(ConfirmationService);
     private readonly catalogueService = inject(CatalogueService);
     protected readonly customMessageService = inject(CustomMessageService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
     protected modalityForm!: FormGroup;
@@ -157,7 +161,8 @@ export class LanguageComponent implements OnInit {
             this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
         ]);
 
-        this.availableLanguages = languages;
+        this.availableLanguages = languages.filter((c) => !this.formStateService.establishmentTemp()?.languages!.some((mc) => mc.languageCode === c.code));
+
         this.levels = levels;
         this.requirements = requirements;
 

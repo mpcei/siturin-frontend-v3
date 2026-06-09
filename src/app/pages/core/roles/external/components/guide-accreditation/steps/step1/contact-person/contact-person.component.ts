@@ -12,13 +12,12 @@ import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
-import { DatePipe } from '@angular/common';
-import { InputNumber } from 'primeng/inputnumber';
 import { InputMask } from 'primeng/inputmask';
+import { AgePipe } from '@/pages/core/shared/pipes';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, DatePipe, InputNumber, InputMask],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe],
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {
