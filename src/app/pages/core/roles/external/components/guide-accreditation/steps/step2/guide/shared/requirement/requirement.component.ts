@@ -7,7 +7,7 @@ import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { CatalogueInterface } from '@utils/interfaces';
-import { CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { FileUpload } from 'primeng/fileupload';
 import { JsonPipe } from '@angular/common';
@@ -31,7 +31,7 @@ export class RequirementComponent implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
 
     private readonly catalogueService = inject(CatalogueService);
-    private readonly formStateService = inject(FormStateService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
 
@@ -295,4 +295,6 @@ export class RequirementComponent implements OnInit {
     get domicileDeclarationField(): AbstractControl {
         return this.form.controls['domicileDeclaration'];
     }
+
+    protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
 }

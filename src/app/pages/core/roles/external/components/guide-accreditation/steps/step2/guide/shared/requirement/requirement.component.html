@@ -3,8 +3,14 @@
         <!-- title -->
         <div class="custom-form-title md:col-span-12">
             <h4>
-                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO DE {{ process()?.classification?.name }} POR PRIMERA
-                VEZ
+                @if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.registration) {
+                    REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO DE {{ process()?.classification?.name }} POR PRIMERA
+                        VEZ
+                }
+
+                @if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.new_classification_update) {
+                    REQUISITOS PARA LA CLASIFICACIÓN DE {{ process()?.classification?.name }}
+                }
             </h4>
         </div>
 
