@@ -218,9 +218,14 @@ export class Step2Component implements OnInit {
                 break;
             }
             case CatalogueProcessesTypeEnum.new_classification_update: {
-                this.classifications  = this.classifications.filter(
-                    c => !this.formStateService.establishmentTemp()?.credentials!.some(mc => mc.classification?.id === c.id)
-                );
+                this.classifications = this.classifications.filter((c) => !this.formStateService.establishmentTemp()?.credentials!.some((mc) => mc.classification?.id === c.id));
+                break;
+            }
+            case CatalogueProcessesTypeEnum.renewal_classification_update: {
+                console.log(this.classifications);
+                console.log(this.formStateService.currentCredential());
+
+                this.classifications = this.classifications.filter((c) => c.id === this.formStateService.currentCredential()?.classification?.id);
                 break;
             }
         }
@@ -228,10 +233,12 @@ export class Step2Component implements OnInit {
 
     async loadData() {
         switch (this.process?.type?.code!) {
-            case CatalogueProcessesTypeEnum.update:
+            case CatalogueProcessesTypeEnum.renewal_classification_update:
                 this.form.patchValue(this.process!);
                 await this.loadActivities();
-                this.disableAll();
+                this.activityField.disable();
+                this.classificationField.reset();
+                this.categoryField.reset();
                 break;
 
             case CatalogueProcessesTypeEnum.new_classification_update:

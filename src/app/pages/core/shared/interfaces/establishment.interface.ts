@@ -25,4 +25,9 @@ export interface EstablishmentInterface {
     credentials?: CredentialInterface[];
     languages?: LanguageInterface[];
     adventureModalities?: AdventureModalityInterface[];
+    currentProcess?: CurrentProcess;
+}
+
+interface CurrentProcess {
+    type: CatalogueInterface;
 }

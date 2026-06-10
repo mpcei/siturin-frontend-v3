@@ -4,10 +4,13 @@ import { RegistrationGuideCurrentComponent } from '@/pages/core/roles/external/c
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { RegistrationGuideExpiredComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/registration-expired/registration-guide-expired.component';
 import { CatalogueProcessesTypeEnum } from '@utils/enums';
+import {
+    RenewComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/renew/renew.component';
 
 @Component({
     selector: 'app-guide',
-    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent],
+    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent, RenewComponent],
     templateUrl: './guide.component.html'
 })
 export class GuideComponent {

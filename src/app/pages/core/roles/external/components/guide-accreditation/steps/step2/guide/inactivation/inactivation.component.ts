@@ -102,4 +102,6 @@ export class InactivationComponent implements OnInit {
             resultado: 'ok'
         });
     }
+
+    protected readonly FontAwesome = FontAwesome;
 }

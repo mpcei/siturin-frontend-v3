@@ -17,4 +17,8 @@
     @case (CatalogueProcessesTypeEnum.new_classification_update) {
         <app-registration (step)="$event" />
     }
+
+    @case (CatalogueProcessesTypeEnum.renewal_classification_update) {
+        <app-renew (step)="$event" />
+    }
 }

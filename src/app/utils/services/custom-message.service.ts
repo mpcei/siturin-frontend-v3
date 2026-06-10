@@ -154,7 +154,7 @@ export class CustomMessageService {
 
     showModalWarn({ summary, detail }: { summary: string; detail: string }): void {
         this._isModalVisible.set(true);
-        this._modalAcceptSeverity = 'info';
+        this._modalAcceptSeverity = 'warn';
         this._modalTitleIcon = FontAwesome.CIRCLE_XMARK_REGULAR;
         this._modalIconColor = 'var(--primary-color)';
         this._modalTitle = summary;

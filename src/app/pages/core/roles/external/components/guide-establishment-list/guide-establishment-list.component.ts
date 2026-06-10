@@ -4,13 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
-import { EstablishmentInterface } from '@modules/core/shared/interfaces';
-import {
-    EstablishmentHttpService,
-    FormStateService,
-    GuideHttpService,
-    RucHttpService
-} from '@modules/core/roles/external/services';
+import { CredentialInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
+import { EstablishmentHttpService, FormStateService, GuideHttpService, RucHttpService } from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
@@ -27,19 +22,33 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
-import { EstablishmentNumberPipe } from '@modules/core/shared/pipes';
+import { EstablishmentNumberPipe, ExpiredCredentialPipe } from '@modules/core/shared/pipes';
 import { Card } from 'primeng/card';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import {
-    InactivationComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
+import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
+import { Divider } from 'primeng/divider';
+import { isAfter, subMonths } from 'date-fns';
+import { ReportsHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe],
     templateUrl: './guide-establishment-list.component.html',
-    providers: [DialogService]
+    providers: [DialogService],
+    styles: [
+        `
+            .cards-container {
+                display: flex;
+                gap: 1rem;
+                align-items: stretch; /* importante */
+            }
+
+            .card {
+                flex: 1;
+            }
+        `
+    ]
 })
 export default class GuideEstablishmentListComponent implements OnInit {
     protected readonly PrimeIcons = PrimeIcons;
@@ -58,6 +67,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     private readonly rucHttpService = inject(RucHttpService);
     private readonly authService = inject(AuthService);
     private readonly guideHttpService = inject(GuideHttpService);
+    private readonly reportsHttpService = inject(ReportsHttpService);
     private readonly catalogueService = inject(CatalogueService);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly formStateService = inject(FormStateService);
@@ -81,6 +91,12 @@ export default class GuideEstablishmentListComponent implements OnInit {
                     this.establishmentHttpService.findCadastreByEstablishment(establishment.id!).subscribe({
                         next: (response) => {
                             this.establishment.set(response);
+                            if (this.establishment().currentProcess) {
+                                this.customMessageService.showModalWarn({
+                                    summary: `Actualmente tiene un trámite de ${this.establishment().currentProcess?.type.name}`,
+                                    detail: 'No puede realizar otro trámite'
+                                });
+                            }
                         }
                     });
                 } else {
@@ -125,7 +141,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         if (!hasCadastre) {
             this.buttonActions.push({
                 ...registrationButtonAction,
-                command: () => this.createProcess(item, CatalogueProcessesTypeEnum.registration)
+                command: () => this.createRegistrationProcess(item)
             });
             return;
         }
@@ -175,8 +191,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
             return;
         }
 
-        this.formStateService.clearState();
-
         this.formStateService.updateSection('establishment', { id: establishment.id });
         this.formStateService.updateSection('establishmentTemp', establishment);
 
@@ -192,7 +206,23 @@ export default class GuideEstablishmentListComponent implements OnInit {
         await this.router.navigate([MY_ROUTES.corePages.external.guideAccreditation.absolute]);
     }
 
-    updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
+    protected async createRegistrationProcess(establishment: EstablishmentInterface) {
+        this.formStateService.clearState();
+        await this.createProcess(establishment, CatalogueProcessesTypeEnum.registration);
+    }
+
+    protected async createNewClassificationProcess(establishment: EstablishmentInterface) {
+        this.formStateService.clearState();
+        await this.createProcess(establishment, CatalogueProcessesTypeEnum.renewal_classification_update);
+    }
+
+    protected async createRenewProcess(establishment: EstablishmentInterface, credential: CredentialInterface) {
+        this.formStateService.clearState();
+        this.formStateService.updateSection('currentCredential', { ...credential });
+        await this.createProcess(establishment, CatalogueProcessesTypeEnum.renewal_classification_update);
+    }
+
+    protected updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {
                 let auth = this.authService.auth;
@@ -205,12 +235,16 @@ export default class GuideEstablishmentListComponent implements OnInit {
         });
     }
 
+    protected downloadInactivationCertificate(){
+        this.reportsHttpService.downloadInactivationCertificate(this.establishment().process?.cadastre!);
+    }
     async openInactivationModal(establishment: EstablishmentInterface) {
         const processType = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.inactivation, CatalogueTypeEnum.processes_type);
 
         this.ref = this.dialogService.open(InactivationComponent, {
             header: 'Inactivación',
             width: '50%',
+            closable: true,
             data: {
                 establishmentId: establishment.id,
                 cadastreId: establishment.process?.cadastre?.id,

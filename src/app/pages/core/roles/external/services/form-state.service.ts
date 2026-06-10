@@ -1,5 +1,5 @@
 import { Injectable, signal, effect, computed } from '@angular/core';
-import { EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface, RucInterface } from '@/pages/core/shared/interfaces';
+import { CredentialInterface, EstablishmentAddressInterface, EstablishmentInterface, ProcessInterface, RucInterface } from '@/pages/core/shared/interfaces';
 import { AbstractControl } from '@angular/forms';
 import { CatalogueInterface } from '@utils/interfaces';
 
@@ -39,6 +39,7 @@ export interface AppFormState {
     files: any[];
     catastroSiete: CatastroSiete | null;
     guideOrigin: any | null;
+    currentCredential: CredentialInterface | null;
 }
 
 const INITIAL_STATE: AppFormState = {
@@ -59,7 +60,8 @@ const INITIAL_STATE: AppFormState = {
     degree: null,
     files: [],
     catastroSiete: null,
-    guideOrigin: null
+    guideOrigin: null,
+    currentCredential: null
 };
 
 const FORM_STATE_KEY = 'formState';
@@ -86,6 +88,7 @@ export class FormStateService {
     readonly files = computed(() => this.formState().files);
     readonly catastroSiete = computed(() => this.formState().catastroSiete);
     readonly guideOrigin = computed(() => this.formState().guideOrigin);
+    readonly currentCredential = computed(() => this.formState().currentCredential);
 
     constructor() {
         effect(() => {

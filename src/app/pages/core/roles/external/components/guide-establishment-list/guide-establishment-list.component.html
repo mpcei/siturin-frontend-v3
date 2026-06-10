@@ -1,4 +1,4 @@
-<p-message severity="info">
+<p-message severity="info" class="mb-2">
     <small>
         <b>NOTA IMPORTANTE:</b>
         <p class="mt-4 text-justify">
@@ -120,19 +120,22 @@
 }
 
 @if (establishments().length === 0 && establishment()) {
-    <div class="custom-form-card">
-        <div class="custom-form-grid md:grid-cols-12">
-            <div class=" custom-form-field md:col-span-6">
-                <p-card>
-                    <h4>Establecimiento</h4>
-                    <p><b>Código de establecimiento SRI:</b> {{ establishment().number | establishmentNumber }}</p>
-                    <p><b>Razón Social:</b> {{ establishment().ruc?.legalName }}</p>
-                    <p><b>Actividad Turística:</b> {{ establishment().process?.activity?.name }}</p>
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class=" custom-form-field md:col-span-6">
+            <p-card
+                class="card">
+                <h4>Establecimiento</h4>
+                <p><b>Código de establecimiento SRI:</b> {{ establishment().number | establishmentNumber }}</p>
+                <p><b>Razón Social:</b> {{ establishment().ruc?.legalName }}</p>
+                <p><b>Actividad Turística:</b> {{ establishment().process?.activity?.name }}</p>
 
-                    <p><b>Número de registro:</b> {{ establishment().process?.cadastre?.registerNumber }}</p>
+                <p><b>Número de registro:</b> {{ establishment().process?.cadastre?.registerNumber }}</p>
 
-                    <p><b>Estado Registro:</b> {{ establishment().process?.cadastre?.state?.name }}</p>
+                <p><b>Estado Registro:</b> {{ establishment().process?.cadastre?.state?.name }}</p>
 
+                <p-divider />
+
+                @if (!establishment().currentProcess) {
                     @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
                         <p-button
                             pTooltip="Actualización Datos Generales"
@@ -145,7 +148,7 @@
                             severity="success"
                             [icon]="FontAwesome.PLUS_SOLID"
                             [raised]="true"
-                            (onClick)="createProcess(establishment(), CatalogueProcessesTypeEnum.new_classification_update)" />
+                            (onClick)="createNewClassificationProcess(establishment())" />
 
                         <p-button
                             pTooltip="Inactivación"
@@ -159,59 +162,88 @@
 
                     @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.inactive) {
                         <p-button
-                            label="Reingreso"
+                            pTooltip="Reingreso"
                             [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
                             styleClass="w-full" [raised]="true" />
                     }
+                }
 
-                </p-card>
-            </div>
+                @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.inactive) {
+                    <p-button
+                        pTooltip="Descargar Certificado de Inactivación"
+                        class="ml-6"
+                        severity="info"
+                        [icon]="FontAwesome.DOWNLOAD_SOLID"
+                        [raised]="true"
+                        (onClick)="downloadInactivationCertificate()"
+                    />
+                }
 
-            <div class=" custom-form-field md:col-span-6">
-                <p-card>
-                    <h4>Ubicación</h4>
+                @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
+                    <p-button
+                        pTooltip="Descargar Certificado de Registro"
+                        class="ml-6"
+                        severity="info"
+                        [icon]="FontAwesome.DOWNLOAD_SOLID"
+                        [raised]="true" />
+                }
+            </p-card>
+        </div>
 
-                    <p><b>Provincia:</b> {{ establishment().province?.name }}</p>
-                    <p><b>Cantón:</b> {{ establishment().canton?.name }}</p>
-                    <p><b>Parroquia:</b> {{ establishment().parish?.name }}</p>
-                    <p><b>Calle principal:</b> {{ establishment().mainStreet }}</p>
-                    <p><b>Numeración:</b> {{ establishment().numberStreet }}</p>
-                    <p><b>Calle secundaria:</b> {{ establishment().secondaryStreet }}</p>
-                </p-card>
-            </div>
+        <div class=" custom-form-field md:col-span-6">
+            <p-card class="card">
+                <h4>Ubicación</h4>
 
-            <div class="custom-form-field md:col-span-12">
-                <div class="custom-form-grid md:grid-cols-12">
+                <p><b>Provincia:</b> {{ establishment().province?.name }}</p>
+                <p><b>Cantón:</b> {{ establishment().canton?.name }}</p>
+                <p><b>Parroquia:</b> {{ establishment().parish?.name }}</p>
+                <p><b>Calle principal:</b> {{ establishment().mainStreet }}</p>
+                <p><b>Numeración:</b> {{ establishment().numberStreet }}</p>
+                <p><b>Calle secundaria:</b> {{ establishment().secondaryStreet }}</p>
+            </p-card>
+        </div>
+    </div>
 
-                    @for (credential of establishment().credentials; track credential.id) {
-                        <div class=" custom-form-field md:col-span-4">
-                            <p-message [severity]="credential?.stateCode==='expired'?'error':'success'">
-                                <h4>Estado: {{ credential?.stateName }}</h4>
+    <div class="custom-form-card">
+        <div class="custom-form-field md:col-span-12">
+            <div class="custom-form-grid md:grid-cols-12">
+                @for (credential of establishment().credentials; track credential.id) {
+                    <div class=" custom-form-field md:col-span-4">
+                        <p-message class="card" [severity]="credential?.stateCode==='expired'?'error':'success'">
+                            <h4>Estado: {{ credential?.stateName }}</h4>
 
-                                <p><b>Código de Clasificación:</b> {{ credential?.code }}</p>
-                                <p><b>Clasificación:</b> {{ credential.classification?.name }}</p>
-                                <p><b>Ámbito de territorial:</b> Continente</p>
-                                <p><b>Fecha Emisión:</b> {{ credential?.startedAt |date }}</p>
-                                <p><b>Fecha Caducidad:</b> {{ credential?.endedAt |date }}</p>
+                            <p><b>Código de Clasificación:</b> {{ credential?.code }}</p>
+                            <p><b>Clasificación:</b> {{ credential.classification?.name }}</p>
+                            <p><b>Ámbito de territorial:</b> Continente</p>
+                            <p><b>Fecha Emisión:</b> {{ credential?.startedAt |date }}</p>
+                            <p><b>Fecha Caducidad:</b> {{ credential?.endedAt |date }}</p>
 
-                                @if (credential?.stateCode === 'expired' && establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
-                                    <p-button
-                                        label="Renovación"
-                                        [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
-                                        styleClass="w-full" [raised]="true" />
+                            <p-divider />
+
+                            @if (!establishment().currentProcess) {
+                                @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
+                                    @if (credential?.stateCode === 'expired') {
+                                        <p-button
+                                            label="Renovación"
+                                            [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
+                                            [raised]="true"
+                                            (onClick)="createRenewProcess(establishment(), credential)"
+                                        />
+                                    }
+
+                                    @if (credential?.stateCode === 'current' && (credential?.endedAt|expiredCredential)) {
+                                        <p-button
+                                            label="Renovación"
+                                            [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
+                                            [raised]="true"
+                                            (onClick)="createRenewProcess(establishment(), credential)"
+                                        />
+                                    }
                                 }
-
-                                @if (credential?.stateCode === 'currents') {
-                                    <p-button
-                                        label="Renovación"
-                                        [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
-                                        styleClass="w-full" [raised]="true" />
-                                }
-                            </p-message>
-                        </div>
-                    }
-
-                </div>
+                            }
+                        </p-message>
+                    </div>
+                }
             </div>
         </div>
     </div>
