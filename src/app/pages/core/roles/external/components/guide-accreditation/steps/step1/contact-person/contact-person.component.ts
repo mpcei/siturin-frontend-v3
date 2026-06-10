@@ -14,6 +14,8 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { InputMask } from 'primeng/inputmask';
 import { AgePipe } from '@/pages/core/shared/pipes';
+import { EstablishmentInterface } from '@/pages/core/shared/interfaces';
+import { FormStateService } from '@/pages/core/roles/external/services';
 
 @Component({
     selector: 'app-contact-person',
@@ -21,7 +23,7 @@ import { AgePipe } from '@/pages/core/shared/pipes';
     templateUrl: './contact-person.component.html'
 })
 export class ContactPersonComponent implements OnInit {
-    dataIn = input<any>(null);
+    dataIn = input.required<EstablishmentInterface>();
     dataOut: OutputEmitterRef<any> = output<any>();
 
     protected readonly PrimeIcons = PrimeIcons;
@@ -30,6 +32,7 @@ export class ContactPersonComponent implements OnInit {
     protected readonly customMessageService = inject(CustomMessageService);
     protected readonly catalogueService = inject(CatalogueService);
     protected readonly authService = inject(AuthService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
     protected formInitialized = false;
@@ -104,8 +107,10 @@ export class ContactPersonComponent implements OnInit {
 
     loadData() {
         if (this.dataIn()) {
-            console.log(this.dataIn());
             this.form.patchValue(this.dataIn());
+            this.phoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.phone);
+            this.secondaryPhoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.secondaryPhone);
+            this.emailField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.email);
         }
     }
 

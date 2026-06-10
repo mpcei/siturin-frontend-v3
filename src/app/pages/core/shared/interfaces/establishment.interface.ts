@@ -5,6 +5,9 @@ import { CredentialInterface } from '@/pages/core/shared/interfaces/credential.i
 
 import { LanguageInterface } from '@/pages/core/shared/interfaces/language.interface';
 import { AdventureModalityInterface } from '@/pages/core/shared/interfaces/adventure-modality.interface';
+import {
+    EstablishmentContactPersonInterface
+} from '@/pages/core/shared/interfaces/establishment-contact-person.interface';
 
 export interface EstablishmentInterface {
     id?: string;
@@ -26,6 +29,7 @@ export interface EstablishmentInterface {
     languages?: LanguageInterface[];
     adventureModalities?: AdventureModalityInterface[];
     currentProcess?: CurrentProcess;
+    establishmentContactPerson?:EstablishmentContactPersonInterface;
 }
 
 interface CurrentProcess {
