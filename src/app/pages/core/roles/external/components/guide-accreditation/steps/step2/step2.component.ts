@@ -61,7 +61,6 @@ export class Step2Component implements OnInit {
         this.establishment = this.formStateService.establishment();
         this.establishmentTemp = this.formStateService.establishmentTemp();
         this.process = this.formStateService.process();
-        console.log(this.process);
 
         await this.loadCatalogues();
         await this.loadData();
@@ -80,6 +79,7 @@ export class Step2Component implements OnInit {
 
     async watchFormChanges() {
         this.form.valueChanges.subscribe(async () => {
+            console.log('this.form.getRawValue()', this.form.getRawValue());
             this.formStateService.updateSection('process', this.form.getRawValue());
         });
 
@@ -169,18 +169,6 @@ export class Step2Component implements OnInit {
         await this.loadClassifications();
     }
 
-    private enableAll(): void {
-        this.activityField.enable();
-        this.classificationField.enable();
-        this.categoryField.enable();
-    }
-
-    private disableAll(): void {
-        this.activityField.disable();
-        this.classificationField.disable();
-        this.categoryField.disable();
-    }
-
     async loadCatalogues() {
         this.geographicAreas = await this.catalogueService.findByType(CatalogueTypeEnum.activities_geographic_area);
         this.relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
@@ -198,7 +186,7 @@ export class Step2Component implements OnInit {
 
     async loadActivities() {
         this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
-        console.log(this.activities);
+
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
 
@@ -222,9 +210,6 @@ export class Step2Component implements OnInit {
                 break;
             }
             case CatalogueProcessesTypeEnum.renewal_classification_update: {
-                console.log(this.classifications);
-                console.log(this.formStateService.currentCredential());
-
                 this.classifications = this.classifications.filter((c) => c.id === this.formStateService.currentCredential()?.classification?.id);
                 break;
             }

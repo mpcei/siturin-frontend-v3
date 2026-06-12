@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
-import { EstablishmentNumberPipe, ExpiredCredentialPipe } from '@modules/core/shared/pipes';
+import { CredentialStateSeverityPipe, EstablishmentNumberPipe, ExpiredCredentialPipe } from '@modules/core/shared/pipes';
 import { Card } from 'primeng/card';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -33,7 +33,7 @@ import { ReportsHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe, CredentialStateSeverityPipe],
     templateUrl: './guide-establishment-list.component.html',
     providers: [DialogService],
     styles: [
@@ -235,7 +235,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
         });
     }
 
-    protected downloadInactivationCertificate(){
+    protected downloadInactivationCertificate() {
         this.reportsHttpService.downloadInactivationCertificate(this.establishment().process?.cadastre!);
     }
 

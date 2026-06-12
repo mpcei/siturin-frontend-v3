@@ -39,7 +39,6 @@ export class Step1Component implements OnInit {
                 hasDisability
             });
         }
-        console.log(this.formStateService.user());
     }
 
     ngOnInit() {
@@ -67,8 +66,6 @@ export class Step1Component implements OnInit {
     }
 
     onSubmit() {
-        console.log(this.formStateService.catastroSiete());
-
         if (this.checkFormErrors()) this.step.emit(2);
     }
 

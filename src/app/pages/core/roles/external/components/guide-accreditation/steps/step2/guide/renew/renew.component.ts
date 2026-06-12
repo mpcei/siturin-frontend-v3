@@ -7,10 +7,15 @@ import { RequirementExpiredComponent } from '@/pages/core/roles/external/compone
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { MY_ROUTES } from '@routes';
 import { Router } from '@angular/router';
+import { AdventureTourismModalityComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
+import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
+import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
+import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { RequirementRenewComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-renew/requirement-renew.component';
 
 @Component({
     selector: 'app-renew',
-    imports: [Button, RequirementExpiredComponent],
+    imports: [Button, RequirementExpiredComponent, AdventureTourismModalityComponent, LanguageComponent, ProtectedAreaComponent, RequirementRenewComponent],
     templateUrl: './renew.component.html'
 })
 export class RenewComponent {
@@ -81,34 +86,19 @@ export class RenewComponent {
 
                 this.formStateService.updateSection('process', { endedAt: new Date() });
 
-                const { category, classification, ...process } = this.formStateService.process()!;
-
-                const credentials = this.formStateService.catastroSiete()?.credentials?.map((item) => {
-                    return {
-                        classificationCode: item.classificationCode,
-                        startedAt: item.startedAt,
-                        endedAt: item.endedAt,
-                        protectedAreas: item.protectedAreas,
-                        modalities: item.modalities,
-                        origin: item.origin,
-                        code: item.code,
-                        geographicArea: item.geographicArea
-                    };
-                });
+                const { ...process } = this.formStateService.process()!;
 
                 const payload = {
                     user: this.formStateService.user(),
                     process: process,
                     establishment: this.formStateService.establishment(),
-                    guideOrigin: this.formStateService.guideOrigin(),
-                    processGuides,
-                    credentials
+                    processGuides
                 };
 
                 console.log(payload);
                 formData.append('payload', JSON.stringify(payload));
 
-                this.guideHttpService.createExpiredRegistration(formData).subscribe({
+                this.guideHttpService.createRegistration(formData).subscribe({
                     next: () => {
                         this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
                     }
@@ -130,4 +120,6 @@ export class RenewComponent {
     back() {
         this.step.emit(1);
     }
+
+    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 }

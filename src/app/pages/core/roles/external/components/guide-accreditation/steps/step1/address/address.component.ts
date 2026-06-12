@@ -134,8 +134,6 @@ export class AddressComponent implements OnInit {
     }
 
     loadData() {
-        console.log(this.dataIn());
-
         if (this.dataIn()) {
             this.form.patchValue(this.dataIn());
         }

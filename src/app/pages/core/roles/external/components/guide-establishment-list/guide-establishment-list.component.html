@@ -209,7 +209,7 @@
             <div class="custom-form-grid md:grid-cols-12">
                 @for (credential of establishment().credentials; track credential.id) {
                     <div class=" custom-form-field md:col-span-4">
-                        <p-message class="card" [severity]="credential?.stateCode==='expired'?'error':'success'">
+                        <p-message class="card" [severity]="credential?.stateCode!|credentialStateSeverity">
                             <h4>Estado: {{ credential?.stateName }}</h4>
 
                             <p><b>Código de Clasificación:</b> {{ credential?.code }}</p>
@@ -218,9 +218,9 @@
                             <p><b>Fecha Emisión:</b> {{ credential?.startedAt |date }}</p>
                             <p><b>Fecha Caducidad:</b> {{ credential?.endedAt |date }}</p>
 
-                            <p-divider />
-
                             @if (!establishment().currentProcess) {
+                                <p-divider />
+
                                 @if (establishment().process?.cadastre?.state?.code === CatalogueCadastreStatesStateEnum.ratified) {
                                     @if (credential?.stateCode === 'expired') {
                                         <p-button

@@ -48,7 +48,8 @@ export enum CatalogueTypeEnum {
     guide_vehicles_type = 'guide_vehicles_type',
     processes_driver_license = 'processes_driver_license',
     process_guides_professional_type = 'process_guides_professional_type',
-    external_inactivation_causes = 'external_inactivation_causes'
+    external_inactivation_causes = 'external_inactivation_causes',
+    guide_inactivation_causes = 'guide_inactivation_causes'
 }
 
 export enum CatalogueStateEnum {

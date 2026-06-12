@@ -40,7 +40,6 @@ export class InactivationComponent implements OnInit {
     }
 
     async ngOnInit() {
-        console.log(this.establishmentId);
         await this.loadCatalogues();
     }
 
@@ -94,7 +93,7 @@ export class InactivationComponent implements OnInit {
     }
 
     async loadCatalogues() {
-        this.causes = await this.catalogueService.findByType(CatalogueTypeEnum.external_inactivation_causes);
+        this.causes = await this.catalogueService.findByType(CatalogueTypeEnum.guide_inactivation_causes);
     }
 
     closeModal() {
