@@ -43,6 +43,24 @@ export class GuideHttpService {
         );
     }
 
+    createRenew(payload: FormData): Observable<any> {
+        const url = `${this._apiUrl}/renewval-registrations`;
+        return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+    createReadmission(payload: FormData): Observable<any> {
+        const url = `${this._apiUrl}/readmissions`;
+        return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
     async validateDegreeType(degrees: any[], geographicAreaCode: string): Promise<any | null> {
         if (degrees.length > 0) {
             const relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);

@@ -21,4 +21,8 @@
     @case (CatalogueProcessesTypeEnum.renewal_classification_update) {
         <app-renew (step)="$event" />
     }
+
+    @case (CatalogueProcessesTypeEnum.readmission) {
+        <app-readmission (step)="$event" />
+    }
 }

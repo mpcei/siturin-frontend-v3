@@ -7,10 +7,13 @@ import { CatalogueProcessesTypeEnum } from '@utils/enums';
 import {
     RenewComponent
 } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/renew/renew.component';
+import {
+    ReadmissionComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/readmission/readmission.component';
 
 @Component({
     selector: 'app-guide',
-    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent, RenewComponent],
+    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent, RenewComponent, ReadmissionComponent],
     templateUrl: './guide.component.html'
 })
 export class GuideComponent {

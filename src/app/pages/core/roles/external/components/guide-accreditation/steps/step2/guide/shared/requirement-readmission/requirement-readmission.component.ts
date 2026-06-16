@@ -18,11 +18,11 @@ import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, C
 import { Select } from 'primeng/select';
 
 @Component({
-    selector: 'app-requirement-renew',
+    selector: 'app-requirement-readmission',
     imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select],
-    templateUrl: './requirement-renew.component.html'
+    templateUrl: './requirement-readmission.component.html'
 })
-export class RequirementRenewComponent implements OnInit {
+export class RequirementReadmissionComponent implements OnInit {
     public data = input<string>();
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
     protected readonly isAfter = isAfter;
@@ -114,7 +114,6 @@ export class RequirementRenewComponent implements OnInit {
 
         this.certificationAuxField.updateValueAndValidity();
         this.certificationAuxWildField.updateValueAndValidity();
-
     }
 
     getFormErrors(): string[] {

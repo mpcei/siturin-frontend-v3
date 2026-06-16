@@ -15,11 +15,12 @@ import { GuideComponent } from '@/pages/core/roles/external/components/guide-acc
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-step2',
     standalone: true,
-    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip],
+    imports: [Select, FormsModule, ReactiveFormsModule, LabelDirective, ErrorMessageDirective, GuideComponent, Button, Tooltip, JsonPipe],
     templateUrl: './step2.component.html'
 })
 export class Step2Component implements OnInit {
@@ -79,7 +80,6 @@ export class Step2Component implements OnInit {
 
     async watchFormChanges() {
         this.form.valueChanges.subscribe(async () => {
-            console.log('this.form.getRawValue()', this.form.getRawValue());
             this.formStateService.updateSection('process', this.form.getRawValue());
         });
 
@@ -173,6 +173,10 @@ export class Step2Component implements OnInit {
         this.geographicAreas = await this.catalogueService.findByType(CatalogueTypeEnum.activities_geographic_area);
         this.relatedDegrees = await this.catalogueService.findByType(CatalogueTypeEnum.related_degrees);
 
+        if (this.establishment?.province?.code !== CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
+            this.geographicAreas = this.geographicAreas.filter((item) => item.code === CatalogueActivitiesGeographicAreaEnum.continent);
+        }
+
         this.geographicAreaField.patchValue(
             this.geographicAreas.find((x) => {
                 if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
@@ -185,9 +189,19 @@ export class Step2Component implements OnInit {
     }
 
     async loadActivities() {
-        this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
-
+        console.log(this.geographicAreas);
+        if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
+            this.activities = [];
+            this.geographicAreas.forEach(async (geographicArea) => {
+                this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
+                console.log(this.activities);
+            });
+        } else {
+            this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
+        }
+        console.log(this.activities);
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
+        console.log(this.activities);
         this.activityField.patchValue(this.activities[0]);
 
         if (this.formStateService.catastroSiete()?.type !== 'new') {
@@ -243,6 +257,11 @@ export class Step2Component implements OnInit {
                 break;
 
             case CatalogueProcessesTypeEnum.registration:
+                this.form.patchValue(this.process!);
+                await this.loadActivities();
+                break;
+
+            case CatalogueProcessesTypeEnum.readmission:
                 this.form.patchValue(this.process!);
                 await this.loadActivities();
                 break;

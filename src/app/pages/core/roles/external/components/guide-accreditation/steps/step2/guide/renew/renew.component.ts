@@ -92,13 +92,14 @@ export class RenewComponent {
                     user: this.formStateService.user(),
                     process: process,
                     establishment: this.formStateService.establishment(),
-                    processGuides
+                    processGuides,
+                    credential: this.formStateService.currentCredential()
                 };
 
                 console.log(payload);
                 formData.append('payload', JSON.stringify(payload));
 
-                this.guideHttpService.createRegistration(formData).subscribe({
+                this.guideHttpService.createRenew(formData).subscribe({
                     next: () => {
                         this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
                     }

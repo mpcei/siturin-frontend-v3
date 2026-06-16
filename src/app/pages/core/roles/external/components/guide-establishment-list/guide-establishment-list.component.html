@@ -164,7 +164,9 @@
                         <p-button
                             pTooltip="Reingreso"
                             [icon]="FontAwesome.ARROW_ROTATE_RIGHT_SOLID"
-                            styleClass="w-full" [raised]="true" />
+                            styleClass="w-full" [raised]="true"
+                            (onClick)="createReAdmissionProcess(establishment())"
+                        />
                     }
                 }
 

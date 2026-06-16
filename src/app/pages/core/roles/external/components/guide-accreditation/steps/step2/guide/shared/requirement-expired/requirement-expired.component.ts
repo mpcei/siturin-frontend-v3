@@ -63,7 +63,7 @@ export class RequirementExpiredComponent implements OnInit {
             ruc: [null, [Validators.required]],
             photo: [null, [Validators.required]],
             certificationAux: [null],
-            certificationAuxWild: [null, Validators.required],
+            certificationAuxWild: [null],
             certificationUpdateCourse: [null, Validators.required],
             hasProtectedArea: [null]
         });
@@ -104,10 +104,16 @@ export class RequirementExpiredComponent implements OnInit {
 
         const isNationalGuide = this.formStateService.catastroSiete()?.credentials?.some((item) => item.classificationCode === CatalogueGuideClassificationsCodeEnum.guide_national);
 
-        if(isNationalGuide){
+        if (isNationalGuide) {
             this.certificationAuxField.setValidators(Validators.required);
-            this.certificationAuxField.updateValueAndValidity();
+            this.certificationAuxWildField.setValidators(null);
+        } else {
+            this.certificationAuxWildField.setValidators(Validators.required);
+            this.certificationAuxField.setValidators(null);
         }
+
+        this.certificationAuxField.updateValueAndValidity();
+        this.certificationAuxWildField.updateValueAndValidity();
     }
 
     getFormErrors(): string[] {

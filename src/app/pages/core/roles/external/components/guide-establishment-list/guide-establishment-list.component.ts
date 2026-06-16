@@ -222,6 +222,11 @@ export default class GuideEstablishmentListComponent implements OnInit {
         await this.createProcess(establishment, CatalogueProcessesTypeEnum.renewal_classification_update);
     }
 
+    protected async createReAdmissionProcess(establishment: EstablishmentInterface) {
+        this.formStateService.clearState();
+        await this.createProcess(establishment, CatalogueProcessesTypeEnum.readmission);
+    }
+
     protected updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {

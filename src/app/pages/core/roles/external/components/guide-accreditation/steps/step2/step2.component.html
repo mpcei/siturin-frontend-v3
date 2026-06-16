@@ -443,6 +443,72 @@
     </form>
 }
 
+@if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.readmission) {
+    <form [formGroup]="form" class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <!-- geographicArea -->
+            <div class="md:col-span-2 custom-form-field">
+                <label
+                    appLabel
+                    for="geographicArea"
+                    label="Ámbito Territorial"
+                    [required]="geographicAreaField">
+                </label>
+
+                <p-select
+                    id="geographicArea"
+                    formControlName="geographicArea"
+                    [options]="geographicAreas"
+                    optionLabel="name"
+                    appendTo="body"
+                    placeholder="Seleccione" />
+
+                <small
+                    appErrorMessage
+                    [errors]="geographicAreaField.errors"
+                    [touched]="geographicAreaField.touched"
+                    [dirty]="geographicAreaField.dirty"></small>
+            </div>
+
+            <!-- activity -->
+            <div class="md:col-span-3 custom-form-field">
+                <label
+                    appLabel for="activity"
+                    label="Actividad"
+                    [required]="activityField">
+                </label>
+
+                <p-select
+                    id="actividad"
+                    formControlName="activity"
+                    [options]="activities"
+                    optionLabel="name"
+                    appendTo="body"
+                    placeholder="Seleccione" />
+
+                <small
+                    appErrorMessage
+                    [errors]="activityField.errors"
+                    [touched]="activityField.touched"
+                    [dirty]="activityField.dirty"></small>
+            </div>
+
+            <!-- actions -->
+            <div class="md:col-span-1 custom-form-field">
+                @if (isEdit) {
+                    <p-button pTooltip="Continuar" tooltipPosition="bottom" [icon]="PrimeIcons.ARROW_RIGHT"
+                              (onClick)="continueExpiredRequirements()"
+                              styleClass="w-full" class="mt-7" />
+                } @else {
+                    <p-button pTooltip="Editar" [icon]="PrimeIcons.PENCIL" severity="warn"
+                              (onClick)="editRequirements()"
+                              styleClass="w-full" class="mt-8" />
+                }
+            </div>
+        </div>
+    </form>
+}
+
 @if (!isEdit) {
     <app-guide [processTypeCode]="process?.type?.code!" />
 }
