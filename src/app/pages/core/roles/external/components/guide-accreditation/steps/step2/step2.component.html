@@ -402,31 +402,6 @@
                     [dirty]="activityField.dirty"></small>
             </div>
 
-            <!-- classification -->
-            <div class="md:col-span-6 custom-form-field">
-                <label
-                    appLabel for="classification"
-                    label="Clasificación"
-                    [required]="classificationField">
-                </label>
-
-                <p-select
-                    id="clasificacion"
-                    formControlName="classification"
-                    [options]="classifications"
-                    optionLabel="name"
-                    appendTo="body"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Seleccione" />
-
-                <small
-                    appErrorMessage
-                    [errors]="classificationField.errors"
-                    [touched]="classificationField.touched"
-                    [dirty]="classificationField.dirty"></small>
-            </div>
-
             <!-- actions -->
             <div class="md:col-span-1 custom-form-field">
                 @if (isEdit) {

@@ -87,13 +87,14 @@ export class RenewComponent {
                 this.formStateService.updateSection('process', { endedAt: new Date() });
 
                 const { ...process } = this.formStateService.process()!;
+                const { id, createdAt, deletedAt, updatedAt, enabled, processId, classification, category, geographicArea, ...currentCredential } = this.formStateService.currentCredential()!;
 
                 const payload = {
                     user: this.formStateService.user(),
                     process: process,
                     establishment: this.formStateService.establishment(),
                     processGuides,
-                    credential: this.formStateService.currentCredential()
+                    credentials: [currentCredential]
                 };
 
                 console.log(payload);

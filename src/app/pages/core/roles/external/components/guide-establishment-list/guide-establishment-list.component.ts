@@ -257,6 +257,14 @@ export default class GuideEstablishmentListComponent implements OnInit {
                 processType
             }
         });
+
+        if (this.ref) {
+            this.ref.onClose.subscribe((result) => {
+                console.log('Modal cerrado');
+                console.log(result);
+                this.updateSRIEstablishments();
+            });
+        }
     }
 
     protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;

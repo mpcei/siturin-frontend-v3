@@ -101,7 +101,7 @@ import { Tooltip } from 'primeng/tooltip';
 
                                 <p>
                                     <i [class]="FontAwesome.ENVELOPE_SOLID"></i>
-                                    <b>Correo electrónico:</b> <a href="mailto:info@quito-turismo.gob.ec"> info@quito -turismo.gob.ec</a>
+                                    <b>Correo electrónico:</b> <a href="mailto:info@quito-turismo.gob.ec"> info@quito-turismo.gob.ec</a>
                                 </p>
                             </p-message>
                         </ng-content>

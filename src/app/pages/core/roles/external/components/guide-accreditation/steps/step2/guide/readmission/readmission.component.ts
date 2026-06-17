@@ -7,9 +7,7 @@ import { RequirementExpiredComponent } from '@/pages/core/roles/external/compone
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { MY_ROUTES } from '@routes';
 import { Router } from '@angular/router';
-import {
-    RequirementReadmissionComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-readmission/requirement-readmission.component';
+import { RequirementReadmissionComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-readmission/requirement-readmission.component';
 
 @Component({
     selector: 'app-readmission',
@@ -86,13 +84,25 @@ export class ReadmissionComponent {
 
                 const { category, classification, ...process } = this.formStateService.process()!;
 
+                const credentials = this.formStateService.establishmentTemp()?.credentials?.map((item) => {
+                    return {
+                        classificationId: item.classificationId,
+                        categoryId: item.categoryId,
+                        establishmentId: item.establishmentId,
+                        geographicAreaId: item.geographicAreaId,
+                        startedAt: item.startedAt,
+                        endedAt: item.endedAt,
+                        code: item.code,
+                        origin: item.origin
+                    };
+                });
+
                 const payload = {
                     user: this.formStateService.user(),
                     process: process,
                     establishment: this.formStateService.establishment(),
-                    guideOrigin: this.formStateService.guideOrigin(),
                     processGuides,
-                    credentials: this.formStateService.establishmentTemp()?.credentials
+                    credentials
                 };
 
                 console.log(payload);

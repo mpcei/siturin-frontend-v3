@@ -44,7 +44,7 @@ export class GuideHttpService {
     }
 
     createRenew(payload: FormData): Observable<any> {
-        const url = `${this._apiUrl}/renewval-registrations`;
+        const url = `${this._apiUrl}/renewals`;
         return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
             map((response) => {
                 return response.data;
