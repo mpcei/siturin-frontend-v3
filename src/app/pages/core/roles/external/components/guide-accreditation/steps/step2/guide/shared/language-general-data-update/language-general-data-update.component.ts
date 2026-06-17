@@ -34,7 +34,7 @@ export interface LanguageInterface {
 }
 
 @Component({
-    selector: 'app-language',
+    selector: 'app-language-general-data-update',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -54,11 +54,10 @@ export interface LanguageInterface {
         ButtonActionComponent,
         Tag
     ],
-    templateUrl: './language.component.html'
+    templateUrl: './language-general-data-update.component.html'
 })
-export class LanguageComponent implements OnInit {
+export class LanguageGeneralDataUpdateComponent implements OnInit {
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
-    public classification = input.required<ClassificationInterface>();
 
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -82,6 +81,7 @@ export class LanguageComponent implements OnInit {
     protected levels: CatalogueInterface[] = [];
     protected requirements: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
+    protected isLocalGuide: boolean = false;
 
     constructor() {}
 
@@ -89,6 +89,10 @@ export class LanguageComponent implements OnInit {
         this.buildForm();
         this.buildColumns();
         await this.loadCatalogues();
+
+        console.log(this.formStateService.establishmentTemp()?.credentials);
+        this.isLocalGuide = this.formStateService.establishmentTemp()?.credentials!?.some((item) => item.classification?.code == CatalogueGuideClassificationsCodeEnum.guide_local);
+        console.log(this.isLocalGuide);
     }
 
     buildButtonActions(item: any, index: number) {
@@ -127,7 +131,7 @@ export class LanguageComponent implements OnInit {
             languages: []
         });
 
-        if (this.classification().code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+        if (this.isLocalGuide) {
             this.hasLanguageField.clearValidators();
             this.hasLanguageField.updateValueAndValidity();
         }
@@ -146,7 +150,7 @@ export class LanguageComponent implements OnInit {
         });
 
         this.languageField.valueChanges.subscribe((value) => {
-            if (value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && value.code === 'es') {
+            if (value && !this.isLocalGuide && value.code === 'es') {
                 this.motherLanguageField.enable();
                 this.motherLanguageField.setValidators([Validators.requiredTrue]);
             } else {
@@ -205,7 +209,7 @@ export class LanguageComponent implements OnInit {
         if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos un idioma');
 
         if (!this.formStateService.establishmentTemp()?.languages?.length) {
-            if (!this.hasLanguageField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
+            if (!this.hasLanguageField.value && !this.isLocalGuide && this.items.length === 0) errors.push('Idiomas');
         }
 
         if (errors.length > 0) {

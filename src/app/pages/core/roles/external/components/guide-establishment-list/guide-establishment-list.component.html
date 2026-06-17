@@ -140,7 +140,9 @@
                         <p-button
                             pTooltip="Actualización Datos Generales"
                             [icon]="FontAwesome.ADDRESS_CARD_REGULAR"
-                            [raised]="true" />
+                            [raised]="true"
+                            (onClick)="createGeneralDataUpdate(establishment())"
+                        />
 
                         <p-button
                             pTooltip="Nueva clasificación"

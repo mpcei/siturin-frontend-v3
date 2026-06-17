@@ -25,4 +25,8 @@
     @case (CatalogueProcessesTypeEnum.readmission) {
         <app-readmission (step)="$event" />
     }
+
+    @case (CatalogueProcessesTypeEnum.general_data_update) {
+        <app-general-data-update (step)="$event" />
+    }
 }

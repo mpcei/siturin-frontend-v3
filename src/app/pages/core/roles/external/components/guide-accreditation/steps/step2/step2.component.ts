@@ -189,7 +189,6 @@ export class Step2Component implements OnInit {
     }
 
     async loadActivities() {
-        console.log(this.geographicAreas);
         if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
             this.activities = [];
             this.geographicAreas.forEach(async (geographicArea) => {
@@ -201,7 +200,6 @@ export class Step2Component implements OnInit {
         }
         console.log(this.activities);
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
-        console.log(this.activities);
         this.activityField.patchValue(this.activities[0]);
 
         if (this.formStateService.catastroSiete()?.type !== 'new') {
@@ -262,6 +260,11 @@ export class Step2Component implements OnInit {
                 break;
 
             case CatalogueProcessesTypeEnum.readmission:
+                this.form.patchValue(this.process!);
+                await this.loadActivities();
+                break;
+
+            case CatalogueProcessesTypeEnum.general_data_update:
                 this.form.patchValue(this.process!);
                 await this.loadActivities();
                 break;

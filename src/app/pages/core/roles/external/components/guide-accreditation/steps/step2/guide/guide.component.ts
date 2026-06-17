@@ -10,10 +10,13 @@ import {
 import {
     ReadmissionComponent
 } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/readmission/readmission.component';
+import {
+    GeneralDataUpdateComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/general-data-update/general-data-update.component';
 
 @Component({
     selector: 'app-guide',
-    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent, RenewComponent, ReadmissionComponent],
+    imports: [RegistrationGuideComponent, RegistrationGuideCurrentComponent, RegistrationGuideExpiredComponent, RenewComponent, ReadmissionComponent, GeneralDataUpdateComponent],
     templateUrl: './guide.component.html'
 })
 export class GuideComponent {

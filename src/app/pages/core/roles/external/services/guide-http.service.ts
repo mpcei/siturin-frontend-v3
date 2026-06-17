@@ -25,6 +25,15 @@ export class GuideHttpService {
         );
     }
 
+    createGeneralDataUpdate(payload: FormData): Observable<any> {
+        const url = `${this._apiUrl}/updates`;
+        return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
     createCurrentRegistration(payload: FormData): Observable<any> {
         const url = `${this._apiUrl}/current-registrations`;
         return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
