@@ -14,7 +14,7 @@ import { JsonPipe } from '@angular/common';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { CatalogueFoodDrinkClassificationsCodeEnum, CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
     selector: 'app-requirement',
@@ -132,7 +132,7 @@ export class RequirementComponent implements OnInit {
                 break;
             case CatalogueGuideClassificationsCodeEnum.guide_adventure:
                 if (this.degree.type === CatalogueGuideDegreesCodeEnum.bachiller || this.degree.type === CatalogueGuideDegreesCodeEnum.related || this.degree.type === CatalogueGuideDegreesCodeEnum.guide) {
-                    this.degreeName = CatalogueGuideRequirementsCodeEnum.guide;
+                    this.degreeName = CatalogueGuideRequirementsCodeEnum.bachiller;
                     this.certificationGuide = null;
                     this.certificationJobSkill = CatalogueGuideRequirementsCodeEnum.certification_job_skill;
                     this.certificationAux = CatalogueGuideRequirementsCodeEnum.certification_aux_50;
