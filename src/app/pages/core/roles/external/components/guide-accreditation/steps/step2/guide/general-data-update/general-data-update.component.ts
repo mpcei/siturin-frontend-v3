@@ -1,4 +1,4 @@
-import { Component, inject, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
 import { Button } from 'primeng/button';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
@@ -13,19 +13,16 @@ import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/compo
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { MY_ROUTES } from '@routes';
 import { Router } from '@angular/router';
-import {
-    RequirementGeneralDataUpdateComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-general-data-update/requirement-general-data-update.component';
-import {
-    LanguageGeneralDataUpdateComponent
-} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language-general-data-update/language-general-data-update.component';
+import { RequirementGeneralDataUpdateComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-general-data-update/requirement-general-data-update.component';
+import { LanguageGeneralDataUpdateComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language-general-data-update/language-general-data-update.component';
+import { AdventureTourismModalityGeneralDataUpdateComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality-general-data-update/adventure-tourism-modality-general-data-update.component';
 
 @Component({
     selector: 'app-general-data-update',
-    imports: [Button, AdventureTourismModalityComponent, RequirementComponent, ProtectedAreaComponent, LanguageComponent, RequirementGeneralDataUpdateComponent, LanguageGeneralDataUpdateComponent],
+    imports: [Button, RequirementGeneralDataUpdateComponent, LanguageGeneralDataUpdateComponent, AdventureTourismModalityGeneralDataUpdateComponent],
     templateUrl: './general-data-update.component.html'
 })
-export class GeneralDataUpdateComponent {
+export class GeneralDataUpdateComponent implements OnInit {
     protected readonly PrimeIcons = PrimeIcons;
     public step: OutputEmitterRef<number> = output<number>();
 
@@ -42,6 +39,7 @@ export class GeneralDataUpdateComponent {
     protected readonly guideHttpService = inject(GuideHttpService);
     protected readonly formStateService = inject(FormStateService);
     private readonly confirmationService = inject(ConfirmationService);
+    protected hasModalities: boolean | undefined = false;
 
     constructor() {
         // effect(async () => {
@@ -52,6 +50,17 @@ export class GeneralDataUpdateComponent {
         //         if (processSignal.category?.hasRegulation) this.modelId = processSignal.category.id;
         //     }
         // });
+    }
+
+    ngOnInit(): void {
+        this.hasModalities = this.formStateService
+            .establishmentTemp()
+            ?.credentials?.some(
+                (item) =>
+                    item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local ||
+                    item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_adventure ||
+                    item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_national_adventure
+            );
     }
 
     saveForm(data: any, objectName?: string) {

@@ -193,12 +193,11 @@ export class Step2Component implements OnInit {
             this.activities = [];
             this.geographicAreas.forEach(async (geographicArea) => {
                 this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
-                console.log(this.activities);
             });
         } else {
             this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
         }
-        console.log(this.activities);
+
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
 
@@ -210,11 +209,13 @@ export class Step2Component implements OnInit {
     async loadClassifications() {
         this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
 
+        if (this.degreeType === 'bachiller') {
+            this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
+        }
+
         switch (this.formStateService.process()?.type?.code) {
             case CatalogueProcessesTypeEnum.registration: {
-                if (this.degreeType === 'bachiller') {
-                    this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
-                }
+
                 break;
             }
             case CatalogueProcessesTypeEnum.new_classification_update: {

@@ -1,0 +1,178 @@
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12">
+            <h3>MODALIDADES DE AVENTURA</h3>
+        </div>
+
+        <!-- hasAdventureTourismModality -->
+        <div class="custom-form-field md:col-span-12">
+            <label appLabel for="hasAdventureTourismModality"
+                   [required]="hasAdventureTourismModalityField">
+                <div [innerHTML]="requirementField.value?.name"></div>
+            </label>
+
+            <app-toggle-switch id="hasAdventureTourismModality" formControlName="hasAdventureTourismModality" />
+
+            <small
+                appErrorMessage
+                [errors]="hasAdventureTourismModalityField.errors"
+                [touched]="hasAdventureTourismModalityField.touched"
+                [dirty]="hasAdventureTourismModalityField.dirty"
+            ></small>
+        </div>
+
+    </form>
+</div>
+
+@if (formStateService.establishmentTemp()?.adventureModalities?.length) {
+    <div class="custom-form-card">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="custom-form-title md:col-span-12">
+                <h4>Modalidades Registradas:</h4>
+            </div>
+
+            <div class="custom-form-title md:col-span-12">
+                @for (modality of formStateService.establishmentTemp()?.adventureModalities; track modality.id) {
+                    <p-tag [value]="modality?.modalityName" class="mr-2" severity="info" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (hasAdventureTourismModalityField.value) {
+    <div class="custom-form-card">
+        <app-list-basic
+            title="Modalidades de Turismo de Aventura"
+            [items]="items"
+            [cols]="cols"
+            [buttonActions]="buttonActions"
+            (onCreate)="isVisibleModal = true"
+            (onSelect)="onSelect($event)"
+        />
+    </div>
+}
+<!--&& classification().code === CatalogueGuideClassificationsCodeEnum.guide_national_adventure -->
+@if (hasVehicle() ) {
+    <app-vehicle (dataOut)="saveVehicles($event)"/>
+}
+
+<p-dialog
+    [(visible)]="isVisibleModal"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [style]="{ width: '40vw' }"
+    [draggable]="false"
+    (onHide)="closeModal()"
+    [resizable]="false"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Agregar Modalidad</span>
+        </div>
+    </ng-template>
+
+    <div class="custom-form-card">
+        <form [formGroup]="modalityForm" class="custom-form-grid md:grid-cols-12" (ngSubmit)="onSubmit()">
+            <!-- modality -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label
+                    appLabel
+                    for="modality"
+                    label="Modalidad"
+                    [required]="modalityField"></label>
+
+                <p-select
+                    id="modality"
+                    formControlName="modality"
+                    [options]="availableModalities"
+                    optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
+                    appendTo="body" />
+
+                <small
+                    appErrorMessage
+                    [errors]="modalityField.errors"
+                    [touched]="modalityField.touched"
+                    [dirty]="modalityField.dirty"></small>
+            </div>
+
+            <!-- certifier -->
+            <div class="md:col-span-12 flex flex-col gap-2">
+                <label
+                    appLabel for="certifier"
+                    [required]="certifierField"
+                    label="Organismos Certificadores de Habilidad Acreditados"></label>
+
+                <p-select
+                    id="certifier"
+                    formControlName="certifier"
+                    [options]="certifiers"
+                    optionLabel="name"
+                    [filter]="true"
+                    filterBy="name"
+                    appendTo="body" />
+
+                <small
+                    appErrorMessage
+                    [errors]="certifierField.errors"
+                    [touched]="certifierField.touched"
+                    [dirty]="certifierField.dirty"></small>
+            </div>
+
+            <!-- ruc -->
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="ruc"
+                    [required]="fileField"
+                    label="Certificación de habilidad o el certificado de aprobación del curso de capacitación específico de aventura de la modalidad referida">
+                </label>
+
+                <p-fileupload
+                    id="file"
+                    name="file"
+                    mode="basic"
+                    chooseLabel="Buscar archivo"
+                    [chooseIcon]="PrimeIcons.SEARCH"
+                    uploadLabel="Subir archivo"
+                    accept="application/pdf"
+                    [maxFileSize]="10485760"
+                    [auto]="true"
+                    [customUpload]="true"
+                    (uploadHandler)="onFileSelect(modalityField.value,$event)">
+                </p-fileupload>
+
+                @if (fileField.value) {
+                    <p-message severity="info">
+                        {{ fileField.value.name | json }}
+                    </p-message>
+                }
+
+                <small
+                    appErrorMessage
+                    [errors]="fileField.errors"
+                    [touched]="fileField.touched"
+                    [dirty]="fileField.dirty"></small>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="custom-form-field md:col-span-12">
+                <p-button
+                    type="submit"
+                    label="Agregar"
+                    severity="success"
+                    styleClass="w-full"
+                    [icon]="PrimeIcons.PLUS" />
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+<app-button-action
+    [buttonActions]="buttonActions"
+    [enabled]="isButtonActionsEnabled"
+    (isHide)="isButtonActionsEnabled = $event">
+</app-button-action>
