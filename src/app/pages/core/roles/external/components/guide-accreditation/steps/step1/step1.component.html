@@ -22,6 +22,7 @@
         @for (item of professionalTitles(); track item) {
             <div class="custom-form-field md:col-span-4">
                 <p-message>
+                    <b>{{ item.levelName }}:</b>
                     {{ item?.name }}
                 </p-message>
             </div>

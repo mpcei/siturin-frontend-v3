@@ -48,7 +48,6 @@ export class AddressComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadDpa();
-        this.loadData();
     }
 
     buildForm() {
@@ -84,10 +83,17 @@ export class AddressComponent implements OnInit {
 
         this.cantonField.valueChanges.subscribe(async (value) => {
             if (value) {
-                this.parishField.reset();
-                this.latitudeField.reset();
-                this.longitudeField.reset();
-                this.parishes = await this.dpaService.findDpaByParentId(value.id);
+                if (value.code === '1701') {
+                    this.customMessageService.showModalWarn({
+                        summary: 'Poner aqui el titulo del mensaje',
+                        detail: 'Debe realizar el proceso con Quito Turismo'
+                    });
+                } else {
+                    this.parishField.reset();
+                    this.latitudeField.reset();
+                    this.longitudeField.reset();
+                    this.parishes = await this.dpaService.findDpaByParentId(value.id);
+                }
             }
         });
 

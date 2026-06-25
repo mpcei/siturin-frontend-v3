@@ -12,10 +12,13 @@ import { LanguageComponent } from '@/pages/core/roles/external/components/guide-
 import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { RequirementRenewComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-renew/requirement-renew.component';
+import {
+    LanguageRenewalComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language-renewal/language-renewal.component';
 
 @Component({
     selector: 'app-renew',
-    imports: [Button, RequirementExpiredComponent, AdventureTourismModalityComponent, LanguageComponent, ProtectedAreaComponent, RequirementRenewComponent],
+    imports: [Button, RequirementExpiredComponent, AdventureTourismModalityComponent, LanguageComponent, ProtectedAreaComponent, RequirementRenewComponent, LanguageRenewalComponent],
     templateUrl: './renew.component.html'
 })
 export class RenewComponent {

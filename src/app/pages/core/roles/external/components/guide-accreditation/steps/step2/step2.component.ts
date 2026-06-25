@@ -235,8 +235,8 @@ export class Step2Component implements OnInit {
                 this.form.patchValue(this.process!);
                 await this.loadActivities();
                 this.activityField.disable();
-                this.classificationField.reset();
-                this.categoryField.reset();
+                this.classificationField.disable();
+                this.categoryField.disable();
                 break;
 
             case CatalogueProcessesTypeEnum.new_classification_update:
@@ -273,6 +273,8 @@ export class Step2Component implements OnInit {
     }
 
     continueRequirements() {
+        console.log(this.form);
+
         if (this.form.valid) {
             this.isEdit = false;
             this.geographicAreaField.disable();

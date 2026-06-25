@@ -136,7 +136,7 @@ export class AppMenu implements OnInit {
                 label: 'Manual de Usuario',
                 icon: FontAwesome.DOWNLOAD_SOLID,
                 command() {
-                    window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
+                    window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
                 }
             }
         ];

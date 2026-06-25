@@ -10,17 +10,16 @@
         </div>
 
         <!-- credentials -->
-        @for (item of formStateService.catastroSiete()?.credentials; track item) {
-            <div class="custom-form-field md:col-span-4">
-                <p-message [severity]="isAfter(currentDate,item.endedAt )?'error':'info'">
-                    <p class="mb-2">Credencial: <b>{{ item.type }}</b></p>
-                    <p>Fecha Emisión: <b>{{ item.startedAt | date }}</b></p>
-                    <p>Fecha Caducidad: <b>{{ item.endedAt | date }}</b></p>
-                    <p>Estado: <b>{{ isAfter(currentDate, item.endedAt) ? 'Caducada' : 'Vigente' }}</b></p>
-                </p-message>
+        <div class="custom-form-field md:col-span-4">
+            <p-message [severity]="isAfter(currentDate,formStateService.currentCredential()?.endedAt! )?'error':'info'">
+                <p class="mb-2">Credencial: <b>{{ formStateService.currentCredential()!.classification?.name }}</b></p>
+                <p>Fecha Emisión: <b>{{ formStateService.currentCredential()!.startedAt | date }}</b></p>
+                <p>Fecha Caducidad: <b>{{ formStateService.currentCredential()!.endedAt | date }}</b></p>
+                <p>Estado: <b>{{ isAfter(currentDate, formStateService.currentCredential()?.endedAt!) ? 'Caducada' : 'Vigente' }}</b></p>
+            </p-message>
 
-            </div>
-        }
+        </div>
+
 
         <!-- ruc -->
         @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc)) {
@@ -42,7 +41,7 @@
                     [chooseIcon]="PrimeIcons.SEARCH"
                     uploadLabel="Subir archivo"
                     accept="application/pdf"
-                    [maxFileSize]="10485760"
+                    [maxFileSize]="1048576"
                     [auto]="true"
                     [customUpload]="true"
                     (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc),$event)">
@@ -82,7 +81,7 @@
                     [chooseIcon]="PrimeIcons.SEARCH"
                     uploadLabel="Subir archivo"
                     accept="image/*"
-                    [maxFileSize]="10485760"
+                    [maxFileSize]="1048576"
                     [auto]="true"
                     [customUpload]="true"
                     (uploadHandler)="onFileSelect(requirementItems().get('photo'),$event)">
@@ -124,7 +123,7 @@
                     [chooseIcon]="PrimeIcons.SEARCH"
                     uploadLabel="Subir archivo"
                     accept="application/pdf"
-                    [maxFileSize]="10485760"
+                    [maxFileSize]="1048576"
                     [auto]="true"
                     [customUpload]="true"
                     (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux),$event)">
@@ -165,7 +164,7 @@
                     [chooseIcon]="PrimeIcons.SEARCH"
                     uploadLabel="Subir archivo"
                     accept="application/pdf"
-                    [maxFileSize]="10485760"
+                    [maxFileSize]="1048576"
                     [auto]="true"
                     [customUpload]="true"
                     (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux_wild),$event)">
@@ -232,7 +231,7 @@
                         [chooseIcon]="PrimeIcons.SEARCH"
                         uploadLabel="Subir archivo"
                         accept="application/pdf"
-                        [maxFileSize]="10485760"
+                        [maxFileSize]="1048576"
                         [auto]="true"
                         [customUpload]="true"
                         (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course),$event)">

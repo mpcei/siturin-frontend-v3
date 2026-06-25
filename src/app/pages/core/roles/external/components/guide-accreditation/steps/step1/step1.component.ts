@@ -9,10 +9,11 @@ import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@modules/core/roles/external/services';
 import { Message } from 'primeng/message';
 import { AuthService } from '@/pages/auth/auth.service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-step1',
-    imports: [Button, ContactPersonComponent, AddressComponent, Message],
+    imports: [Button, ContactPersonComponent, AddressComponent, Message, JsonPipe],
     templateUrl: './step1.component.html'
 })
 export class Step1Component implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
+import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Select } from 'primeng/select';
@@ -20,20 +20,21 @@ import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
-import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
-import { Tag } from 'primeng/tag';
+import { ClassificationInterface } from '@/pages/core/shared/interfaces';
+import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { FormStateService } from '@/pages/core/roles/external/services';
+import { Tag } from 'primeng/tag';
 
-export interface AdventureTourismModalityInterface {
+export interface LanguageInterface {
     id?: string;
-    certifier?: CatalogueInterface;
-    modality?: CatalogueInterface;
+    level?: CatalogueInterface;
+    language?: CatalogueInterface;
     file?: any;
+    motherLanguage: boolean;
 }
 
 @Component({
-    selector: 'app-adventure-tourism-modality-general-data-update',
+    selector: 'app-language-renewal',
     standalone: true,
     imports: [
         ReactiveFormsModule,
@@ -51,12 +52,11 @@ export interface AdventureTourismModalityInterface {
         ToggleSwitchComponent,
         FileUpload,
         ButtonActionComponent,
-        VehicleComponent,
         Tag
     ],
-    templateUrl: './adventure-tourism-modality-general-data-update.component.html'
+    templateUrl: './language-renewal.component.html'
 })
-export class AdventureTourismModalityGeneralDataUpdateComponent implements OnInit {
+export class LanguageRenewalComponent implements OnInit {
     public dataOut: OutputEmitterRef<Record<string, any>> = output<Record<string, any>>();
 
     protected readonly PrimeIcons = PrimeIcons;
@@ -72,16 +72,15 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
 
     protected isVisibleModal = false;
     protected cols: ColInterface[] = [];
-    protected items: AdventureTourismModalityInterface[] = [];
+    protected items: LanguageInterface[] = [];
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
 
-    protected availableModalities: CatalogueInterface[] = [];
-    protected certifiers: CatalogueInterface[] = [];
+    protected availableLanguages: CatalogueInterface[] = [];
+    protected languages: CatalogueInterface[] = [];
+    protected levels: CatalogueInterface[] = [];
     protected requirements: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
-    protected hasVehicle = signal<boolean>(false);
-    protected isLocalGuide: boolean | undefined = false;
 
     constructor() {}
 
@@ -89,8 +88,6 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
         this.buildForm();
         this.buildColumns();
         await this.loadCatalogues();
-
-        this.isLocalGuide = this.formStateService.establishmentTemp()?.credentials?.some((item) => item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local);
     }
 
     buildButtonActions(item: any, index: number) {
@@ -98,7 +95,7 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
             {
                 ...deleteButtonAction,
                 command: () => {
-                    if (item) this.deleteAdventureTourismModality(item);
+                    if (item) this.deleteItem(item);
                 }
             }
         ];
@@ -108,84 +105,89 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
 
     buildColumns() {
         this.cols = [
-            { header: 'Modalidad', field: 'modality', type: 'object' },
-            { header: 'Organismos Certificadores', field: 'certifier', type: 'object' },
-            { header: 'Certificación de habilidad o el certificado de aprobación', field: 'file', type: 'object' }
+            { header: 'Tipo de idioma extranjero', field: 'language', type: 'object' },
+            { header: 'Nivel de conocimiento del idioma extranjero', field: 'level', type: 'object' },
+            { header: 'Certificado de idiomas', field: 'file', type: 'object' }
         ];
     }
 
     buildForm() {
         this.modalityForm = this.formBuilder.group({
             id: [null],
-            modality: [null, Validators.required],
-            certifier: [null, Validators.required],
+            language: [null, Validators.required],
+            level: [null, Validators.required],
+            motherLanguage: [{ value: null, disabled: true }],
             file: [null, Validators.required]
         });
 
         this.form = this.formBuilder.group({
             requirement: [null, Validators.required],
-            vehicle: [null],
-            hasAdventureTourismModality: [null, Validators.requiredTrue],
-            adventureTourismModalities: []
+            hasLanguage: [null, Validators.requiredTrue],
+            languages: []
         });
 
-        if (this.isLocalGuide) {
-            this.hasAdventureTourismModalityField.clearValidators();
-            this.hasAdventureTourismModalityField.updateValueAndValidity();
+        if (this.formStateService.currentCredential()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+            this.hasLanguageField.clearValidators();
+            this.hasLanguageField.updateValueAndValidity();
+        }
+
+        if (this.formStateService.establishmentTemp()?.languages?.length) {
+            this.hasLanguageField.clearValidators();
+            this.hasLanguageField.updateValueAndValidity();
         }
 
         this.watchFormChanges();
     }
 
     watchFormChanges() {
-        this.hasAdventureTourismModalityField.valueChanges.subscribe((_) => {
+        this.hasLanguageField.valueChanges.subscribe((_) => {
             this.updateFormAndEmit();
         });
 
-        this.modalityField.valueChanges.subscribe(async (value) => {
-            if (value) this.certifiers = await this.catalogueService.findByModel(value.id);
+        this.languageField.valueChanges.subscribe((value) => {
+            if (value && this.formStateService.currentCredential()?.classification?.code !== CatalogueGuideClassificationsCodeEnum.guide_local && value.code === 'es') {
+                this.motherLanguageField.enable();
+                this.motherLanguageField.setValidators([Validators.requiredTrue]);
+            } else {
+                this.motherLanguageField.disable();
+                this.motherLanguageField.clearValidators();
+            }
+            this.motherLanguageField.updateValueAndValidity();
         });
     }
 
-    checkVehicles(): void {
-        const hasVehicle =
-            this.items?.some(({ modality }) => {
-                return [CatalogueGuideModalitiesCodeEnum.alm, CatalogueGuideModalitiesCodeEnum.mem].includes(modality?.code as CatalogueGuideModalitiesCodeEnum);
-            }) ?? false;
-
-        this.hasVehicle.set(hasVehicle);
-    }
-
     async loadCatalogues() {
-        const [requirements] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
+        const [languages, levels, requirements] = await Promise.all([
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_languages_name),
+            this.catalogueService.findByType(CatalogueTypeEnum.guide_languages_level),
+            this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)
+        ]);
 
-        // this.availableModalities = await this.catalogueService.findByModel(this.classification().id!);
+        this.availableLanguages = languages;
 
-        if (this.formStateService.establishmentTemp()?.adventureModalities) {
-            this.availableModalities = this.availableModalities.filter((c) => !this.formStateService.establishmentTemp()?.adventureModalities!.some((mc) => mc.modalityCode === c.code));
+        if (this.formStateService.establishmentTemp()?.languages) {
+            this.availableLanguages = languages.filter((c) => !this.formStateService.establishmentTemp()?.languages!.some((mc) => mc.languageCode === c.code));
         }
 
+        this.levels = levels;
         this.requirements = requirements;
 
-        if (this.isLocalGuide) {
-            this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure'));
-        } else {
-            this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure_guide'));
-        }
+        this.requirementField.patchValue(this.requirements.find((x) => x.code === 'certification_language'));
     }
 
     onSubmit() {
         if (this.validateModalityForm()) {
-            this.createAdventureTourismModality();
+            this.createItem();
         }
     }
 
     validateModalityForm() {
         const errors: string[] = [];
 
-        if (this.modalityField.invalid) errors.push('Modalidad');
-        if (this.certifierField.invalid) errors.push('Organismos Certificadores');
-        if (this.fileField.invalid) errors.push('Certificación de habilidad o el certificado de aprobación');
+        if (this.languageField.invalid) errors.push('Tipo de idioma extranjero');
+        if (this.levelField.invalid) errors.push('Nivel de conocimiento del idioma extranjero');
+        if (this.motherLanguageField.invalid) errors.push('Lengua materna');
+        if (this.fileField.invalid) errors.push('Certificado de idiomas');
 
         if (errors.length > 0) {
             this.form.markAllAsTouched();
@@ -199,11 +201,12 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
     getFormErrors() {
         const errors: string[] = [];
 
-        if (this.hasAdventureTourismModalityField.value && this.items.length === 0) errors.push('Si marcó que Sí en Modalidades de Aventura debe agregar por lo menos una modalidad');
+        if (this.hasLanguageField.value && this.items.length === 0) errors.push('Si marcó que Sí en Idiomas debe agregar por lo menos un idioma');
 
-        // if (!this.formStateService.establishmentTemp()?.adventureModalities?.length) {
-        //     if (!this.hasAdventureTourismModalityField.value && this.classification().code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Modalidades de Aventura');
-        // }
+        if (!this.formStateService.establishmentTemp()?.languages?.length) {
+            if (!this.hasLanguageField.value && this.formStateService.currentCredential()?.classification?.code !== CatalogueGuideClassificationsCodeEnum.guide_local && this.items.length === 0) errors.push('Idiomas');
+        }
+
         if (errors.length > 0) {
             this.form.markAllAsTouched();
             return errors;
@@ -222,13 +225,13 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
         this.buildButtonActions(item, index);
     }
 
-    createAdventureTourismModality() {
-        const modality = this.modalityField.value;
+    createItem() {
+        const language = this.languageField.value;
 
-        if (this.items.some((i) => i.modality?.code === modality?.code)) {
+        if (this.items.some((i) => i.language?.code === language?.code)) {
             this.customMessageService.showError({
                 summary: 'Aviso',
-                detail: 'La modalidad ya existe'
+                detail: 'El idioma ya existe'
             });
             return;
         }
@@ -236,19 +239,19 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
         this.items = [
             ...this.items,
             {
-                certifier: this.certifierField.value,
-                modality,
-                file: this.fileField.value
+                level: this.levelField.value,
+                language,
+                file: this.fileField.value,
+                motherLanguage: this.motherLanguageField.value
             }
         ];
 
-        this.checkVehicles();
         this.updateFormAndEmit();
 
         this.closeModal();
     }
 
-    deleteAdventureTourismModality(modality: AdventureTourismModalityInterface) {
+    deleteItem(language: LanguageInterface) {
         this.confirmationService.confirm({
             message: '¿Está seguro de eliminar?',
             header: 'Eliminar',
@@ -263,9 +266,8 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
                 label: 'Sí, Eliminar'
             },
             accept: () => {
-                this.items = this.items.filter((item) => item.modality?.id !== modality?.modality?.id);
+                this.items = this.items.filter((item) => item.language?.id !== language?.language?.id);
 
-                this.checkVehicles();
                 this.updateFormAndEmit();
             },
             key: 'confirmdialog'
@@ -290,28 +292,26 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
         });
     }
 
-    saveVehicles(data: any) {
-        console.log(data);
-        this.vehicleField.patchValue(data);
-        this.updateFormAndEmit();
-    }
-
     private updateFormAndEmit() {
-        this.adventureTourismModalitiesField.setValue(this.items);
+        this.languagesField.setValue(this.items);
         this.dataOut.emit(this.form.getRawValue());
     }
 
     // Getter Modality Form
-    get modalityField(): AbstractControl {
-        return this.modalityForm.controls['modality'];
+    get languageField(): AbstractControl {
+        return this.modalityForm.controls['language'];
     }
 
-    get certifierField(): AbstractControl {
-        return this.modalityForm.controls['certifier'];
+    get levelField(): AbstractControl {
+        return this.modalityForm.controls['level'];
     }
 
     get fileField(): AbstractControl {
         return this.modalityForm.controls['file'];
+    }
+
+    get motherLanguageField(): AbstractControl {
+        return this.modalityForm.controls['motherLanguage'];
     }
 
     // Getters Form
@@ -319,17 +319,11 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
         return this.form.controls['requirement'];
     }
 
-    get vehicleField(): AbstractControl {
-        return this.form.controls['vehicle'];
+    get hasLanguageField(): AbstractControl {
+        return this.form.controls['hasLanguage'];
     }
 
-    get hasAdventureTourismModalityField(): AbstractControl {
-        return this.form.controls['hasAdventureTourismModality'];
+    get languagesField(): AbstractControl {
+        return this.form.controls['languages'];
     }
-
-    get adventureTourismModalitiesField(): AbstractControl {
-        return this.form.controls['adventureTourismModalities'];
-    }
-
-    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 }

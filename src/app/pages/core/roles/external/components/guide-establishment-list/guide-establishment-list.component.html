@@ -27,7 +27,7 @@
                         <tr>
                             <th>Opciones</th>
                             <th style="width:3rem">Nro.</th>
-                            <th>Nombre Comercial</th>
+                            <th>Razón Social</th>
                             <th>Estado Establecimiento</th>
                             <th>Ubicación</th>
                             <th>Actividad</th>
@@ -60,15 +60,9 @@
                                 {{ item.number | establishmentNumber }}
                             </td>
                             <td>
-                                @if (item.tradeName) {
-                                    <p>
-                                        {{ item.tradeName }}
-                                    </p>
-                                }
-
-                                @if (!item?.tradeName) {
-                                    <p-tag severity="danger" value="SIN NOMBRE COMERCIAL SRI" />
-                                }
+                                <p>
+                                    {{ item.ruc.legalName }}
+                                </p>
                             </td>
                             <td>
                                 @if (item?.state?.code === CatalogueEstablishmentsStateEnum.open) {
@@ -90,6 +84,8 @@
                             <td>
                                 @if (item.process) {
                                     {{ item.process.activity.name }}
+                                } @else {
+                                    Sin actividad turística
                                 }
                             </td>
                             <td>
@@ -102,6 +98,8 @@
                             <td>
                                 @if (item.process) {
                                     {{ item.process.cadastre?.cadastreState?.state?.name }}
+                                } @else {
+                                    Sin estado
                                 }
                             </td>
                         </tr>

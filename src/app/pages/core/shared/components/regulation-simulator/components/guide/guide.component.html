@@ -13,6 +13,32 @@
     </div>
 </div>
 
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-12">
+            <label for="">
+                <b>Definición:</b>
+            </label>
+
+            <p class="text-justify">
+                {{ definition }}
+            </p>
+        </div>
+
+        <div class="custom-form-field md:col-span-12">
+            <label for="">
+                <b>Atención:</b>
+            </label>
+
+            <p class="text-justify">
+                Los requisitos que se detallan a continuación serán verificados internamente por los funcionarios del
+                Ministerio de Producción Comercio Exteriro e Inversiones ( MPECI ), se recomienda asegurarse de que los
+                requisitos solicitados cumpla con lo estipulado en la Normativa Legal Vigente.
+            </p>
+        </div>
+    </div>
+</div>
+
 @if (items().length > 0) {
     <div class="custom-form-card">
         <p-table [value]="items()" [tableStyle]="{ 'min-width': '50rem' }">
@@ -34,25 +60,38 @@
                             } @else {
                                 <div [innerHTML]="item.requirement.name"></div>
                             }
-                            {{ environment.APP_PATH_ASSETS + '/simulator/' + item.requirement.code + '.jpg' }}
-                            @if (item.requirement.code==='certification_language') {
+
+                            @if (item.requirement.code === 'certification_language') {
                                 <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
                                      alt="">
                             }
 
-                            @if (item.requirement.code==='pane') {
+                            @if (item.requirement.code === 'pane') {
                                 <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
                                      alt="">
                             }
 
-                            @if (item.requirement.code==='modality_adventure') {
+                            @if (item.requirement.code === 'modality_adventure') {
                                 <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
                                      alt="">
+
+                                <p>
+                                    <b>Nota:</b> Disposición General Novena: Quienes oferten los cursos de capacitación
+                                    específicos, deberán ser reconocidos por la autoridad competente que corresponda,
+                                    contar con el aval de la Autoridad Nacional de Turismo y cumplir con los requisitos
+                                    y generalidades dispuestos por dicha Autoridad.
+                                </p>
                             }
 
-                            @if (item.requirement.code==='modality_adventure_guide') {
+                            @if (item.requirement.code === 'modality_adventure_guide') {
                                 <img [src]="environment.APP_PATH_ASSETS+'/simulator/'+item.requirement.code+'.jpg'"
                                      alt="">
+                                <p>
+                                    <b>Nota:</b> Disposición General Novena: Quienes oferten los cursos de capacitación
+                                    específicos, deberán ser reconocidos por la autoridad competente que corresponda,
+                                    contar con el aval de la Autoridad Nacional de Turismo y cumplir con los requisitos
+                                    y generalidades dispuestos por dicha Autoridad.
+                                </p>
                             }
                         }
                     </td>

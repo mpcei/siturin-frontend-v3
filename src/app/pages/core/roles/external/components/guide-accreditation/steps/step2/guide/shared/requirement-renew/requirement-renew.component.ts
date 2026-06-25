@@ -56,6 +56,7 @@ export class RequirementRenewComponent implements OnInit {
         this.loadData();
 
         await this.loadCatalogues();
+        console.log(this.formStateService.currentCredential());
     }
 
     buildForm() {

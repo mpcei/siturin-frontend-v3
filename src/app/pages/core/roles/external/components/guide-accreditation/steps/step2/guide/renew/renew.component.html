@@ -14,9 +14,7 @@ CatalogueGuideClassificationsCodeEnum.guide_national_adventure === formStateServ
         (dataOut)="saveForm($event,'adventureModality')" />
 }
 
-<app-language
-    [classification]="formStateService.process()?.classification!"
-    (dataOut)="saveForm($event,'language')" />
+<app-language-renewal (dataOut)="saveForm($event,'language')" />
 
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
