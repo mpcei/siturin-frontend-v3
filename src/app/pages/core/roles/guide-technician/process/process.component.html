@@ -1,0 +1,68 @@
+<p-button
+    [icon]="PrimeIcons.DOWNLOAD"
+    label="Descargar Bandeja"
+    severity="success"
+    size="large" />
+
+<p-divider />
+
+<h2>Proceso de atención a trámites:</h2>
+<p-message>
+    <div>
+        <p class="font-bold">Nota informativa al Técnico Zonal</p>
+
+        <p>
+            "Recuerde que se debera revisar los requisitos documentales, mismos que deben ser parte del expediente
+            fisico y digital por establecimiento, de su jurisdiccion."
+        </p>
+    </div>
+</p-message>
+
+<p-divider />
+
+<p-fluid>
+    <div class="card flex flex-col gap-6 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <app-schedule />
+            </div>
+
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <app-download-documents />
+            </div>
+
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <app-results />
+            </div>
+        </div>
+    </div>
+</p-fluid>
+
+<p-divider />
+
+<div style="margin-bottom: 2rem;"></div>
+<div>
+    <p-button icon="pi pi-refresh" label="Devolver Tramite" severity="info" size="large" class="espaciado" />
+
+    <p-button icon="pi pi-users" label="Historial Asignaciones" severity="success" size="large" />
+</div>
+<div style="margin-bottom: 2rem;"></div>
+
+<h2>Lista de tramites:</h2>
+<p-table [value]="products" [paginator]="true" [rows]="5" [tableStyle]="{ 'min-width': '50rem' }"
+         [rowsPerPageOptions]="[5, 10, 20]" [value]="products" stripedRows>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{ product.code }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+        </tr>
+    </ng-template>
+</p-table>

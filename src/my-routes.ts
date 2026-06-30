@@ -149,6 +149,30 @@ export const MY_ROUTES = {
                 base: 'process-logs',
                 absolute: '/main/core/technician/process-logs'
             }
+        },
+        guideTechnician: {
+            base: 'guide-technician',
+            absolute: '/main/core/guide-technician',
+            dashboard: {
+                base: 'dashboard',
+                absolute: '/main/core/guide-technician/dashboard'
+            },
+            simulator: {
+                base: 'simulators',
+                absolute: '/main/core/guide-technician/simulators'
+            },
+            process: {
+                base: 'processes',
+                absolute: '/main/core/guide-technician/processes'
+            },
+            cadastre: {
+                base: 'cadastres',
+                absolute: '/main/core/guide-technician/cadastres'
+            },
+            processLog: {
+                base: 'process-logs',
+                absolute: '/main/core/guide-technician/process-logs'
+            }
         }
     },
     publicPages: {

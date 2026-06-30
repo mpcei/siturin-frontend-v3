@@ -107,6 +107,8 @@ export class ContactPersonComponent implements OnInit {
 
     loadData() {
         if (this.dataIn()) {
+            console.log(this.dataIn());
+
             this.form.patchValue(this.dataIn());
             this.phoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.phone);
             this.secondaryPhoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.secondaryPhone);

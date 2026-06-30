@@ -15,11 +15,11 @@ export const accountGuard: CanActivateFn = (route, state) => {
     }
 
     if (!authService.auth?.securityQuestionAcceptedAt) {
-        return router.createUrlTree([MY_ROUTES.publicPages.securityQuestions.base]);
+        return router.createUrlTree([MY_ROUTES.publicPages.securityQuestions.absolute]);
     }
 
     if (!authService.auth?.termsAcceptedAt) {
-        return router.createUrlTree([MY_ROUTES.publicPages.terms.base]);
+        return router.createUrlTree([MY_ROUTES.publicPages.terms.absolute]);
     }
 
     return true;

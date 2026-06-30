@@ -12,6 +12,7 @@ import { Button } from 'primeng/button';
 import { MultiSelect } from 'primeng/multiselect';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { ConfirmationService } from 'primeng/api';
+import { CustomMessageService } from '@utils/services';
 
 @Component({
     selector: 'app-inactivation',
@@ -29,6 +30,7 @@ export class InactivationComponent implements OnInit {
     inactivationCauses = new FormControl<InactivationCauseInterface[]>([], Validators.required);
     readonly guideHttpService = inject(GuideHttpService);
     readonly catalogueService = inject(CatalogueService);
+    readonly customMessageService = inject(CustomMessageService);
     private readonly confirmationService = inject(ConfirmationService);
     causes: CatalogueInterface[] = [];
 
@@ -79,11 +81,12 @@ export class InactivationComponent implements OnInit {
                     inactivationCauses
                 };
 
-                console.log(payload);
-
                 this.guideHttpService.createInactivation(payload).subscribe({
                     next: (response) => {
-                        console.log(response);
+                        this.customMessageService.showModalInfo({
+                            summary: '',
+                            detail: ''
+                        });
                         this.closeModal();
                     }
                 });

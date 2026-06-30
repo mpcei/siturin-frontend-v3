@@ -24,6 +24,7 @@ import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum
 import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 import { Tag } from 'primeng/tag';
 import { FormStateService } from '@/pages/core/roles/external/services';
+import { CredentialInterface } from '@/pages/core/shared/interfaces';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -81,16 +82,22 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
     protected requirements: CatalogueInterface[] = [];
     protected responses: Map<string, any> = new Map<string, any>();
     protected hasVehicle = signal<boolean>(false);
-    protected isLocalGuide: boolean | undefined = false;
+    protected localGuide: CredentialInterface | undefined;
+    protected adventureGuide: CredentialInterface | undefined;
 
     constructor() {}
 
     async ngOnInit() {
         this.buildForm();
         this.buildColumns();
-        await this.loadCatalogues();
 
-        this.isLocalGuide = this.formStateService.establishmentTemp()?.credentials?.some((item) => item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local);
+        this.localGuide = this.formStateService.establishmentTemp()?.credentials?.find((item) => item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local);
+
+        this.adventureGuide = this.formStateService
+            .establishmentTemp()
+            ?.credentials?.find((item) => item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_adventure || item.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_national_adventure);
+
+        await this.loadCatalogues();
     }
 
     buildButtonActions(item: any, index: number) {
@@ -129,7 +136,7 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
             adventureTourismModalities: []
         });
 
-        if (this.isLocalGuide) {
+        if (this.localGuide) {
             this.hasAdventureTourismModalityField.clearValidators();
             this.hasAdventureTourismModalityField.updateValueAndValidity();
         }
@@ -159,7 +166,11 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
     async loadCatalogues() {
         const [requirements] = await Promise.all([this.catalogueService.findByType(CatalogueTypeEnum.requirement_item)]);
 
-        // this.availableModalities = await this.catalogueService.findByModel(this.classification().id!);
+        if (this.adventureGuide) {
+            this.availableModalities = await this.catalogueService.findByModel(this.adventureGuide?.classificationId!);
+        } else {
+            this.availableModalities = await this.catalogueService.findByModel(this.localGuide?.classificationId!);
+        }
 
         if (this.formStateService.establishmentTemp()?.adventureModalities) {
             this.availableModalities = this.availableModalities.filter((c) => !this.formStateService.establishmentTemp()?.adventureModalities!.some((mc) => mc.modalityCode === c.code));
@@ -167,7 +178,7 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
 
         this.requirements = requirements;
 
-        if (this.isLocalGuide) {
+        if (this.localGuide) {
             this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure'));
         } else {
             this.requirementField.patchValue(this.requirements.find((x) => x.code === 'modality_adventure_guide'));
@@ -291,7 +302,6 @@ export class AdventureTourismModalityGeneralDataUpdateComponent implements OnIni
     }
 
     saveVehicles(data: any) {
-        console.log(data);
         this.vehicleField.patchValue(data);
         this.updateFormAndEmit();
     }

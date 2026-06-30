@@ -8,10 +8,12 @@ import SpecialistDashboardComponent from '@/pages/core/roles/specialist/speciali
 import DacDashboardComponent from '@/pages/core/roles/dac/dac-dashboard/dac-dashboard.component';
 import GadDashboardComponent from '@/pages/core/roles/gad/gad-dashboard/gad-dashboard.component';
 import ExternalDashboardComponent from '@/pages/core/roles/external/components/external-dashboard/external-dashboard.component';
+import GuideTechnicianDashboardComponent
+    from '@/pages/core/roles/guide-technician/guide-technician-dashboard/guide-technician-dashboard.component';
 
 @Component({
     selector: 'app-dashboards',
-    imports: [AdminDashboardComponent, ExternalDashboardComponent, TechnicianDashboardComponent, SpecialistDashboardComponent, DacDashboardComponent, GadDashboardComponent],
+    imports: [AdminDashboardComponent, ExternalDashboardComponent, TechnicianDashboardComponent, SpecialistDashboardComponent, DacDashboardComponent, GadDashboardComponent, GuideTechnicianDashboardComponent],
     template: `
         @if (authService.role) {
             @switch (authService.role.code) {
@@ -33,6 +35,9 @@ import ExternalDashboardComponent from '@/pages/core/roles/external/components/e
                 @case (RoleEnum.GAD) {
                     <app-gad-dashboard />
                 }
+                @case (RoleEnum.GAD) {
+                    <app-guide-technician-dashboard />
+                }
             }
         }
     `,
@@ -45,5 +50,6 @@ export default class DashboardsComponent {
 
     constructor() {
         this._breadcrumbService.setItems([{ label: 'Dashboard' }]);
+        console.log('dashboards');
     }
 }

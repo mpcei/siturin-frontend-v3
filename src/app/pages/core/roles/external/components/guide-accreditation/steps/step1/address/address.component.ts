@@ -11,6 +11,7 @@ import { DpaInterface } from '@utils/interfaces';
 import { Textarea } from 'primeng/textarea';
 import { DpaService } from '@utils/services';
 import { MapComponent } from '@utils/components/map/map.component';
+import { FormStateService } from '@/pages/core/roles/external/services';
 
 @Component({
     selector: 'app-address',
@@ -26,6 +27,7 @@ export class AddressComponent implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
     protected readonly dpaService = inject(DpaService);
     protected readonly customMessageService = inject(CustomMessageService);
+    protected readonly formStateService = inject(FormStateService);
 
     protected form!: FormGroup;
     protected formInitialized = false;
@@ -142,6 +144,13 @@ export class AddressComponent implements OnInit {
     loadData() {
         if (this.dataIn()) {
             this.form.patchValue(this.dataIn());
+            this.provinceField.patchValue(this.formStateService.establishment()?.province);
+            this.cantonField.patchValue(this.formStateService.establishment()?.canton);
+            this.parishField.patchValue(this.formStateService.establishment()?.parish);
+            this.mainStreetField.patchValue(this.formStateService.establishment()?.mainStreet);
+            this.numberStreetField.patchValue(this.formStateService.establishment()?.numberStreet);
+            this.secondaryStreetField.patchValue(this.formStateService.establishment()?.secondaryStreet);
+            this.referenceStreetField.patchValue(this.formStateService.establishment()?.referenceStreet);
         }
     }
 

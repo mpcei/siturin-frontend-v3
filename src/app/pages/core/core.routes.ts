@@ -25,5 +25,9 @@ export default [
     {
         path: MY_ROUTES.corePages.shared.base,
         loadChildren: () => import('@modules/core/shared/shared.routes')
+    },
+    {
+        path: MY_ROUTES.corePages.guideTechnician.base,
+        loadChildren: () => import('@modules/core/roles/guide-technician/guide-technician.routes')
     }
 ] as Routes;

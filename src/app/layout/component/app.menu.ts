@@ -64,13 +64,11 @@ import { Fluid } from 'primeng/fluid';
 
                 <p-fluid>
                     <div>
-                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID"
-                                  [label]="environment.APP_VERSION" />
+                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID" [label]="environment.APP_VERSION" />
                     </div>
 
                     <div>
-                        <p-button [outlined]="true" [raised]="true" size="small" severity="danger"
-                                  [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
+                        <p-button [outlined]="true" [raised]="true" size="small" severity="danger" [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
                     </div>
                 </p-fluid>
             </div>
@@ -94,6 +92,8 @@ export class AppMenu implements OnInit {
                 return this.externalMenu;
             case RoleEnum.TECHNICIAN:
                 return this.technicianMenu;
+            case RoleEnum.GUIDE_TECHNICIAN:
+                return this.guideTechnicianMenu;
             case RoleEnum.SPECIALIST:
                 return this.specialistMenu;
             case RoleEnum.DAC:
@@ -163,6 +163,33 @@ export class AppMenu implements OnInit {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
                 routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+            }
+        ];
+    }
+
+    get guideTechnicianMenu(): MenuItem[] {
+        return [
+            {
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.simulator.absolute]
+            },
+            {
+                label: 'Revisión Guianza Turística',
+                icon: FontAwesome.LIST_CHECK_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.process.absolute]
+            },
+            {
+                label: 'Gestión Guianza Turística',
+                icon: FontAwesome.SITEMAP_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.cadastre.absolute]
+            },
+            {
+                label: 'Manual de Usuario',
+                icon: FontAwesome.DOWNLOAD_SOLID,
+                command() {
+                    window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
+                }
             }
         ];
     }
