@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Fluid } from 'primeng/fluid';
@@ -20,7 +20,7 @@ import { CatalogueService } from '@utils/services/catalogue.service';
     styleUrl: './physical-space.component.scss'
 })
 export class PhysicalSpaceComponent implements OnInit {
-    @Input() data!: string | undefined;
+    data = input('');
     @Output() dataOut = new EventEmitter<Record<string, any>>();
 
     protected readonly Validators = Validators;

@@ -28,7 +28,6 @@ import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
 import { Divider } from 'primeng/divider';
-import { isAfter, subMonths } from 'date-fns';
 import { ReportsHttpService } from '@/pages/core/shared/services';
 
 @Component({

@@ -22,7 +22,7 @@ export default [
     {
         path: MY_ROUTES.corePages.external.accreditation.base,
         title: 'Acreditación',
-        loadComponent: () => import('@/pages/core/shared/components/regulation-simulator/regulation-simulator.component')
+        loadComponent: () => import('@/pages/core/roles/external/components/accreditation/accreditation.component')
     },
     {
         path: MY_ROUTES.corePages.external.guideEstablishment.base,

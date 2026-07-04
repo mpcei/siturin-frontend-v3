@@ -17,16 +17,17 @@ import { inactivationButtonAction, registrationButtonAction } from '@utils/compo
 import { Tooltip } from 'primeng/tooltip';
 import { CoreService, CoreSessionStorageService, CustomMessageService } from '@utils/services';
 import { Tag } from 'primeng/tag';
-import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum } from '@/pages/core/shared/enums';
+import { CatalogueCadastreStatesStateEnum, CatalogueEstablishmentsStateEnum, CatalogueProcessesTypeEnum } from '@/pages/core/shared/enums';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { Divider } from 'primeng/divider';
+import { CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueService } from '@utils/services/catalogue.service';
 
 @Component({
     selector: 'app-establishment-list',
     imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, Divider],
-    templateUrl: './establishment-list.component.html',
-    styleUrl: './establishment-list.component.scss'
+    templateUrl: './establishment-list.component.html'
 })
 export default class EstablishmentListComponent implements OnInit {
     protected readonly PrimeIcons = PrimeIcons;
@@ -45,6 +46,7 @@ export default class EstablishmentListComponent implements OnInit {
     private readonly authService = inject(AuthService);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    private readonly catalogueService = inject(CatalogueService);
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Establecimientos' }]);
@@ -154,17 +156,19 @@ export default class EstablishmentListComponent implements OnInit {
         if (paginatorState?.page || paginatorState.page === 0) this.findEstablishmentsByRuc(paginatorState.page + 1);
     }
 
-    private createProcess(establishment: EstablishmentInterface) {
+    private async createProcess(establishment: EstablishmentInterface) {
         this.coreSessionStorageService.setEstablishment({
             ...establishment
         });
 
-        this.coreSessionStorageService.setProcess({
-            type: { id: '52457d82-3f64-4959-9d1a-1b0e4b75603d', code: 'a', name: 'Registro' }
-        });
+        const type = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.registration, CatalogueTypeEnum.processes_type);
+
+        this.coreSessionStorageService.setProcess({ type });
 
         this.router.navigate([MY_ROUTES.corePages.external.accreditation.absolute]);
     }
 
     private delete(id: string) {}
+
+    protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
 }

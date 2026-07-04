@@ -13,7 +13,7 @@ import { FormStateService } from '@modules/core/roles/external/services';
     imports: [Stepper, StepList, Step, StepPanels, StepPanel, FormsModule, Step1Component, Step2Component, Step3Component],
     templateUrl: './accreditation.component.html'
 })
-export class AccreditationComponent {
+export default class AccreditationComponent {
     private readonly breadcrumbService = inject(BreadcrumbService);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
     protected readonly formStateService = inject(FormStateService);

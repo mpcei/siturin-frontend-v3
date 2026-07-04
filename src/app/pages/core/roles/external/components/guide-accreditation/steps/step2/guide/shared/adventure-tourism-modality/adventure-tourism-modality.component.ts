@@ -77,6 +77,7 @@ export class AdventureTourismModalityComponent implements OnInit {
     protected items: AdventureTourismModalityInterface[] = [];
     protected buttonActions: MenuItem[] = [];
     protected isButtonActionsEnabled: boolean = false;
+    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 
     protected availableModalities: CatalogueInterface[] = [];
     protected certifiers: CatalogueInterface[] = [];
@@ -329,6 +330,4 @@ export class AdventureTourismModalityComponent implements OnInit {
     get adventureTourismModalitiesField(): AbstractControl {
         return this.form.controls['adventureTourismModalities'];
     }
-
-    protected readonly CatalogueGuideClassificationsCodeEnum = CatalogueGuideClassificationsCodeEnum;
 }

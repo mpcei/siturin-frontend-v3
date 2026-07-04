@@ -65,7 +65,9 @@
                                 </p>
                             }
 
-                            @if (item?.state?.code !== 'closed') {
+                            @if (item?.state?.code === CatalogueEstablishmentsStateEnum.open) {
+                                <p-tag severity="info" value="ABIERTO SRI" />
+                            } @else {
                                 <p-tag severity="danger" value="CERRADO SRI" />
                             }
 
