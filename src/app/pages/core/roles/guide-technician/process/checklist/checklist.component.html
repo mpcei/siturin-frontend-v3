@@ -1,0 +1,16 @@
+<app-checklist-form
+    (dataOut)="saveForm($event,'user')"
+    [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
+
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-start-10 md:col-span-3">
+            <p-button
+                label="Siguiente"
+                iconPos="right"
+                styleClass="w-full"
+                [icon]="PrimeIcons.ARROW_RIGHT"
+                (onClick)="onSubmit()" />
+        </div>
+    </div>
+</div>

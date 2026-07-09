@@ -3,6 +3,7 @@ import { MY_ROUTES } from '@routes';
 import TechnicianDashboardComponent from '@modules/core/roles/technician/technician-dashboard/technician-dashboard.component';
 import ProcessComponent from '@modules/core/roles/guide-technician/process/process.component';
 import RegulationSimulatorComponent from '@/pages/core/shared/components/regulation-simulator/regulation-simulator.component';
+import { ChecklistComponent } from '@/pages/core/roles/guide-technician/process/checklist/checklist.component';
 
 export default [
     {
@@ -20,5 +21,9 @@ export default [
     {
         path: MY_ROUTES.corePages.guideTechnician.cadastre.base,
         component: ProcessComponent
+    },
+    {
+        path: MY_ROUTES.corePages.guideTechnician.checklist.base+'/:processId',
+        component: ChecklistComponent
     }
 ] as Routes;

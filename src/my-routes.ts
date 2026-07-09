@@ -169,6 +169,10 @@ export const MY_ROUTES = {
                 base: 'cadastres',
                 absolute: '/main/core/guide-technician/cadastres'
             },
+            checklist: {
+                base: 'checklist',
+                absolute: '/main/core/guide-technician/checklist'
+            },
             processLog: {
                 base: 'process-logs',
                 absolute: '/main/core/guide-technician/process-logs'

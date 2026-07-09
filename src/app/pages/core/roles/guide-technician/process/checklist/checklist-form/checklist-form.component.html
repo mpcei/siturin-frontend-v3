@@ -1,0 +1,219 @@
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-title md:col-span-12">
+            DATOS DEL GUÍA DE TURISMO:
+        </div>
+        <!-- legalName -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="legalName"
+                [required]="legalNameField"
+                label="Razón social">">
+            </label>
+
+            <input
+                pInputText
+                id="legalName"
+                formControlName="legalName" />
+
+            <small
+                appErrorMessage
+                [dirty]="legalNameField.dirty"
+                [errors]="legalNameField.errors"
+                [touched]="legalNameField.touched"></small>
+        </div>
+
+        <!-- nationality -->
+        <div class="custom-form-field md:col-span-2">
+            <label
+                appLabel
+                for="nationality"
+                [required]="nationalityField"
+                label="Nacionalidad">">
+            </label>
+
+            <input
+                pInputText
+                id="nationality"
+                formControlName="nationality" />
+
+            <small
+                appErrorMessage
+                [dirty]="nationalityField.dirty"
+                [errors]="nationalityField.errors"
+                [touched]="nationalityField.touched"></small>
+        </div>
+
+        <!-- sex -->
+        <div class="custom-form-field md:col-span-2">
+            <label
+                appLabel
+                for="sex"
+                [required]="sexField"
+                label="Sexo">">
+            </label>
+
+            <input
+                pInputText
+                id="sex"
+                formControlName="sex" />
+
+            <small
+                appErrorMessage
+                [dirty]="sexField.dirty"
+                [errors]="sexField.errors"
+                [touched]="sexField.touched"></small>
+        </div>
+
+        <!-- birthdate -->
+        <div class="custom-form-field md:col-span-2">
+            <label
+                appLabel
+                for="birthdate"
+                [required]="birthdateField"
+                label="Edad">">
+            </label>
+
+            <input
+                pInputText
+                id="birthdate"
+                [value]="birthdateField.value | age"
+                disabled
+            />
+
+            <small
+                appErrorMessage
+                [dirty]="birthdateField.dirty"
+                [errors]="birthdateField.errors"
+                [touched]="birthdateField.touched"></small>
+        </div>
+    </form>
+</div>
+
+<div class="custom-form-card">
+    <form [formGroup]="form" class="custom-form-grid md:grid-cols-12">
+        <!-- hasDisability -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="hasDisability"
+                [required]="hasDisabilityField"
+                label="Discapacidad">
+            </label>
+
+            <p-select
+                id="hasDisability"
+                formControlName="hasDisability"
+                [options]="options"
+                optionValue="code"
+                optionLabel="name"
+                appendTo="body"
+                placeholder="Seleccione..." />
+
+            <small
+                appErrorMessage
+                [dirty]="hasDisabilityField.dirty"
+                [errors]="hasDisabilityField.errors"
+                [touched]="hasDisabilityField.touched"></small>
+        </div>
+
+        <!-- bloodType -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="bloodType"
+                [required]="bloodTypeField"
+                label="Tipo de sangre">
+            </label>
+
+            <p-select
+                id="bloodType"
+                dataKey="id"
+                formControlName="bloodType"
+                [options]="bloodTypes"
+                optionLabel="name"
+                appendTo="body"
+                [filter]="true"
+                filterBy="name"
+                placeholder="Seleccione un tipo de sangre" />
+
+            <small
+                appErrorMessage
+                [dirty]="bloodTypeField.dirty"
+                [errors]="bloodTypeField.errors"
+                [touched]="bloodTypeField.touched"></small>
+        </div>
+
+        <!-- phone -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="phone"
+                [required]="phoneField"
+                label="Número de teléfono principal">
+            </label>
+
+            <p-inputmask
+                id="phone"
+                mask="9999999999"
+                formControlName="phone"
+                placeholder="09XXXXXXXX"
+                [unmask]="true" />
+
+            <small
+                appErrorMessage
+                [dirty]="phoneField.dirty"
+                [errors]="phoneField.errors"
+                [touched]="phoneField.touched"></small>
+        </div>
+
+        <!-- secondaryPhone -->
+        <div class="custom-form-field md:col-span-3">
+            <label
+                appLabel
+                for="secondaryPhone"
+                [required]="secondaryPhoneField"
+                label="Número de teléfono secundario">
+            </label>
+
+            <p-inputmask
+                id="secondaryPhone"
+                mask="9999999999"
+                formControlName="secondaryPhone"
+                placeholder="09XXXXXXXX"
+                [unmask]="true" />
+
+            <small
+                appErrorMessage
+                [dirty]="secondaryPhoneField.dirty"
+                [errors]="secondaryPhoneField.errors"
+                [touched]="secondaryPhoneField.touched"></small>
+        </div>
+
+        <!-- email -->
+        <div class="custom-form-field md:col-span-6">
+            <label
+                appLabel
+                for="email"
+                label="Correo electrónico secundario"
+                [required]="emailField">
+            </label>
+
+            <input
+                pInputText
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="ejemplo@dominio.com" />
+
+            <small
+                appErrorMessage
+                [dirty]="emailField.dirty"
+                [errors]="emailField.errors"
+                [touched]="emailField.touched"></small>
+        </div>
+
+    </form>
+</div>
+
