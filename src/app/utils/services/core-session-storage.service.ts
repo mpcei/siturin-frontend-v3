@@ -46,8 +46,11 @@ export class CoreSessionStorageService {
         establishment: this._establishment()
     }));
 
-    setProcess(data: ProcessI) {
-        this._process.set(data);
+    setProcess(data: Partial<ProcessI>) {
+        this._process.update((current) => ({
+            ...current,
+            ...data
+        }));
     }
 
     setCadastre(data: CadastreInterface) {

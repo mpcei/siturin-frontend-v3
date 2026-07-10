@@ -2,9 +2,7 @@ import { Component, EventEmitter, inject, OnInit, Output, QueryList, signal, Vie
 import { PrimeIcons } from 'primeng/api';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
-import {
-    JuridicalPersonComponent
-} from '@modules/core/roles/external/components/accreditation/steps/step1/juridical-person/juridical-person.component';
+import { JuridicalPersonComponent } from '@modules/core/roles/external/components/accreditation/steps/step1/juridical-person/juridical-person.component';
 import { Button } from 'primeng/button';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
@@ -16,8 +14,7 @@ import { ProcessHttpService } from '@/pages/core/shared/services';
 @Component({
     selector: 'app-step1',
     imports: [JuridicalPersonComponent, Button, SriComponent],
-    templateUrl: './step1.component.html',
-    styleUrl: './step1.component.scss'
+    templateUrl: './step1.component.html'
 })
 export class Step1Component implements OnInit {
     @Output() step: EventEmitter<number> = new EventEmitter<number>();
@@ -71,6 +68,8 @@ export class Step1Component implements OnInit {
     async saveProcess() {
         await this.coreSessionStorageService.setEncryptedValue(CoreEnum.step1, { ...this.mainForm.value });
         const { type, processId } = this.coreSessionStorageService.process()!;
+
+        console.log(this.coreSessionStorageService.process());
 
         const payload = { ...this.mainForm.value, processId, type };
 

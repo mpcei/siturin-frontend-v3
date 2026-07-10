@@ -185,6 +185,8 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     protected async createProcess(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
+        console.log(this.authService.auth);
+
         if (!this.authService.auth.sex || !this.authService.auth.nationality || !this.authService.auth.birthdate) {
             this.updateGuideInformation(establishment, processType);
             return;
@@ -234,7 +236,9 @@ export default class GuideEstablishmentListComponent implements OnInit {
     protected updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {
+                console.log(response)
                 let auth = this.authService.auth;
+                console.log(auth)
                 auth.birthdate = response.birthdate;
                 auth.nationality = response.nationality;
                 auth.sex = response.sex;

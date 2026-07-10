@@ -21,7 +21,5 @@ export default class AccreditationComponent {
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Proceso de Acreditación de Actividades Turísticas' }]);
-        console.log(this.coreSessionStorageService.establishment());
-        console.log(this.formStateService.process());
     }
 }

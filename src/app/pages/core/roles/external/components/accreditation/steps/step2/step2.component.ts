@@ -34,13 +34,14 @@ export class Step2Component implements OnInit {
     private readonly processHttpService = inject(ProcessHttpService);
 
     constructor() {
-        this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, {
-            processId: '6f32b01d-c0be-47fe-b896-90b38b91c498',
-            establishmentId: '9aa53a63-3546-4e08-ae7f-e8d14c77a01a'
-        });
+        // this.coreSessionStorageService.setEncryptedValue(CoreEnum.process, {
+        //     processId: '6f32b01d-c0be-47fe-b896-90b38b91c498',
+        //     establishmentId: '9aa53a63-3546-4e08-ae7f-e8d14c77a01a'
+        // });
     }
 
     async ngOnInit() {
+        console.log(this.coreSessionStorageService.process());
         await this.loadData();
     }
 
