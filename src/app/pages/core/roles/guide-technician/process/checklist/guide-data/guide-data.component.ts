@@ -45,8 +45,6 @@ export class GuideDataComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            console.log(this.dataIn());
-
             if (this.dataIn() && !this.formInitialized) {
                 this.formInitialized = true;
                 this.loadData();

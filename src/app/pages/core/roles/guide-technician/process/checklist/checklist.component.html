@@ -2,9 +2,11 @@
     <app-guide-data [dataIn]="guideData" />
 }
 
+@if (guideData) {
 <app-checklist-form
     (dataOut)="saveForm($event,'user')"
-    [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />
+    [dataIn]="checklistData" />
+}
 
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">

@@ -34,6 +34,7 @@ export class ChecklistComponent implements OnInit {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
     protected guideData: any = null;
+    protected checklistData: any = null;
     constructor() {
         if (!this.formStateService.user()) {
             const { birthdate, hasDisability, bloodType, phone } = this.authService.auth;
@@ -90,7 +91,6 @@ export class ChecklistComponent implements OnInit {
     findProcess() {
         this.internalInspectionService.findProcess(this.processId()).subscribe({
             next: (response) => {
-                console.log(response);
                 this.guideData = {
                     legalName: response.establishment.ruc.legalName,
                     nationality: response.establishment.ruc.user.nationality,
@@ -111,6 +111,8 @@ export class ChecklistComponent implements OnInit {
                     latitude: response.establishment.establishmentAddress?.latitude,
                     longitude: response.establishment.establishmentAddress?.longitude
                 };
+
+                this.checklistData = response.processGuides;
             }
         });
     }

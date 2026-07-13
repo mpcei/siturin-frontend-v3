@@ -23,7 +23,7 @@ import { FormStateService } from '@/pages/core/roles/external/services';
     templateUrl: './checklist-form.component.html'
 })
 export class ChecklistFormComponent implements OnInit {
-    dataIn = input.required<EstablishmentInterface>();
+    dataIn = input.required<any[]>();
     dataOut: OutputEmitterRef<any> = output<any>();
 
     protected readonly PrimeIcons = PrimeIcons;
@@ -45,8 +45,6 @@ export class ChecklistFormComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            console.log(this.dataIn());
-
             if (this.dataIn() && !this.formInitialized) {
                 this.formInitialized = true;
                 this.loadData();
