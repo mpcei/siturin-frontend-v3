@@ -1,3 +1,7 @@
+@if (guideData) {
+    <app-guide-data [dataIn]="guideData" />
+}
+
 <app-checklist-form
     (dataOut)="saveForm($event,'user')"
     [dataIn]="{...formStateService.user(),...formStateService.establishmentTemp()?.ruc}" />

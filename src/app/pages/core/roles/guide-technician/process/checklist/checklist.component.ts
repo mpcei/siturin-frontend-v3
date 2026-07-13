@@ -12,10 +12,11 @@ import { ChecklistFormComponent } from '@/pages/core/roles/guide-technician/proc
 import { InternalInspectionService } from '@/pages/core/roles/guide-technician/process/services/internal-inspection.service';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
+import { GuideDataComponent } from '@/pages/core/roles/guide-technician/process/checklist/guide-data/guide-data.component';
 
 @Component({
     selector: 'app-checklist',
-    imports: [Button, ContactPersonComponent, AddressComponent, Message, ChecklistFormComponent],
+    imports: [Button, ContactPersonComponent, AddressComponent, Message, ChecklistFormComponent, GuideDataComponent],
     templateUrl: './checklist.component.html'
 })
 export class ChecklistComponent implements OnInit {
@@ -32,7 +33,7 @@ export class ChecklistComponent implements OnInit {
     private readonly internalInspectionService = inject(InternalInspectionService);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
-
+    protected guideData: any = null;
     constructor() {
         if (!this.formStateService.user()) {
             const { birthdate, hasDisability, bloodType, phone } = this.authService.auth;
@@ -90,6 +91,26 @@ export class ChecklistComponent implements OnInit {
         this.internalInspectionService.findProcess(this.processId()).subscribe({
             next: (response) => {
                 console.log(response);
+                this.guideData = {
+                    legalName: response.establishment.ruc.legalName,
+                    nationality: response.establishment.ruc.user.nationality,
+                    sex: response.establishment.ruc.user.sex,
+                    birthdate: response.establishment.ruc.user.birthdate,
+                    hasDisability: response.establishment.ruc.user.hasDisability,
+                    bloodType: response.establishment.ruc.user.bloodType,
+                    phone: response.establishment.establishmentContactPerson?.phone,
+                    secondaryPhone: response.establishment.establishmentContactPerson?.secondaryPhone,
+                    secondaryEmail: response.establishment.establishmentContactPerson?.secondaryEmail,
+                    province: response.establishment.establishmentAddress?.province,
+                    canton: response.establishment.establishmentAddress?.canton,
+                    parish: response.establishment.establishmentAddress?.parish,
+                    mainStreet: response.establishment.establishmentAddress?.mainStreet,
+                    secondaryStreet: response.establishment.establishmentAddress?.secondaryStreet,
+                    numberStreet: response.establishment.establishmentAddress?.numberStreet,
+                    referenceStreet: response.establishment.establishmentAddress?.referenceStreet,
+                    latitude: response.establishment.establishmentAddress?.latitude,
+                    longitude: response.establishment.establishmentAddress?.longitude
+                };
             }
         });
     }

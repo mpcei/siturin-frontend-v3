@@ -18,11 +18,11 @@ import { EstablishmentInterface } from '@/pages/core/shared/interfaces';
 import { FormStateService } from '@/pages/core/roles/external/services';
 
 @Component({
-    selector: 'app-checklist-form',
+    selector: 'app-guide-data',
     imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe],
-    templateUrl: './checklist-form.component.html'
+    templateUrl: './guide-data.component.html'
 })
-export class ChecklistFormComponent implements OnInit {
+export class GuideDataComponent implements OnInit {
     dataIn = input.required<EstablishmentInterface>();
     dataOut: OutputEmitterRef<any> = output<any>();
 
@@ -64,15 +64,24 @@ export class ChecklistFormComponent implements OnInit {
 
     buildForm() {
         this.form = this.formBuilder.group({
-            hasDisability: [null, [Validators.required]],
-            bloodType: [null, [Validators.required]],
-            phone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^09\d{8}$/)]],
-            secondaryPhone: [null, [Validators.minLength(10), Validators.maxLength(10)]],
-            email: [null, [invalidEmailValidator(), invalidEmailDomainValidator()]],
+            hasDisability: [{ value: null, disabled: true }],
+            bloodType: [{ value: null, disabled: true }],
+            phone: [{ value: null, disabled: true }],
+            secondaryPhone: [{ value: null, disabled: true }],
+            email: [{ value: null, disabled: true }],
             legalName: [{ value: null, disabled: true }],
-            nationality: [{ value: this.authService.auth?.nationality?.name, disabled: true }],
-            sex: [{ value: this.authService.auth?.sex?.name, disabled: true }],
-            birthdate: [{ value: this.authService.auth?.birthdate, disabled: true }]
+            nationality: [{ value: null, disabled: true }],
+            sex: [{ value: null, disabled: true }],
+            birthdate: [{ value: null, disabled: true }],
+            province: [{ value: null, disabled: true }],
+            canton: [{ value: null, disabled: true }],
+            parish: [{ value: null, disabled: true }],
+            mainStreet: [{ value: null, disabled: true }],
+            secondaryStreet: [{ value: null, disabled: true }],
+            numberStreet: [{ value: null, disabled: true }],
+            referenceStreet: [{ value: null, disabled: true }],
+            latitude: [{ value: null, disabled: true }],
+            longitude: [{ value: null, disabled: true }]
         });
 
         this.watchFormChanges();
@@ -112,9 +121,6 @@ export class ChecklistFormComponent implements OnInit {
             console.log(this.dataIn());
 
             this.form.patchValue(this.dataIn());
-            this.phoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.phone);
-            this.secondaryPhoneField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.secondaryPhone);
-            this.emailField.patchValue(this.formStateService.establishmentTemp()?.establishmentContactPerson?.email);
         }
     }
 
@@ -152,5 +158,33 @@ export class ChecklistFormComponent implements OnInit {
 
     get emailField(): AbstractControl {
         return this.form.controls['email'];
+    }
+
+    get provinceField(): AbstractControl {
+        return this.form.controls['province'];
+    }
+    get cantonField(): AbstractControl {
+        return this.form.controls['canton'];
+    }
+    get parishField(): AbstractControl {
+        return this.form.controls['parish'];
+    }
+    get mainStreetField(): AbstractControl {
+        return this.form.controls['mainStreet'];
+    }
+    get secondaryStreetField(): AbstractControl {
+        return this.form.controls['secondaryStreet'];
+    }
+    get numberStreetField(): AbstractControl {
+        return this.form.controls['numberStreet'];
+    }
+    get referenceStreetField(): AbstractControl {
+        return this.form.controls['referenceStreet'];
+    }
+    get latitudeField(): AbstractControl {
+        return this.form.controls['latitude'];
+    }
+    get longitudeField(): AbstractControl {
+        return this.form.controls['longitude'];
     }
 }
