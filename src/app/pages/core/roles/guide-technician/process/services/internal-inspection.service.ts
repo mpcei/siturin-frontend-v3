@@ -30,6 +30,7 @@ export class InternalInspectionService {
         const url = `${this._apiUrl}/process-guides/processes`;
 
         const params = new HttpParams().set('page', page);
+
         return this._httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
                 return response.data;
@@ -47,8 +48,8 @@ export class InternalInspectionService {
         );
     }
 
-    review(processId: string, payload: any) {
-        const url = `${this._apiUrl}/process-guides/processes`;
+    review(payload:any) {
+        const url = `${this._apiUrl}/process-guides/processes/review`;
 
         return this._httpClient.post<HttpResponseInterface>(url, payload).pipe(
             map((response) => {

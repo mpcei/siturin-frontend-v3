@@ -116,12 +116,4 @@ export class ChecklistComponent implements OnInit {
             }
         });
     }
-
-    createDegreesByEstablishmentId() {
-        this.internalInspectionService.review(this.processId(), null).subscribe({
-            next: (response) => {
-                this.router.navigate([MY_ROUTES.corePages.guideTechnician.process.absolute]);
-            }
-        });
-    }
 }

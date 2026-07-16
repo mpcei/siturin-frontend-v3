@@ -40,6 +40,7 @@ export interface AppFormState {
     catastroSiete: CatastroSiete | null;
     guideOrigin: any | null;
     currentCredential: CredentialInterface | null;
+    assignment: any | null;
 }
 
 const INITIAL_STATE: AppFormState = {
@@ -61,7 +62,8 @@ const INITIAL_STATE: AppFormState = {
     files: [],
     catastroSiete: null,
     guideOrigin: null,
-    currentCredential: null
+    currentCredential: null,
+    assignment: null,
 };
 
 const FORM_STATE_KEY = 'formState';
@@ -89,6 +91,7 @@ export class FormStateService {
     readonly catastroSiete = computed(() => this.formState().catastroSiete);
     readonly guideOrigin = computed(() => this.formState().guideOrigin);
     readonly currentCredential = computed(() => this.formState().currentCredential);
+    readonly assignment = computed(() => this.formState().assignment);
 
     constructor() {
         effect(() => {

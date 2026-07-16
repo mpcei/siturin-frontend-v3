@@ -85,7 +85,9 @@ export enum CatalogueProcessFoodDrinksEstablishmentTypeEnum {
 export enum CatalogueProcessesStateEnum {
     pending_1 = 'pending_1',
     pending_2 = 'pending_2',
-    completed = 'completed'
+    completed = 'completed',
+    document_rejected='document_rejected',
+    reviewed='reviewed',
 }
 
 export enum CatalogueActivitiesCodeEnum {

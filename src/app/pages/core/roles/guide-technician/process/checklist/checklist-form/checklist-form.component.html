@@ -1,23 +1,113 @@
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
         <div class="custom-form-title md:col-span-12">
-            DATOS GENERALES DEL GUÍA DE TURISMO:
+            ACREDITACIÓN TURÍSTICA:
         </div>
 
         <!-- processGuides -->
-        @for (processGuide of dataIn(); track processGuide) {
-            <div class="custom-form-field md:col-span-6">
-                <label
-                    appLabel
-                    for="legalName"
-                    [label]="processGuide?.requirement?.name">
-                </label>
+        @for (processGuide of data(); track processGuide) {
+            <div class="custom-form-field-row md:col-span-12">
+                ¿Cumple?
+                <p-toggle-switch
+                    [(ngModel)]="processGuide.state">
+                    <ng-template #handle let-checked="checked">
+                        <span class="!text-xs font-semibold">{{ checked ? 'SI' : 'NO' }}</span>
+                    </ng-template>
+                </p-toggle-switch>
+            </div>
 
-<!--                <input-->
-<!--                    pInputText-->
-<!--                    id="legalName"-->
-<!--                    formControlName="legalName" />-->
+            <div class="custom-form-field md:col-span-12">
+                <div [innerHTML]="processGuide?.requirement?.name"></div>
+
+                @if (processGuide.value != 'file') {
+                    <p-message>
+                        {{ processGuide?.value | processGuideValue }}
+                    </p-message>
+                }
+
+                @if (processGuide.file) {
+                    <p-message>
+                        <p-button
+                            [label]="processGuide.file.originalName"
+                            [link]="true"
+                            [icon]="FontAwesome.DOWNLOAD_SOLID"
+                            (onClick)="downloadFile(processGuide.file)"
+                        />
+                    </p-message>
+                }
+                <p-divider />
+                <!--                <input-->
+                <!--                    pInputText-->
+                <!--                    id="legalName"-->
+                <!--                    formControlName="legalName" />-->
             </div>
         }
+
+        <div class="custom-form-field-row md:col-span-12">
+            <p-button
+                label="Documentos aceptados"
+                severity="success"
+                [icon]="FontAwesome.CHECK_SOLID"
+                (onClick)="accept()"></p-button>
+            <p-button
+                label="Documentos rechazados"
+                severity="danger"
+                [icon]="FontAwesome.BAN_SOLID"
+                (onClick)="reject()"
+            ></p-button>
+        </div>
     </div>
 </div>
+
+@if (isVisibleModal) {
+    <p-dialog [(visible)]="isVisibleModal"
+              [modal]="true"
+              [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+              [style]="{ width: '45vw' }">
+        <ng-template #header>
+            <div class="custom-form-title">
+                @if (approved) {
+                    Documentos aprobados
+                } @else {
+                    Documentos rechazados
+                }
+            </div>
+        </ng-template>
+
+        <div class="custom-form-card">
+            <div class="custom-form-grid md:grid-cols-12">
+                @if (!allRequirements && approved) {
+                    <div class="custom-form-field md:col-span-12">
+                        <p-message severity="warn">
+                            No se han aprobado todos los requisitos
+                        </p-message>
+                    </div>
+                }
+
+                @if (!approved) {
+                    <div class="custom-form-field md:col-span-12">
+                        <label
+                            appLabel
+                            for="observations"
+                            [required]="observation"
+                            label="Observaciones">
+                        </label>
+
+                        <textarea pTextarea [formControl]="observation"></textarea>
+
+                        <small
+                            appErrorMessage
+                            [errors]="observation.errors"
+                            [touched]="observation.touched"
+                            [dirty]="observation.dirty">
+                        </small>
+                    </div>
+                }
+
+                <div class="custom-form-field md:col-span-12">
+                    <p-button label="Continuar" [icon]="FontAwesome.ARROW_RIGHT_SOLID" (onClick)="confirm()"></p-button>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+}

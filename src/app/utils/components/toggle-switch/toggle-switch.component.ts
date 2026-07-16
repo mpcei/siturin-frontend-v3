@@ -8,7 +8,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
         <p-toggle-switch
             [ngModel]="value" (onChange)="handleChange($event)" [disabled]="disabled">
             <ng-template #handle let-checked="checked">
-                <span class="!text-xs font-semibold">{{ checked ? 'SÍ' : 'NO' }}</span>
+                <span class="!text-xs font-semibold">{{ checked ? yes : no }}</span>
             </ng-template>
         </p-toggle-switch>
     `,
@@ -23,8 +23,10 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
     ]
 })
 export class ToggleSwitchComponent implements ControlValueAccessor {
-    value: boolean = true;
+    value: boolean = false;
     disabled = false;
+    yes = 'SI';
+    no = 'NO';
 
     private onChange: (val: boolean) => void = () => {};
     private onTouched: () => void = () => {};
