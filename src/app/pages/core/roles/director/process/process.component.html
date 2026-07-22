@@ -1,0 +1,117 @@
+<h2>Proceso de atención a trámites:</h2>
+<p-message>
+    <div>
+        <p class="font-bold">Nota informativa al Técnico Zonal</p>
+
+        <p>
+            "Recuerde que usted deberá revisar los requisitos documentales en apego al marco
+            normativo (recuerde revisar siempre la normativa antes emitir un resultado), mismos que
+            deben ser sustentados en el expediente digital por solicitud: requisitos, fotografía,
+            declaratorias, otros".
+        </p>
+    </div>
+</p-message>
+
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-12">
+            <p-button
+                [icon]="PrimeIcons.DOWNLOAD"
+                label="Descargar Bandeja"
+                severity="success"
+                size="large" />
+        </div>
+    </div>
+</div>
+
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-title md:col-span-12">
+            <h2>Lista de tramites:</h2>
+        </div>
+        <div class="custom-form-field md:col-span-12">
+            <p-table
+                [value]="items()"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [scrollable]="true"
+                >
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th>Número de Registro</th>
+                        <th>Código del Establecimiento</th>
+                        <th>Razón Social</th>
+                        <th>Ubicación</th>
+                        <th>Clasificación:</th>
+                        <th>Trámite</th>
+                        <th>Estado del Registro</th>
+                        <th>Fecha solicitud</th>
+                        <th>Tiempo transcurrido</th>
+                        <th>Estado de la solicitud</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>
+                            <p-button
+                                pTooltip="Ir al Trámite"
+                                [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
+                                (onClick)="goToProcess(item?.process?.id,item?.id)"
+                            />
+                        </td>
+                        <td>
+                            @if (item?.process?.cadastre) {
+                                {{ item?.process?.cadastre?.registerNumber }}
+                            } @else {
+                                Sin registro
+                            }
+                        </td>
+                        <td>{{ item?.process?.establishment?.number |establishmentNumber }}</td>
+                        <td>{{ item?.process?.establishment?.ruc?.legalName }}</td>
+                        <td>
+                            <p>{{ item?.process?.establishment?.province?.name }}</p>
+
+                            <p>{{ item?.process?.establishment?.canton?.name }}</p>
+
+                            <p>{{ item?.process?.establishment?.parish?.name }}</p>
+                        </td>
+                        <td>
+                            @if (item?.process?.type?.code === CatalogueProcessesTypeEnum.general_data_update) {
+                                @for (credential of item?.process?.establishment?.credentials; track credential.id) {
+                                    {{ credential?.classification?.name }}
+                                }
+                            } @else {
+                                @for (credential of item?.process?.credentials; track credential.id) {
+                                    {{ credential?.classification?.name }}
+                                }
+                            }
+
+                        </td>
+                        <td>{{ item?.process?.type?.name }}</td>
+                        <td>
+                            @if (item?.process?.cadastre) {
+                                {{ item?.process?.cadastre?.registerNumber }}
+                            } @else {
+                                Sin estado
+                            }
+                        </td>
+                        <td>{{ item?.process?.registeredAt | date }}</td>
+                        <td>
+                            {{
+                                differenceInDays(currentDate, item?.process?.registeredAt)
+                            }}
+                            días
+                        </td>
+                        <td>
+                            <p-tag
+                                [severity]="item?.process?.state?.code | processStateSeverity "
+                                [value]="item?.process?.state?.name " />
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

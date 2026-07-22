@@ -1,0 +1,31 @@
+<p-fluid>
+    <p-button
+        [icon]="PrimeIcons.DOWNLOAD"
+        label=" 2. Descargas"
+        (click)="showDialog()" />
+</p-fluid>
+
+<p-dialog
+    header="Descargas"
+    [(visible)]="visible"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '90vw', '900px': '95vw', '575px': '98vw' }"
+    [style]="{ width: '85vw', minWidth: '320px', maxWidth: '95vw'}"
+    [draggable]="false"
+    [resizable]="false"
+    [contentStyle]="{ 'padding': '1.5rem' }">
+
+    <div class="flex flex-col gap-4 mt-4">
+        <p-button
+            icon="pi pi-download"
+            label="Acta de Supervision Lectoral"
+            severity="info"
+            styleClass="w-full" />
+
+        <p-button
+            icon="pi pi-download"
+            label="Checklist"
+            severity="info"
+            styleClass="w-full" />
+    </div>
+</p-dialog>

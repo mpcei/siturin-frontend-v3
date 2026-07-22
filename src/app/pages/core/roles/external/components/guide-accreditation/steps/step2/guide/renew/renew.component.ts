@@ -3,22 +3,26 @@ import { Button } from 'primeng/button';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
-import { RequirementExpiredComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-expired/requirement-expired.component';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { MY_ROUTES } from '@routes';
 import { Router } from '@angular/router';
-import { AdventureTourismModalityComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
-import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
-import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
+import {
+    AdventureTourismModalityComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
+import {
+    ProtectedAreaComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
-import { RequirementRenewComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-renew/requirement-renew.component';
+import {
+    RequirementRenewComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-renew/requirement-renew.component';
 import {
     LanguageRenewalComponent
 } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language-renewal/language-renewal.component';
 
 @Component({
     selector: 'app-renew',
-    imports: [Button, RequirementExpiredComponent, AdventureTourismModalityComponent, LanguageComponent, ProtectedAreaComponent, RequirementRenewComponent, LanguageRenewalComponent],
+    imports: [Button, AdventureTourismModalityComponent, ProtectedAreaComponent, RequirementRenewComponent, LanguageRenewalComponent],
     templateUrl: './renew.component.html'
 })
 export class RenewComponent {

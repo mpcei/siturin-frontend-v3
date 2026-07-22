@@ -21,11 +21,10 @@ import { Tooltip } from 'primeng/tooltip';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
@@ -37,7 +36,6 @@ export default class ProcessComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly internalInspectionService = inject(InternalInspectionService);
     protected items = signal([]);
-    protected completedProcesses = signal([]);
     protected currentDate = new Date();
 
     constructor() {
@@ -46,7 +44,6 @@ export default class ProcessComponent implements OnInit {
 
     ngOnInit() {
         this.findProcesses();
-        this.findCompletedProcesses();
     }
 
     findProcesses() {
@@ -57,19 +54,11 @@ export default class ProcessComponent implements OnInit {
         });
     }
 
-    findCompletedProcesses() {
-        this.internalInspectionService.findProcesses('1', false).subscribe({
-            next: (response) => {
-                this.completedProcesses.set(response);
-            }
-        });
-    }
-
-    goToProcess(processId: string, assignmentId: string, isCurrent: boolean) {
+    goToProcess(processId: string, assignmentId: string) {
         console.log(assignmentId);
         this.formStateService.updateSection('process', { id: processId });
         this.formStateService.updateSection('assignment', { id: assignmentId });
-        this.router.navigate([MY_ROUTES.corePages.guideTechnician.checklist.absolute, processId, isCurrent]);
+        this.router.navigate([MY_ROUTES.corePages.guideTechnician.checklist.absolute, processId]);
     }
 
     protected readonly es = es;

@@ -1,7 +1,6 @@
-import { Component, effect, EventEmitter, inject, input, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { Fluid } from 'primeng/fluid';
 import { InputText } from 'primeng/inputtext';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
@@ -14,7 +13,7 @@ import { PrimeIcons } from 'primeng/api';
 
 @Component({
     selector: 'app-contact-person',
-    imports: [Fluid, ReactiveFormsModule, LabelDirective, InputText, InputGroup, InputGroupAddon, ErrorMessageDirective, Message],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, InputGroup, InputGroupAddon, ErrorMessageDirective, Message],
     templateUrl: './contact-person.component.html',
     styleUrl: './contact-person.component.scss'
 })

@@ -28,14 +28,10 @@ export class InternalInspectionService {
         );
     }
 
-    findProcesses(page: string, isCurrent: boolean) {
+    findProcesses(page: string) {
         const url = `${this.apiUrl}/process-guides/processes`;
 
-        const params = new HttpParams()
-            .append('page', page)
-            .append('rolCode', this.authService.role.code)
-            .append('isCurrent', isCurrent)
-        ;
+        const params = new HttpParams().set('page', page);
 
         return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
@@ -44,13 +40,10 @@ export class InternalInspectionService {
         );
     }
 
-    findProcess(processId: string, isCurrent: boolean) {
+    findProcess(processId: string) {
         const url = `${this.apiUrl}/process-guides/processes/${processId}`;
 
-        const params = new HttpParams()
-            .append('rolCode', this.authService.role.code)
-            .append('isCurrent', isCurrent);
-
+        const params = new HttpParams().set('rolCode', this.authService.role.code);
         return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
                 return response.data;

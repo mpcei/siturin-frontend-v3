@@ -94,6 +94,8 @@ export class AppMenu implements OnInit {
                 return this.technicianMenu;
             case RoleEnum.GUIDE_TECHNICIAN:
                 return this.guideTechnicianMenu;
+            case RoleEnum.DIRECTOR:
+                return this.directorMenu;
             case RoleEnum.SPECIALIST:
                 return this.specialistMenu;
             case RoleEnum.DAC:
@@ -168,6 +170,33 @@ export class AppMenu implements OnInit {
     }
 
     get guideTechnicianMenu(): MenuItem[] {
+        return [
+            {
+                label: 'Simulador Normativa',
+                icon: FontAwesome.DESKTOP_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.simulator.absolute]
+            },
+            {
+                label: 'Revisión Guianza Turística',
+                icon: FontAwesome.LIST_CHECK_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.process.absolute]
+            },
+            {
+                label: 'Gestión Guianza Turística',
+                icon: FontAwesome.SITEMAP_SOLID,
+                routerLink: [MY_ROUTES.corePages.guideTechnician.cadastre.absolute]
+            },
+            {
+                label: 'Manual de Usuario',
+                icon: FontAwesome.DOWNLOAD_SOLID,
+                command() {
+                    window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
+                }
+            }
+        ];
+    }
+
+    get directorMenu(): MenuItem[] {
         return [
             {
                 label: 'Simulador Normativa',

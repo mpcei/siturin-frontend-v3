@@ -1,19 +1,31 @@
-import { Component, inject, OnInit, output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
+import {
+    Component,
+    inject,
+    OnInit,
+    output,
+    OutputEmitterRef,
+    QueryList,
+    signal,
+    ViewChildren,
+    WritableSignal
+} from '@angular/core';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
-import { ContactPersonComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
-import { AddressComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
-import { ProcessHttpService } from '@/pages/core/shared/services';
+import {
+    ContactPersonComponent
+} from '@modules/core/roles/external/components/guide-accreditation/steps/step1/contact-person/contact-person.component';
+import {
+    AddressComponent
+} from '@modules/core/roles/external/components/guide-accreditation/steps/step1/address/address.component';
 import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
-import { EstablishmentHttpService, FormStateService, GuideHttpService } from '@modules/core/roles/external/services';
+import { FormStateService, GuideHttpService } from '@modules/core/roles/external/services';
 import { Message } from 'primeng/message';
 import { AuthService } from '@/pages/auth/auth.service';
-import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-step1',
-    imports: [Button, ContactPersonComponent, AddressComponent, Message, JsonPipe],
+    imports: [Button, ContactPersonComponent, AddressComponent, Message],
     templateUrl: './step1.component.html'
 })
 export class Step1Component implements OnInit {

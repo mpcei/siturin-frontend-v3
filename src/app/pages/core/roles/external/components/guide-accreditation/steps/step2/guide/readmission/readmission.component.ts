@@ -3,15 +3,16 @@ import { Button } from 'primeng/button';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { CustomMessageService } from '@utils/services';
 import { FormStateService, GuideHttpService } from '@/pages/core/roles/external/services';
-import { RequirementExpiredComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-expired/requirement-expired.component';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { MY_ROUTES } from '@routes';
 import { Router } from '@angular/router';
-import { RequirementReadmissionComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-readmission/requirement-readmission.component';
+import {
+    RequirementReadmissionComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement-readmission/requirement-readmission.component';
 
 @Component({
     selector: 'app-readmission',
-    imports: [Button, RequirementExpiredComponent, RequirementReadmissionComponent],
+    imports: [Button, RequirementReadmissionComponent],
     templateUrl: './readmission.component.html'
 })
 export class ReadmissionComponent {

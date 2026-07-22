@@ -87,7 +87,7 @@ export class AddressComponent implements OnInit {
             if (value) {
                 if (value.code === '1701') {
                     this.customMessageService.showModalWarn({
-                        summary: 'Poner aqui el titulo del mensaje',
+                        summary: 'No puede selecionar',
                         detail: 'Debe realizar el proceso con Quito Turismo'
                     });
                 } else {
