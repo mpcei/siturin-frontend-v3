@@ -40,8 +40,9 @@ export class AddressComponent implements OnInit {
     constructor() {
         effect(() => {
             if (this.dataIn() && !this.formInitialized) {
-                this.formInitialized = true;
+                console.log(this.dataIn());
                 this.loadData();
+                this.formInitialized = true;
             }
         });
 
@@ -144,13 +145,6 @@ export class AddressComponent implements OnInit {
     loadData() {
         if (this.dataIn()) {
             this.form.patchValue(this.dataIn());
-            this.provinceField.patchValue(this.formStateService.establishment()?.province);
-            this.cantonField.patchValue(this.formStateService.establishment()?.canton);
-            this.parishField.patchValue(this.formStateService.establishment()?.parish);
-            this.mainStreetField.patchValue(this.formStateService.establishment()?.mainStreet);
-            this.numberStreetField.patchValue(this.formStateService.establishment()?.numberStreet);
-            this.secondaryStreetField.patchValue(this.formStateService.establishment()?.secondaryStreet);
-            this.referenceStreetField.patchValue(this.formStateService.establishment()?.referenceStreet);
         }
     }
 
