@@ -1,6 +1,6 @@
 <app-requirement-general-data-update (dataOut)="saveForm($event,'processGuides')" />
 
-@if (formStateService.process()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+@if (formStateService.currentCredential()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
     <!--    <app-protected-area-->
         <!--        [classification]="{}"-->
         <!--        (dataOut)="saveForm($event,'protectedArea')" />-->

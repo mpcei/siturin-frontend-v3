@@ -1,16 +1,16 @@
 <app-requirement-renew (dataOut)="saveForm($event,'processGuides')" />
 
-@if (formStateService.process()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
+@if (formStateService.currentCredential()?.classification?.code === CatalogueGuideClassificationsCodeEnum.guide_local) {
     <app-protected-area
-        [classification]="{}"
+        [classification]="formStateService.currentCredential()?.classification!"
         (dataOut)="saveForm($event,'protectedArea')" />
 }
 
-@if (CatalogueGuideClassificationsCodeEnum.guide_local === formStateService.process()?.classification?.code ||
-CatalogueGuideClassificationsCodeEnum.guide_adventure === formStateService.process()?.classification?.code ||
-CatalogueGuideClassificationsCodeEnum.guide_national_adventure === formStateService.process()?.classification?.code) {
+@if (CatalogueGuideClassificationsCodeEnum.guide_local === formStateService.currentCredential()?.classification?.code ||
+CatalogueGuideClassificationsCodeEnum.guide_adventure === formStateService.currentCredential()?.classification?.code ||
+CatalogueGuideClassificationsCodeEnum.guide_national_adventure === formStateService.currentCredential()?.classification?.code) {
     <app-adventure-tourism-modality
-        [classification]="formStateService.process()?.classification!"
+        [classification]="formStateService.currentCredential()?.classification!"
         (dataOut)="saveForm($event,'adventureModality')" />
 }
 
