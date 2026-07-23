@@ -551,5 +551,5 @@
 }
 
 @if (!isEdit) {
-    <app-guide [processTypeCode]="process?.type?.code!" />
+    <app-guide [processTypeCode]="process?.type?.code!" (step)="back()"/>
 }

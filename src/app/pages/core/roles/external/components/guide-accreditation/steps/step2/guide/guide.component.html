@@ -2,31 +2,31 @@
     @case (CatalogueProcessesTypeEnum.registration) {
         @switch (formStateService.catastroSiete()?.type) {
             @case ('new') {
-                <app-registration (step)="$event" />
+                <app-registration (step)="back()" />
             }
             @case ('current') {
-                <app-registration-guide-current (step)="$event" />
+                <app-registration-guide-current (step)="back()" />
             }
             @case ('expired') {
-                <app-registration-guide-expired (step)="$event" />
+                <app-registration-guide-expired (step)="back()" />
             }
         }
 
     }
 
     @case (CatalogueProcessesTypeEnum.new_classification_update) {
-        <app-registration (step)="$event" />
+        <app-registration (step)="back()" />
     }
 
     @case (CatalogueProcessesTypeEnum.renewal_classification_update) {
-        <app-renew (step)="$event" />
+        <app-renew (step)="back()" />
     }
 
     @case (CatalogueProcessesTypeEnum.readmission) {
-        <app-readmission (step)="$event" />
+        <app-readmission (step)="back()" />
     }
 
     @case (CatalogueProcessesTypeEnum.general_data_update) {
-        <app-general-data-update (step)="$event" />
+        <app-general-data-update (step)="back()" />
     }
 }

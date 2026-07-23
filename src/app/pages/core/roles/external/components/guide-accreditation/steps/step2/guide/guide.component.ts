@@ -24,4 +24,8 @@ export class GuideComponent {
     public processTypeCode = input.required<string>();
     protected readonly formStateService = inject(FormStateService);
     protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
+
+    back() {
+        this.step.emit(1);
+    }
 }

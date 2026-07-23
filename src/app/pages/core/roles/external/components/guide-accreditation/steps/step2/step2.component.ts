@@ -215,7 +215,6 @@ export class Step2Component implements OnInit {
 
         switch (this.formStateService.process()?.type?.code) {
             case CatalogueProcessesTypeEnum.registration: {
-
                 break;
             }
             case CatalogueProcessesTypeEnum.new_classification_update: {
@@ -321,4 +320,8 @@ export class Step2Component implements OnInit {
     }
 
     protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
+
+    back() {
+        this.step.emit(1);
+    }
 }
