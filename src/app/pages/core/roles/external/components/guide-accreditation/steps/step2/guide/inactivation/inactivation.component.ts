@@ -84,8 +84,8 @@ export class InactivationComponent implements OnInit {
                 this.guideHttpService.createInactivation(payload).subscribe({
                     next: (response) => {
                         this.customMessageService.showModalInfo({
-                            summary: '',
-                            detail: ''
+                            summary: 'Proceso de inactivación completado de manera exitosa',
+                            detail: 'Recuerde revisar su correo de manera permanente'
                         });
                         this.closeModal();
                     }
