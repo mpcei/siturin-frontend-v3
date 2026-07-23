@@ -191,9 +191,13 @@ export class Step2Component implements OnInit {
     async loadActivities() {
         if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
             this.activities = [];
-            this.geographicAreas.forEach(async (geographicArea) => {
-                this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
-            });
+            if (this.formStateService.catastroSiete()?.type === 'new') {
+                for (const geographicArea of this.geographicAreas) {
+                    this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
+                }
+            } else {
+                this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
+            }
         } else {
             this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
         }
@@ -201,9 +205,9 @@ export class Step2Component implements OnInit {
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
         this.activityField.patchValue(this.activities[0]);
 
-        if (this.formStateService.catastroSiete()?.type !== 'new') {
-            this.formStateService.updateSection('process', { activity: this.activityField.value });
-        }
+        // if (this.formStateService.catastroSiete()?.type !== 'new') {
+        this.formStateService.updateSection('process', { activity: this.activityField.value });
+        // }
     }
 
     async loadClassifications() {

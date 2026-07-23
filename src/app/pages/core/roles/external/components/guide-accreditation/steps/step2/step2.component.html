@@ -1,3 +1,4 @@
+{{formStateService.catastroSiete()?.type | json}}
 @if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.registration) {
     @if (formStateService.catastroSiete()?.type === 'new') {
         <form [formGroup]="form" class="custom-form-card">
@@ -45,7 +46,31 @@
                         [options]="activities"
                         optionLabel="name"
                         appendTo="body"
-                        placeholder="Seleccione" />
+                        placeholder="Seleccione" >
+                        <ng-template #selectedItem let-selectedOption>
+                            @if (selectedOption) {
+                                <div class="flex items-center gap-2">
+                                    <div>{{ selectedOption.name }}</div>
+                                    @if(selectedOption.code==='guide_galapagos'){
+                                        - GALÁPAGOS
+                                    } @else {
+                                        - CONTINENTE
+                                    }
+                                </div>
+                            }
+                        </ng-template>
+
+                        <ng-template let-item #item>
+                            <div class="flex items-center gap-2">
+                                <div>{{ item.name }}</div>
+                                @if(item.code==='guide_galapagos'){
+                                    - GALÁPAGOS
+                                } @else {
+                                    - CONTINENTE
+                                }
+                            </div>
+                        </ng-template>
+                    </p-select>
 
                     <small
                         appErrorMessage
@@ -159,7 +184,8 @@
                         [options]="activities"
                         optionLabel="name"
                         appendTo="body"
-                        placeholder="Seleccione" />
+                        placeholder="Seleccione" >
+                    </p-select>
 
                     <small
                         appErrorMessage
@@ -225,7 +251,8 @@
                         [options]="activities"
                         optionLabel="name"
                         appendTo="body"
-                        placeholder="Seleccione" />
+                        placeholder="Seleccione" >
+                    </p-select>
 
                     <small
                         appErrorMessage
