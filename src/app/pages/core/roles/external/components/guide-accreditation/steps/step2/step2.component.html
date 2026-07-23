@@ -1,4 +1,3 @@
-{{formStateService.catastroSiete()?.type | json}}
 @if (formStateService.process()?.type?.code === CatalogueProcessesTypeEnum.registration) {
     @if (formStateService.catastroSiete()?.type === 'new') {
         <form [formGroup]="form" class="custom-form-card">
