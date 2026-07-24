@@ -114,6 +114,7 @@ export class ChecklistComponent implements OnInit {
     findProcess() {
         this.internalInspectionService.findProcess(this.processId(), this.isCurrent()).subscribe({
             next: (response) => {
+                console.log(response);
                 this.guideData = {
                     legalName: response.establishment.ruc.legalName,
                     nationality: response.establishment.ruc.user.nationality,
@@ -135,7 +136,7 @@ export class ChecklistComponent implements OnInit {
                     longitude: response.establishment.establishmentAddress?.longitude
                 };
 
-                this.checklistData = response.processGuides;
+                this.checklistData = response;
             }
         });
     }

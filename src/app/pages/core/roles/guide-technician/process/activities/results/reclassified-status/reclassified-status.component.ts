@@ -89,7 +89,6 @@ export class ReclassifiedStatusComponent {
 
     onSubmit() {
         if (this.validateForm()) {
-            console.log(this.form.value)
             this.createState();
         }
     }

@@ -34,9 +34,7 @@ export class FileHttpService {
     downloadFile(file: FileInterface) {
         const url = `${this._apiUrl}/${file.id}/download`;
 
-        this._coreService.showProcessing();
-
-        this._httpClient.get<BlobPart>(url, {responseType: 'blob' as 'json'})
+        this._httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
             .subscribe(response => {
                 const filePath = URL.createObjectURL(new Blob([response]));
 
@@ -49,8 +47,31 @@ export class FileHttpService {
                 document.body.appendChild(downloadLink);
 
                 downloadLink.click();
+            });
+    }
 
-                this._coreService.hideProcessing();
+    downloadModelFile(modelId: string, fileName: string) {
+        const url = `${this._apiUrl}/${modelId}/model-download`;
+
+        this._httpClient.get(url, { responseType: 'blob', observe: 'response' })
+            .subscribe(response => {
+                const blob = response.body!;
+
+                const filePath = URL.createObjectURL(blob);
+
+                const downloadLink = document.createElement('a');
+
+                downloadLink.href = filePath;
+
+                const fileName = response.headers.get('x-file-name');
+
+                downloadLink.download = fileName!;
+
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                downloadLink.remove();
+
+                URL.revokeObjectURL(filePath);
             });
     }
 }

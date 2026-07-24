@@ -43,7 +43,6 @@ export class ScheduleComponent {
         if (this.form.valid) {
             this.internalInspectionService.create(this.form.value).subscribe({
                 next: (res) => {
-                    console.log('Inspección creada:', res);
                     this.visible = false;
                 },
                 error: (err) => {

@@ -3,7 +3,7 @@
 }
 
 @if (guideData) {
-<app-checklist-form
-    (dataOut)="saveForm($event,'user')"
-    [dataIn]="checklistData" />
+    <app-checklist-form
+        (dataOut)="saveForm($event,'user')"
+        [dataIn]="checklistData" />
 }

@@ -34,17 +34,19 @@ import {
 } from '@/pages/core/roles/guide-technician/process/services/internal-inspection.service';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
+import { JsonPipe } from '@angular/common';
+import { Tag } from 'primeng/tag';
 
 @Component({
     selector: 'app-checklist-form',
-    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective],
+    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective, JsonPipe, Tag],
     templateUrl: './checklist-form.component.html'
 })
 export class ChecklistFormComponent implements OnInit {
-    dataIn = input.required<any[]>();
+    dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
 
-    data = signal<any[]>([]);
+    data = signal<any>(null);
 
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -81,15 +83,19 @@ export class ChecklistFormComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadCatalogues();
+        console.log(this.data().processGuides);
     }
 
     async loadCatalogues() {
         this.states = await this.catalogueService.findByType(CatalogueTypeEnum.processes_state);
-        console.log(this.states);
     }
 
     downloadFile(file: FileInterface) {
         this.fileHttpService.downloadFile(file);
+    }
+
+    downloadModelFile(modelId: string, fileName: string) {
+        this.fileHttpService.downloadModelFile(modelId, fileName);
     }
 
     accept() {
@@ -100,7 +106,7 @@ export class ChecklistFormComponent implements OnInit {
         this.stateSelected = this.states.find(item => item.code === CatalogueProcessesStateEnum.reviewed);
 
         if (this.approved) {
-            this.allRequirements = this.data().every(item => item.state);
+            this.allRequirements = this.data().processGuides.every((item: any) => item.state);
 
             if (!this.allRequirements) {
                 this.customMessageService.showWarning({
@@ -148,9 +154,8 @@ export class ChecklistFormComponent implements OnInit {
             accept: () => {
                 const { ...process } = this.formStateService.process()!;
                 const assignment = this.formStateService.assignment()!;
-                console.log(assignment);
                 const payload = {
-                    processGuides: this.data(),
+                    processGuides: this.data().processGuides,
                     processState: this.stateSelected,
                     processId: process.id,
                     assignmentId: assignment.id,

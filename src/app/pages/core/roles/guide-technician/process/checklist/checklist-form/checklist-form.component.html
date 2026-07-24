@@ -5,7 +5,7 @@
         </div>
 
         <!-- processGuides -->
-        @for (processGuide of data(); track processGuide) {
+        @for (processGuide of data().processGuides; track processGuide) {
             <div class="custom-form-field-row md:col-span-12">
                 ¿Cumple?
                 <p-toggle-switch
@@ -35,11 +35,43 @@
                         />
                     </p-message>
                 }
-                <p-divider />
+
                 <!--                <input-->
                 <!--                    pInputText-->
                 <!--                    id="legalName"-->
                 <!--                    formControlName="legalName" />-->
+            </div>
+
+            <div class="custom-form-field-row md:col-span-12">
+                @if (processGuide.requirement.code == 'certification_language') {
+                    @for (language of data().establishment.languages; track language.id) {
+                        <p-message>
+                            <p-button
+                                [label]="language.languageName"
+                                [link]="true"
+                                [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                (onClick)="downloadModelFile(language.id,language.languageName)"
+                            />
+                        </p-message>
+                    }
+                }
+
+                @if (processGuide.requirement.code == 'modality_adventure_guide') {
+                    @for (adventureModality of data().establishment.adventureModalities; track adventureModality.id) {
+                        <p-message>
+                            <p-button
+                                [label]="adventureModality.modalityName"
+                                [link]="true"
+                                [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                (onClick)="downloadModelFile(adventureModality.id,adventureModality.modalityName)"
+                            />
+                        </p-message>
+                    }
+                }
+            </div>
+
+            <div class="custom-form-field md:col-span-12">
+                <p-divider />
             </div>
         }
 
