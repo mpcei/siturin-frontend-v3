@@ -2,7 +2,6 @@ import { Component, inject, input, InputSignal, OnInit, output, OutputEmitterRef
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { LabelDirective } from '@utils/directives/label.directive';
-import { CustomMessageService } from '@utils/services/custom-message.service';
 import { PrimeIcons } from 'primeng/api';
 import { FluidModule } from 'primeng/fluid';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -12,8 +11,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 @Component({
     selector: 'app-people-capacity',
     imports: [FormsModule, ReactiveFormsModule, FluidModule, MessageModule, ErrorMessageDirective, LabelDirective, InputNumberModule],
-    templateUrl: './people-capacity.component.html',
-    styleUrl: './people-capacity.component.scss'
+    templateUrl: './people-capacity.component.html'
 })
 export class PeopleCapacityComponent implements OnInit {
     public dataIn: InputSignal<any> = input<any>();

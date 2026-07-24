@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, input, Input, InputSignal, OnInit, output, Output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { PrimeIcons } from 'primeng/api';
@@ -22,9 +22,13 @@ import { InputGroupAddon } from 'primeng/inputgroupaddon';
     styleUrl: './accredited-staff-language.component.scss'
 })
 export class AccreditedStaffLanguageComponent implements OnInit {
-    @Input() data!: string | undefined;
-    @Output() dataOut = new EventEmitter<Record<string, any>>();
-    @Output() fieldErrorsOut = new EventEmitter<string[]>();
+    // @Input() data!: string | undefined;
+    // @Output() dataOut = new EventEmitter<Record<string, any>>();
+    // @Output() fieldErrorsOut = new EventEmitter<string[]>();
+
+    public data = input<any>();
+    public dataOut = output<Record<string, any>>();
+    public fieldErrorsOut = output<string[]>();
 
     private readonly formBuilder = inject(FormBuilder);
     protected readonly coreSessionStorageService = inject(CoreSessionStorageService);
