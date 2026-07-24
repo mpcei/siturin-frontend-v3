@@ -34,4 +34,5 @@ export interface EstablishmentInterface {
 
 interface CurrentProcess {
     type: CatalogueInterface;
+    credentials?: CredentialInterface[];
 }

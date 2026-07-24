@@ -23,7 +23,7 @@ export default [
         component: ProcessComponent
     },
     {
-        path: MY_ROUTES.corePages.guideTechnician.checklist.base+'/:processId',
+        path: MY_ROUTES.corePages.guideTechnician.checklist.base+'/:processId/:isCurrent',
         component: ChecklistComponent
     }
 ] as Routes;

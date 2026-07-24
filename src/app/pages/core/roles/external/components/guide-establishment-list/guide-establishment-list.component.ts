@@ -90,6 +90,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
                     this.establishmentHttpService.findCadastreByEstablishment(establishment.id!).subscribe({
                         next: (response) => {
                             this.establishment.set(response);
+                            console.log(this.establishment().currentProcess);
                             if (this.establishment().currentProcess) {
                                 this.customMessageService.showModalWarn({
                                     summary: `Actualmente tiene un trámite de ${this.establishment().currentProcess?.type.name}`,
@@ -185,8 +186,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     protected async createProcess(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
-        console.log(this.authService.auth);
-
         if (!this.authService.auth.sex || !this.authService.auth.nationality || !this.authService.auth.birthdate) {
             this.updateGuideInformation(establishment, processType);
             return;
