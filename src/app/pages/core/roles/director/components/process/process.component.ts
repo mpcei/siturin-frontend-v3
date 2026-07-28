@@ -5,13 +5,12 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { DownloadDocumentsComponent } from './activities/download-documents/download-documents.component';
 import { PrimeIcons } from 'primeng/api';
-import { Message } from 'primeng/message';
 import { BreadcrumbService } from '@layout/service';
 import {
     InternalInspectionService
 } from '@/pages/core/roles/director/components/process/services/internal-inspection.service';
 import { DatePipe } from '@angular/common';
-import { add, differenceInDays, startOfDay } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
 import { Tag } from 'primeng/tag';
@@ -25,7 +24,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {

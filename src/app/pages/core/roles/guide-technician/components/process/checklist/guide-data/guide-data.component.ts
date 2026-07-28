@@ -1,11 +1,10 @@
 import { Component, effect, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import { invalidEmailDomainValidator, invalidEmailValidator } from '@utils/form-validators/custom-validator';
 import { PrimeIcons } from 'primeng/api';
 import { Select } from 'primeng/select';
 import { CatalogueInterface } from '@utils/interfaces';
@@ -16,11 +15,10 @@ import { InputMask } from 'primeng/inputmask';
 import { AgePipe } from '@/pages/core/shared/pipes';
 import { EstablishmentInterface } from '@/pages/core/shared/interfaces';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { Message } from 'primeng/message';
 
 @Component({
     selector: 'app-guide-data',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe, Message],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe],
     templateUrl: './guide-data.component.html'
 })
 export class GuideDataComponent implements OnInit {

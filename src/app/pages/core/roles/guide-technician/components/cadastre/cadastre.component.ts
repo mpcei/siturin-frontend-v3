@@ -3,7 +3,6 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
-import { DownloadDocumentsComponent } from './activities/download-documents/download-documents.component';
 import { PrimeIcons } from 'primeng/api';
 import { Message } from 'primeng/message';
 import { BreadcrumbService } from '@layout/service';
@@ -24,12 +23,11 @@ import { FormStateService } from '@/pages/core/roles/external/services';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
-    selector: 'app-process',
+    selector: 'app-cadastre',
     imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel],
-    templateUrl: './process.component.html'
+    templateUrl: './cadastre.component.html'
 })
-export default class ProcessComponent implements OnInit {
-    @ViewChildren(DownloadDocumentsComponent) private downloadDocumentsComponent!: QueryList<DownloadDocumentsComponent>;
+export default class CadastreComponent implements OnInit {
     protected readonly formStateService = inject(FormStateService);
     protected readonly PrimeIcons = PrimeIcons;
     protected CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;

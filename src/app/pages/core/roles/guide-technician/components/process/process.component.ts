@@ -3,7 +3,6 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
-import { DownloadDocumentsComponent } from './activities/download-documents/download-documents.component';
 import { PrimeIcons } from 'primeng/api';
 import { Message } from 'primeng/message';
 import { BreadcrumbService } from '@layout/service';
@@ -29,7 +28,6 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
-    @ViewChildren(DownloadDocumentsComponent) private downloadDocumentsComponent!: QueryList<DownloadDocumentsComponent>;
     protected readonly formStateService = inject(FormStateService);
     protected readonly PrimeIcons = PrimeIcons;
     protected CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
