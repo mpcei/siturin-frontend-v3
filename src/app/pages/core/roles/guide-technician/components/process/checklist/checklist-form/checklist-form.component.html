@@ -7,7 +7,13 @@
         @for (credential of data().credentials; track credential) {
             <div class="custom-form-field-row md:col-span-4">
                 <p-message severity="success">
-                    {{credential?.classification?.name}}
+                    <p>
+                        <b>Coódigo:</b> {{ credential?.code }}
+                    </p>
+
+                    <p>
+                        <b>Credencial:</b> {{ credential?.classification?.name }}
+                    </p>
                 </p-message>
             </div>
         }
