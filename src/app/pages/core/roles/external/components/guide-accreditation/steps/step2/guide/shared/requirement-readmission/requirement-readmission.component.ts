@@ -14,7 +14,11 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
-import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideDegreesCodeEnum,
+    CatalogueGuideRequirementsCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
 
 @Component({
@@ -49,7 +53,8 @@ export class RequirementReadmissionComponent implements OnInit {
         { code: false, name: 'NO' }
     ];
 
-    constructor() {}
+    constructor() {
+    }
 
     async ngOnInit() {
         this.buildForm();
@@ -65,6 +70,7 @@ export class RequirementReadmissionComponent implements OnInit {
             certificationAux: [null],
             certificationAuxWild: [null],
             certificationUpdateCourse: [null, Validators.required],
+            inactiveState: [true, Validators.required],
             hasProtectedArea: [null]
         });
 
@@ -124,11 +130,13 @@ export class RequirementReadmissionComponent implements OnInit {
         if (this.certificationAuxField.invalid) errors.push('Certificado del curso de primeros auxilios vigente');
         if (this.certificationAuxWildField.invalid) errors.push('Certificado del curso de primeros auxilios en zonas agrestes vigente');
         if (this.certificationUpdateCourseField.invalid) errors.push('Certificado de aprobación de un curso de actualización de conocimientos.');
+        if (this.inactiveStateField.invalid) errors.push('Código de Registro de Turismo en estado inactivo.');
 
         return errors;
     }
 
-    loadData() {}
+    loadData() {
+    }
 
     onFileSelect(requirement: CatalogueInterface, event: any) {
         const img = new Image();
@@ -190,6 +198,9 @@ export class RequirementReadmissionComponent implements OnInit {
         this.requirementItems.set(new Map(this.requirements.map((item) => [item.code, item])));
 
         this.requirement.set(this.requirements.find((x) => x.code === 'pane_guide')!); //review cambiar por enum
+
+        const inactiveState = this.requirementItems().get(CatalogueGuideRequirementsCodeEnum.inactive_state);
+        this.responses.set(inactiveState.id, { file: null, requirement: { ...inactiveState, value: 'true' } });
     }
 
     get rucField(): AbstractControl {
@@ -216,6 +227,9 @@ export class RequirementReadmissionComponent implements OnInit {
         return this.form.controls['hasProtectedArea'];
     }
 
+    get inactiveStateField(): AbstractControl {
+        return this.form.controls['inactiveState'];
+    }
+
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
-    protected readonly CatalogueGuideDegreesCodeEnum = CatalogueGuideDegreesCodeEnum;
 }

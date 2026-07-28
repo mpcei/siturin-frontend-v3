@@ -131,3 +131,4 @@ export enum CatalogueRucsTypeEnum {
     natural = 'natural',
     juridical = 'juridical'
 }
+

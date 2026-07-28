@@ -15,6 +15,7 @@ import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-sw
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 
 @Component({
     selector: 'app-requirement',
@@ -297,4 +298,5 @@ export class RequirementComponent implements OnInit {
     }
 
     protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
+    protected readonly CoreMessage = CoreMessage;
 }

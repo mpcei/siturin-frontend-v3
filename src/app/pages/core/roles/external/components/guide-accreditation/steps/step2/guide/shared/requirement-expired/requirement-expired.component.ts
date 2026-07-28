@@ -16,6 +16,7 @@ import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
+import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 
 @Component({
     selector: 'app-requirement-expired',
@@ -218,4 +219,5 @@ export class RequirementExpiredComponent implements OnInit {
 
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
     protected readonly CatalogueGuideDegreesCodeEnum = CatalogueGuideDegreesCodeEnum;
+    protected readonly CoreMessage = CoreMessage;
 }

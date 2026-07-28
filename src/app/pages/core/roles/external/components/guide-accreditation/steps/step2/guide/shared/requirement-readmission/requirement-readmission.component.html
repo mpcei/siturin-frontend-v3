@@ -64,7 +64,7 @@
         }
 
         <!-- photo -->
-        @if (requirementItems().get('photo')) {
+        @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.photo)) {
             <div class="custom-form-field md:col-span-12">
                 <label
                     appLabel
@@ -99,6 +99,24 @@
                     [errors]="photoField.errors"
                     [touched]="photoField.touched"
                     [dirty]="photoField.dirty"></small>
+
+                <p-divider />
+            </div>
+        }
+
+        <!-- inactiveState -->
+        @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.inactive_state)) {
+            <div class="custom-form-field md:col-span-12">
+                <label
+                    appLabel
+                    for="ruc"
+                    [required]="inactiveStateField">
+                    <div [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.inactive_state)?.name"></div>
+                </label>
+
+                <p-message severity="info">
+                    Cumple
+                </p-message>
 
                 <p-divider />
             </div>
