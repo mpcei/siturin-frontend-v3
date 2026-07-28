@@ -3,11 +3,15 @@
         <div class="custom-form-title md:col-span-12">
             ACREDITACIÓN TURÍSTICA:
         </div>
+
         @for (credential of data().credentials; track credential) {
             <div class="custom-form-field-row md:col-span-12">
-                {{credential?.classification?.name}}
+                <p-message severity="success">
+                    {{credential?.classification?.name}}
+                </p-message>
             </div>
         }
+
         <!-- processGuides -->
         @for (processGuide of data().processGuides; track processGuide) {
             <div class="custom-form-field-row md:col-span-12">
