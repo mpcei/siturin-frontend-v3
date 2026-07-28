@@ -16,10 +16,11 @@ import { InputMask } from 'primeng/inputmask';
 import { AgePipe } from '@/pages/core/shared/pipes';
 import { EstablishmentInterface } from '@/pages/core/shared/interfaces';
 import { FormStateService } from '@/pages/core/roles/external/services';
+import { Message } from 'primeng/message';
 
 @Component({
     selector: 'app-guide-data',
-    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe],
+    imports: [ReactiveFormsModule, LabelDirective, InputText, ErrorMessageDirective, Select, InputMask, AgePipe, Message],
     templateUrl: './guide-data.component.html'
 })
 export class GuideDataComponent implements OnInit {
