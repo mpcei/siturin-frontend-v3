@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import { HttpResponseInterface } from '@/pages/auth/interfaces';
 import { CustomMessageService } from '@utils/services';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from '@/pages/auth/auth.service';
 
 @Injectable({
@@ -16,26 +16,11 @@ export class InternalInspectionService {
     private readonly apiUrl = `${environment.API_URL}/core/guide-technician`;
     private readonly customMessageService = inject(CustomMessageService);
 
-    create(payload: InternalInspectionInterface) {
-        const url = `${this.apiUrl}`;
-
-        return this.httpClient.post<HttpResponseInterface>(url, payload).pipe(
-            map((response) => {
-                this.customMessageService.showSuccess({ summary: response.title, detail: response.message });
-
-                return response.data;
-            })
-        );
-    }
-
-    findProcesses(page: string, isCurrent: boolean) {
-        const url = `${this.apiUrl}/process-guides/processes`;
+    findCadastres(page: string, isCurrent: boolean) {
+        const url = `${this.apiUrl}/process-guides/cadastres`;
 
         const params = new HttpParams()
-            .append('page', page)
-            .append('rolCode', this.authService.role.code)
-            .append('isCurrent', isCurrent)
-        ;
+            .append('page', page);
 
         return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
@@ -43,23 +28,8 @@ export class InternalInspectionService {
             })
         );
     }
-
-    findProcess(processId: string, isCurrent: boolean) {
-        const url = `${this.apiUrl}/process-guides/processes/${processId}`;
-
-        const params = new HttpParams()
-            .append('rolCode', this.authService.role.code)
-            .append('isCurrent', isCurrent);
-
-        return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(
-            map((response) => {
-                return response.data;
-            })
-        );
-    }
-
-    review(payload: any) {
-        const url = `${this.apiUrl}/process-guides/processes/review`;
+    createInactivation(payload: any): Observable<any> {
+        const url = `${this.apiUrl}/process-guides/processes/inactivated`;
 
         return this.httpClient.post<HttpResponseInterface>(url, payload).pipe(
             map((response) => {

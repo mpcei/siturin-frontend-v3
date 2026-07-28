@@ -117,26 +117,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
 
     buildButtonActions(item: EstablishmentInterface) {
         this.buttonActions = [];
-        const isClosed = item.state?.code !== CatalogueEstablishmentsStateEnum.open;
         const hasCadastre = item.process?.cadastre;
-        const isCadastreActive = item.process?.cadastre?.cadastreState?.state?.code !== CatalogueCadastreStatesStateEnum.inactivate;
-
-        if (!hasCadastre) {
-            if (isClosed) {
-                this.customMessageService.showModalError({ summary: 'No se puede crear un trámite', detail: 'El establecimiento se encuentra cerrado' });
-                return;
-            }
-        }
-
-        const shouldShowInactivationButton = isClosed && hasCadastre && isCadastreActive;
-
-        if (shouldShowInactivationButton) {
-            this.buttonActions.push({
-                ...inactivationButtonAction,
-                command: () => this.createProcess(item, CatalogueProcessesTypeEnum.registration)
-            });
-            return;
-        }
 
         if (!hasCadastre) {
             this.buttonActions.push({

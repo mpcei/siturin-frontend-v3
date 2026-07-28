@@ -1,4 +1,3 @@
-import { PrimeIcons } from 'primeng/api';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
 
 export const viewButtonAction = {
@@ -53,4 +52,10 @@ export const registrationButtonAction = {
     id: 'registration',
     label: 'Registro',
     icon: FontAwesome.FILE_SIGNATURE_SOLID
+};
+
+export const downloadButtonAction = {
+    id: 'download',
+    label: 'Descargar',
+    icon: FontAwesome.DOWNLOAD_SOLID
 };

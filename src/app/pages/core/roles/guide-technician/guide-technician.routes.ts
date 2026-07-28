@@ -4,6 +4,7 @@ import TechnicianDashboardComponent from '@modules/core/roles/guide-technician/g
 import ProcessComponent from '@/pages/core/roles/guide-technician/components/process/process.component';
 import RegulationSimulatorComponent from '@/pages/core/shared/components/regulation-simulator/regulation-simulator.component';
 import { ChecklistComponent } from '@/pages/core/roles/guide-technician/components/process/checklist/checklist.component';
+import CadastreComponent from '@/pages/core/roles/guide-technician/components/cadastre/cadastre.component';
 
 export default [
     {
@@ -20,7 +21,7 @@ export default [
     },
     {
         path: MY_ROUTES.corePages.guideTechnician.cadastre.base,
-        component: ProcessComponent
+        component: CadastreComponent
     },
     {
         path: MY_ROUTES.corePages.guideTechnician.checklist.base+'/:processId/:isCurrent',
