@@ -5,7 +5,7 @@
         </div>
 
         @for (credential of data().credentials; track credential) {
-            <div class="custom-form-field-row md:col-span-12">
+            <div class="custom-form-field-row md:col-span-4">
                 <p-message severity="success">
                     {{credential?.classification?.name}}
                 </p-message>
