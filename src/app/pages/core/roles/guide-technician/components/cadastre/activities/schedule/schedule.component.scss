@@ -1,0 +1,168 @@
+.calendar-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    // Contenedor del calendario
+    ::ng-deep p-calendar {
+        width: 100%;
+
+        .p-calendar {
+            width: 100%;
+        }
+
+        .p-datepicker {
+            width: 100%;
+            max-width: 100%;
+
+            // Contenedor de múltiples meses
+            .p-datepicker-multiple-month {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+
+                .p-datepicker-group {
+                    flex: 1;
+                    max-width: calc(50% - 0.5rem);
+                }
+            }
+
+            // Ajustar tamaño de las celdas
+            .p-datepicker-calendar {
+                width: 100%;
+
+                th, td {
+                    padding: 0.3rem 0.2rem;
+                    text-align: center;
+
+                    span {
+                        font-size: 0.85rem;
+                    }
+                }
+
+                .p-datepicker-day {
+                    width: 1.8rem;
+                    height: 1.8rem;
+                    font-size: 0.85rem;
+                }
+            }
+
+            // Ajustar el selector de tiempo
+            .p-timepicker {
+                padding: 1rem 0.5rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 1rem;
+
+                .p-hour-picker,
+                .p-minute-picker {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .p-link {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+
+                    span {
+                        margin: 0.25rem 0;
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 900px) {
+    .calendar-wrapper {
+        ::ng-deep p-calendar {
+            .p-datepicker {
+                .p-datepicker-multiple-month {
+                    flex-direction: column;
+                    gap: 1.5rem;
+
+                    .p-datepicker-group {
+                        max-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-wrapper {
+        ::ng-deep p-calendar {
+            .p-datepicker {
+                .p-datepicker-multiple-month {
+                    .p-datepicker-group:nth-child(2) {
+                        display: none;
+                    }
+                }
+
+                .p-datepicker-calendar {
+                    th, td {
+                        padding: 0.25rem 0.15rem;
+
+                        span {
+                            font-size: 0.8rem;
+                        }
+                    }
+
+                    .p-datepicker-day {
+                        width: 2rem;
+                        height: 2rem;
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar-wrapper {
+        ::ng-deep p-calendar {
+            .p-datepicker {
+                padding: 0.5rem;
+
+                .p-datepicker-calendar {
+                    th, td {
+                        padding: 0.2rem 0.1rem;
+
+                        span {
+                            font-size: 0.75rem;
+                        }
+                    }
+
+                    .p-datepicker-day {
+                        width: 1.6rem;
+                        height: 1.6rem;
+                        font-size: 0.75rem;
+                    }
+                }
+
+                .p-timepicker {
+                    padding: 0.5rem;
+                    gap: 0.5rem;
+
+                    .p-hour-picker,
+                    .p-minute-picker {
+                        .p-link {
+                            width: 1.2rem;
+                            height: 1.2rem;
+                        }
+
+                        span {
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
