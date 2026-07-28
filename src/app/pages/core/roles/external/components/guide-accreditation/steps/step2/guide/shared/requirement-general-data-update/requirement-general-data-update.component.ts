@@ -2,23 +2,20 @@ import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@ang
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
-import { Message } from 'primeng/message';
 import { CustomMessageService } from '@utils/services/custom-message.service';
-import { LabelDirective } from '@utils/directives/label.directive';
-import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { FileUpload } from 'primeng/fileupload';
-import { JsonPipe } from '@angular/common';
-import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { CatalogueFoodDrinkClassificationsCodeEnum, CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideDegreesCodeEnum,
+    CatalogueGuideRequirementsCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
 
 @Component({
     selector: 'app-requirement-general-data-update',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, ToggleSwitchComponent, Divider],
+    imports: [ReactiveFormsModule],
     templateUrl: './requirement-general-data-update.component.html'
 })
 export class RequirementGeneralDataUpdateComponent implements OnInit {

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import TechnicianDashboardComponent from '@modules/core/roles/director/director-dashboard/director-dashboard.component';
-import ProcessComponent from '@modules/core/roles/director/process/process.component';
+import ProcessComponent from '@/pages/core/roles/director/components/process/process.component';
 import RegulationSimulatorComponent from '@/pages/core/shared/components/regulation-simulator/regulation-simulator.component';
-import { ChecklistComponent } from '@/pages/core/roles/director/process/checklist/checklist.component';
+import { ChecklistComponent } from '@/pages/core/roles/director/components/process/checklist/checklist.component';
 
 export default [
     {
@@ -16,10 +16,6 @@ export default [
     },
     {
         path: MY_ROUTES.corePages.director.process.base,
-        component: ProcessComponent
-    },
-    {
-        path: MY_ROUTES.corePages.director.cadastre.base,
         component: ProcessComponent
     },
     {

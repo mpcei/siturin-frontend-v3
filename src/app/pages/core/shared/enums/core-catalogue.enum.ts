@@ -86,8 +86,13 @@ export enum CatalogueProcessesStateEnum {
     pending_1 = 'pending_1',
     pending_2 = 'pending_2',
     completed = 'completed',
-    document_rejected='document_rejected',
+    in_process='in_process',
+    in_approval='in_approval',
+    in_review='in_review',
     reviewed='reviewed',
+    document_rejected='document_rejected',
+    rejected='rejected',
+    approved='approved',
 }
 
 export enum CatalogueActivitiesCodeEnum {

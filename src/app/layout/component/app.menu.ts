@@ -64,11 +64,13 @@ import { Fluid } from 'primeng/fluid';
 
                 <p-fluid>
                     <div>
-                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID" [label]="environment.APP_VERSION" />
+                        <p-button text size="small" severity="secondary" [icon]="FontAwesome.CODE_BRANCH_SOLID"
+                                  [label]="environment.APP_VERSION" />
                     </div>
 
                     <div>
-                        <p-button [outlined]="true" [raised]="true" size="small" severity="danger" [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
+                        <p-button [outlined]="true" [raised]="true" size="small" severity="danger"
+                                  [icon]="FontAwesome.POWER_OFF_SOLID" label="Cerrar Sesión" (onClick)="signOut()" />
                     </div>
                 </p-fluid>
             </div>
@@ -201,17 +203,12 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.guideTechnician.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.director.simulator.absolute]
             },
             {
-                label: 'Revisión Guianza Turística',
+                label: 'Aprobación Guianza Turística',
                 icon: FontAwesome.LIST_CHECK_SOLID,
-                routerLink: [MY_ROUTES.corePages.guideTechnician.process.absolute]
-            },
-            {
-                label: 'Gestión Guianza Turística',
-                icon: FontAwesome.SITEMAP_SOLID,
-                routerLink: [MY_ROUTES.corePages.guideTechnician.cadastre.absolute]
+                routerLink: [MY_ROUTES.corePages.director.process.absolute]
             },
             {
                 label: 'Manual de Usuario',

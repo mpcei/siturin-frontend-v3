@@ -31,7 +31,7 @@ export default [
         loadChildren: () => import('@modules/core/roles/guide-technician/guide-technician.routes')
     },
     {
-        path: MY_ROUTES.corePages.guideTechnician.base,
-        loadChildren: () => import('@modules/core/roles/guide-technician/guide-technician.routes')
+        path: MY_ROUTES.corePages.director.base,
+        loadChildren: () => import('@modules/core/roles/director/director.routes')
     }
 ] as Routes;
