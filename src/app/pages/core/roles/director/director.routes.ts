@@ -19,7 +19,7 @@ export default [
         component: ProcessComponent
     },
     {
-        path: MY_ROUTES.corePages.director.checklist.base+'/:processId',
+        path: MY_ROUTES.corePages.director.checklist.base+'/:processId/:isCurrent',
         component: ChecklistComponent
     }
 ] as Routes;
