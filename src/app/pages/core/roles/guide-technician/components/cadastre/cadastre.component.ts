@@ -15,10 +15,8 @@ import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { Tooltip } from 'primeng/tooltip';
 import { Router } from '@angular/router';
-import { MY_ROUTES } from '@routes';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { EstablishmentInterface } from '@/pages/core/shared/interfaces';
 import { downloadButtonAction, inactivationButtonAction } from '@utils/components/button-action/consts';
 import {
     InactivationComponent
@@ -33,6 +31,7 @@ import { CatalogueCadastreStatesStateEnum } from '@/pages/core/shared/enums';
 
 @Component({
     selector: 'app-cadastre',
+    standalone:true,
     imports: [TableModule, ButtonModule, DividerModule, PanelModule, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, ButtonActionComponent],
     templateUrl: './cadastre.component.html',
     providers: [DialogService]
