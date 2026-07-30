@@ -82,12 +82,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     findEstablishmentsByRuc(page = 1, search = null) {
-        this.customMessageService.showModalWarn({
-            detail: `
-                                    Actualmente su trámite de ${this.establishment().currentProcess?.type.name} se encuentra en proceso de revisión.
-                                    Una vez concluida la verificación de los requisitos, el resultado será notificado, a través de este portal y de su correo electrónico`,
-            summary: 'Importante'
-        });
         this.rucHttpService.findEstablishmentsByRuc(page, search, this.authService.auth.identification!).subscribe({
             next: (response) => {
                 const establishment = (response.data as EstablishmentInterface[]).find((item) => item.isCadastre);
