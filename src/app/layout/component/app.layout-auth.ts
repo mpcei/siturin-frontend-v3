@@ -85,7 +85,8 @@ import { Tooltip } from 'primeng/tooltip';
                             <p-message severity="info">
                                 <p>
                                     <i [class]="FontAwesome.TRIANGLE_EXCLAMATION_SOLID"></i>
-                                    <b>Importante:</b> Estimado Usuario, si su establecimiento se encuentra ubicado en el cantón Quito, por favor acérquese a las oficinas de "Quito Turismo" para solicitar su Certificado de Registro Turístico.
+                                    <b>Importante:</b> Estimado Usuario, si su establecimiento o su actividad de guianza turística la realiza dentro del cantón Quito,
+                                    por favor acérquese a las oficinas de <b>Quito Turismo</b> para solicitar su <b>Certificado de Registro Turístico</b>.
                                 </p>
                                 <p>
                                     <i [class]="FontAwesome.LOCATION_DOT_SOLID"></i>

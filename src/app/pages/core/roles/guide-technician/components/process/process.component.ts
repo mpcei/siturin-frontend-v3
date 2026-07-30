@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { CustomMessageService } from '@utils/services';
 
 @Component({
     selector: 'app-process',
@@ -34,6 +35,7 @@ export default class ProcessComponent implements OnInit {
     private readonly router = inject(Router);
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly internalInspectionService = inject(InternalInspectionService);
+    private readonly customMessageService = inject(CustomMessageService);
     protected items = signal([]);
     protected completedProcesses = signal([]);
     protected currentDate = new Date();
@@ -64,6 +66,21 @@ export default class ProcessComponent implements OnInit {
     }
 
     goToProcess(processId: string, assignmentId: string, isCurrent: boolean) {
+        this.formStateService.updateSection('process', { id: processId });
+        this.formStateService.updateSection('assignment', { id: assignmentId });
+        this.customMessageService.showModalInfo({
+            summary: 'Nota informativa al Técnico Zonal',
+            detail:
+                `Recuerde que usted deberá revisar los requisitos documentales en apego al marco
+            normativo (recuerde revisar siempre la normativa antes emitir un resultado), mismos que
+            deben ser sustentados en el expediente digital por solicitud: requisitos, fotografía,
+            declaratorias, otros`
+
+        });
+        this.router.navigate([MY_ROUTES.corePages.guideTechnician.checklist.absolute, processId, isCurrent]);
+    }
+
+    goToProcessComplete(processId: string, assignmentId: string, isCurrent: boolean) {
         this.formStateService.updateSection('process', { id: processId });
         this.formStateService.updateSection('assignment', { id: assignmentId });
         this.router.navigate([MY_ROUTES.corePages.guideTechnician.checklist.absolute, processId, isCurrent]);

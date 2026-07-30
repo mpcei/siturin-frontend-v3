@@ -88,8 +88,11 @@ export class AddressComponent implements OnInit {
             if (value) {
                 if (value.code === '1701') {
                     this.customMessageService.showModalWarn({
-                        summary: 'No puede selecionar',
-                        detail: 'Debe realizar el proceso con Quito Turismo'
+                        summary: 'Importante',
+                        detail: `
+                        Estimado usuario, si su actividad de guianza turística la realiza dentro del
+                        cantón Quito, por favor acérquese a las oficinas de Quito Turismo para solicitar su
+                        Certificado de Registro de Turismo.`
                     });
                 } else {
                     this.parishField.reset();

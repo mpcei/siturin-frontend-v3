@@ -3,7 +3,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { CatalogueInterface, FileInterface } from '@utils/interfaces';
-import { CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { FormStateService } from '@/pages/core/roles/external/services';
@@ -24,18 +24,26 @@ import {
 } from '@/pages/core/roles/guide-technician/components/process/services/internal-inspection.service';
 import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
+import { DateLongPipe } from '@utils/pipes/date-long.pipe';
+import { TableModule } from 'primeng/table';
+import { DatePipe } from '@angular/common';
+import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
+import { Tag } from 'primeng/tag';
+import { Tooltip } from 'primeng/tooltip';
+import { differenceInDays } from 'date-fns';
 
 @Component({
     selector: 'app-checklist-form',
-    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective],
+    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective, DateLongPipe, TableModule, DatePipe, EstablishmentNumberPipe, ProcessStateSeverityPipe, Tag, Tooltip],
     templateUrl: './checklist-form.component.html'
 })
 export class ChecklistFormComponent implements OnInit {
+    isCurrent = input.required<any>();
     dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
 
     data = signal<any>(null);
-
+    processStates = signal<any[]>([]);
     protected readonly PrimeIcons = PrimeIcons;
 
     protected readonly customMessageService = inject(CustomMessageService);
@@ -65,13 +73,15 @@ export class ChecklistFormComponent implements OnInit {
             if (this.dataIn() && !this.formInitialized) {
                 this.formInitialized = true;
                 this.data.set(structuredClone(this.dataIn()));
+                this.processStates.set(this.data().processStates);
+                this.processStates().sort((a, b) => a.startedAt.localeCompare(b.startedAt));
             }
+
         });
     }
 
     async ngOnInit() {
         await this.loadCatalogues();
-        console.log(this.data().processGuides);
     }
 
     async loadCatalogues() {
@@ -165,4 +175,6 @@ export class ChecklistFormComponent implements OnInit {
 
     protected readonly FontAwesome = FontAwesome;
     protected readonly Validators = Validators;
+    protected readonly differenceInDays = differenceInDays;
+    protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
 }

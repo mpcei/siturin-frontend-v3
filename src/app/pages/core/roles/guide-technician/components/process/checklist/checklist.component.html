@@ -1,9 +1,10 @@
 @if (guideData) {
-    <app-guide-data [dataIn]="guideData" />
+    <app-guide-data [dataIn]="guideData"/>
 }
 
 @if (guideData) {
     <app-checklist-form
         (dataOut)="saveForm($event,'user')"
-        [dataIn]="checklistData" />
+        [dataIn]="checklistData"
+        [isCurrent]="isCurrent()"/>
 }

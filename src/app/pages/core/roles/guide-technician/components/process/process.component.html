@@ -1,16 +1,4 @@
 <h2>Proceso de atención a trámites:</h2>
-<p-message>
-    <div>
-        <p class="font-bold">Nota informativa al Técnico Zonal</p>
-
-        <p>
-            "Recuerde que usted deberá revisar los requisitos documentales en apego al marco
-            normativo (recuerde revisar siempre la normativa antes emitir un resultado), mismos que
-            deben ser sustentados en el expediente digital por solicitud: requisitos, fotografía,
-            declaratorias, otros".
-        </p>
-    </div>
-</p-message>
 
 <p-tabs value="tab1">
     <p-tablist>
@@ -174,7 +162,7 @@
                                         <p-button
                                             pTooltip="Ir al Trámite"
                                             [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
-                                            (onClick)="goToProcess(item?.process?.id,item?.id,false)"
+                                            (onClick)="goToProcessComplete(item?.process?.id,item?.id,false)"
                                         />
                                     </td>
                                     <td>
