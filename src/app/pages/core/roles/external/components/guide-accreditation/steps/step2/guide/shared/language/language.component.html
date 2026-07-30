@@ -146,19 +146,7 @@
                     label="Certificado de idiomas">
                 </label>
 
-                <p-fileupload
-                    id="file"
-                    name="file"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(languageField.value,$event)">
-                </p-fileupload>
+                <app-file-upload (uploadHandler)="onFileSelect(languageField.value,$event)" />
 
                 @if (fileField.value) {
                     <p-message severity="info">

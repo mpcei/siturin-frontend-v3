@@ -24,6 +24,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
     selector: 'app-process',
+    standalone: true,
     imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel],
     templateUrl: './process.component.html'
 })

@@ -25,6 +25,7 @@ import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum
 import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 import { Tag } from 'primeng/tag';
 import { FormStateService } from '@/pages/core/roles/external/services';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -53,7 +54,8 @@ export interface AdventureTourismModalityInterface {
         FileUpload,
         ButtonActionComponent,
         VehicleComponent,
-        Tag
+        Tag,
+        FileUploadComponent
     ],
     templateUrl: './adventure-tourism-modality.component.html'
 })

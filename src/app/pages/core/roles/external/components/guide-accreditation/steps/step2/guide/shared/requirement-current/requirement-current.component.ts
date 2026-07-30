@@ -14,10 +14,12 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
+import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 @Component({
     selector: 'app-requirement-current',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, FileUploadComponent],
     templateUrl: './requirement-current.component.html'
 })
 export class RequirementCurrentComponent implements OnInit {
@@ -139,4 +141,5 @@ export class RequirementCurrentComponent implements OnInit {
     }
 
     protected readonly isAfter = isAfter;
+    protected readonly CoreMessage = CoreMessage;
 }

@@ -16,10 +16,11 @@ import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 @Component({
     selector: 'app-requirement',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, ToggleSwitchComponent, Divider],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, ToggleSwitchComponent, Divider, FileUploadComponent],
     templateUrl: './requirement.component.html'
 })
 export class RequirementComponent implements OnInit {

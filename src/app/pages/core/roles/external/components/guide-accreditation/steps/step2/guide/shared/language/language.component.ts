@@ -24,6 +24,7 @@ import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { Tag } from 'primeng/tag';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 export interface LanguageInterface {
     id?: string;
@@ -52,7 +53,8 @@ export interface LanguageInterface {
         ToggleSwitchComponent,
         FileUpload,
         ButtonActionComponent,
-        Tag
+        Tag,
+        FileUploadComponent
     ],
     templateUrl: './language.component.html'
 })

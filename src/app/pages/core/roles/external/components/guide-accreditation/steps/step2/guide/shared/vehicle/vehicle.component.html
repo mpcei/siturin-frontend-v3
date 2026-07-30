@@ -55,19 +55,9 @@
                     Licencia
                 </label>
 
-                <p-fileupload
-                    id="driverLicenseFile"
-                    name="driverLicenseFile"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect('driverLicenseFile',$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect('driverLicenseFile',$event)"
+                />
 
                 @if (driverLicenseFileField.value) {
                     <p-message severity="info">
@@ -182,19 +172,9 @@
                     4x4. El vehículo no podrá tener más de 15 años de fabricación.
                 </label>
 
-                <p-fileupload
-                    id="vehicleRegistrationFile"
-                    name="vehicleRegistrationFile"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect('vehicleRegistrationFile',$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect('vehicleRegistrationFile',$event)"
+                />
 
                 @if (vehicleRegistrationFileField.value) {
                     <p-message severity="info">
@@ -218,19 +198,9 @@
                     Distintivo o documento de aprobación de la revisión técnica vehicular anual.
                 </label>
 
-                <p-fileupload
-                    id="documentVehicleInspectionFile"
-                    name="documentVehicleInspectionFile"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect('documentVehicleInspectionFile',$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect('documentVehicleInspectionFile',$event)"
+                />
 
                 @if (documentVehicleInspectionFileField.value) {
                     <p-message severity="info">
@@ -255,19 +225,9 @@
                     todo el traslado
                 </label>
 
-                <p-fileupload
-                    id="accidentPolicyFile"
-                    name="accidentPolicyFile"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect('accidentPolicyFile',$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect('accidentPolicyFile',$event)"
+                />
 
                 @if (accidentPolicyFileField.value) {
                     <p-message severity="info">

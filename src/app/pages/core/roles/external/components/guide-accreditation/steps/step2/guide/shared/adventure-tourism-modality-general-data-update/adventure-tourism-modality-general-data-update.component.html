@@ -131,19 +131,7 @@
                     label="Certificación de habilidad o el certificado de aprobación del curso de capacitación específico de aventura de la modalidad referida">
                 </label>
 
-                <p-fileupload
-                    id="file"
-                    name="file"
-                    mode="basic"
-                    chooseLabel="Buscar archivo"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(modalityField.value,$event)">
-                </p-fileupload>
+                <app-file-upload (uploadHandler)="onFileSelect(modalityField.value,$event)"/>
 
                 @if (fileField.value) {
                     <p-message severity="info">

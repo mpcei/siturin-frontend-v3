@@ -23,6 +23,9 @@ import { ButtonActionComponent } from '@utils/components/button-action/button-ac
 import { InputNumber } from 'primeng/inputnumber';
 import { InputMask } from 'primeng/inputmask';
 import { getYear } from 'date-fns';
+import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
+import { CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 
 export interface VehicleInterface {
     id?: string;
@@ -54,7 +57,8 @@ export interface VehicleInterface {
         FileUpload,
         ButtonActionComponent,
         InputNumber,
-        InputMask
+        InputMask,
+        FileUploadComponent
     ],
     templateUrl: './vehicle.component.html'
 })
@@ -355,4 +359,7 @@ export class VehicleComponent implements OnInit {
     get vehiclesField(): AbstractControl {
         return this.form.controls['vehicles'];
     }
+
+    protected readonly CoreMessage = CoreMessage;
+    protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
 }

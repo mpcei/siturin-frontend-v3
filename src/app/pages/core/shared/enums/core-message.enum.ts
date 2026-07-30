@@ -1,3 +1,4 @@
 export enum CoreMessage {
-    MAX_SIZE_UPLOAD = '1MB máximo permitido'
+    invalidFileSizeMessageSummary= '{0}: Archivo demasiado pesado, ',
+    invalidFileSizeMessageDetail= 'el tamaño máximo permitido es {0}.',
 }

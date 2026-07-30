@@ -25,6 +25,7 @@ import { VehicleComponent } from '@/pages/core/roles/external/components/guide-a
 import { Tag } from 'primeng/tag';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { CredentialInterface } from '@/pages/core/shared/interfaces';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 export interface AdventureTourismModalityInterface {
     id?: string;
@@ -53,7 +54,8 @@ export interface AdventureTourismModalityInterface {
         FileUpload,
         ButtonActionComponent,
         VehicleComponent,
-        Tag
+        Tag,
+        FileUploadComponent
     ],
     templateUrl: './adventure-tourism-modality-general-data-update.component.html'
 })

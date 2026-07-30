@@ -108,7 +108,9 @@ export class Step2Component implements OnInit {
 
         this.activityField.valueChanges.subscribe(async (activity) => {
             if (activity) {
-                if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
+                if (this.process?.type?.code === CatalogueProcessesTypeEnum.registration
+                    || this.process?.type?.code === CatalogueProcessesTypeEnum.readmission
+                    || this.process?.type?.code === CatalogueProcessesTypeEnum.new_classification) {
                     if (this.geographicAreaField.enabled) {
                         this.classificationField.reset();
                         this.categoryField.reset();
@@ -172,7 +174,10 @@ export class Step2Component implements OnInit {
     }
 
     async validateDegree() {
-        const { degree, type } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
+        const {
+            degree,
+            type
+        } = await this.guideHttpService.validateDegreeType(this.degrees, this.geographicAreaField.value.code);
         this.degreeType = type;
         this.formStateService.updateSection('degree', { ...degree, type: this.degreeType });
         this.formStateService.updateSection('process', { professionalTitle: degree });
@@ -202,19 +207,23 @@ export class Step2Component implements OnInit {
     async loadActivities() {
         if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
             this.activities = [];
-            if (this.formStateService.catastroSiete()?.type === 'new') {
                 for (const geographicArea of this.geographicAreas) {
                     this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
                 }
-            } else {
-                this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
-            }
+            // if (this.formStateService.catastroSiete()?.type === 'new') {
+            //     for (const geographicArea of this.geographicAreas) {
+            //         this.activities.push(...(await this.activityService.findActivitiesByZone(geographicArea.id!)));
+            //     }
+            // } else {
+            //     this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
+            // }
         } else {
+            // this.geographicAreaField.patchValue(this.geographicAreas[0]);
             this.activities = await this.activityService.findActivitiesByZone(this.geographicAreaField.value.id);
         }
 
         this.activities = this.activities.filter((x) => x.code?.includes('guide'));
-        this.activityField.patchValue(this.activities[0]);
+        if (this.activities.length == 1) this.activityField.patchValue(this.activities[0]);
 
         // if (this.formStateService.catastroSiete()?.type !== 'new') {
         this.formStateService.updateSection('process', { activity: this.activityField.value });
@@ -222,23 +231,28 @@ export class Step2Component implements OnInit {
     }
 
     async loadClassifications() {
-        this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
-
-        if (this.degreeType === 'bachiller') {
-            this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
-        }
-
-        switch (this.formStateService.process()?.type?.code) {
-            case CatalogueProcessesTypeEnum.registration: {
-                break;
+        if (this.activityField.value) {
+            this.classifications = await this.activityService.findClassificationsByActivity(this.activityField.value.id);
+            if (this.degreeType === 'bachiller') {
+                this.classifications = this.classifications.filter((item) => ['guide_local', 'guide_adventure'].some((code) => item.code?.includes(code)));
             }
-            case CatalogueProcessesTypeEnum.new_classification_update: {
-                this.classifications = this.classifications.filter((c) => !this.formStateService.establishmentTemp()?.credentials!.some((mc) => mc.classification?.id === c.id));
-                break;
+
+            if (this.establishment?.province?.code === CatalogueActivitiesGeographicAreaEnum.galapagos_code) {
+                this.classifications = this.classifications.filter((item) => item.code != 'guide_local');
             }
-            case CatalogueProcessesTypeEnum.renewal_classification_update: {
-                this.classifications = this.classifications.filter((c) => c.id === this.formStateService.currentCredential()?.classification?.id);
-                break;
+
+            switch (this.formStateService.process()?.type?.code) {
+                case CatalogueProcessesTypeEnum.registration: {
+                    break;
+                }
+                case CatalogueProcessesTypeEnum.new_classification_update: {
+                    this.classifications = this.classifications.filter((c) => !this.formStateService.establishmentTemp()?.credentials!.some((mc) => mc.classification?.id === c.id));
+                    break;
+                }
+                case CatalogueProcessesTypeEnum.renewal_classification_update: {
+                    this.classifications = this.classifications.filter((c) => c.id === this.formStateService.currentCredential()?.classification?.id);
+                    break;
+                }
             }
         }
     }

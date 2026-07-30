@@ -34,19 +34,9 @@
                     <div [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc)?.name"></div>
                 </label>
 
-                <p-fileupload
-                    id="ruc"
-                    name="ruc"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc),$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc),$event)"
+                />
 
                 @if (rucField.value) {
                     <p-message severity="info">
@@ -74,19 +64,9 @@
                     <div [innerHTML]="requirementItems().get('photo')?.name"></div>
                 </label>
 
-                <p-fileupload
-                    id="photo"
-                    name="photo"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="image/*"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems().get('photo'),$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc),$event)"
+                />
 
                 @if (photoField.value) {
                     <img [src]="photoField.value.img" width="300px" alt="">
@@ -116,19 +96,9 @@
                         [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux)?.name"></div>
                 </label>
 
-                <p-fileupload
-                    id="certificationAux"
-                    name="certificationAux"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux),$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux),$event)"
+                />
 
                 @if (certificationAuxField.value) {
                     <p-message severity="info">
@@ -157,19 +127,9 @@
                         [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux_wild)?.name"></div>
                 </label>
 
-                <p-fileupload
-                    id="certificationAuxWild"
-                    name="certificationAuxWild"
-                    mode="basic"
-                    chooseLabel="Examinar"
-                    [chooseIcon]="PrimeIcons.SEARCH"
-                    uploadLabel="Subir archivo"
-                    accept="application/pdf"
-                    [maxFileSize]="1048576"
-                    [auto]="true"
-                    [customUpload]="true"
-                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux_wild),$event)">
-                </p-fileupload>
+                <app-file-upload
+                    (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_aux_wild),$event)"
+                />
 
                 @if (certificationAuxWildField.value) {
                     <p-message severity="info">
@@ -224,19 +184,9 @@
                             [innerHTML]="requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course)?.name"></div>
                     </label>
 
-                    <p-fileupload
-                        id="certificationUpdateCourse"
-                        name="certificationUpdateCourse"
-                        mode="basic"
-                        chooseLabel="Examinar"
-                        [chooseIcon]="PrimeIcons.SEARCH"
-                        uploadLabel="Subir archivo"
-                        accept="application/pdf"
-                        [maxFileSize]="1048576"
-                        [auto]="true"
-                        [customUpload]="true"
-                        (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course),$event)">
-                    </p-fileupload>
+                    <app-file-upload
+                        (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.certification_update_course),$event)"
+                    />
 
                     @if (certificationUpdateCourseField.value) {
                         <p-message severity="info">

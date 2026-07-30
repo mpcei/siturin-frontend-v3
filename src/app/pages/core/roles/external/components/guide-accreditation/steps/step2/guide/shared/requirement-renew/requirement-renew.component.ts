@@ -16,10 +16,11 @@ import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 @Component({
     selector: 'app-requirement-renew',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
     templateUrl: './requirement-renew.component.html'
 })
 export class RequirementRenewComponent implements OnInit {

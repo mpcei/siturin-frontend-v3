@@ -20,10 +20,12 @@ import {
     CatalogueGuideRequirementsCodeEnum
 } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
+import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
+import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 @Component({
     selector: 'app-requirement-readmission',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
     templateUrl: './requirement-readmission.component.html'
 })
 export class RequirementReadmissionComponent implements OnInit {
@@ -232,4 +234,5 @@ export class RequirementReadmissionComponent implements OnInit {
     }
 
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
+    protected readonly CoreMessage = CoreMessage;
 }

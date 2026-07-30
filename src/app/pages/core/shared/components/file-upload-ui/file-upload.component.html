@@ -1,0 +1,13 @@
+<p-fileupload
+    mode="basic"
+    chooseLabel="Examinar (max. 1MB)"
+    [chooseIcon]="PrimeIcons.SEARCH"
+    uploadLabel="Subir archivo"
+    accept="application/pdf"
+    [maxFileSize]="1048576"
+    invalidFileSizeMessageSummary="{0}: Archivo demasiado pesado, "
+    invalidFileSizeMessageDetail="el tamaño máximo permitido es {0}."
+    [auto]="true"
+    [customUpload]="true"
+    (uploadHandler)="onFileSelect($event)">
+</p-fileupload>
