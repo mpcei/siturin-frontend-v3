@@ -3,7 +3,7 @@
     chooseLabel="Examinar (max. 1MB)"
     [chooseIcon]="PrimeIcons.SEARCH"
     uploadLabel="Subir archivo"
-    accept="application/pdf"
+    [accept]="accept()"
     [maxFileSize]="1048576"
     invalidFileSizeMessageSummary="{0}: Archivo demasiado pesado, "
     invalidFileSizeMessageDetail="el tamaño máximo permitido es {0}."

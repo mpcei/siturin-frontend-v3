@@ -66,6 +66,7 @@
 
                 <app-file-upload
                     (uploadHandler)="onFileSelect(requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc),$event)"
+                    accept="image/*"
                 />
 
                 @if (photoField.value) {

@@ -80,7 +80,10 @@
                 </label>
             }
 
-            <app-file-upload (uploadHandler)="onFileSelect(requirementItems.get('photo'),$event)" />
+            <app-file-upload
+                (uploadHandler)="onFileSelect(requirementItems.get('photo'),$event)"
+                accept="image/*"
+            />
 
             <p>
                 "La fotogra a debe ser a color, estar en tamaño carnét con fondo blanco, en formato jpg, png o gif y

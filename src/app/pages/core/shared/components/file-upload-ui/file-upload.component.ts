@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { PrimeIcons } from 'primeng/api';
 
@@ -9,6 +9,7 @@ import { PrimeIcons } from 'primeng/api';
     standalone: true
 })
 export class FileUploadComponent {
+    accept = input<string>('application/pdf');
     uploadHandler = output();
     protected readonly PrimeIcons = PrimeIcons;
 
@@ -16,7 +17,7 @@ export class FileUploadComponent {
 
     }
 
-    onFileSelect(event:any) {
+    onFileSelect(event: any) {
         this.uploadHandler.emit(event);
     }
 }
