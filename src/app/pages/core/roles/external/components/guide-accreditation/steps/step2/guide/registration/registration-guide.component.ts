@@ -190,11 +190,11 @@ export class RegistrationGuideComponent {
                 console.log(payload);
                 formData.append('payload', JSON.stringify(payload));
 
-                // this.guideHttpService.createRegistration(formData).subscribe({
-                //     next: () => {
-                //         this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
-                //     }
-                // });
+                this.guideHttpService.createRegistration(formData).subscribe({
+                    next: () => {
+                        this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
+                    }
+                });
             },
             key: 'confirmdialog'
         });
