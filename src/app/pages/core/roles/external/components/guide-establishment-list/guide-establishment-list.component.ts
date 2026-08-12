@@ -89,6 +89,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
                 if (establishment && establishment.isCadastre) {
                     this.establishmentHttpService.findCadastreByEstablishment(establishment.id!).subscribe({
                         next: (response) => {
+                            console.log(response);
                             this.establishment.set(response);
 
                             if (this.establishment().currentProcess) {

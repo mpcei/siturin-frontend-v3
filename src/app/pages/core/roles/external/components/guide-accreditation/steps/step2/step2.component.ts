@@ -247,6 +247,7 @@ export class Step2Component implements OnInit {
                 }
                 case CatalogueProcessesTypeEnum.new_classification_update: {
                     this.classifications = this.classifications.filter((c) => !this.formStateService.establishmentTemp()?.credentials!.some((mc) => mc.classification?.id === c.id));
+                    console.log(this.classifications)
                     break;
                 }
                 case CatalogueProcessesTypeEnum.renewal_classification_update: {

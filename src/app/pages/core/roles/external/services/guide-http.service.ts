@@ -6,6 +6,7 @@ import { HttpResponseInterface } from '@modules/auth/interfaces';
 import { Observable } from 'rxjs';
 import { CatalogueActivitiesGeographicAreaEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
+import { CoreService } from '@utils/services';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,7 @@ export class GuideHttpService {
     private readonly _apiUrl = `${environment.API_URL}/core/external/process-guides`;
     private readonly apiUrlSharedCore = `${environment.API_URL}/core/shared/guides`;
     private readonly catalogueService = inject(CatalogueService);
+    private readonly coreService = inject(CoreService);
 
     createRegistration(payload: FormData): Observable<any> {
         const url = `${this._apiUrl}/registrations`;
@@ -139,8 +141,10 @@ export class GuideHttpService {
     findProfessionalTitlesByEstablishmentId(establishmentId: string) {
         const url = `${this.apiUrlSharedCore}/professional-titles/${establishmentId}`;
 
+        this.coreService.showProcessing();
         return this._httpClient.get<HttpResponseInterface>(url).pipe(
             map((response) => {
+                this.coreService.hideProcessing();
                 return response.data;
             })
         );

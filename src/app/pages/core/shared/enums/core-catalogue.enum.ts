@@ -137,3 +137,10 @@ export enum CatalogueRucsTypeEnum {
     juridical = 'juridical'
 }
 
+export enum CatalogueCredentialsStateEnum {
+    current = 'current',
+    expired = 'expired',
+    rejected = 'rejected',
+    approved='approved',
+}
+

@@ -108,7 +108,6 @@ export class Step1Component implements OnInit {
 
     createDegreesByEstablishmentId() {
         this.guideHttpService.createProfessionalTitles(this.authService?.auth?.identification!, this.formStateService?.establishment()?.id!).subscribe({
-            // this.guideHttpService.createProfessionalTitles('1724909443', this.formStateService?.establishment()?.id!).subscribe({
             next: (response) => {
                 this.findDegreesByEstablishmentId();
                 this.formStateService.updateSection('degrees', response);
