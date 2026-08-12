@@ -36,7 +36,7 @@ export class ReportsHttpService {
     }
 
     downloadRegistrationCertificate(cadastre: CadastreInterface) {
-        const url = `${this.apiUrlExternal}/registration-certificate`;
+        const url = `${this.apiUrlExternal}/registration-certificate-guide`;
 
         const params = new HttpParams().append('cadastreId', cadastre.id!);
 

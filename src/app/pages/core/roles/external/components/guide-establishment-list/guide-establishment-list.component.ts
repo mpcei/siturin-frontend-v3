@@ -235,6 +235,10 @@ export default class GuideEstablishmentListComponent implements OnInit {
         this.reportsHttpService.downloadInactivationCertificate(this.establishment().process?.cadastre!);
     }
 
+    protected downloadRegistrationCertificate() {
+        this.reportsHttpService.downloadRegistrationCertificate(this.establishment().process?.cadastre!);
+    }
+
     async openInactivationModal(establishment: EstablishmentInterface) {
         const processType = await this.catalogueService.findByCode(CatalogueProcessesTypeEnum.inactivation, CatalogueTypeEnum.processes_type);
 
