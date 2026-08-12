@@ -8,8 +8,8 @@ type Severity = 'error' | 'success' | 'info' | 'warn' | 'secondary' | 'contrast'
 })
 export class CredentialStateSeverityPipe implements PipeTransform {
     transform(state: string): Severity {
-        console.log(state);
         switch (state) {
+            case 'rejected':
             case 'expired_inactive':
             case 'expired': {
                 return 'error';

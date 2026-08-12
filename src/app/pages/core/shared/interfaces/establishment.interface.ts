@@ -26,6 +26,8 @@ export interface EstablishmentInterface {
     referenceStreet?: string;
     isCadastre?: boolean;
     credentials?: CredentialInterface[];
+    currentCredentials?: CredentialInterface[];
+    currentAssignment?: CurrentAssignment;
     languages?: LanguageInterface[];
     adventureModalities?: AdventureModalityInterface[];
     currentProcess?: CurrentProcess;
@@ -35,4 +37,8 @@ export interface EstablishmentInterface {
 interface CurrentProcess {
     type: CatalogueInterface;
     credentials?: CredentialInterface[];
+}
+
+interface CurrentAssignment {
+    observation: string;
 }

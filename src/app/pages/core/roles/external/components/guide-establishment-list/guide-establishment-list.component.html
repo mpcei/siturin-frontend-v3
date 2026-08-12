@@ -2,8 +2,10 @@
     <small>
         <b>NOTA IMPORTANTE:</b>
         <p class="mt-4 text-justify">
-            Recuerde que para la obtención del Registro de Turismo, usted debe contar con la información del RUC (Registro
-            Único de Contribuyentes) actualizada; en caso de no contar con estos requisitos, deberá actualizar su información en
+            Recuerde que para la obtención del Registro de Turismo, usted debe contar con la información del RUC
+            (Registro
+            Único de Contribuyentes) actualizada; en caso de no contar con estos requisitos, deberá actualizar su
+            información en
             la página del SRI <a href="https://www.sri.gob.ec" target="_blank">www.sri.gob.ec</a>
         </p>
         <p class="mt-4 text-justify">
@@ -242,6 +244,24 @@
                                     }
                                 }
                             }
+                        </p-message>
+                    </div>
+                }
+
+                @for (credential of establishment().currentCredentials; track credential.id) {
+                    <div class=" custom-form-field md:col-span-4">
+                        <p-message class="card" [severity]="credential?.stateCode!|credentialStateSeverity">
+                            <h4>Estado: {{ credential?.stateName }}</h4>
+
+                            <p><b>Código de Clasificación:</b> {{ credential?.code }}</p>
+                            <p><b>Clasificación:</b> {{ credential.classification?.name }}</p>
+                            <p><b>Ámbito de territorial:</b> Continente</p>
+                            <p><b>Fecha Emisión:</b> {{ credential?.startedAt |date }}</p>
+                            <p><b>Fecha Caducidad:</b> {{ credential?.endedAt |date }}</p>
+
+                            <p-divider />
+
+                            <p><b>Motivo:</b> {{ establishment().currentAssignment?.observation }}</p>
                         </p-message>
                     </div>
                 }
