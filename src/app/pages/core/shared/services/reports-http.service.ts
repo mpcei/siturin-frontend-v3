@@ -47,7 +47,7 @@ export class ReportsHttpService {
 
             downloadLink.href = filePath;
 
-            downloadLink.setAttribute('download', `certificado-inactivacion-${cadastre.registerNumber}.pdf`);
+            downloadLink.setAttribute('download', `certificado-registro-${cadastre.registerNumber}.pdf`);
 
             document.body.appendChild(downloadLink);
 
