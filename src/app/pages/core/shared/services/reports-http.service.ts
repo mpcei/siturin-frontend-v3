@@ -12,11 +12,12 @@ import { CadastreInterface } from '@/pages/core/interfaces';
 })
 export class ReportsHttpService {
     private readonly _httpClient = inject(HttpClient);
-    private readonly apiUrlExternal = `${environment.API_URL}/reports/pdf/internals`;
+    private readonly apiUrlExternalPDF = `${environment.API_URL}/reports/pdf/internals`;
+    private readonly apiUrlExternalXLSX = `${environment.API_URL}/reports/excel/internals`;
     private readonly _customMessageService = inject(CustomMessageService);
 
     downloadInactivationCertificate(cadastre: CadastreInterface) {
-        const url = `${this.apiUrlExternal}/inactivation`;
+        const url = `${this.apiUrlExternalPDF}/inactivation`;
 
         const params = new HttpParams().append('cadastreId', cadastre.id!);
 
@@ -36,7 +37,7 @@ export class ReportsHttpService {
     }
 
     downloadRegistrationCertificate(cadastre: CadastreInterface) {
-        const url = `${this.apiUrlExternal}/registration-certificate-guide`;
+        const url = `${this.apiUrlExternalPDF}/registration-certificate-guide`;
 
         const params = new HttpParams().append('cadastreId', cadastre.id!);
 
@@ -48,6 +49,28 @@ export class ReportsHttpService {
             downloadLink.href = filePath;
 
             downloadLink.setAttribute('download', `certificado-registro-${cadastre.registerNumber}.pdf`);
+
+            document.body.appendChild(downloadLink);
+
+            downloadLink.click();
+        });
+    }
+
+    downloadProcessesByTechnician(roleCode: string, isCurrent: boolean) {
+        const url = `${this.apiUrlExternalXLSX}/technician-guide/processes`;
+
+        const params = new HttpParams()
+            .append('rolCode', roleCode)
+            .append('isCurrent', isCurrent);
+
+        this._httpClient.get<BlobPart>(url, { params, responseType: 'blob' as 'json' }).subscribe((response) => {
+            const filePath = URL.createObjectURL(new Blob([response]));
+
+            const downloadLink = document.createElement('a');
+
+            downloadLink.href = filePath;
+
+            downloadLink.setAttribute('download', `bandeja_tecnico_zonal.xlsx`);
 
             document.body.appendChild(downloadLink);
 

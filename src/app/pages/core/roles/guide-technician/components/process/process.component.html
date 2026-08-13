@@ -18,7 +18,9 @@
                         <p-button
                             [icon]="PrimeIcons.DOWNLOAD"
                             label="Descargar Bandeja"
-                            severity="success"></p-button>
+                            severity="success"
+                            (onClick)="download()"
+                        ></p-button>
                     </div>
                 </div>
             </div>
@@ -117,17 +119,6 @@
         </p-tabpanel>
 
         <p-tabpanel value="tab2">
-            <div class="custom-form-card">
-                <div class="custom-form-grid md:grid-cols-12">
-                    <div class="custom-form-field md:col-span-12">
-                        <p-button
-                            [icon]="PrimeIcons.DOWNLOAD"
-                            label="Descargar Bandeja"
-                            severity="success"></p-button>
-                    </div>
-                </div>
-            </div>
-
             <div class="custom-form-card">
                 <div class="custom-form-grid md:grid-cols-12">
                     <div class="custom-form-title md:col-span-12">

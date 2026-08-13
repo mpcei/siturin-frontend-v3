@@ -22,6 +22,8 @@ import { MY_ROUTES } from '@routes';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { CustomMessageService } from '@utils/services';
+import { ReportsHttpService } from '@/pages/core/shared/services';
+import { AuthService } from '@/pages/auth/auth.service';
 
 @Component({
     selector: 'app-process',
@@ -36,6 +38,8 @@ export default class ProcessComponent implements OnInit {
     private readonly breadcrumbService = inject(BreadcrumbService);
     private readonly internalInspectionService = inject(InternalInspectionService);
     private readonly customMessageService = inject(CustomMessageService);
+    private readonly reportsHttpService = inject(ReportsHttpService);
+    private readonly authService = inject(AuthService);
     protected items = signal([]);
     protected completedProcesses = signal([]);
     protected currentDate = new Date();
@@ -84,6 +88,10 @@ export default class ProcessComponent implements OnInit {
         this.formStateService.updateSection('process', { id: processId });
         this.formStateService.updateSection('assignment', { id: assignmentId });
         this.router.navigate([MY_ROUTES.corePages.guideTechnician.checklist.absolute, processId, isCurrent]);
+    }
+
+    protected downloadProcessesByTechnician() {
+        this.reportsHttpService.downloadProcessesByTechnician(this.authService.role.code, true);
     }
 
     protected readonly es = es;
