@@ -74,7 +74,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     ref?: DynamicDialogRef | null;
 
     constructor() {
-        this.breadcrumbService.setItems([{ label: 'Establecimientos' }]);
+        this.breadcrumbService.setItems([{ label: 'Guianza Turística' }]);
     }
 
     ngOnInit(): void {
