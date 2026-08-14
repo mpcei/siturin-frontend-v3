@@ -10,7 +10,7 @@ import {
     InternalInspectionService
 } from '@/pages/core/roles/guide-technician/components/process/services/internal-inspection.service';
 import { DatePipe, JsonPipe } from '@angular/common';
-import { differenceInDays, formatDistanceToNow } from 'date-fns';
+import { differenceInDays, format, formatDistanceToNow, isAfter } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
 import { Tag } from 'primeng/tag';
@@ -30,10 +30,11 @@ import { Select } from 'primeng/select';
 import { Dialog } from 'primeng/dialog';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { DatePicker } from 'primeng/datepicker';
+import { DateLongPipe } from '@utils/pipes/date-long.pipe';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe, DatePicker],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe, DatePicker, DateLongPipe],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
@@ -52,8 +53,8 @@ export default class ProcessComponent implements OnInit {
     protected readonly formBuilder = inject(FormBuilder);
     protected readonly filterForm = this.buildFilter();
     protected filterModal = signal<boolean>(false);
-
-    protected establishmentNumbers = Array.from({ length: 999 }, (_, i) => i + 1);
+    protected isFiltering = signal<boolean>(false);
+    protected activeFilters: any[] = [];
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Listado de Trámites' }]);
@@ -62,8 +63,6 @@ export default class ProcessComponent implements OnInit {
     ngOnInit() {
         this.findProcesses();
         this.findCompletedProcesses();
-
-
     }
 
     buildFilter() {
@@ -77,13 +76,13 @@ export default class ProcessComponent implements OnInit {
             canton: [null],
             parish: [null],
             cadastreState: [null],
-            startedAt: [null],
-            endedAt: [null]
+            startedAt: [''],
+            endedAt: ['']
         });
     }
 
-    get activeFilters() {
-        return Object.entries(this.filterForm.getRawValue())
+    applyActiveFilters() {
+        this.activeFilters = Object.entries(this.filterForm.getRawValue())
             .filter(([_, value]) =>
                 value !== null &&
                 value !== undefined &&
@@ -95,8 +94,26 @@ export default class ProcessComponent implements OnInit {
             }));
     }
 
+    validateStartedAt(){
+        console.log('validateStartedAt')
+        const valid = isAfter(new Date(this.filterForm.controls['startedAt'].value!), new Date(this.filterForm.controls['endedAt'].value!));
+        console.log(valid)
+    }
+
     findProcesses(isFilter = false) {
-        if (!isFilter) this.filterForm.reset();
+        if (!isFilter) {
+            this.filterForm.reset();
+            this.activeFilters = [];
+        }
+
+        if (isFilter) this.applyActiveFilters();
+
+        this.isFiltering.set(isFilter);
+
+        const startedAtFormat = format(new Date(this.filterForm.controls['startedAt'].value!), 'yyyy-MM-dd');
+        const endedAtFormat = format(new Date(this.filterForm.controls['endedAt'].value!), 'yyyy-MM-dd');
+        this.filterForm.controls['startedAt'].patchValue(startedAtFormat);
+        this.filterForm.controls['endedAt'].patchValue(endedAtFormat);
 
         const filters = this.filterForm.getRawValue();
 

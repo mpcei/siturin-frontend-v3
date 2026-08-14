@@ -14,7 +14,24 @@
         <p-tabpanel value="tab1">
             <div class="custom-form-card">
                 <div class="custom-form-grid md:grid-cols-12">
-                    <div class="custom-form-field-row md:col-span-6">
+
+                    <div class="custom-form-field-row md:col-span-3">
+                        <p-button
+                            [icon]="PrimeIcons.DOWNLOAD"
+                            label="Descargar Bandeja"
+                            severity="success"
+                            styleClass="w-full"
+                            (onClick)="downloadProcessesByTechnician()"
+                        ></p-button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-form-card">
+                <div class="custom-form-grid md:grid-cols-12">
+                    <div class="custom-form-field-row md:col-span-12">
+                        <h5>Trámites en Proceso:</h5>
+
                         <p-button
                             [icon]="PrimeIcons.FILTER"
                             label="Filtros"
@@ -27,73 +44,52 @@
                             styleClass="w-full"
                             [icon]="FontAwesome.TRASH_SOLID"
                             (onClick)="findProcesses()"></p-button>
-
-                        <p-button
-                            [icon]="PrimeIcons.DOWNLOAD"
-                            label="Descargar Bandeja"
-                            severity="success"
-                            (onClick)="downloadProcessesByTechnician()"
-                        ></p-button>
                     </div>
 
-                    <div class="custom-form-field-row md:col-span-6">
-                        @for (filter of activeFilters; track filter.key) {
+                    @for (filter of activeFilters; track filter.key) {
+                        <div class="custom-form-field-row md:col-span-3">
                             @switch (filter.key) {
                                 @case ('startedAt') {
-                                    Fecha Inicio: {{ filter.value }}
+                                    Fecha Inicio: <b>{{ filter.value |date }}</b>
                                 }
-
                                 @case ('endedAt') {
-                                    Fecha Fin: {{ filter.value }}
+                                    Fecha Fin: <b>{{ filter.value |date }}</b>
                                 }
-
                                 @case ('registerNumber') {
-                                    Número de Registro: {{ filter.value }}
+                                    Número de Registro: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('establishmentNumber') {
-                                    Número de Establecimiento: {{ filter.value }}
+                                    Número de Establecimiento: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('legalName') {
-                                    Razón Social: {{ filter.value }}
+                                    Razón Social: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('classification') {
-                                    Clasificación: {{ filter.value }}
+                                    Clasificación: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('processType') {
-                                    Tipo de Trámite: {{ filter.value }}
+                                    Tipo de Trámite: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('cadastreState') {
-                                    Estado del Registro: {{ filter.value }}
+                                    Estado del Registro: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('province') {
-                                    Provincia: {{ filter.value }}
+                                    Provincia: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('canton') {
-                                    Cantón: {{ filter.value }}
+                                    Cantón: <b>{{ filter.value }}</b>
                                 }
-
                                 @case ('parish') {
-                                    Parroquia: {{ filter.value }}
+                                    Parroquia: <b>{{ filter.value }}</b>
                                 }
                             }
-                            <br>
-                        }
-                    </div>
-                </div>
-            </div>
+                        </div>
+                    }
 
-            <div class="custom-form-card">
-                <div class="custom-form-grid md:grid-cols-12">
-                    <div class="custom-form-title md:col-span-12">
-                        <h5>Trámites en Proceso:</h5>
+                    <div class="custom-form-field-row md:col-span-12">
+                        <p-divider />
                     </div>
+
                     <div class="custom-form-field md:col-span-12">
                         <p-table
                             [value]="items()"
@@ -186,12 +182,12 @@
                     <div class="custom-form-title md:col-span-12">
                         <h5>Trámites Atendidos:</h5>
                     </div>
+
                     <div class="custom-form-field md:col-span-12">
                         <p-table
                             [value]="completedProcesses()"
                             [tableStyle]="{ 'min-width': '50rem' }"
-                            [scrollable]="true"
-                        >
+                            [scrollable]="true">
 
                             <ng-template pTemplate="header">
                                 <tr>
@@ -284,30 +280,8 @@
     header="Filtros">
     <div class="custom-form-card">
         <form [formGroup]="filterForm" class="custom-form-grid md:grid-cols-12">
-            <!--startedAt-->
-            <div class="custom-form-field md:col-span-4">
-                <label
-                    appLabel
-                    for="startedAt"
-                    label="Fecha Inicio">
-                </label>
-
-                <p-datePicker formControlName="startedAt" appendTo="body" />
-            </div>
-
-            <!--endedAt-->
-            <div class="custom-form-field md:col-span-4">
-                <label
-                    appLabel
-                    for="endedAt"
-                    label="Fecha Fin">
-                </label>
-
-                <p-datePicker formControlName="endedAt" appendTo="body" />
-            </div>
-
             <!--registerNumber-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="registerNumber"
@@ -319,7 +293,7 @@
             </div>
 
             <!--establishmentNumber-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="establishmentNumber"
@@ -331,7 +305,7 @@
             </div>
 
             <!--legalName-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="legalName"
@@ -342,7 +316,7 @@
             </div>
 
             <!--classification-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="classification"
@@ -353,7 +327,7 @@
             </div>
 
             <!--processType-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="processType"
@@ -365,7 +339,7 @@
             </div>
 
             <!--cadastreState-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="cadastreState"
@@ -375,8 +349,30 @@
                 <input pInputText type="text" formControlName="cadastreState" placeholder="Ej: Ratificado, Inactivo" />
             </div>
 
+            <!--startedAt-->
+            <div class="custom-form-field md:col-span-3">
+                <label
+                    appLabel
+                    for="startedAt"
+                    label="Fecha Inicio">
+                </label>
+
+                <p-datePicker formControlName="startedAt" appendTo="body" />
+            </div>
+
+            <!--endedAt-->
+            <div class="custom-form-field md:col-span-3">
+                <label
+                    appLabel
+                    for="endedAt"
+                    label="Fecha Fin">
+                </label>
+
+                <p-datePicker formControlName="endedAt" appendTo="body" (onSelect)="validateStartedAt()" />
+            </div>
+
             <!--province-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="province"
@@ -387,7 +383,7 @@
             </div>
 
             <!--canton-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="canton"
@@ -398,7 +394,7 @@
             </div>
 
             <!--parish-->
-            <div class="custom-form-field md:col-span-4">
+            <div class="custom-form-field md:col-span-3">
                 <label
                     appLabel
                     for="parish"
@@ -412,7 +408,7 @@
             <!--                <p-divider />-->
             <!--            </div>-->
 
-            <div class="custom-form-field md:col-span-2 mt-6">
+            <div class="custom-form-field md:col-span-1 mt-6">
                 <p-button
                     label="Limpiar"
                     severity="danger"
