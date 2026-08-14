@@ -9,7 +9,7 @@ import { BreadcrumbService } from '@layout/service';
 import {
     InternalInspectionService
 } from '@/pages/core/roles/guide-technician/components/process/services/internal-inspection.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { differenceInDays, formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
@@ -32,7 +32,7 @@ import { LabelDirective } from '@utils/directives/label.directive';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
@@ -71,19 +71,24 @@ export default class ProcessComponent implements OnInit {
             establishmentNumber: [null],
             legalName: [null],
             classification: [null],
-            processType:[null],
+            processType: [null],
             province: [null],
             canton: [null],
             parish: [null],
+            cadastreState: [null],
+            registerProcess: [null]
         });
     }
 
-    findProcesses() {
+    findProcesses(isFilter = false) {
+        if (!isFilter) this.filterForm.reset();
+
         const filters = this.filterForm.getRawValue();
 
-        this.internalInspectionService.findProcesses('1', true,filters).subscribe({
+        this.internalInspectionService.findProcesses('1', true, filters).subscribe({
             next: (response) => {
                 this.items.set(response);
+                this.filterModal.set(false);
             }
         });
     }
@@ -91,7 +96,7 @@ export default class ProcessComponent implements OnInit {
     findCompletedProcesses() {
         const filters = this.filterForm.getRawValue();
 
-        this.internalInspectionService.findProcesses('1', false,filters).subscribe({
+        this.internalInspectionService.findProcesses('1', false, filters).subscribe({
             next: (response) => {
                 this.completedProcesses.set(response);
             }

@@ -242,7 +242,7 @@
                 <label
                     appLabel
                     for="establishmentNumber"
-                    label="Código de establecimiento"
+                    label="Código de Establecimiento"
                 >
                 </label>
 
@@ -254,7 +254,7 @@
                 <label
                     appLabel
                     for="legalName"
-                    label="Razón social">
+                    label="Razón Social">
                 </label>
 
                 <input pInputText type="text" formControlName="legalName" />
@@ -280,6 +280,17 @@
                 </label>
 
                 <input pInputText type="text" formControlName="processType" />
+            </div>
+
+            <!--cadastreState-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="cadastreState"
+                    label="Estado del Registro">
+                </label>
+
+                <input pInputText type="text" formControlName="cadastreState" />
             </div>
 
             <!--province-->
@@ -315,12 +326,41 @@
                 <input pInputText type="text" formControlName="parish" />
             </div>
 
+            <!--clear-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="parish"
+                    label="Limpiar Filtros">
+                </label>
+
+                <p-button
+                    label="Limpiar"
+                    severity="danger"
+                    [icon]="FontAwesome.TRASH_SOLID"
+                    styleClass="w-full"
+                    (onClick)="findProcesses()"></p-button>
+            </div>
+
+            <div class="custom-form-field md:col-span-12">
+                <p-divider/>
+            </div>
+
             <div class="custom-form-field md:col-span-6">
                 <p-button
-                    label="Buscar"
-                    severity="success"
+                    label="Regresar"
+                    severity="secondary"
+                    [icon]="FontAwesome.ARROW_LEFT_LONG_SOLID"
                     styleClass="w-full"
-                    (onClick)="findProcesses()" ></p-button>
+                    (onClick)="findProcesses()"></p-button>
+            </div>
+
+            <div class="custom-form-field md:col-span-6">
+                <p-button
+                    label="Aplicar Filtros"
+                    styleClass="w-full"
+                    [icon]="FontAwesome.FILTER_SOLID"
+                    (onClick)="findProcesses(true)"></p-button>
             </div>
         </form>
     </div>
