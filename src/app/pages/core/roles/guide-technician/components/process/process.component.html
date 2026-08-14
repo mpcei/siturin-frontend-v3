@@ -350,9 +350,9 @@
                 <input pInputText type="text" formControlName="parish" placeholder="Ej: Aloasí" />
             </div>
 
-<!--            <div class="custom-form-field md:col-span-12">-->
-<!--                <p-divider />-->
-<!--            </div>-->
+            <!--            <div class="custom-form-field md:col-span-12">-->
+            <!--                <p-divider />-->
+            <!--            </div>-->
 
             <div class="custom-form-field md:col-span-2 mt-6">
                 <p-button
@@ -360,7 +360,7 @@
                     severity="danger"
                     styleClass="w-full"
                     [icon]="FontAwesome.TRASH_SOLID"
-                    (onClick)="findProcesses()"></p-button>
+                    (onClick)="filterForm.reset()"></p-button>
             </div>
 
             <div class="custom-form-field md:col-span-2 mt-6">
