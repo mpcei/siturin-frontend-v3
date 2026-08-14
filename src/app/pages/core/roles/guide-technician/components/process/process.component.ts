@@ -82,6 +82,19 @@ export default class ProcessComponent implements OnInit {
         });
     }
 
+    get activeFilters() {
+        return Object.entries(this.filterForm.getRawValue())
+            .filter(([_, value]) =>
+                value !== null &&
+                value !== undefined &&
+                value !== ''
+            )
+            .map(([key, value]) => ({
+                key,
+                value
+            }));
+    }
+
     findProcesses(isFilter = false) {
         if (!isFilter) this.filterForm.reset();
 

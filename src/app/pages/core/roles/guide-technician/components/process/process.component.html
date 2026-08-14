@@ -14,7 +14,7 @@
         <p-tabpanel value="tab1">
             <div class="custom-form-card">
                 <div class="custom-form-grid md:grid-cols-12">
-                    <div class="custom-form-field-row md:col-span-12">
+                    <div class="custom-form-field-row md:col-span-6">
                         <p-button
                             [icon]="PrimeIcons.FILTER"
                             label="Filtros"
@@ -34,6 +34,58 @@
                             severity="success"
                             (onClick)="downloadProcessesByTechnician()"
                         ></p-button>
+                    </div>
+
+                    <div class="custom-form-field-row md:col-span-6">
+                        @for (filter of activeFilters; track filter.key) {
+                            @switch (filter.key) {
+                                @case ('startedAt') {
+                                    Fecha Inicio: {{ filter.value }}
+                                }
+
+                                @case ('endedAt') {
+                                    Fecha Fin: {{ filter.value }}
+                                }
+
+                                @case ('registerNumber') {
+                                    Número de Registro: {{ filter.value }}
+                                }
+
+                                @case ('establishmentNumber') {
+                                    Número de Establecimiento: {{ filter.value }}
+                                }
+
+                                @case ('legalName') {
+                                    Razón Social: {{ filter.value }}
+                                }
+
+                                @case ('classification') {
+                                    Clasificación: {{ filter.value }}
+                                }
+
+                                @case ('processType') {
+                                    Tipo de Trámite: {{ filter.value }}
+                                }
+
+                                @case ('cadastreState') {
+                                    Estado del Registro: {{ filter.value }}
+                                }
+
+                                @case ('province') {
+                                    Provincia: {{ filter.value }}
+                                }
+
+                                @case ('canton') {
+                                    Cantón: {{ filter.value }}
+                                }
+
+                                @case ('parish') {
+                                    Parroquia: {{ filter.value }}
+                                }
+                            }
+
+                            <br>
+                        }
                     </div>
                 </div>
             </div>
