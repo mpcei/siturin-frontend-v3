@@ -92,7 +92,7 @@ export class AddressComponent implements OnInit {
                         detail: `
                         Estimado usuario, si su actividad de guianza turística la realiza dentro del
                         cantón Quito, por favor acérquese a las oficinas de Quito Turismo para solicitar su
-                        Certificado de Registro de Turismo.`
+                        Certificado de Registro de Turismo. Correo electrónico: info@quito-turismo.gob.ec`
                     });
                 } else {
                     this.parishField.reset();

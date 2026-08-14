@@ -14,7 +14,13 @@
         <p-tabpanel value="tab1">
             <div class="custom-form-card">
                 <div class="custom-form-grid md:grid-cols-12">
-                    <div class="custom-form-field md:col-span-12">
+                    <div class="custom-form-field-row md:col-span-12">
+                        <p-button
+                            [icon]="PrimeIcons.FILTER"
+                            label="Filtros"
+                            severity="info"
+                            (onClick)="filterModal.set(true)"></p-button>
+
                         <p-button
                             [icon]="PrimeIcons.DOWNLOAD"
                             label="Descargar Bandeja"
@@ -34,9 +40,7 @@
                         <p-table
                             [value]="items()"
                             [tableStyle]="{ 'min-width': '50rem' }"
-                            [scrollable]="true"
-                        >
-
+                            [scrollable]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Opciones</th>
@@ -213,3 +217,111 @@
         </p-tabpanel>
     </p-tabpanels>
 </p-tabs>
+
+<p-dialog
+    [visible]="filterModal()"
+    (visibleChange)="filterModal.set($event)"
+    [modal]="true"
+    [style]="{ width: '600px' }"
+    header="Filtros">
+    <div class="custom-form-card">
+        <form [formGroup]="filterForm" class="custom-form-grid md:grid-cols-12">
+            <!--registerNumber-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="registerNumber"
+                    label="Número de Registro">
+                </label>
+
+                <input pInputText type="text" formControlName="registerNumber" />
+            </div>
+
+            <!--establishmentNumber-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="establishmentNumber"
+                    label="Código de establecimiento"
+                >
+                </label>
+
+                <input pInputText type="text" formControlName="establishmentNumber" />
+            </div>
+
+            <!--legalName-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="legalName"
+                    label="Razón social">
+                </label>
+
+                <input pInputText type="text" formControlName="legalName" />
+            </div>
+
+            <!--classification-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="classification"
+                    label="Classificación">
+                </label>
+
+                <input pInputText type="text" formControlName="classification" />
+            </div>
+
+            <!--processType-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="processType"
+                    label="Tipo de Trámite">
+                </label>
+
+                <input pInputText type="text" formControlName="processType" />
+            </div>
+
+            <!--province-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="province"
+                    label="Provincia">
+                </label>
+
+                <input pInputText type="text" formControlName="province" />
+            </div>
+
+            <!--canton-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="canton"
+                    label="Cantón">
+                </label>
+
+                <input pInputText type="text" formControlName="canton" />
+            </div>
+
+            <!--registerNumber-->
+            <div class="custom-form-field md:col-span-6">
+                <label
+                    appLabel
+                    for="parish"
+                    label="Parroquia">
+                </label>
+
+                <input pInputText type="text" formControlName="parish" />
+            </div>
+
+            <div class="custom-form-field md:col-span-6">
+                <p-button
+                    label="Buscar"
+                    severity="success"
+                    styleClass="w-full"
+                    (onClick)="findProcesses()" ></p-button>
+            </div>
+        </form>
+    </div>
+</p-dialog>

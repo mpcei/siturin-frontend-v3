@@ -32,7 +32,7 @@ import { ReportsHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe, CredentialStateSeverityPipe],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe, CredentialStateSeverityPipe, ButtonActionComponent, ButtonActionComponent],
     templateUrl: './guide-establishment-list.component.html',
     providers: [DialogService],
     styles: [
@@ -95,8 +95,9 @@ export default class GuideEstablishmentListComponent implements OnInit {
                             if (this.establishment().currentProcess) {
                                 this.customMessageService.showModalWarn({
                                     detail: `
-                                    Actualmente su trámite de ${this.establishment().currentProcess?.type.name} se encuentra en proceso de revisión.
-                                    Una vez concluida la verificación de los requisitos, el resultado será notificado, a través de este portal y de su correo electrónico`,
+                                    Su solicitud de ${this.establishment().currentProcess?.type.name} se encuentra en
+                                    proceso de revisión. Una vez concluida la verificación de los requisitos,
+                                    el resultado será notificado, a través de este portal y de su correo electrónico`,
                                     summary: 'Importante'
                                 });
                             }
