@@ -29,10 +29,11 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Dialog } from 'primeng/dialog';
 import { LabelDirective } from '@utils/directives/label.directive';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe, DatePicker],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
@@ -76,7 +77,8 @@ export default class ProcessComponent implements OnInit {
             canton: [null],
             parish: [null],
             cadastreState: [null],
-            registerProcess: [null]
+            startedAt: [null],
+            endedAt: [null]
         });
     }
 
