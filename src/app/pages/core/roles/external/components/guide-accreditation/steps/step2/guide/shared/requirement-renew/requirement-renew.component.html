@@ -20,6 +20,31 @@
 
         </div>
 
+        <!-- title -->
+        <div class="custom-form-title md:col-span-12">
+            <p-divider />
+
+            <h4>
+                REQUISITOS PARA LA EMISIÓN DE REGISTRO DE TURISMO POR ACTUALIZACIÓN DE LA CLASIFICACIÓN (RENOVACIÓN)
+            </h4>
+
+            <p-message>
+                <p><b>ATENCIÓN:</b></p>
+                <p>Los requisitos detallados a continuación serán revisados y validados por el técnico zonal del
+                    {{environment.MINISTERIO}}, de conformidad con la normativa vigente para la acreditación de la actividad
+                    de Guianza Turística.
+                </p>
+
+                <p>
+                    Los requisitos marcados con * son obligatorios y deberán ser adjuntados en la plataforma SITURIN
+                    para su revisión y validación.
+                    Asegúrese de presentar la documentación completa y legible correspondiente a los requisitos
+                    aplicables a la modalidad y categoría de guianza solicitada.
+                </p>
+            </p-message>
+
+            <p-divider />
+        </div>
 
         <!-- ruc -->
         @if (requirementItems().get(CatalogueGuideRequirementsCodeEnum.ruc)) {

@@ -16,6 +16,7 @@ import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
 import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
+import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-requirement-current',
@@ -142,4 +143,5 @@ export class RequirementCurrentComponent implements OnInit {
 
     protected readonly isAfter = isAfter;
     protected readonly CoreMessage = CoreMessage;
+    protected readonly environment = environment;
 }

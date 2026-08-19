@@ -22,6 +22,7 @@ import {
 import { Select } from 'primeng/select';
 import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
+import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-requirement-readmission',
@@ -235,4 +236,5 @@ export class RequirementReadmissionComponent implements OnInit {
 
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
     protected readonly CoreMessage = CoreMessage;
+    protected readonly environment = environment;
 }

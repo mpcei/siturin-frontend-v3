@@ -17,6 +17,7 @@ import { isAfter } from 'date-fns';
 import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
+import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-requirement-renew',
@@ -221,4 +222,5 @@ export class RequirementRenewComponent implements OnInit {
 
     protected readonly CatalogueGuideRequirementsCodeEnum = CatalogueGuideRequirementsCodeEnum;
     protected readonly CatalogueGuideDegreesCodeEnum = CatalogueGuideDegreesCodeEnum;
+    protected readonly environment = environment;
 }
