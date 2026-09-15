@@ -97,19 +97,21 @@
             </div>
         }
 
-        <div class="custom-form-field-row md:col-span-12">
-            <p-button
-                label="Solicitud aprobada"
-                severity="success"
-                [icon]="FontAwesome.CHECK_SOLID"
-                (onClick)="accept()"></p-button>
-            <p-button
-                label="Solicitud rechazada"
-                severity="danger"
-                [icon]="FontAwesome.BAN_SOLID"
-                (onClick)="reject()"
-            ></p-button>
-        </div>
+        @if (isCurrent() && isCurrent() == 'true') {
+            <div class="custom-form-field-row md:col-span-12">
+                <p-button
+                    label="Solicitud aprobada"
+                    severity="success"
+                    [icon]="FontAwesome.CHECK_SOLID"
+                    (onClick)="accept()"></p-button>
+                <p-button
+                    label="Solicitud rechazada"
+                    severity="danger"
+                    [icon]="FontAwesome.BAN_SOLID"
+                    (onClick)="reject()"
+                ></p-button>
+            </div>
+        }
     </div>
 </div>
 
@@ -159,7 +161,8 @@
                 }
 
                 <div class="custom-form-field md:col-span-12">
-                    <p-button label="Finalizar trámite" [icon]="FontAwesome.ARROW_RIGHT_SOLID" (onClick)="confirm()"></p-button>
+                    <p-button label="Finalizar trámite" [icon]="FontAwesome.ARROW_RIGHT_SOLID"
+                              (onClick)="confirm()"></p-button>
                 </div>
             </div>
         </div>

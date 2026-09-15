@@ -38,7 +38,7 @@ import { differenceInDays } from 'date-fns';
     templateUrl: './checklist-form.component.html'
 })
 export class ChecklistFormComponent implements OnInit {
-    isCurrent = input.required<any>();
+    isCurrent = input<any>();
     dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
 

@@ -33,6 +33,7 @@ import { MY_ROUTES } from '@routes';
 export class ChecklistFormComponent implements OnInit {
     dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
+    isCurrent = input<any>();
 
     data = signal<any>(null);
 
@@ -93,7 +94,7 @@ export class ChecklistFormComponent implements OnInit {
         this.approved = true;
         this.observation.setValidators(null);
         this.observation.updateValueAndValidity();
-        this.stateSelected = this.states.find(item => item.code === CatalogueProcessesStateEnum.approved);
+        this.stateSelected = this.states.find((item) => item.code === CatalogueProcessesStateEnum.approved);
 
         if (this.approved) {
             this.allRequirements = this.data().processGuides.every((item: any) => item.state);
@@ -112,7 +113,7 @@ export class ChecklistFormComponent implements OnInit {
         this.approved = false;
         this.observation.setValidators(Validators.required);
         this.observation.updateValueAndValidity();
-        this.stateSelected = this.states.find(item => item.code === CatalogueProcessesStateEnum.rejected);
+        this.stateSelected = this.states.find((item) => item.code === CatalogueProcessesStateEnum.rejected);
     }
 
     confirm() {
@@ -121,10 +122,10 @@ export class ChecklistFormComponent implements OnInit {
             return;
         }
 
-        const message = this.approved ? `
+        const message = this.approved
+            ? `
             ¿Está seguro de aprobar y finalizar la solicitud?`
-            :
-            `¿Está seguro de rechazar y finalizar la solicitud?`;
+            : `¿Está seguro de rechazar y finalizar la solicitud?`;
 
         const icon = this.approved ? FontAwesome.CHECK_SOLID : FontAwesome.BAN_SOLID;
 
