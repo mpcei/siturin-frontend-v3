@@ -33,7 +33,7 @@ import { MY_ROUTES } from '@routes';
 export class ChecklistFormComponent implements OnInit {
     dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
-    isCurrent = input<any>();
+    isCurrent = input<boolean>();
 
     data = signal<any>(null);
 
