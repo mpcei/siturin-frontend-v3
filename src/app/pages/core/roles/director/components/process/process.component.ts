@@ -155,6 +155,7 @@ export default class ProcessComponent implements OnInit {
     goToProcess(processId: string, assignmentId: string, isCurrent: boolean) {
         this.formStateService.updateSection('process', { id: processId });
         this.formStateService.updateSection('assignment', { id: assignmentId });
+        console.log(isCurrent);
         this.router.navigate([MY_ROUTES.corePages.director.checklist.absolute, processId, isCurrent]);
     }
 

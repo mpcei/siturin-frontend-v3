@@ -33,7 +33,7 @@ import { MY_ROUTES } from '@routes';
 export class ChecklistFormComponent implements OnInit {
     dataIn = input.required<any>();
     dataOut: OutputEmitterRef<any> = output<any>();
-    isCurrent = input<boolean>();
+    isCurrent = input.required<any>();
 
     data = signal<any>(null);
 
@@ -64,7 +64,6 @@ export class ChecklistFormComponent implements OnInit {
     protected readonly Validators = Validators;
 
     constructor() {
-        console.log('constructor', this.isCurrent());
         effect(() => {
             if (this.dataIn() && !this.formInitialized) {
                 this.formInitialized = true;
@@ -75,7 +74,6 @@ export class ChecklistFormComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadCatalogues();
-        console.log('init', this.isCurrent());
         console.log(this.data().processGuides);
     }
 

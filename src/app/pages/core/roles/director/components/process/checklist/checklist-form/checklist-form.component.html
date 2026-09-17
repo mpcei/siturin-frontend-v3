@@ -96,12 +96,8 @@
                 <p-divider />
             </div>
         }
-aaa{{isCurrent()}}aa
-bb{{isCurrent()==false}}bb
-<!--bb{{isCurrent()=='false'}}bb-->
-bb{{isCurrent()==true}}bb
-<!--ccc{{isCurrent()=='true'}}ccc-->
-        @if (isCurrent() && isCurrent()) {
+
+        @if (isCurrent() == 'true') {
             <div class="custom-form-field-row md:col-span-12">
                 <p-button
                     label="Solicitud aprobada"
