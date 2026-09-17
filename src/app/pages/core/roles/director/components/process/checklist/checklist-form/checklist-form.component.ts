@@ -64,6 +64,7 @@ export class ChecklistFormComponent implements OnInit {
     protected readonly Validators = Validators;
 
     constructor() {
+        console.log('constructor', this.isCurrent());
         effect(() => {
             if (this.dataIn() && !this.formInitialized) {
                 this.formInitialized = true;
@@ -74,6 +75,7 @@ export class ChecklistFormComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadCatalogues();
+        console.log('init', this.isCurrent());
         console.log(this.data().processGuides);
     }
 
