@@ -159,27 +159,35 @@ export class GuideDataComponent implements OnInit {
     get provinceField(): AbstractControl {
         return this.form.controls['province'];
     }
+
     get cantonField(): AbstractControl {
         return this.form.controls['canton'];
     }
+
     get parishField(): AbstractControl {
         return this.form.controls['parish'];
     }
+
     get mainStreetField(): AbstractControl {
         return this.form.controls['mainStreet'];
     }
+
     get secondaryStreetField(): AbstractControl {
         return this.form.controls['secondaryStreet'];
     }
+
     get numberStreetField(): AbstractControl {
         return this.form.controls['numberStreet'];
     }
+
     get referenceStreetField(): AbstractControl {
         return this.form.controls['referenceStreet'];
     }
+
     get latitudeField(): AbstractControl {
         return this.form.controls['latitude'];
     }
+
     get longitudeField(): AbstractControl {
         return this.form.controls['longitude'];
     }

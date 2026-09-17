@@ -43,6 +43,7 @@
                             severity="danger"
                             styleClass="w-full"
                             [icon]="FontAwesome.TRASH_SOLID"
+                            [disabled]="!activeFilters.length"
                             (onClick)="findProcesses()"></p-button>
                     </div>
 
@@ -130,11 +131,11 @@
                                     <td>{{ item?.process?.establishment?.number |establishmentNumber }}</td>
                                     <td>{{ item?.process?.establishment?.ruc?.legalName }}</td>
                                     <td>
-                                        <p>{{ item?.process?.establishment?.province?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.province?.name }}</p>
 
-                                        <p>{{ item?.process?.establishment?.canton?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.canton?.name }}</p>
 
-                                        <p>{{ item?.process?.establishment?.parish?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.parish?.name }}</p>
                                     </td>
                                     <td>
                                         @if (item?.process?.type?.code === CatalogueProcessesTypeEnum.general_data_update) {
@@ -224,11 +225,11 @@
                                     <td>{{ item?.process?.establishment?.number |establishmentNumber }}</td>
                                     <td>{{ item?.process?.establishment?.ruc?.legalName }}</td>
                                     <td>
-                                        <p>{{ item?.process?.establishment?.province?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.province?.name }}</p>
 
-                                        <p>{{ item?.process?.establishment?.canton?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.canton?.name }}</p>
 
-                                        <p>{{ item?.process?.establishment?.parish?.name }}</p>
+                                        <p>{{ item?.process?.establishmentAddress?.parish?.name }}</p>
                                     </td>
                                     <td>
                                         @if (item?.process?.type?.code === CatalogueProcessesTypeEnum.general_data_update) {
