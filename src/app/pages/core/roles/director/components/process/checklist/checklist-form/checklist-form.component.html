@@ -98,10 +98,10 @@
         }
 aaa{{isCurrent()}}aa
 bb{{isCurrent()==false}}bb
-bb{{isCurrent()=='false'}}bb
+<!--bb{{isCurrent()=='false'}}bb-->
 bb{{isCurrent()==true}}bb
-ccc{{isCurrent()=='true'}}ccc
-        @if (isCurrent() && isCurrent() == 'true') {
+<!--ccc{{isCurrent()=='true'}}ccc-->
+        @if (isCurrent() && isCurrent()) {
             <div class="custom-form-field-row md:col-span-12">
                 <p-button
                     label="Solicitud aprobada"
