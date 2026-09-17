@@ -6,13 +6,14 @@
 
 <app-contact-person (dataOut)="saveForm($event,ChildStep2FormEnum.establishmentContactPerson)" [dataIn]="step2Data()" />
 
-<p-fluid class="custom-form-card">
-    <div class="custom-form-grid">
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
         <div class="md:col-span-3 custom-form-field">
             <p-button
                 label="Atrás"
                 severity="warn"
                 [icon]="PrimeIcons.ARROW_LEFT"
+                styleClass="w-full"
                 (onClick)="back()" />
         </div>
 
@@ -20,8 +21,9 @@
             <p-button
                 label="Siguiente"
                 iconPos="right"
+                styleClass="w-full"
                 [icon]="PrimeIcons.ARROW_RIGHT"
                 (onClick)="onSubmit()" />
         </div>
     </div>
-</p-fluid>
+</div>
