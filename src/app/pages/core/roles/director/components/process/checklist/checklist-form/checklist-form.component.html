@@ -96,7 +96,9 @@
                 <p-divider />
             </div>
         }
-
+aaa{{isCurrent()}}aa
+bb{{isCurrent()==true}}bb
+ccc{{isCurrent()=='true'}}ccc
         @if (isCurrent() && isCurrent() == 'true') {
             <div class="custom-form-field-row md:col-span-12">
                 <p-button
@@ -140,7 +142,7 @@
                     </div>
                 }
 
-                @if (isCurrent()) {
+                @if (!approved) {
                     <div class="custom-form-field md:col-span-12">
                         <label
                             appLabel
