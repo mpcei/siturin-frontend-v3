@@ -116,6 +116,7 @@ export class GuideDataComponent implements OnInit {
 
     loadData() {
         if (this.dataIn()) {
+            console.log(this.dataIn());
             this.form.patchValue(this.dataIn());
         }
     }
