@@ -124,7 +124,7 @@ export class ChecklistComponent implements OnInit {
                     province: response.establishmentAddress?.province,
                     canton: response.establishmentAddress?.canton,
                     parish: response.establishmentAddress?.parish,
-                    mainStreet: response.establishment.establishmentAddress?.mainStreet,
+                    mainStreet: response.establishmentAddress?.mainStreet,
                     secondaryStreet: response.establishmentAddress?.secondaryStreet,
                     numberStreet: response.establishmentAddress?.numberStreet,
                     referenceStreet: response.establishmentAddress?.referenceStreet,
