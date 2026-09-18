@@ -118,18 +118,18 @@ export class ChecklistComponent implements OnInit {
                     birthdate: response.establishment.ruc.user.birthdate,
                     hasDisability: response.establishment.ruc.user.hasDisability,
                     bloodType: response.establishment.ruc.user.bloodType,
-                    phone: response.establishment.establishmentContactPerson?.phone,
-                    secondaryPhone: response.establishment.establishmentContactPerson?.secondaryPhone,
-                    secondaryEmail: response.establishment.establishmentContactPerson?.secondaryEmail,
+                    phone: response.establishmentContactPerson?.phone,
+                    secondaryPhone: response.establishmentContactPerson?.secondaryPhone,
+                    secondaryEmail: response.establishmentContactPerson?.secondaryEmail,
                     province: response.establishmentAddress?.province,
                     canton: response.establishmentAddress?.canton,
                     parish: response.establishmentAddress?.parish,
                     mainStreet: response.establishment.establishmentAddress?.mainStreet,
-                    secondaryStreet: response.establishment.establishmentAddress?.secondaryStreet,
-                    numberStreet: response.establishment.establishmentAddress?.numberStreet,
-                    referenceStreet: response.establishment.establishmentAddress?.referenceStreet,
-                    latitude: response.establishment.establishmentAddress?.latitude,
-                    longitude: response.establishment.establishmentAddress?.longitude
+                    secondaryStreet: response.establishmentAddress?.secondaryStreet,
+                    numberStreet: response.establishmentAddress?.numberStreet,
+                    referenceStreet: response.establishmentAddress?.referenceStreet,
+                    latitude: response.establishmentAddress?.latitude,
+                    longitude: response.establishmentAddress?.longitude
                 };
 
                 this.checklistData = response;
