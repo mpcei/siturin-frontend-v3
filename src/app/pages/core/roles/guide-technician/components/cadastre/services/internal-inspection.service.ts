@@ -16,14 +16,14 @@ export class InternalInspectionService {
     private readonly apiUrl = `${environment.API_URL}/core/guide-technician`;
     private readonly customMessageService = inject(CustomMessageService);
 
-    findCadastres(page: string, isCurrent: boolean, registerNumber:string) {
+    findCadastres(page: string, isCurrent: boolean, search:string) {
         const url = `${this.apiUrl}/process-guides/cadastres`;
 
         const params = new HttpParams()
             .append('page', page)
             .append('isCurrent', isCurrent)
             .append('rolCode', this.authService.role.code)
-            .append('registerNumber', registerNumber)
+            .append('search', search)
         ;
 
         return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(

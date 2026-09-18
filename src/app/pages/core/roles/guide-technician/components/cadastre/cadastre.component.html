@@ -1,16 +1,16 @@
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-field md:col-span-9">
+        <div class="custom-form-field md:col-span-8">
             <h3>Catastro Guianza</h3>
         </div>
 
-        <div class="custom-form-field md:col-span-3">
+        <div class="custom-form-field md:col-span-4">
             <p-inputgroup>
                 <p-inputgroup-addon>
                     <i [class]="FontAwesome.MAGNIFYING_GLASS_SOLID"></i>
                 </p-inputgroup-addon>
 
-                <input pInputText [formControl]="searchControl" placeholder="Buscar por número de RUC">
+                <input pInputText [formControl]="searchControl" placeholder="Buscar por número de RUC o Nombres">
             </p-inputgroup>
 
         </div>
@@ -30,21 +30,6 @@
                         <th>Ubicación</th>
                         <th>Clasificación</th>
                         <th>Estado Registro</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>
-                            <input type="text" pInputText>
-                        </th>
-                        <th>
-
-                        </th>
-                        <th>
-                            <input type="text" pInputText>
-                        </th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </ng-template>
 
