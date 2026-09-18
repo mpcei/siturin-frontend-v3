@@ -29,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         if (!this.apiLoaded) {
             const script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCGUwCcM-LKjRK4rjbBJ06_GLmX2LaYzfg';
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAS4d-fyzG_snytQNw3OwRREIQ2zjRV2qw';
             script.async = true;
             script.defer = true;
             script.onload = () => {
