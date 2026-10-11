@@ -1,0 +1,403 @@
+<p-panel class="p-fluid">
+  <form [formGroup]="formulario">
+    <!-- state & isVisible -->
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="esAreaProtegida"
+               label="Su establecimiento se encuentra dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas:"
+               [required]="esAreaProtegidaField"></label>
+        <p-toggleswitch id="esAreaProtegida" formControlName="esAreaProtegida" [trueValue]="true"></p-toggleswitch>
+        <small appErrorMessage
+               [errors]="esAreaProtegidaField.errors"
+               [touched]="esAreaProtegidaField.touched"
+               [dirty]="esAreaProtegidaField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="esAreaProtegidaField.value" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="contratoAreaProtegida"
+               label="Al momento de la inspección se presentará la delegación por contrato, convenio de cooperación de infraestructura o permisos correspondientes emitido por la Autoridad Ambiental Nacional o su equivalente:"
+               [required]="contratoAreaProtegidaField"></label>
+        <p-toggleswitch id="contratoAreaProtegida"
+                       formControlName="contratoAreaProtegida"
+                       [trueValue]="true"></p-toggleswitch>
+        <small appErrorMessage
+               [errors]="contratoAreaProtegidaField.errors"
+               [touched]="contratoAreaProtegidaField.touched"
+               [dirty]="contratoAreaProtegidaField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div *ngIf="establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo===ClasificacionCodigoEnum.AEREO"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="tipoAerolinea"
+               label="Tipo de Aerolínea:"
+               [required]="tipoAerolineaField"></label>
+        <p-select id="tipoAerolinea"
+                    formControlName="tipoAerolinea"
+                    dataKey="id"
+                    [options]="aerolineaTipos"
+                    optionLabel="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="tipoAerolineaField.errors"
+               [touched]="tipoAerolineaField.touched"
+               [dirty]="tipoAerolineaField.dirty">
+        </small>
+      </div>
+      <div *ngIf="establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo!==ClasificacionCodigoEnum.AEREO
+        || tipoAerolineaField.value"
+           class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="tipoLocal"
+               label="Tipo de Local:"
+               [required]="tipoLocalField"></label>
+        <p-select id="tipoLocal"
+                    formControlName="tipoLocal"
+                    dataKey="id"
+                    [options]="tipoLocales"
+                    optionLabel="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="tipoLocalField.errors"
+               [touched]="tipoLocalField.touched"
+               [dirty]="tipoLocalField.dirty">
+        </small>
+        <div *ngIf="tipoLocalField.value?.codigo===TramiteTransporteTipoLocalesEnum.NINGUNO"
+             class="panel-messages-info mt-3">
+          Para las aerolíneas internacionales que no cuenten con espacio físico, aplicará la Ubicación declarada en la
+          sección de “DATOS GENERALES DEL ESTABLECIMIENTO”, que deberá ser la dirección exacta del representante legal o
+          apoderado
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label appLabel for="certificado"
+             [label]="certificadoLabel+':'"
+             [required]="certificadoField"></label>
+      <p>
+        <p-toggleswitch id="certificado" formControlName="certificado" [trueValue]="true"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="certificadoField.errors"
+             [touched]="certificadoField.touched"
+             [dirty]="certificadoField.dirty">
+      </small>
+    </div>
+
+    <div
+      *ngIf="certificadoField.valid && establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo===ClasificacionCodigoEnum.MARITIMO">
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
+          <label appLabel for="totalUnidades"
+                 label="Número de unidades de transporte:"
+                 [required]="totalUnidadesField"></label>
+          <p-inputNumber id="totalUnidades"
+                         formControlName="totalUnidades"
+                         [showButtons]="true"
+                         [min]="1"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalUnidadesField.errors"
+                 [touched]="totalUnidadesField.touched"
+                 [dirty]="totalUnidadesField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
+          <label appLabel for="totalAsientos"
+                 label="Total, número de puesto (asientos):"
+                 [required]="totalAsientosField"></label>
+          <p-inputNumber id="totalAsientos"
+                         formControlName="totalAsientos"
+                         [showButtons]="true"
+                         [min]="1"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalAsientosField.errors"
+                 [touched]="totalAsientosField.touched"
+                 [dirty]="totalAsientosField.dirty">
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="certificadoField.valid">
+      <div class="field">
+        <label appLabel for="codigoCertificado"
+               [label]="codigoCertificadoLabel"
+               [required]="codigoCertificadoField"></label>
+        <input pInputText id="codigoCertificado" formControlName="codigoCertificado">
+        <small appErrorMessage
+               [errors]="codigoCertificadoField.errors"
+               [touched]="codigoCertificadoField.touched"
+               [dirty]="codigoCertificadoField.dirty">
+        </small>
+      </div>
+      <div class="field">
+        <label appLabel for="fechaEmisionCertificado"
+               [label]="fechaEmisionCertificadoLabel"
+               [required]="fechaEmisionCertificadoField"></label>
+        <p-datepicker id="fechaEmisionCertificado"
+                    formControlName="fechaEmisionCertificado"
+                    dateFormat="yy-mm-dd"
+                    [firstDayOfWeek]="1">
+        </p-datepicker>
+        <small appErrorMessage
+               [errors]="fechaEmisionCertificadoField.errors"
+               [touched]="fechaEmisionCertificadoField.touched"
+               [dirty]="fechaEmisionCertificadoField.dirty">
+        </small>
+      </div>
+      <div class="field">
+        <label appLabel for="fechaCaducidadCertificado"
+               [label]="fechaCaducidadCertificadoLabel"
+               [required]="fechaCaducidadCertificadoField"></label>
+        <p-datepicker id="fechaCaducidadCertificado"
+                    formControlName="fechaCaducidadCertificado"
+                    dateFormat="yy-mm-dd"
+                    [firstDayOfWeek]="1">
+        </p-datepicker>
+        <small appErrorMessage
+               [errors]="fechaCaducidadCertificadoField.errors"
+               [touched]="fechaCaducidadCertificadoField.touched"
+               [dirty]="fechaCaducidadCertificadoField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <div
+      *ngIf="certificadoField.valid && establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo===ClasificacionCodigoEnum.TERRESTRE">
+      <p-panel header="Capacidades">
+        <label appLabel label="Tipos de vehículos" style="font-size: 20px" [required]="transporteTerrestresField"></label>
+        <small appErrorMessage
+               [errors]="transporteTerrestresField.errors"
+               [touched]="transporteTerrestresField.touched"
+               [dirty]="transporteTerrestresField.dirty">
+        </small>
+        <p-table
+          dataKey="id"
+          styleClass="p-datatable-striped"
+          [value]="transporteTerrestresField.value"
+          [columns]="columnasVehiculosTabla">
+          <ng-template pTemplate="caption">
+            <div class="formgrid grid">
+              <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+              </div>
+              <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+                <button pButton type="button"
+                        class="p-button-success"
+                        label="Agregar Tipo de Vehículo"
+                        icon="pi pi-plus"
+                        (click)="mostrarDialogoNuevoTipoVehiculo()">
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+              <th class="text-center">
+                Opciones
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+            <tr>
+              <td>
+                {{rowData.tipo?.nombre}}
+              </td>
+              <td>
+                {{rowData.placa}}
+              </td>
+              <td>
+                {{rowData.matricula}}
+              </td>
+              <td>
+                {{rowData.fechaMatricula|date}}
+              </td>
+              <td>
+                {{rowData.fechaCaducidadMatricula|date}}
+              </td>
+              <td>
+                {{rowData.capacidad}}
+              </td>
+              <td style="text-align:center">
+                <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                        (click)="editarTransporteTerrestre(rowData,rowIndex)"
+                        class="p-button-warn p-button-rounded mr-2"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                        (click)="eliminarTransporteTerrestre(rowIndex)"
+                        class="p-button-danger p-button-rounded"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage" let-columns>
+            <tr>
+              <td [attr.colspan]="columns.length">
+                {{messageService.paginatorNoRecordsFound}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <button pButton pRipple id="btnBack" type="button"
+                  label="Atrás"
+                  class="p-button-info p-button-outlined"
+                  icon="pi pi-arrow-left"
+                  (click)="faseActualOut.emit(1)"></button>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <button pButton pRipple id="btnFinalizar"
+                  label="Guardar y Finalizar"
+                  class="p-button-success"
+                  icon="pi pi-save">
+          </button>
+        </div>
+      </div>
+    </form>
+  </form>
+</p-panel>
+
+<p-dialog header="Agregar Tipo de Vehículo"
+          [(visible)]="dialogoNuevoTransporteTerrestre"
+          [modal]="true"
+          [style]="{width: '70vw',height: '70vw'}">
+  <form [formGroup]="formularioTransporteTerrestre" (ngSubmit)="agregarTransporteTerrestre()"
+        class="p-fluid">
+    <div class="field">
+      <label appLabel for="tipo" label="Tipo:"
+             [required]="tipoField"></label>
+      <p-select id="tipo"
+                  formControlName="tipo"
+                  dataKey="id"
+                  [options]="tipoTransporteTerrestres"
+                  optionLabel="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="tipoField.errors"
+             [touched]="tipoField.touched"
+             [dirty]="tipoField.dirty">
+      </small>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="placa" label="Placa:" [required]="placaField"></label>
+        <input pInputText id="placa" formControlName="placa">
+        <small appErrorMessage
+               [errors]="placaField.errors"
+               [touched]="placaField.touched"
+               [dirty]="placaField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <div class="p-inputgroup">
+          <label appLabel for="matricula" label="Formulario Matrícula:" [required]="matriculaField"></label>
+          <i class="pi pi-info-circle ml-2 mb-1"
+             style="font-size: 1.5rem; color:slateblue"
+             (click)="opMatricula.toggle($event)"
+             pTooltip="Haga click aquí para más información"></i>
+        </div>
+        <input pInputText id="matricula" formControlName="matricula">
+        <small appErrorMessage
+               [errors]="matriculaField.errors"
+               [touched]="matriculaField.touched"
+               [dirty]="matriculaField.dirty">
+        </small>
+      </div>
+      <div class="field  xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="capacidad" label="Capacidad de la Unidad:"
+               [required]="capacidadField"></label>
+        <p-inputNumber id="capacidad"
+                       formControlName="capacidad"
+                       [showButtons]="true"
+                       [min]="1"></p-inputNumber>
+        <small appErrorMessage
+               [errors]="capacidadField.errors"
+               [touched]="capacidadField.touched"
+               [dirty]="capacidadField.dirty">
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <div class="p-inputgroup">
+          <label appLabel for="fechaMatricula" label="Fecha de emisión de la matrícula:"
+                 [required]="fechaMatriculaField"></label>
+          <i class="pi pi-info-circle ml-2"
+             style="font-size: 1.5rem; color:slateblue"
+             (click)="opFechaEmisionMatricula.toggle($event)"
+             pTooltip="Haga click aquí para más información"></i>
+        </div>
+        <p-datepicker id="fechaMatricula"
+                    formControlName="fechaMatricula"
+                    dateFormat="yy-mm-dd"
+                    [inline]="true"
+                    [firstDayOfWeek]="1">
+        </p-datepicker>
+        <small appErrorMessage
+               [errors]="fechaMatriculaField.errors"
+               [touched]="fechaMatriculaField.touched"
+               [dirty]="fechaMatriculaField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <div class="p-inputgroup">
+          <label appLabel for="fechaCaducidadMatricula" label="Fecha de caducidad de la matrícula:"
+                 [required]="fechaCaducidadMatriculaField"></label>
+          <i class="pi pi-info-circle ml-2"
+             style="font-size: 1.5rem; color:slateblue"
+             (click)="opFechaCaducidadMatricula.toggle($event)"
+             pTooltip="Haga click aquí para más información"></i>
+        </div>
+        <p-datepicker id="fechaCaducidadMatricula"
+                    formControlName="fechaCaducidadMatricula"
+                    dateFormat="yy-mm-dd"
+                    [inline]="true"
+                    [firstDayOfWeek]="1">
+        </p-datepicker>
+        <small appErrorMessage
+               [errors]="fechaCaducidadMatriculaField.errors"
+               [touched]="fechaCaducidadMatriculaField.touched"
+               [dirty]="fechaCaducidadMatriculaField.dirty">
+        </small>
+      </div>
+    </div>
+    <div class="field">
+      <button pButton pRipple
+              class=""
+              [disabled]="!formularioTransporteTerrestre.valid"
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>
+
+<p-popover #opMatricula>
+  <img src="assets/images/siturin/ayudas/matricula.jpg" alt="matricula"/>
+</p-popover>
+
+<p-popover #opFechaEmisionMatricula>
+  <img src="assets/images/siturin/ayudas/matricula_fecha_emision.jpg" alt="matricula"/>
+</p-popover>
+
+<p-popover #opFechaCaducidadMatricula>
+  <img src="assets/images/siturin/ayudas/matricula_fecha_caducidad.jpg" alt="matricula"/>
+</p-popover>

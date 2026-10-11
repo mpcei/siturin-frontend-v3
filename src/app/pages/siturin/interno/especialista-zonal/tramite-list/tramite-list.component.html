@@ -1,0 +1,1289 @@
+<div class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <h1>Especialista Zonal</h1>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <p-select id="zonal"
+                  [formControl]="zonalControl"
+                  dataKey="id"
+                  [options]="zonales"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione"
+                  (onChange)="recargarTramites(indiceTab)">
+      </p-select>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <p-select id="dpa"
+                  [formControl]="dpaControl"
+                  dataKey="id"
+                  [options]="dpa"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  [showClear]="true"
+                  placeholder="Todas las Provincias"
+                  (onChange)="recargarTramites(indiceTab)">
+      </p-select>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+      <button pButton type="button" label="Descargar Bandeja"
+              class="p-button-success"
+              icon="pi pi-download"
+              (click)="descargarBandeja()">
+      </button>
+    </div>
+  </div>
+</div>
+
+<p-tabs [value]="0" (valueChange)="recargarTramites($any($event));indiceTab=$any($event)">
+  <p-tablist>
+    <p-tab [value]="0">Trámites No Atendidos</p-tab>
+    <p-tab [value]="1">Trámites Atendidos</p-tab>
+    <p-tab [value]="2">Trámites Sin Asignar</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0">
+    <div class="panel-messages p-fluid">
+      <div class="formgrid grid">
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Sincronizar Trámites"
+                  class="p-button-info mr-2"
+                  icon="pi pi-sync"
+                  (click)="obtenerTramitesNoAtendidosPorZonal()"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Reasignar Trámite"
+                  class="p-button-warn mr-2"
+                  icon="pi pi-undo"
+                  (click)="mostrarDialogoReasignarTramite()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Descargas"
+                  icon="pi pi-download"
+                  class="p-button-success"
+                  (click)="mostrarDialogoDescargas()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Historial Asignaciones"
+                  class="p-button-secondary"
+                  icon="pi pi-users"
+                  (click)="mostrarDialogoHistorialAsignaciones()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+      </div>
+    </div>
+    <p-paginator
+      [rows]="paginadorTramitesNoAtendidos.limit"
+      [totalRecords]="paginadorTramitesNoAtendidos.totalItems"
+      (onPageChange)="paginar($event)"></p-paginator>
+    <p-table *ngIf="!cargandoTramites"
+             dataKey="id"
+             [value]="tramitesNoAtendidos"
+             [columns]="columnasTabla"
+             [loading]="cargandoTramites || cargandoTramiteSeleccionado"
+             [scrollable]="true"
+             selectionMode="single"
+             (onRowSelect)="seleccionarTramite($event)"
+             (onRowUnselect)="quitarSeleccionarTramite($event)"
+             sortField="inspeccionActual.fechaInspeccion">
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <h2>Total de Trámites sin Atender: {{paginadorTramitesNoAtendidos?.totalItems}}</h2>
+          </div>
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <form [formGroup]="buscador" class="p-fluid">
+              <div class="formgrid grid">
+                <div class="xl:col-6">
+                  <p-select id="tipo"
+                              dataKey="codigo"
+                              formControlName="tipo"
+                              class="mr-2"
+                              [options]="tiposFiltro"
+                              optionLabel="nombre"
+                              placeholder="Seleccione el filtro">
+                  </p-select>
+                </div>
+                <div class="xl:col-6">
+            <span class="p-input-icon-left">
+             <i class="pi pi-search"></i>
+             <input pInputText type="text" formControlName="valor"
+                    [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
+            </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width:300px" pSortableColumn="catastro.numeroRegistro">
+            Número de Registro
+            <p-sortIcon field="catastro.numeroRegistro"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.numero">
+            Código del Establecimiento
+            <p-sortIcon field="establecimiento.numero"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.nombreComercial">
+            Nombre Comercial
+            <p-sortIcon field="establecimiento.nombreComercial"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.ubicacion">
+            Ubicación
+            <p-sortIcon field="establecimiento.ubicacion"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="actividad.nombre">
+            Actividad
+            <p-sortIcon field="actividad.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="clasificacion.nombre">
+            Clasificación/
+            <br>
+            Categoría
+            <p-sortIcon field="clasificacion.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:300px" pSortableColumn="estado.nombre">
+            Estado
+            <p-sortIcon field="estado.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="tipo.nombre">
+            Trámite
+            <p-sortIcon field="tipo.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="fecha">
+            Fecha Trámite
+            <p-sortIcon field="fecha"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="inspeccionActual.fechaInspeccion">
+            Fecha Inspección
+            <p-sortIcon field="inspeccionActual.fechaInspeccion"></p-sortIcon>
+          </th>
+          <th>
+            Tiempo Transcurrido
+          </th>
+          <th style="min-width:300px" pSortableColumn="inspeccionActual.estado.nombre">
+            Estado Inspección
+            <p-sortIcon field="inspeccionActual.estado.nombre"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [pSelectableRow]="rowData">
+          <td style="min-width:300px">{{rowData.catastro?.numeroRegistro}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.numero}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.nombreComercial}}</td>
+          <td style="min-width:200px">
+            {{rowData.establecimiento?.provincia?.nombre}}/
+            <br>
+            {{rowData.establecimiento?.canton?.nombre}}/
+            <br>
+            {{rowData.establecimiento?.parroquia?.nombre}}</td>
+          <td style="min-width:200px">{{rowData.actividad?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.clasificacion?.nombre}}/
+            <br>
+            {{rowData.categoria?.nombre}}</td>
+          <td style="min-width:300px">{{rowData.estado?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.tipo?.nombre}}
+            <br>
+            {{rowData.catastro?.estado?.nombre}}
+          </td>
+          <td style="min-width:150px">{{rowData.fecha | date:'medium'}}</td>
+          <td style="min-width:150px">
+            {{
+              rowData.inspeccionActual?.estadoFecha?.codigo === 'solicitada'
+                ? (rowData.inspeccionActual?.fechaSolicitud | date:'medium')
+                : (rowData.inspeccionActual?.fechaInspeccion | date:'medium')
+            }}
+          </td>
+          <td style="min-width:150px">
+            <p-tag [value]="rowData | diasRestantes"
+                   [severity]="$any((rowData|diasRestantesColor))"></p-tag>
+          </td>
+          <td style="min-width:300px">{{rowData.inspeccionActual?.estadoFecha?.nombre}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="12">
+            {{messageService.paginatorNoRecordsFound}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </p-tabpanel>
+    <p-tabpanel [value]="1">
+    <div class="panel-messages p-fluid">
+      <div class="formgrid grid">
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Sincronizar Trámites"
+                  class="p-button-info mr-2"
+                  icon="pi pi-sync"
+                  (click)="obtenerTramitesAtendidosPorZonal()"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Descargas"
+                  icon="pi pi-download"
+                  class="p-button-success"
+                  (click)="mostrarDialogoDescargas()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Historial Asignaciones"
+                  class="p-button-secondary"
+                  icon="pi pi-users"
+                  (click)="mostrarDialogoHistorialAsignaciones()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+      </div>
+    </div>
+    <p-paginator
+      [rows]="paginadorTramitesAtendidos.limit"
+      [totalRecords]="paginadorTramitesAtendidos.totalItems"
+      (onPageChange)="paginar($event)"></p-paginator>
+    <p-table *ngIf="!cargandoTramites"
+             dataKey="id"
+             [value]="tramitesAtendidos"
+             [columns]="columnasTabla"
+             [loading]="cargandoTramites || cargandoTramiteSeleccionado"
+             [scrollable]="true"
+             selectionMode="single"
+             (onRowSelect)="seleccionarTramite($event)"
+             (onRowUnselect)="quitarSeleccionarTramite($event)"
+             sortField="inspeccionActual.fechaInspeccion"
+             sortMode="single"
+             scrollHeight="600px">
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <h2>Total de Trámites Atendidos: {{paginadorTramitesAtendidos?.totalItems}}</h2>
+          </div>
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <form [formGroup]="buscador" class="p-fluid">
+              <div class="formgrid grid">
+                <div class="xl:col-6">
+                  <p-select id="tipo"
+                              dataKey="codigo"
+                              formControlName="tipo"
+                              class="mr-2"
+                              [options]="tiposFiltro"
+                              optionLabel="nombre"
+                              placeholder="Seleccione el filtro">
+                  </p-select>
+                </div>
+                <div class="xl:col-6">
+            <span class="p-input-icon-left">
+             <i class="pi pi-search"></i>
+             <input pInputText type="text" formControlName="valor"
+                    [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
+            </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width:300px" pSortableColumn="catastro.numeroRegistro">
+            Número de Registro
+            <p-sortIcon field="catastro.numeroRegistro"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.numero">
+            Código del Establecimiento
+            <p-sortIcon field="establecimiento.numero"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.nombreComercial">
+            Nombre Comercial
+            <p-sortIcon field="establecimiento.nombreComercial"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.ubicacion">
+            Ubicación
+            <p-sortIcon field="establecimiento.ubicacion"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="actividad.nombre">
+            Actividad
+            <p-sortIcon field="actividad.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="clasificacion.nombre">
+            Clasificación/
+            <br>
+            Categoría
+            <p-sortIcon field="clasificacion.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:300px" pSortableColumn="estado.nombre">
+            Estado
+            <p-sortIcon field="estado.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="tipo.nombre">
+            Trámite
+            <p-sortIcon field="tipo.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="fecha">
+            Fecha Trámite
+            <p-sortIcon field="fecha"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="inspeccionActual.fechaInspeccion">
+            Fecha Inspección
+            <p-sortIcon field="inspeccionActual.fechaInspeccion"></p-sortIcon>
+          </th>
+          <th>
+            Tiempo Transcurrido
+          </th>
+          <th style="min-width:300px" pSortableColumn="inspeccionActual.estado.nombre">
+            Estado Inspección
+            <p-sortIcon field="inspeccionActual.estado.nombre"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [pSelectableRow]="rowData">
+          <td style="min-width:300px">{{rowData.catastro?.numeroRegistro}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.numero}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.nombreComercial}}</td>
+          <td style="min-width:200px">
+            {{rowData.establecimiento.provincia?.nombre}}/
+            <br>
+            {{rowData.establecimiento.canton?.nombre}}/
+            <br>
+            {{rowData.establecimiento.parroquia?.nombre}}</td>
+          <td style="min-width:200px">{{rowData.actividad?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.clasificacion?.nombre}}/
+            <br>
+            {{rowData.categoria?.nombre}}</td>
+          <td style="min-width:300px">{{rowData.estado?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.tipo?.nombre}}
+            <br>
+            {{rowData.catastro?.estado?.nombre}}
+          </td>
+          <td style="min-width:150px">{{rowData.fecha | date:'medium'}}</td>
+          <td style="min-width:150px">
+            {{
+              rowData.inspeccionActual?.estadoFecha?.codigo === 'solicitada'
+                ? (rowData.inspeccionActual?.fechaSolicitud | date:'medium')
+                : (rowData.inspeccionActual?.fechaInspeccion | date:'medium')
+            }}
+          </td>
+          <td style="min-width:150px">
+            <p-tag [value]="rowData | diasRestantes"
+                   [severity]="$any((rowData|diasRestantesColor))"></p-tag>
+          </td>
+          <td style="min-width:300px">{{rowData.inspeccionActual?.estadoFecha?.nombre}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="12">
+            {{messageService.paginatorNoRecordsFound}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </p-tabpanel>
+    <p-tabpanel [value]="2">
+    <div class="panel-messages p-fluid">
+      <div class="formgrid grid">
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Sincronizar Trámites"
+                  class="p-button-info mr-2"
+                  icon="pi pi-sync"
+                  (click)="obtenerTramitesSinAsignarPorZonal()"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Reasignar Trámite"
+                  class="p-button-warn mr-2"
+                  icon="pi pi-undo"
+                  (click)="mostrarDialogoReasignarTramite()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Descargas"
+                  icon="pi pi-download"
+                  class="p-button-success"
+                  (click)="mostrarDialogoDescargas()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+        <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
+          <button pButton type="button" label="Historial Asignaciones"
+                  class="p-button-secondary"
+                  icon="pi pi-users"
+                  (click)="mostrarDialogoHistorialAsignaciones()"
+                  [pTooltip]="!tramiteSeleccionado.id?'Seleccione un trámite':''"></button>
+        </div>
+      </div>
+    </div>
+    <p-paginator
+      [rows]="paginadorTramitesSinAsignar.limit"
+      [totalRecords]="paginadorTramitesSinAsignar.totalItems"
+      (onPageChange)="paginar($event)"></p-paginator>
+    <p-table *ngIf="!cargandoTramites"
+             dataKey="id"
+             [value]="tramitesSinAsignar"
+             [columns]="columnasTabla"
+             [loading]="cargandoTramites || cargandoTramiteSeleccionado"
+             [scrollable]="true"
+             selectionMode="single"
+             (onRowSelect)="seleccionarTramite($event)"
+             (onRowUnselect)="quitarSeleccionarTramite($event)"
+             sortField="inspeccionActual.fechaInspeccion"
+             sortMode="single"
+             scrollHeight="600px">
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <h2>Total de Trámites sin Asignar: {{paginadorTramitesSinAsignar?.totalItems}}</h2>
+          </div>
+          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <form [formGroup]="buscador" class="p-fluid">
+              <div class="formgrid grid">
+                <div class="xl:col-6">
+                  <p-select id="tipo"
+                              dataKey="codigo"
+                              formControlName="tipo"
+                              class="mr-2"
+                              [options]="tiposFiltro"
+                              optionLabel="nombre"
+                              placeholder="Seleccione el filtro">
+                  </p-select>
+                </div>
+                <div class="xl:col-6">
+            <span class="p-input-icon-left">
+             <i class="pi pi-search"></i>
+             <input pInputText type="text" formControlName="valor"
+                    [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
+            </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width:300px" pSortableColumn="catastro.numeroRegistro">
+            Número de Registro
+            <p-sortIcon field="catastro.numeroRegistro"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.numero">
+            Código del Establecimiento
+            <p-sortIcon field="establecimiento.numero"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.nombreComercial">
+            Nombre Comercial
+            <p-sortIcon field="establecimiento.nombreComercial"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="establecimiento.ubicacion">
+            Ubicación
+            <p-sortIcon field="establecimiento.ubicacion"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="actividad.nombre">
+            Actividad
+            <p-sortIcon field="actividad.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="clasificacion.nombre">
+            Clasificación/
+            <br>
+            Categoría
+            <p-sortIcon field="clasificacion.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:300px" pSortableColumn="estado.nombre">
+            Estado
+            <p-sortIcon field="estado.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:200px" pSortableColumn="tipo.nombre">
+            Trámite
+            <p-sortIcon field="tipo.nombre"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="fecha">
+            Fecha Trámite
+            <p-sortIcon field="fecha"></p-sortIcon>
+          </th>
+          <th style="min-width:150px" pSortableColumn="inspeccionActual.fechaInspeccion">
+            Fecha Inspección
+            <p-sortIcon field="inspeccionActual.fechaInspeccion"></p-sortIcon>
+          </th>
+          <th>
+            Tiempo Transcurrido
+          </th>
+          <th style="min-width:300px" pSortableColumn="inspeccionActual.estado.nombre">
+            Estado Inspección
+            <p-sortIcon field="inspeccionActual.estado.nombre"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [pSelectableRow]="rowData">
+          <td style="min-width:300px">{{rowData.catastro?.numeroRegistro}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.numero}}</td>
+          <td style="min-width:200px">{{rowData.establecimiento?.nombreComercial}}</td>
+          <td style="min-width:200px">
+            {{rowData.establecimiento.provincia?.nombre}}/
+            <br>
+            {{rowData.establecimiento.canton?.nombre}}/
+            <br>
+            {{rowData.establecimiento.parroquia?.nombre}}</td>
+          <td style="min-width:200px">{{rowData.actividad?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.clasificacion?.nombre}}/
+            <br>
+            {{rowData.categoria?.nombre}}</td>
+          <td style="min-width:300px">{{rowData.estado?.nombre}}</td>
+          <td style="min-width:200px">
+            {{rowData.tipo?.nombre}}
+            <br>
+            {{rowData.catastro?.estado?.nombre}}
+          </td>
+          <td style="min-width:150px">{{rowData.fecha | date:'medium'}}</td>
+          <td style="min-width:150px">
+            {{
+              rowData.inspeccionActual?.estadoFecha?.codigo === 'solicitada'
+                ? (rowData.inspeccionActual?.fechaSolicitud | date:'medium')
+                : (rowData.inspeccionActual?.fechaInspeccion | date:'medium')
+            }}
+          </td>
+          <td style="min-width:150px">
+            <p-tag [value]="rowData | diasRestantes"
+                   [severity]="$any((rowData|diasRestantesColor))"></p-tag>
+          </td>
+          <td style="min-width:300px">{{rowData.inspeccionActual?.estadoFecha?.nombre}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="12">
+            {{messageService.paginatorNoRecordsFound}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<div *ngIf="cargandoTramites" class="panel-messages-warn">
+  <p>Cargando trámites...</p>
+</div>
+
+<!--Informacion Declarada-->
+<div *ngIf="tramiteSeleccionado.id">
+  <app-datos-sri [esCatastrado]="true" *ngIf="tramiteSeleccionado.establecimiento?.ruc"
+                 [ruc]="tramiteSeleccionado.establecimiento?.ruc!"></app-datos-sri>
+  <br>
+  <app-datos-supercias [esCatastrado]="true" *ngIf="tramiteSeleccionado.establecimiento?.ruc"
+                       [numeroRucEstatico]="tramiteSeleccionado.establecimiento?.ruc?.numero!"
+                       [numeroExpedienteSupercias]="tramiteSeleccionado.establecimiento?.ruc?.numeroExpedienteSupercias"></app-datos-supercias>
+
+  <form class="p-fluid">
+    <p-card header="Registro de Turismo">
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="numeroRegistro" label="Número de Registro:"></label>
+          <input pInputText id="numeroRegistro" [value]="tramiteSeleccionado.catastro?.numeroRegistro" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="fechaRegistro" label="Fecha de Registro:"></label>
+          <input pInputText id="fechaRegistro" [value]="tramiteSeleccionado.catastro?.fechaRegistro" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="estado" label="Estado de Registro:"></label>
+          <input pInputText id="estado" [value]="tramiteSeleccionado.catastro?.estado?.nombre" disabled>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card>
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="tipoLocal" label="Su local es:"></label>
+          <input pInputText id="tipoLocal" [value]="tramiteSeleccionado.tipoLocal?.nombre" disabled>
+        </div>
+      </div>
+    </p-card>
+
+    <!--Establecimiento-->
+    <p-card header="Establecimiento">
+      <div class="formgrid grid">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <label appLabel for="establecimientoNumero" label="Número:"></label>
+          <input pInputText id="establecimientoNumero" [value]="tramiteSeleccionado.establecimiento?.numero" disabled>
+        </div>
+        <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-12">
+          <label appLabel for="establecimientoNombreComercial" label="Nombre Comercial:"></label>
+          <input pInputText id="establecimientoNombreComercial"
+                 [value]="tramiteSeleccionado.establecimiento?.nombreComercial" disabled>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-7 lg:col-7 md:col-7 sm:col-12">
+          <label appLabel for="establecimientoPaginaWeb" label="Página Web:"></label>
+          <input pInputText id="establecimientoPaginaWeb" [value]="tramiteSeleccionado.establecimiento?.paginaWeb"
+                 disabled>
+        </div>
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <label appLabel for="establecimientoEstado" label="Estado:"></label>
+          <input pInputText id="establecimientoEstado" [value]="tramiteSeleccionado.establecimiento?.estado?.nombre"
+                 disabled>
+        </div>
+      </div>
+    </p-card>
+    <!--DPA-->
+    <p-card header="DPA">
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="provincia" label="Provincia:"></label>
+          <input pInputText id="provincia" [value]="tramiteSeleccionado.provincia?.nombre" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="canton" label="Cantón:"></label>
+          <input pInputText id="canton" [value]="tramiteSeleccionado.canton?.nombre" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="parroquia" label="Parroquia:"></label>
+          <input pInputText id="parroquia" [value]="tramiteSeleccionado.parroquia?.nombre" disabled>
+        </div>
+      </div>
+    </p-card>
+    <!--Ubicacion-->
+    <p-card header="Ubicación">
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="callePrincipal" label="Calle Principal:"></label>
+          <input pInputText id="callePrincipal"
+                 [value]="tramiteSeleccionado.establecimiento?.ubicacion?.callePrincipal" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="calleNumeracion" label="Numeración:"></label>
+          <input pInputText id="calleNumeracion"
+                 [value]="tramiteSeleccionado.establecimiento?.ubicacion?.calleNumeracion" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="calleInterseccion" label="Calle Intersección:"></label>
+          <input pInputText id="calleInterseccion"
+                 [value]="tramiteSeleccionado.establecimiento?.ubicacion?.calleInterseccion" disabled>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-8 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="calleReferencia" label="Referencia de Ubicación:"></label>
+          <textarea pTextarea id="calleReferencia"
+                    [value]="tramiteSeleccionado.establecimiento?.ubicacion?.calleReferencia" disabled></textarea>
+        </div>
+        <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="latitud" label="Latitud:"></label>
+          <input pInputText id="latitud" [value]="tramiteSeleccionado.establecimiento?.ubicacion?.latitud" disabled>
+        </div>
+        <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="longitud" label="Longitud:"></label>
+          <input pInputText id="longitud" [value]="tramiteSeleccionado.establecimiento?.ubicacion?.longitud" disabled>
+        </div>
+      </div>
+    </p-card>
+    <!--Persona de Contacto-->
+    <p-card header="Persona de Contacto">
+      <div class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="personaContactoIdentificacion" label="Cédula de Identidad:"></label>
+          <input pInputText id="personaContactoIdentificacion"
+                 [value]="tramiteSeleccionado.establecimiento?.personaContacto?.identificacion" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="personaContactoNombres" label="Datos del registro civil:"></label>
+          <input pInputText id="personaContactoNombres"
+                 [value]="tramiteSeleccionado.establecimiento?.personaContacto?.nombres" disabled>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="correoPropietario" label="Correo Electrónico Propietario:"></label>
+          <input pInputText id="correoPropietario" [value]="tramiteSeleccionado.establecimiento?.ruc?.user?.email"
+                 disabled>
+        </div>
+
+        <div class="formgrid grid">
+          <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="personaContactoTelefonoPrincipal" label="Número de Teléfono Principal:"></label>
+            <input pInputText id="personaContactoTelefonoPrincipal"
+                   [value]="tramiteSeleccionado.establecimiento?.personaContacto?.telefonoPrincipal" disabled>
+          </div>
+          <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="personaContactoTelefonoSecundario" label="Número de Teléfono Secundario:"></label>
+            <input pInputText id="personaContactoTelefonoSecundario"
+                   [value]="tramiteSeleccionado.establecimiento?.personaContacto?.telefonoSecundario" disabled>
+          </div>
+          <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="personaContactoCorreo" label="Correo Electrónico:"></label>
+            <input pInputText id="personaContactoCorreo"
+                   [value]="tramiteSeleccionado.establecimiento?.personaContacto?.correo" disabled>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!--Total Trabajadores-->
+    <p-card>
+      <h2>Personal del Establecimiento:</h2>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalHombres" label="Total de hombres, que trabajan en el establecimiento:"></label>
+          <input pInputText id="totalHombres" [value]="tramiteSeleccionado.totalHombres" disabled>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalHombresDiscapacidad"
+                 label="Del total hombres, cuantos tienen discapacidad:"></label>
+          <input pInputText id="totalHombresDiscapacidad" [value]="tramiteSeleccionado.totalHombresDiscapacidad"
+                 disabled>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalMujeres" label="Total de mujeres, que trabajan en el establecimiento:"></label>
+          <input pInputText id="totalMujeres" [value]="tramiteSeleccionado.totalMujeres" disabled>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalMujeresDiscapacidad"
+                 label="Del total mujeres, cuantas tienen discapacidad:"></label>
+          <input pInputText id="totalMujeresDiscapacidad" [value]="tramiteSeleccionado.totalMujeresDiscapacidad"
+                 disabled>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card header="Modalidades de Turismo Aventura">
+      <div class="field">
+        <ul>
+          <li *ngFor="let modalidadTurismo of tramiteSeleccionado.modalidadesTurismoAventura">
+            {{modalidadTurismo.tipo?.padre?.nombre}} -
+            {{modalidadTurismo.tipo?.nombre}}
+          </li>
+        </ul>
+      </div>
+    </p-card>
+  </form>
+
+  <app-alimentos-bebidas-interno
+    *ngIf="tramiteSeleccionado.actividad?.codigo==='alimentos_bebidas_continente'
+          || tramiteSeleccionado.actividad?.codigo==='alimentos_bebidas_galapagos'"
+    [tramiteAlimentoBebida]="tramiteSeleccionado.tramiteAlimentoBebida!"></app-alimentos-bebidas-interno>
+
+  <app-alojamiento-interno
+    *ngIf="tramiteSeleccionado.actividad?.codigo==='alojamiento_continente'
+          || tramiteSeleccionado.actividad?.codigo==='alojamiento_galapagos'"
+    [habitaciones]="tramiteSeleccionado.habitaciones!"
+    [serviciosComplementarios]="tramiteSeleccionado.serviciosComplementarios!"
+  ></app-alojamiento-interno>
+
+  <app-operacion-intermediacion-interno
+    *ngIf="tramiteSeleccionado.actividad?.codigo==='operacion_intermediacion_continente'
+          || tramiteSeleccionado.actividad?.codigo==='operacion_intermediacion_galapagos'"
+    [representantesVentas]="tramiteSeleccionado.representantesVentas!"
+    [guiasTurismo]="tramiteSeleccionado.guiasTurismo!"
+    [companiasTransporteTuristico]="tramiteSeleccionado.companiasTransporteTuristico!"
+  ></app-operacion-intermediacion-interno>
+
+  <app-normativa-interno [normativaRespuestas]="tramiteSeleccionado.normativaRespuestas!"></app-normativa-interno>
+</div>
+
+<!--Historial Asignaciones-->
+<p-dialog [header]="dialogoTitulo"
+          [(visible)]="dialogoHistorialAsignaciones"
+          [modal]="true" [style]="{width: '100%'}">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        Número de Establecimiento: <b>{{tramiteSeleccionado.establecimiento?.numero}}</b>
+      </div>
+    </div>
+    <div class="field">
+      <p-table
+        dataKey="id"
+        styleClass="p-datatable-striped"
+        [value]="asignaciones"
+        [columns]="columnasAsignacionesTabla"
+        [loading]="(cargado$|async)!">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+          <tr>
+            <td *ngFor="let col of columns">
+              <!--Objects-->
+              <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+                <div *ngSwitchCase="'tramite'">
+                  {{rowData[col.field].estado.nombre}}
+                </div>
+                <div *ngSwitchCase="'usuarioInterno'">
+                  {{rowData[col.field].user?.name}} /
+                  {{rowData[col.field].dpa[0]?.nombre}} /
+                  {{rowData[col.field].user?.identification}}
+                </div>
+              </div>
+              <!--Fields-->
+              <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+                <div *ngSwitchCase="'fecha'">
+                  {{rowData[col.field] | date}}
+                </div>
+                <div *ngSwitchCase="'observaciones'">
+                  <ul>
+                    <li *ngFor="let observacion of rowData[col.field]">
+                      {{observacion}}
+                    </li>
+                    <li *ngIf="rowIndex===asignaciones.length-1">
+                      <p-tag value="Es Actual"></p-tag>
+                    </li>
+                  </ul>
+                </div>
+                <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{messageService.paginatorNoRecordsFound}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-dialog>
+
+<!--Reasignar Trámite-->
+<p-dialog [header]="dialogoTitulo"
+          [(visible)]="dialogoReasignarTramite"
+          [modal]="true" [style]="{width: '100%',height: '100%'}">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        Número de Establecimiento: <b>{{tramiteSeleccionado.establecimiento?.numero}}</b>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
+        <label appLabel for="provincias" label="Usuario Actual:"></label>
+        <h3
+          *ngIf="tramiteSeleccionado.asignacionActual?.usuarioInterno">
+          {{tramiteSeleccionado.asignacionActual?.usuarioInterno?.user?.name}} /
+          {{tramiteSeleccionado.asignacionActual?.usuarioInterno?.user?.identification}}
+        </h3>
+
+        <p-tag *ngIf="!tramiteSeleccionado.asignacionActual?.usuarioInterno" value="Ningún Usuario Asignado"
+               severity="danger"></p-tag>
+      </div>
+
+      <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
+        <label appLabel for="provincias" label="Provincia:"></label>
+        <p-select id="provincias"
+                    dataKey="id"
+                    [options]="provincias"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione"
+                    (onChange)="obtenerUsuariosInternosPorDpa($event)">
+        </p-select>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
+        <label appLabel for="provincias" label="Usuario Reasignado:"></label>
+        <p *ngIf="cargandoUsuariosInternos">Cargando usuarios...</p>
+        <p-select *ngIf="usuariosInternosDpa.length" id="usuarioInterno"
+                    [formControl]="usuarioInterno"
+                    dataKey="id"
+                    [options]="usuariosInternosDpa"
+                    optionLabel="usuarioInterno.user.name"
+                    [filter]="true"
+                    filterBy="usuarioInterno.user.name"
+                    placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="usuarioInterno.value">
+              <div>
+                {{usuarioInterno.value?.usuarioInterno?.user?.name}} /
+                {{usuarioInterno.value?.usuarioInterno?.user?.identification}}
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            {{item?.usuarioInterno?.user?.name}} /
+            {{item?.usuarioInterno?.user?.identification}}
+          </ng-template>
+        </p-select>
+      </div>
+    </div>
+
+    <div class="field">
+      <button pButton
+              type="button"
+              class=""
+              label="Reasignar"
+              icon="pi pi-save"
+              (click)="reasignarTramite()">
+      </button>
+    </div>
+  </div>
+</p-dialog>
+
+<!--Agendar Trámite-->
+<p-dialog [header]="dialogoTitulo"
+          [(visible)]="dialogoAgendarTramite"
+          [modal]="true" [style]="{width: '100%'}">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        Número de Establecimiento: <b>{{tramiteSeleccionado.establecimiento?.numero}}</b>
+      </div>
+      <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+        Fecha Inspección:
+        <b>{{fechaAgendaTramite.value|date:'EEEE, d/MMM/y HH:mm'}}</b>
+        <b *ngIf="!fechaAgendaTramite.valid" class="p-error">No ha seleccionado una fecha</b>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <button pButton
+                type="button"
+                class=""
+                label="Agendar"
+                icon="pi pi-save"
+                [disabled]="!fechaAgendaTramite.valid"
+                (click)="agendarTramite()">
+        </button>
+      </div>
+    </div>
+    <div *ngIf="tramiteSeleccionado.inspeccionActual?.estadoFecha?.codigo==='solicitada'" class="formgrid grid">
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <label for="fechaConfirmada">Confirmar Fecha:</label>
+        <p-toggleswitch id="fechaConfirmada" [formControl]="fechaConfirmada" class="ml-2"></p-toggleswitch>
+      </div>
+      <div class="field xl:col-7 lg:col-7 md:col-7 sm:col-12">
+        Fecha Solicitud: <b>{{tramiteSeleccionado.inspeccionActual?.fechaSolicitud | date:'EEEE, d/MMMM/y'}}</b>
+      </div>
+    </div>
+    <div *ngIf="fechaConfirmada.value" class="field">
+      <p-datepicker id="horaAgendaTramite" [formControl]="horaAgendaTramite"
+                  [inline]="true"
+                  [defaultDate]="fechaActual"
+                  [timeOnly]="true">
+      </p-datepicker>
+      <small appErrorMessage
+             [errors]="fechaAgendaTramite.errors"
+             [touched]="fechaAgendaTramite.touched"
+             [dirty]="fechaAgendaTramite.dirty">
+      </small>
+    </div>
+    <div *ngIf="fechaConfirmada.value" class="field">
+      <div class="panel-messages-info">
+        <p>Seleccione la hora, en la que se va a realizar la inspección.</p>
+      </div>
+    </div>
+    <div *ngIf="!fechaConfirmada.value" class="field">
+      <p-datepicker id="fechaAgendaTramite" [formControl]="fechaAgendaTramite"
+                  appendTo="body"
+                  [inline]="true"
+                  hourFormat="24"
+                  dateFormat="yy-mm-dd"
+                  [defaultDate]="fechaActual"
+                  [firstDayOfWeek]="1"
+                  [numberOfMonths]="2"
+                  [minDate]="fechaActual"
+                  [maxDate]="fechaMaximaAgenda"
+                  [disabledDays]="[0,6]"
+                  [showTime]="true"></p-datepicker>
+      <small appErrorMessage
+             [errors]="fechaAgendaTramite.errors"
+             [touched]="fechaAgendaTramite.touched"
+             [dirty]="fechaAgendaTramite.dirty">
+      </small>
+    </div>
+  </div>
+</p-dialog>
+
+<!--Resultado Inspección-->
+<p-dialog *ngIf="dialogoResultadoInspeccion" [header]="dialogoTitulo"
+          [(visible)]="dialogoResultadoInspeccion"
+          [style]="{width: '100%'}"
+          appendTo="body"
+          [modal]="true">
+  <form [formGroup]="formularioEstadoInspeccion" (ngSubmit)="guardarEstadoInspeccion()" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        Número de Establecimiento: <b>{{tramiteSeleccionado.establecimiento?.numero}}</b>
+      </div>
+    </div>
+    <!--CatastroEstado-->
+    <div class="field">
+      <label appLabel for="catastroEstado" label="Estado de la Inspección:"
+             [required]="catastroEstadoField"></label>
+      <p-select id="catastroEstado"
+                  formControlName="catastroEstado"
+                  dataKey="id"
+                  [options]="catastroEstados"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="catastroEstadoField.errors"
+             [touched]="catastroEstadoField.touched"
+             [dirty]="catastroEstadoField.dirty">
+      </small>
+    </div>
+
+    <!--Clasificación-->
+    <div *ngIf="tramiteSeleccionado.tipo?.codigo==='reclasificacion'
+    && catastroEstadoField.value?.codigo==='reclasificado_oficio'" class="field">
+      <label appLabel for="clasificacion" label="Clasificación:"
+             [required]="clasificacionField"></label>
+      <p-select id="clasificacion"
+                  formControlName="clasificacion"
+                  dataKey="id"
+                  [options]="clasificaciones"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="clasificacionField.errors"
+             [touched]="clasificacionField.touched"
+             [dirty]="clasificacionField.dirty">
+      </small>
+    </div>
+
+    <!--Categoría-->
+    <div *ngIf="(tramiteSeleccionado.tipo?.codigo==='recategorizacion' || tramiteSeleccionado.tipo?.codigo==='reclasificacion')
+    &&
+    (catastroEstadoField.value?.codigo==='recategorizado_oficio' || catastroEstadoField.value?.codigo==='reclasificado_oficio')"
+         class="field">
+      <label appLabel for="categoria" label="Categoría:"
+             [required]="categoriaField"></label>
+      <p-select id="categoria"
+                  formControlName="categoria"
+                  dataKey="id"
+                  [options]="categorias"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="categoriaField.errors"
+             [touched]="categoriaField.touched"
+             [dirty]="categoriaField.dirty">
+      </small>
+    </div>
+
+    <!--Causales Incumplimiento-->
+    <div *ngIf="catastroEstadoField.value?.codigo==='suspension_temporal'" class="field">
+      <label appLabel for="causalesIncumplimiento" label="Causales de Incumplimiento:"
+             [required]="causalesIncumplimientoField"></label>
+      <p-multiSelect
+        id="causalesIncumplimiento"
+        formControlName="causalesIncumplimiento"
+        dataKey="id"
+        [options]="causalesIncumplimiento"
+        display="chip"
+        [showClear]="true"
+        optionLabel="nombre"
+        filterBy="nombre"
+        [filter]="true"
+        placeholder="Seleccione una o varias">
+      </p-multiSelect>
+      <small appErrorMessage
+             [errors]="causalesIncumplimientoField.errors"
+             [touched]="causalesIncumplimientoField.touched"
+             [dirty]="causalesIncumplimientoField.dirty">
+      </small>
+    </div>
+
+    <!--Formulario Requisitos-->
+    <div *ngIf="tramiteSeleccionado.tipo?.codigo!=='actualizacion'" class="field">
+      <label appLabel for="formularioRequisitos" label="Formulario de Requisitos (Check List):"
+             [required]="formularioRequisitosField"></label>
+      <p-fileUpload
+        id="formularioRequisitos"
+        chooseLabel="Buscar"
+        chooseIcon="pi pi-search"
+        uploadLabel="Subir archivos"
+        [auto]="true"
+        accept="application/pdf"
+        [maxFileSize]="10485760"
+        [customUpload]="true"
+        (onRemove)="removerArchivoFormularioRequisitos()"
+        (uploadHandler)="cargarArchivoFormularioRequisitos($event)">
+      </p-fileUpload>
+      <small appErrorMessage
+             [errors]="formularioRequisitosField.errors"
+             [touched]="formularioRequisitosField.touched"
+             [dirty]="formularioRequisitosField.dirty">
+      </small>
+    </div>
+
+    <!--Formulario Requisitos Incumplimiento-->
+    <div
+      *ngIf="catastroEstadoField.value?.codigo ==='reclasificado_oficio' || catastroEstadoField.value?.codigo ==='recategorizado_oficio'"
+      class="field">
+      <label appLabel for="formularioRequisitosIncumplimiento"
+             label="Formulario de Requisitos Incumplimiento (Check List):"
+             [required]="formularioRequisitosIncumplimientoField"></label>
+      <p-fileUpload
+        id="formularioRequisitosIncumplimiento"
+        chooseLabel="Buscar"
+        chooseIcon="pi pi-search"
+        uploadLabel="Subir archivos"
+        [auto]="true"
+        accept="application/pdf"
+        [maxFileSize]="10485760"
+        [customUpload]="true"
+        (onRemove)="removerArchivoFormularioRequisitosIncumplimiento()"
+        (uploadHandler)="cargarArchivoFormularioRequisitosIncumplimiento($event)">
+      </p-fileUpload>
+      <small appErrorMessage
+             [errors]="formularioRequisitosIncumplimientoField.errors"
+             [touched]="formularioRequisitosIncumplimientoField.touched"
+             [dirty]="formularioRequisitosIncumplimientoField.dirty">
+      </small>
+    </div>
+
+    <!--Actua Actualización-->
+    <div *ngIf="tramiteSeleccionado.tipo?.codigo==='actualizacion'" class="field">
+      <label appLabel for="actaActualizacion" label="Acta de Actualización:"
+             [required]="actaActualizacionField"></label>
+      <p-fileUpload
+        id="actaActualizacion"
+        chooseLabel="Buscar"
+        chooseIcon="pi pi-search"
+        uploadLabel="Subir archivos"
+        [auto]="true"
+        accept="application/pdf"
+        [maxFileSize]="10485760"
+        [customUpload]="true"
+        (onRemove)="removerArchivoActualizacion()"
+        (uploadHandler)="cargarArchivoActualizacion($event)">
+      </p-fileUpload>
+      <small appErrorMessage
+             [errors]="actaActualizacionField.errors"
+             [touched]="actaActualizacionField.touched"
+             [dirty]="actaActualizacionField.dirty">
+      </small>
+    </div>
+
+    <!--Acta Notificación Temporal-->
+    <div *ngIf="catastroEstadoField.value?.codigo==='suspension_temporal'" class="field">
+      <label appLabel for="actaNotificacionTemporal" label="Acta de Notificación (SUSPENSIÓN TEMPORAL):"
+             [required]="actaNotificacionTemporalField"></label>
+      <p-fileUpload
+        id="actaNotificacionTemporal"
+        chooseLabel="Buscar"
+        chooseIcon="pi pi-search"
+        uploadLabel="Subir archivos"
+        [auto]="true"
+        accept="application/pdf"
+        [maxFileSize]="10485760"
+        [customUpload]="true"
+        (onRemove)="removerArchivoActaNotificacionTemporal()"
+        (uploadHandler)="cargarArchivoActaNotificacionTemporal($event)">
+      </p-fileUpload>
+      <small appErrorMessage
+             [errors]="actaNotificacionTemporalField.errors"
+             [touched]="actaNotificacionTemporalField.touched"
+             [dirty]="actaNotificacionTemporalField.dirty">
+      </small>
+    </div>
+
+    <!--Acta Notificación Definitiva-->
+    <div *ngIf="catastroEstadoField.value?.codigo==='suspension_definitiva'" class="field">
+      <label appLabel for="actaNotificacionDefinitiva" label="Acta de Notificación (SUSPENSIÓN DEFINITIVA):"
+             [required]="actaNotificacionDefinitivaField"></label>
+      <p-fileUpload
+        id="actaNotificacionDefinitiva"
+        chooseLabel="Buscar"
+        chooseIcon="pi pi-search"
+        uploadLabel="Subir archivos"
+        [auto]="true"
+        accept="application/pdf"
+        [maxFileSize]="10485760"
+        [customUpload]="true"
+        (onRemove)="removerArchivoActaNotificacionDefinitiva()"
+        (uploadHandler)="cargarArchivoActaNotificacionDefinitiva($event)">
+      </p-fileUpload>
+      <small appErrorMessage
+             [errors]="actaNotificacionDefinitivaField.errors"
+             [touched]="actaNotificacionDefinitivaField.touched"
+             [dirty]="actaNotificacionDefinitivaField.dirty">
+      </small>
+    </div>
+
+    <div class="field">
+      <button pButton
+              label="Guardar"
+              icon="pi pi-save"
+              [disabled]="!formularioEstadoInspeccion.valid">
+        <!--        [label]="catastroEstadoField.value?.codigo=='ratificado'?'Ratificar':'Suspender'"-->
+        <!--        [ngClass]="{-->
+        <!--        'p-button-warn':catastroEstadoField.value?.codigo!='ratificado',-->
+        <!--        '':catastroEstadoField.value?.codigo=='ratificado'-->
+        <!--        }"-->
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<!--Descargas-->
+<p-dialog [header]="dialogoTitulo"
+          [(visible)]="dialogoDescargas"
+          [modal]="true" [style]="{width: '100%'}">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        Número de Establecimiento: <b>{{tramiteSeleccionado.establecimiento?.numero}}</b>
+      </div>
+    </div>
+
+    <h3 *ngIf="descargas.length">Archivos para Descargar</h3>
+    <br *ngIf="descargas.length">
+    <div *ngFor="let descarga of descargas" class="field">
+      <button pButton
+              type="button"
+              class=""
+              [label]="descarga.nombre"
+              icon="pi pi-download"
+              [loading]="cargando"
+              (click)="descargarDocumento(descarga)">
+      </button>
+    </div>
+
+    <p-divider></p-divider>
+
+    <h3>Archivos Subidos al Sistema</h3>
+    <br>
+    <div *ngIf="!archivos.length" class="panel-messages-info">
+      <p>No existen archivos subidos al sistema</p>
+    </div>
+    <div *ngFor="let archivo of archivos" class="field">
+      <button pButton
+              type="button"
+              class="p-button-success"
+              [label]="'('+ archivo.description! +') ' + archivo.name!"
+              icon="pi pi-download"
+              (click)="descargarArchivo(archivo)">
+      </button>
+    </div>
+  </div>
+</p-dialog>

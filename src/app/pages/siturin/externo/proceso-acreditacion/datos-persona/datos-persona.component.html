@@ -1,0 +1,87 @@
+<app-datos-sri [esCatastrado]="esCatastrado" [ruc]="establecimientoSeleccionado.ruc!" (rucOutput)="saveRuc($event)"
+               (cargando)="cargando=$event"></app-datos-sri>
+
+<br>
+
+<app-datos-supercias [esCatastrado]="esCatastrado"
+                     *ngIf="establecimientoSeleccionado?.ruc?.tipoContribuyente?.codigo === 'juridica'"
+                     [numeroRucEstatico]="establecimientoSeleccionado.ruc?.numero!"
+                     [numeroExpedienteSupercias]="establecimientoSeleccionado.ruc?.numeroExpedienteSupercias!"
+                     (numeroExpedienteSuperciasOut)="cargarNumeroExpedienteSupercias($event)">
+</app-datos-supercias>
+
+<p-divider></p-divider>
+
+<app-skeleton *ngIf="cargando" type="form"></app-skeleton>
+
+<form *ngIf="!cargando" [formGroup]="formulario1" class="p-fluid formgrid" (ngSubmit)="onSubmit()">
+  <div *ngIf="$any(ruc.tipoContribuyente)==='SCD'" class="field">
+    <label appLabel for="personeriaJuridica" label="Tipo de Personería Jurídica:"
+           [required]="personeriaJuridicaField"></label>
+    <p-select id="personeriaJuridica"
+                formControlName="personeriaJuridica"
+                dataKey="id"
+                [options]="personeriaJuridicas"
+                optionLabel="nombre"
+                [filter]="true"
+                filterBy="nombre"
+                placeholder="Seleccione">
+    </p-select>
+    <small appErrorMessage
+           [errors]="personeriaJuridicaField.errors"
+           [touched]="personeriaJuridicaField.touched"
+           [dirty]="personeriaJuridicaField.dirty">
+    </small>
+  </div>
+  <p-divider></p-divider>
+  <div *ngIf="$any(ruc.tipoContribuyente)==='SCD'" class="field ">
+    <label appLabel for="tieneNombramientoVigente"
+           label='Al momento de la inspección usted deberá presentar el "Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad correspondiente"'
+           [required]="tieneNombramientoVigenteField"></label>
+    <p>
+      <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+    </p>
+    <small appErrorMessage
+           [errors]="tieneNombramientoVigenteField.errors"
+           [touched]="tieneNombramientoVigenteField.touched"
+           [dirty]="tieneNombramientoVigenteField.dirty">
+    </small>
+  </div>
+  <p-divider></p-divider>
+  <div *ngIf="$any(ruc.tipoContribuyente)==='SCD'" class="field ">
+    <label *ngIf="personeriaJuridicaField.value?.codigo==='ctc'" appLabel for="tieneDocumentoActividadTuristica"
+           label='Al momento de la inspección usted deberá presentar el Registro único de contribuyentes, de la persona jurídica solicitante, en la que conste, como una de sus actividades la prestación de servicios turísticos;'
+           [required]="tieneDocumentoActividadTuristicaField"></label>
+
+    <label *ngIf="personeriaJuridicaField.value?.codigo!=='ctc'" appLabel for="tieneDocumentoActividadTuristica"
+           label='Al momento de la inspección usted deberá presentar el "Documento constitutivo de la misma debidamente aprobada por la autoridad correspondiente, en la que conste como su objeto social el desarrollo de la actividad turística;"'
+           [required]="tieneDocumentoActividadTuristicaField"></label>
+
+    <p>
+      <p-toggleswitch id="tieneDocumentoActividadTuristica"
+                     formControlName="tieneDocumentoActividadTuristica"></p-toggleswitch>
+    </p>
+    <small appErrorMessage
+           [errors]="tieneDocumentoActividadTuristicaField.errors"
+           [touched]="tieneDocumentoActividadTuristicaField.touched"
+           [dirty]="tieneDocumentoActividadTuristicaField.dirty">
+    </small>
+  </div>
+
+  <div *ngIf="errores.length" class="panel-messages-danger">
+    <h3>Problemas encontrados</h3>
+    <br>
+    <ul style="padding-left: 10px">
+      <li *ngFor="let error of errores">
+        {{ error }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="field">
+    <button pButton pRipple id="btnNext"
+            label="Guardar y Continuar"
+            icon="pi pi-arrow-right"
+            [loading]="cargando"></button>
+  </div>
+</form>

@@ -1,0 +1,186 @@
+<p-scrollPanel [style]="{width: '100%', height: '850px'}">
+  <div class="login-page">
+    <div class="grid">
+      <div *ngIf="transaction==='login'" class="login-form panel-messages xl:col-5 lg:col-5 md:col-5 sm:col-12">
+        <form [formGroup]="formLogin" (ngSubmit)="onSubmit()" class="p-fluid">
+          <div class="field text-center">
+            <img src="assets/images/auth/logo.png" alt="logo" width="200px">
+          </div>
+          <div class="panel-messages-info">
+            <p class="text-justify" style="color: #343a40">
+              Si usted tiene inconvenientes para ingresar al sistema, comuníquese con el {{environment.MINISTERIO}}.
+              Visualizar
+              Directorio Telefónico de las Direcciones Zonales
+            </p>
+          </div>
+          <br>
+          <h3 class="text-center">INFORMACIÓN DE LA CUENTA - SITURIN</h3>
+          <br>
+          <div class="field">
+            <label for="username" appLabel label="Correo Electrónico:"
+                   [required]="usernameField">
+            </label>
+            <input pInputText id="username" formControlName="username">
+            <small appErrorMessage
+                   [errors]="usernameField.errors"
+                   [touched]="usernameField.touched"
+                   [dirty]="usernameField.dirty">
+            </small>
+          </div>
+
+          <div class="field">
+            <label for="password" appLabel label="Contraseña:"
+                   [required]="passwordField">
+            </label>
+            <div class="p-inputgroup">
+              <input pPassword type="password" id="password" formControlName="password" [feedback]="false"
+                     [showPassword]="showPassword">
+              <button *ngIf="!showPassword" type="button" pButton pRipple icon="pi pi-eye"
+                      (click)="showPassword=true"></button>
+              <button *ngIf="showPassword" type="button" pButton pRipple class="p-button-secondary"
+                      icon="pi pi-eye-slash"
+                      (click)="showPassword=false"></button>
+            </div>
+            <small appErrorMessage
+                   [errors]="passwordField.errors"
+                   [touched]="passwordField.touched"
+                   [dirty]="passwordField.dirty">
+            </small>
+          </div>
+          <div class="formgrid grid">
+            <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+              <button pButton pRipple label="INGRESAR"
+                      class="p-button-success"
+                      icon="pi pi-sign-in"></button>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+              <button type="button" pButton pRipple label="CREAR CUENTA"
+                      class=""
+                      icon="pi pi-user-plus"
+                      (click)="showCreateAccount()"></button>
+            </div>
+            <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+              <button type="button" pButton pRipple label="RECUPERAR CUENTA"
+                      class="p-button-warn"
+                      icon="pi pi-lock-open"
+                      (click)="showPasswordReset()"></button>
+            </div>
+          </div>
+<!--          <div class="field text-center">-->
+<!--            <img src="assets/images/auth/cabecera.png" alt="cabecera">-->
+<!--          </div>-->
+
+          <div *ngIf="(loaded$|async)" class="field">
+            <app-progress-bar [message]="messageService.progressBarLogin"></app-progress-bar>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="transaction==='create'" class="login-form panel-messages xl:col-5 lg:col-5 md:col-5 sm:col-12">
+        <div class="panel-messages-info">
+          <p class="text-justify" style="color: #343a40">
+            Recuerde que para cada RUC que usted administre debe crear una nueva cuenta en el SISTEMA
+          </p>
+          <p class="text-justify" style="color: #343a40">
+            Considerar que, al correo electrónico que usted ingrese, le será enviado el Certificado de Registro
+            Turístico
+          </p>
+        </div>
+        <br>
+        <h3 class="text-center">CREACIÓN DE CUENTA - SITURIN</h3>
+        <br>
+        <div style="height: 600px; overflow: auto">
+          <app-create-account (redirectLoginOut)="transaction=$event"
+                              (scrollNumberOut)="scrollNumber=$event"></app-create-account>
+          <p-scrollTop target="parent"></p-scrollTop>
+        </div>
+      </div>
+      <div *ngIf="transaction==='passwordReset'" class="login-form panel-messages xl:col-5 lg:col-5 md:col-5 sm:col-12">
+        <div class="field text-center">
+          <img src="assets/images/auth/logo.png" alt="logo" width="200px">
+        </div>
+        <h3 class="text-center">RECUPERACIÓN DE CUENTA - SITURIN</h3>
+        <br>
+        <div style="height: 600px; overflow: auto">
+          <app-password-reset (redirectLoginOut)="transaction=$event"></app-password-reset>
+          <p-scrollTop target="parent"></p-scrollTop>
+        </div>
+      </div>
+      <div class="login-information panel-messages xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <br>
+        <h1 class="text-center">SISTEMA DE TURISMO INTELIGENTE</h1>
+        <br>
+        <div class="panel-messages-info">
+          <h4>Importante:</h4>
+          <p class="text-justify">
+            Estimado Usuario, si su establecimiento se encuentra ubicado en el cantón Quito, por favor acérquese a las
+            oficinas de "Quito Turismo" para solicitar su Certificado de Registro Turístico.
+          </p>
+          <p>
+            <b>Dirección:</b> Parque Bicentenario, terminales del antiguo Aeropuerto de Quito.
+          </p>
+          <p>
+            <b>Teléfono:</b> (02) 2993 300 extensiones 1003,1035 y 1068
+          </p>
+          <p><b>Correo electrónico:</b> info@quito-turismo.gob.ec</p>
+        </div>
+        <br>
+        <p-scrollPanel [style]="{width: '100%', height: '500px'}">
+          <a target="_blank"
+             href="assets/archivos/cinco_pasos.pdf">
+            <div class="panel-messages grid">
+              <div class="col-3">
+                <img src="assets/images/auth/cinco_pasos.svg" alt="cabecera" width="75%">
+              </div>
+              <div class="col-9">
+                <h4 class="mb-5" style="color: #01579B">5 PASOS PARA OBTENER UN REGISTRO DE TURISMO</h4>
+                <p>Pasos para obtener un certificado de Registro de Turismo.</p>
+              </div>
+            </div>
+          </a>
+          <br>
+
+          <a target="_blank"
+             [routerLink]="['/simulador-externo']">
+            <div class="panel-messages grid">
+              <div class="col-2">
+                <img src="assets/images/auth/simulador_normativa.svg" alt="cabecera" width="50%">
+              </div>
+              <div class="col-9">
+                <h4 class="mb-5" style="color: #01579B">SIMULADOR DE NORMATIVA</h4>
+                <p>Permite validar si se cumple o no con los requisitos para acceder a una clasificación y categoría
+                  específica.</p>
+              </div>
+            </div>
+          </a>
+          <br>
+
+          <a target="_blank"
+             href="../../../../../assets/archivos/manual_externo.pdf">
+            <div class="panel-messages grid">
+              <div class="col-2">
+                <img src="assets/images/auth/manual_usuario.svg" alt="cabecera" width="50%">
+              </div>
+              <div class="col-9">
+                <h4 class="mb-5" style="color: #01579B">MANUAL</h4>
+                <p>Manual de usuario del Sistema de Turismo Inteligente - SITURIN.</p>
+              </div>
+            </div>
+          </a>
+          <br>
+          <a target="_blank"
+             href="assets/archivos/terminos_condiciones.pdf">
+            <div class="panel-messages grid">
+              <div class="col-2">
+                <img src="assets/images/auth/terminos_condiciones.svg" alt="cabecera" width="50%">
+              </div>
+              <div class="col-9">
+                <h4 class="mb-5" style="color: #01579B">TÉRMINOS Y CONDICIONES</h4>
+                <p>Términos y Condiciones del Sistema de Turismo Inteligente - SITURIN.</p>
+              </div>
+            </div>
+          </a>
+        </p-scrollPanel>
+      </div>
+    </div>
+  </div>
+</p-scrollPanel>

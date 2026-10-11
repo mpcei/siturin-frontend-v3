@@ -1,0 +1,35 @@
+<p-card class="p-fluid">
+  <div *ngIf="msg" class="panel-messages-danger">
+    {{ msg }}
+  </div>
+
+  <form *ngIf="!msg" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>Preguntas de Seguridad</h2>
+
+    <p-divider></p-divider>
+
+    <div formArrayName="questions">
+
+      <div class="field" *ngFor="let group of questionsField.controls; let i = index">
+
+        <div [formGroupName]="i">
+          <label>
+            {{ group.get('question')?.value }}
+          </label>
+
+          <input pInputText type="text" formControlName="response" placeholder="Escribe tu respuesta aquí">
+
+          <div *ngIf="group.get('response')?.invalid">
+            <div *ngIf="group.get('response')?.hasError('minlength')">
+              <small style="color: red;">La respuesta debe tener mínimo 3 caracteres</small>
+            </div>
+
+            <div *ngIf="group.get('response')?.hasError('pattern')">
+              <small style="color: red;">La respuesta no puede tener espacios en blanco</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-card>

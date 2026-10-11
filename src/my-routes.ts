@@ -280,5 +280,65 @@ export const MY_ROUTES = {
     dashboards: {
         base: 'dashboards',
         absolute: '/main/dashboards'
+    },
+    siturinPage: {
+        base: 'siturin',
+        absolute: '/siturin',
+        simulador: {
+            base: 'simulador',
+            absolute: '/siturin/simulador'
+        },
+        externo: {
+            base: 'externo',
+            absolute: '/main/siturin/externo',
+            procesoAcreditacion: {
+                base: 'externo/proceso-acreditacion',
+                absolute: '/main/siturin/externo/proceso-acreditacion'
+            },
+            tarifarioRack: {
+                base: 'externo/proceso-acreditacion/tarifario-rack',
+                absolute: '/main/siturin/externo/proceso-acreditacion/tarifario-rack'
+            },
+            establecimientos: {
+                base: 'externo/establecimientos',
+                absolute: '/main/siturin/externo/establecimientos'
+            },
+            dashboard: {
+                base: 'externo/dashboard',
+                absolute: '/main/siturin/externo/dashboard'
+            }
+        },
+        interno: {
+            base: 'interno',
+            absolute: '/main/siturin/interno',
+            tecnicoZonal: {
+                base: 'interno/tecnico-zonal',
+                absolute: '/main/siturin/interno/tecnico-zonal'
+            },
+            especialistaZonal: {
+                base: 'interno/especialista-zonal',
+                absolute: '/main/siturin/interno/especialista-zonal'
+            },
+            catastrosDac: {
+                base: 'interno/catastros-dac',
+                absolute: '/main/siturin/interno/catastros-dac'
+            },
+            catastrosGad: {
+                base: 'interno/catastros-gad',
+                absolute: '/main/siturin/interno/catastros-gad'
+            },
+            catastrosZonal: {
+                base: 'interno/catastros-zonal',
+                absolute: '/main/siturin/interno/catastros-zonal'
+            },
+            bitacora: {
+                base: 'interno/bitacora',
+                absolute: '/main/siturin/interno/bitacora'
+            },
+            dashboard: {
+                base: 'interno/dashboard',
+                absolute: '/main/siturin/interno/dashboard'
+            }
+        }
     }
 };

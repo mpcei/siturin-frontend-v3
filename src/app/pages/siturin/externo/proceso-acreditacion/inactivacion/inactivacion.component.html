@@ -1,0 +1,148 @@
+<form [formGroup]="formulario" (ngSubmit)="crearTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <label appLabel for="provincia" label="Provincia:"
+             [required]="provinciaField"></label>
+      <p-select id="provincia"
+                  formControlName="provincia"
+                  dataKey="id"
+                  [options]="provincias"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="provinciaField.errors"
+             [touched]="provinciaField.touched"
+             [dirty]="provinciaField.dirty">
+      </small>
+    </div>
+    <div *ngIf="provinciaField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <label appLabel for="canton" label="Canton:"
+             [required]="cantonField"></label>
+      <p-select id="canton"
+                  formControlName="canton"
+                  dataKey="id"
+                  [options]="cantones"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="cantonField.errors"
+             [touched]="cantonField.touched"
+             [dirty]="cantonField.dirty">
+      </small>
+    </div>
+    <div *ngIf="cantonField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+      <label appLabel for="parroquia" label="Parroquia:"
+             [required]="parroquiaField"></label>
+      <p-select id="parroquia"
+                  formControlName="parroquia"
+                  dataKey="id"
+                  [options]="parroquias"
+                  (onChange)="actualizarMapa()"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="parroquiaField.errors"
+             [touched]="parroquiaField.touched"
+             [dirty]="parroquiaField.dirty">
+      </small>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div formGroupName="ubicacion">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="callePrincipal" label="Calle Principal:"
+               [required]="callePrincipalField"></label>
+        <input pInputText id="callePrincipal" formControlName="callePrincipal">
+        <small appErrorMessage
+               [errors]="callePrincipalField.errors"
+               [touched]="callePrincipalField.touched"
+               [dirty]="callePrincipalField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="calleNumeracion" label="Numeración:"
+               [required]="calleNumeracionField"></label>
+        <input pInputText id="calleNumeracion" formControlName="calleNumeracion">
+        <small appErrorMessage
+               [errors]="calleNumeracionField.errors"
+               [touched]="calleNumeracionField.touched"
+               [dirty]="calleNumeracionField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="calleInterseccion" label="Calle Intersección:"
+               [required]="calleIntereseccionField"></label>
+        <input pInputText id="calleInterseccion" formControlName="calleInterseccion">
+        <small appErrorMessage
+               [errors]="calleIntereseccionField.errors"
+               [touched]="calleIntereseccionField.touched"
+               [dirty]="calleIntereseccionField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <div class="formgrid grid">
+      <div class="field xl:col-8 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="calleReferencia" label="Referencia de Ubicación:"
+               [required]="calleReferenciaField"></label>
+        <textarea pTextarea id="calleReferencia" formControlName="calleReferencia"></textarea>
+        <small appErrorMessage
+               [errors]="calleReferenciaField.errors"
+               [touched]="calleReferenciaField.touched"
+               [dirty]="calleReferenciaField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="latitud" label="Latitud:" [required]="latitudField"></label>
+        <input pInputText id="latitud" formControlName="latitud">
+      </div>
+      <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="longitud" label="Longitud:" [required]="longitudField"></label>
+        <input pInputText id="longitud" formControlName="longitud">
+      </div>
+    </div>
+
+    <div *ngIf="coordenadas" class="field">
+      <google-map [options]="coordenadas" width="100%" height="450px"
+                  (mapClick)="agregarMarcador($event)">
+        <map-marker *ngFor="let overlay of overlays"
+                    [position]="overlay.getPosition()"
+                    [options]="{title: overlay.getTitle(), draggable: overlay.getDraggable()}"
+                    (mapDragend)="cambiarMarcador($event)"></map-marker>
+      </google-map>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div class="field">
+    <label appLabel label="Causales de Inactivación:"
+           [required]="causalesInactivacionField"></label>
+    <br>
+    <small appErrorMessage
+           [errors]="causalesInactivacionField.errors"
+           [touched]="causalesInactivacionField.touched"
+           [dirty]="causalesInactivacionField.dirty">
+    </small>
+    <div *ngFor="let causalIncumplimiento of causalesInactivacion; let i= index" class="field mt-6">
+      <p-checkbox
+        [inputId]="'causalesIncumplimiento'+i"
+        name="causalesIncumplimiento"
+        [value]="causalIncumplimiento"
+        [formControl]="causalesInactivacionField">
+      </p-checkbox>
+      <label [for]="'causalesIncumplimiento'+i" class="ml-2">{{ causalIncumplimiento.nombre! }}</label>
+    </div>
+  </div>
+  <div class="field">
+    <button pButton pRipple type="button" icon="pi pi-save" class="" label="Guardar" (click)="onSubmit()" [loading]="cargando"></button>
+  </div>
+</form>

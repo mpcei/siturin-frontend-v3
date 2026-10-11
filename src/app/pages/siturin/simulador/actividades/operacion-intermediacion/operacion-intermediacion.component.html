@@ -1,0 +1,54 @@
+<div *ngIf="clasificacion && personseriaJuridica">
+  <div class="panel-messages-info">
+    <h3>{{ clasificacion?.nombre }}</h3>
+
+    <br>
+    <p class="text-justify">
+      {{ clasificacion?.descripcion }}
+    </p>
+  </div>
+
+  <p-divider></p-divider>
+
+  <h1>REQUISITOS DOCUMENTALES</h1>
+
+  <p-divider></p-divider>
+
+  <form [formGroup]="form">
+    <div *ngIf="personseriaJuridica.codigo =='natural'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <h1>No Aplica</h1>
+      </div>
+
+    </div>
+
+    <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneRuc"
+               label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC).'
+               [required]="tieneRucField"></label>
+        <p>
+          <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneActividad"
+               label='Al momento de la inspección presentará el Documento constitutivo de la compañía debidamente aprobada por la autoridad competente.'
+               [required]="tieneActividadField"></label>
+        <p>
+          <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneNombramientoVigente"
+               label='Al momento de la inspección presentará el Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad competente.'
+               [required]="tieneNombramientoVigenteField"></label>
+        <p>
+          <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

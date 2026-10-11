@@ -1,0 +1,141 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid">
+  <!--RUC-->
+  <div class="field">
+    <label for="rucNumber" appLabel label="Número de RUC al que pertenece el Establecimiento:" [required]="rucNumber">
+    </label>
+    <div class="p-inputgroup">
+      <button type="button" pButton pRipple icon="pi pi-search"
+              [loading]="cargando"
+              (click)="rucNumber.updateValueAndValidity()"></button>
+      <input pInputText id="rucNumber" [formControl]="rucNumber" pKeyFilter="int"/>
+    </div>
+    <small appErrorMessage
+           [errors]="rucNumber.errors"
+           [touched]="rucNumber.touched"
+           [dirty]="rucNumber.dirty">
+    </small>
+  </div>
+  <div class="field">
+    <app-skeleton *ngIf="cargando"></app-skeleton>
+  </div>
+  <div *ngIf="rucField.valid;  else elseBlock">
+    <div class="panel-messages-info">
+      <div class="field">
+        <b>Razón Social:</b>
+        <p id="razonSocial">{{rucField.value.razonSocial}}</p>
+      </div>
+      <div class="field">
+        <b>Estado Contribuyente:</b>
+        <p id="estadoContribuyente">{{rucField.value.estadoContribuyente}}</p>
+      </div>
+
+      <div *ngIf="rucField.value.tipoContribuyente==='SCD'" class="field">
+        <b>Representante Legal:</b>
+        <p id="representanteLegal">{{rucField.value.nombreRepresentanteLegal}}</p>
+      </div>
+    </div>
+    <br>
+    <div *ngIf="rucField.value.estadoContribuyente!=='ACTIVO'" class="panel-messages-warn">
+      No puede crear la cuenta, el R.U.C. se encuentra <b>{{rucField.value.estadoContribuyente}}</b>
+    </div>
+
+    <div *ngIf="rucField.value.estadoContribuyente==='ACTIVO'">
+      <!--email-->
+      <div class="field">
+        <label for="username" appLabel label="Correo Electrónico:" [required]="usernameField">
+        </label>
+        <input pInputText id="username" formControlName="username"/>
+        <small appErrorMessage
+               [errors]="usernameField.errors"
+               [touched]="usernameField.touched"
+               [dirty]="usernameField.dirty">
+        </small>
+        <small *ngIf="!correoValido" class="p-error">
+          No puede ingresar un correo con dominio del {{environment.MINISTERIO}}
+        </small>
+      </div>
+
+      <div class="field">
+        <button *ngIf="usernameField.valid && correoValido" pButton pRipple type="button"
+                label="Solicitar Código"
+                icon="pi pi-send"
+                class="p-button-info"
+                (click)="requestTransactionalCodeRegister()"
+                [loading]="cargando"></button>
+      </div>
+
+      <div *ngIf="esCodigoTransaccion" class="field">
+        <label for="code" appLabel label="Ingrese el código que fue enviado a su correo:"
+               [required]="transactionalCode">
+        </label>
+        <input pInputText id="code" [formControl]="transactionalCode"/>
+        <small appErrorMessage
+               [errors]="transactionalCode.errors"
+               [touched]="transactionalCode.touched"
+               [dirty]="transactionalCode.dirty">
+        </small>
+      </div>
+
+      <!--newPassword && confirmPassword-->
+      <div *ngIf="transactionalCodeValid" class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="newPassword" label="Nueva Contraseña:" [required]="newPasswordField">
+          </label>
+          <div class="p-inputgroup">
+            <input pPassword type="password" id="newPassword" formControlName="newPassword" [feedback]="false"
+                   [showPassword]="showPassword">
+            <button *ngIf="!showPassword" type="button" pButton pRipple icon="pi pi-eye"
+                    (click)="showPassword=true"></button>
+            <button *ngIf="showPassword" type="button" pButton pRipple class="p-button-secondary" icon="pi pi-eye-slash"
+                    (click)="showPassword=false"></button>
+          </div>
+          <small appErrorMessage
+                 [errors]="newPasswordField.errors"
+                 [touched]="newPasswordField.touched"
+                 [dirty]="newPasswordField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="confirmationPassword" label="Confirmar Contraseña:"
+                 [required]="confirmationPasswordField">
+          </label>
+          <input pPassword type="password" id="confirmationPassword" formControlName="confirmationPassword" [feedback]="false"
+                 [showPassword]="showPassword">
+          <small appErrorMessage
+                 [errors]="confirmationPasswordField.errors"
+                 [touched]="confirmationPasswordField.touched"
+                 [dirty]="confirmationPasswordField.dirty">
+          </small>
+        </div>
+      </div>
+    </div>
+    <br>
+    <!--submit-->
+    <div *ngIf="transactionalCodeValid" class="field">
+      <button pButton pRipple type="submit"
+              class="p-button-success"
+              label="Crear Cuenta"
+              icon="pi pi-user-plus"
+              [loading]="cargando"></button>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <div *ngIf="errorRuc && (rucNumber.touched || rucNumber.dirty)" class="panel-messages-danger">
+      <h3>Atención</h3>
+      <br>
+      <p>RUC no válido.</p>
+    </div>
+    <br>
+  </ng-template>
+
+  <div class="field">
+    <button pButton pRipple type="button"
+            label="Regresar al Login"
+            class="p-button-outlined"
+            icon="pi pi-arrow-left"
+            (click)="redirectLogin()"></button>
+  </div>
+  <div *ngIf="progressBar" class="field">
+    <app-progress-bar [message]="messageService.progressBarProcess"></app-progress-bar>
+  </div>
+</form>

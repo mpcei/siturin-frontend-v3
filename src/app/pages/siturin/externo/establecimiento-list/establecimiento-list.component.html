@@ -1,0 +1,441 @@
+<p-card header="Proceso de Acreditación de Actividades Turísticas">
+  <div class="panel-messages-info">
+    <h3>NOTA IMPORTANTE</h3>
+    <ul class="mt-2">
+      <li class="text-justify">
+        Recuerde que para la obtención del Registro de Turismo, usted debe contar con el RUC (Registro
+        Único de Contribuyentes) Actualizado, con información de Razón Social, establecimientos, nombre comercial, etc;
+        en caso de no contar con estos requisitos, deberá actualizar su información en la página del SRI
+        <a href="https://www.sri.gob.ec/" target="_blank">www.sri.gob.ec</a>
+      </li>
+      <li class="text-justify mt-3">
+        Seleccione el trámite por establecimiento; si el código del establecimiento asociado a su RUC o el código de
+        Registro Turístico no son correctos, por favor comuníquese con el {{environment.MINISTERIO}}.
+      </li>
+    </ul>
+  </div>
+
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <!--      <button pButton type="button" label="Sincronizar Ruc con SRI"-->
+      <!--              class="mr-2"-->
+      <!--              icon="pi pi-sync"-->
+      <!--              (click)="sincronizarDinardapRuc()"></button>-->
+      <button pButton type="button" label="Sincronizar Establecimientos Mintur"
+              class="p-button-info mr-2"
+              icon="pi pi-sync"
+              (click)="obtenerEstablecimientos()"></button>
+    </div>
+    <div class="p-toolbar-group-right">
+
+    </div>
+  </p-toolbar>
+
+  <p-table
+    #dt1
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="establecimientos"
+    [columns]="columnasTabla"
+    [loading]="cargando"
+    [(selection)]="establecimientosSeleccionados">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        <h1>Listado de Establecimientos del SRI</h1>
+      </div>
+      <div class="flex">
+        <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text"
+                           (input)="dt1.filterGlobal(buscador.value, 'contains')"
+                           [formControl]="buscador"
+                           placeholder="Buscar..."/>
+                </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th class="text-center" style="width: 15rem">
+          Opciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr>
+        <td *ngFor="let col of columns">
+          <!--Objects-->
+          <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'tramiteActual'">
+              <div *ngIf="rowData[col.field].actividad?.codigo==='alimentos_bebidas_continente'
+              || rowData[col.field].actividad?.codigo.includes('parques')
+              || rowData[col.field].actividad?.codigo.includes('eventos');
+                          else elseBlock1">
+                {{ rowData[col.field].actividad.nombre }}
+              </div>
+              <ng-template #elseBlock1>
+                {{ rowData[col.field].actividad?.nombre }}
+                <br>
+                {{ rowData[col.field].clasificacion?.nombre }}
+                <br>
+                <span *ngIf="rowData[col.field].actividad?.codigo!=='operacion_intermediacion_continente'
+                            && rowData[col.field].actividad?.codigo!=='operacion_intermediacion_galapagos'">
+                  {{ rowData[col.field].categoria?.nombre }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <!--Fields-->
+          <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'catastroEstado'">
+              <div *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_continente' ||
+              rowData['tramiteActual']?.actividad?.codigo.includes('parques') ||
+              rowData['tramiteActual']?.actividad?.codigo.includes('eventos');
+                          else elseBlock1">
+                Revisar en "Ver Registros"
+              </div>
+              <ng-template #elseBlock1>
+                {{ rowData['tramiteActual']?.tipo?.nombre }}
+                <br>
+                {{ rowData['tramiteActual']?.catastro?.estado?.nombre }}
+              </ng-template>
+            </div>
+            <div *ngSwitchCase="'ubicacionString'">
+              {{ rowData['provincia']?.nombre }}
+              <br *ngIf="rowData['provincia']?.nombre">
+              {{ rowData['canton']?.nombre }}
+              <br *ngIf="rowData['canton']?.nombre">
+              {{ rowData['parroquia']?.nombre }}
+              <br *ngIf="rowData['parroquia']?.nombre">
+              {{
+                rowData['ubicacion']?.callePrincipal + ', '
+                + rowData['ubicacion']?.calleNumeracion + ', '
+                + rowData['ubicacion']?.calleInterseccion
+              }}
+            </div>
+            <div *ngSwitchCase="'catastro'">
+              <div *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_continente'||
+              rowData['tramiteActual']?.actividad?.codigo.includes('parques') ||
+              rowData['tramiteActual']?.actividad?.codigo.includes('eventos');
+                          else elseBlock2">
+                Revisar en "Ver Registros"
+              </div>
+              <ng-template #elseBlock2>
+                {{ rowData['tramiteActual']?.catastro?.numeroRegistro ? rowData['tramiteActual']?.catastro?.numeroRegistro : 'Sin Registro' }}
+                <br>
+                {{ rowData['tramiteActual']?.catastro?.fechaRegistro | date:'longDate' }}
+              </ng-template>
+            </div>
+            <div *ngSwitchCase="'nombreComercial'">
+              {{ rowData[col.field] }}
+              <br>
+              <p-tag *ngIf="rowData['estado']?.codigo==='cerrado'" value="CERRADO SRI" severity="danger"></p-tag>
+              <p-tag *ngIf="rowData[col.field]===null || rowData[col.field]===''" value="SIN NOMBRE COMERCIAL SRI"
+                     severity="danger"></p-tag>
+            </div>
+            <div *ngSwitchCase="'updatedAt'">{{ rowData[col.field]|date }}</div>
+            <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
+          </div>
+        </td>
+
+        <td class="text-center">
+          <div *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_continente'||
+              rowData['tramiteActual']?.actividad?.codigo.includes('parques') ||
+              rowData['tramiteActual']?.actividad?.codigo.includes('eventos'); else elseBlock2">
+            <button pButton icon="pi pi-eye" class="" pTooltip="Ver Registros"
+                    (click)="mostrarTramitesAlimentosBebidas(rowData)"></button>
+          </div>
+          <ng-template #elseBlock2>
+            <button
+              *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alojamiento_galapagos'
+                        && (rowData['tramiteActual']?.catastro?.estado?.codigo==='pendiente_inspeccion'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='ratificado'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='recategorizado_oficio'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='reclasificado_oficio')"
+              pButton type="button" pTooltip="Actualizar Tarifario Rack"
+              class="p-button-secondary mr-2"
+              icon="pi pi-wrench"
+              [loading]="cargando"
+              (click)="mostrarTarifarioRack(rowData)"
+              [routerLink]="['/siturin/externo/proceso-acreditacion/tarifario-rack']"></button>
+
+            <button *ngIf="rowData['tramiteActual']?.estado?.codigo!=='en_proceso'" pButton icon="pi pi-plus"
+                    class="p-button-success mr-2" pTooltip="Crear Trámite"
+                    [loading]="cargando"
+                    (click)="mostrarCrearTramite(rowData)"></button>
+
+            <button *ngIf="rowData['tramiteActual']?.estado?.codigo==='en_proceso'"
+                    pButton
+                    icon="pi pi-plus"
+                    class="p-button-success mr-2"
+                    pTooltip="Crear Trámite"
+                    [loading]="cargando"
+                    (click)="mostrarCrearTramite(rowData)"></button>
+
+            <button *ngIf="rowData['tramiteActual'] && rowData['tramiteActual'].tipo.codigo!='actualizacion' &&
+                      (rowData['tramiteActual']?.catastro?.estado?.codigo==='pendiente_inspeccion'
+                        || rowData['tramiteActual']?.catastro?.estado?.codigo==='suspension_temporal')" pButton
+                    icon="pi pi-calendar" class="p-button-info mr-2"
+                    [pTooltip]="rowData['tramiteActual']?.catastro?.estado?.codigo==='pendiente_inspeccion'?
+                    'Solicitar primera inspección':'Solicitar segunda inspección'"
+                    [loading]="cargando"
+                    (click)="mostrarFechaInpseccion(rowData)"></button>
+
+            <button
+              *ngIf="rowData['tramiteActual']?.catastro && rowData['tramiteActual']?.catastro?.estado?.codigo!='suspension_definitiva'"
+              pButton type="button" pTooltip="Descargar Certificado"
+              class="mr-2"
+              icon="pi pi-download"
+              [loading]="cargando"
+              (click)="descargarDocumento(rowData['tramiteActual'])"></button>
+            <button
+              *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alojamiento_galapagos'
+                        && (rowData['tramiteActual']?.catastro?.estado?.codigo==='pendiente_inspeccion'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='ratificado'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='recategorizado_oficio'
+                              || rowData['tramiteActual']?.catastro?.estado?.codigo==='reclasificado_oficio')"
+              pButton type="button" pTooltip="Descargar Tarifario Rack"
+              class="mr-2"
+              icon="pi pi-download"
+              [loading]="cargando"
+              (click)="descargarTarifarioRack(rowData['tramiteActual'])"></button>
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{ messageService.paginatorNoRecordsFound }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog header="Trámites" [(visible)]="dialogoTiposTramites"
+          [modal]="true"
+          [maximizable]="true">
+  <div class="p-fluid">
+    <div class="field" *ngFor="let tramiteTipo of establecimientoSeleccionado.tramiteOpciones">
+      <button pButton icon="pi pi-info-circle" class="" [label]="tramiteTipo.nombre!"
+              (click)="crearTramite(tramiteTipo)"></button>
+    </div>
+
+    <div class="field" *ngIf="establecimientoSeleccionado.tramiteOpciones?.length ===0">
+      No existen trámites disponibles
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Tipos Trámites" [(visible)]="dialogoTiposTramitesAlimentosBebidas"
+          [modal]="true"
+          [maximizable]="true">
+  <div class="p-fluid">
+    <div class="field" *ngFor="let tramiteTipo of tramiteOpcionesAlimentosBebidas">
+      <button pButton icon="pi pi-info-circle" class="" [label]="tramiteTipo.nombre!"
+              (click)="crearTramite(tramiteTipo)"></button>
+    </div>
+
+    <div class="field" *ngIf="tramiteOpcionesAlimentosBebidas?.length ===0">
+      No existen trámites disponibles
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Registros de Turismo del Establecimiento " [(visible)]="dialogoTramitesAlimentosBebidas"
+          [modal]="true"
+          [style]="{width: '100%',height: '100%'}"
+          [maximizable]="true">
+  <div class="p-fluid">
+    <p-table
+      #dt2
+      dataKey="id"
+      styleClass="p-datatable-striped"
+      [value]="establecimientoSeleccionado.tramites!"
+      [columns]="columnasTramitesTabla"
+      [loading]="(cargado$|async)!"
+      [scrollable]="true"
+      scrollHeight="450px">
+      <ng-template pTemplate="caption">
+        <div class="p-fluid">
+          <div class="formgrid grid">
+            <div *ngIf="(establecimientoSeleccionado?.tramiteActual?.actividad?.codigo==='alimentos_bebidas_continente' ||
+                         establecimientoSeleccionado?.tramiteActual?.actividad?.codigo?.includes('parques') ||
+                         establecimientoSeleccionado?.tramiteActual?.actividad?.codigo?.includes('eventos'))
+                        && establecimientoSeleccionado?.estado?.codigo!='cerrado'
+                        && establecimientoSeleccionado?.nombreComercial !=''"
+                 class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+              <button pButton type="button"
+                      [label]="establecimientoSeleccionado?.tramiteActual?.actividad?.codigo==='alimentos_bebidas_continente'?'Nueva Clasificación':'Nueva Actividad'"
+                      class="p-button-success mr-2"
+                      icon="pi pi-plus"
+                      (click)="crearNuevaClasificacion()"></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{ col.header }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+          <th class="text-center">
+            Opción
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+        <tr>
+          <td *ngFor="let col of columns">
+            <!--Objects-->
+            <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+              <div *ngSwitchCase="'actividad'">
+                {{ rowData[col.field].nombre }}
+                <br>
+                {{ rowData['clasificacion'].nombre }}
+                <br>
+                {{ rowData['categoria'].nombre }}
+              </div>
+              <div *ngSwitchCase="'tipo'">
+                {{ rowData['catastro']?.numeroRegistro }}
+                <br>
+                {{ rowData['catastro']?.fechaRegistro | date:'longDate' }}
+              </div>
+              <div *ngSwitchCase="'catastro'">
+                {{ rowData['tipo']?.nombre }}
+                <br>
+                {{ rowData[col.field].estado?.nombre }}
+              </div>
+            </div>
+            <!--Fields-->
+            <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+              <div *ngSwitchCase="'tipo'">
+                En trámite
+              </div>
+              <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
+            </div>
+          </td>
+          <td class="text-center">
+            <button pButton type="button" pTooltip="Crear trámite"
+                    class="p-button-success mr-2"
+                    icon="pi pi-plus"
+                    (click)="mostrarCrearTramitesAlimentosBebidas(rowData)"></button>
+
+            <button *ngIf="rowData.tipo.codigo!='actualizacion' &&
+                      (rowData?.catastro?.estado?.codigo==='pendiente_inspeccion'
+                        || rowData?.catastro?.estado?.codigo==='suspension_temporal')"
+                    pButton
+                    icon="pi pi-calendar" class="p-button-info mr-2"
+                    [pTooltip]="rowData?.catastro?.estado?.codigo==='pendiente_inspeccion'?
+                    'Solicitar primera inspección':'Solicitar segunda inspección'"
+                    (click)="mostrarFechaInspeccionAlimentosBebidas(rowData)"></button>
+
+            <button
+              *ngIf="rowData?.catastro && rowData?.catastro?.estado?.codigo != 'suspension_definitiva'"
+              pButton type="button" pTooltip="Descargar Certificado"
+              class="mr-2"
+              icon="pi pi-download"
+              (click)="descargarDocumento(rowData)"></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            {{ messageService.paginatorNoRecordsFound }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
+
+<p-dialog [header]="dialogoTitulo" [(visible)]="dialogoFechaInspeccion"
+          [modal]="true"
+          [style]="{width: '100%'}"
+          [maximizable]="true">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        Número de Establecimiento: <b>{{ establecimientoSeleccionado.numero }}</b>
+      </div>
+      <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+        Fecha Inspección:
+        <b *ngIf="establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo==='solicitada'">
+          {{ fechaAgendaTramite.value|date:'EEEE, d/MMM/y' }}
+        </b>
+        <b *ngIf="establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo!=='solicitada'">
+          {{ fechaAgendaTramite.value|date:'EEEE, d/MMM/y HH:mm' }}
+        </b>
+        <b *ngIf="!fechaAgendaTramite.valid" class="p-error">No ha seleccionado una fecha</b>
+      </div>
+      <div *ngIf="establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo==='auto_generada'
+                || establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo==='solicitada'"
+           class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <button pButton
+                type="button"
+                class=""
+                label="Agendar"
+                icon="pi pi-save"
+                [disabled]="!fechaAgendaTramite.valid"
+                (click)="agendarTramite()">
+        </button>
+      </div>
+    </div>
+    <div *ngIf="establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo==='auto_generada'
+                || establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo==='solicitada'"
+         class="field">
+      <p-datepicker id="fechaAgendaTramite" [formControl]="fechaAgendaTramite"
+                  appendTo="body"
+                  [inline]="true"
+                  hourFormat="24"
+                  dateFormat="yy-mm-dd"
+                  [defaultDate]="fechaActual"
+                  [firstDayOfWeek]="1"
+                  [numberOfMonths]="2"
+                  [disabledDays]="[0,6]"
+                  [minDate]="fechaActual"
+                  [maxDate]="fechaMaximaAgenda"
+      ></p-datepicker>
+      <small appErrorMessage
+             [errors]="fechaAgendaTramite.errors"
+             [touched]="fechaAgendaTramite.touched"
+             [dirty]="fechaAgendaTramite.dirty">
+      </small>
+    </div>
+    <div *ngIf="establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.codigo!=='auto_generada'"
+         class="field">
+      <div class="panel-messages-info">
+        <h1>
+          {{ establecimientoSeleccionado.tramiteActual?.inspeccionActual?.estadoFecha?.nombre }}
+        </h1>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Trámite de Inactivación" [(visible)]="dialogoCausalesInactivacion"
+          [style]="{width: '100%',height: '100%'}"
+          [modal]="true"
+          [maximizable]="true">
+  <app-inactivacion *ngIf="dialogoCausalesInactivacion"
+                    [establecimiento]="establecimientoSeleccionado!"
+                    (cargandoOutput)="cargando=$event;dialogoCausalesInactivacion=false"
+                    (dialogoOutput)="inactivarTramiteAlimentosBebidas($event)"></app-inactivacion>
+</p-dialog>
+
+<p-dialog header="Tarifario Rack" [(visible)]="dialogoTarifarioRack"
+          [style]="{width: '100%',height: '100%'}"
+          [modal]="true"
+          [maximizable]="true">
+  <app-tarifario-rack *ngIf="dialogoTarifarioRack"
+                      [tramiteActual]="establecimientoSeleccionado.tramiteActual!"
+                      (dialogoTarifarioRackOut)="dialogoTarifarioRack=false"
+  ></app-tarifario-rack>
+</p-dialog>
+

@@ -1,0 +1,144 @@
+<p-card header="Bitácora">
+  <div class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field">
+        <label appLabel for="numeroRuc" label="Número de RUC:" [required]="numeroRuc"></label>
+        <div class="p-inputgroup">
+          <input pInputText id="numeroRuc" [formControl]="numeroRuc">
+          <button *ngIf="cargando" type="button" pButton icon="pi pi-spin pi-spinner"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-card>
+
+<p-card *ngIf="ruc?.id && numeroRuc.valid && !esEstablecimientoSeleccionado">
+  <p-table
+    #dt1
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="establecimientos"
+    [columns]="columnasTabla"
+    [loading]="cargando"
+    selectionMode="single"
+    [(selection)]="establecimientoSeleccionado">
+    <ng-template pTemplate="caption">
+      <div class="table-header">
+        <h1>Listado de Establecimientos</h1>
+      </div>
+      <div class="grid">
+        <div class="col-4 col-offset-8">
+          Nombre de comercial / número del establecimiento:
+        </div>
+
+        <div class="col-4 col-offset-8">
+          <!--        (input)="dt1.filterGlobal(buscador.value, 'contains')"-->
+          <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text"
+                           [formControl]="buscador"
+                           placeholder="Buscar..."/>
+                </span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th class="text-center" style="width: 15rem">
+          Opciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr>
+        <td *ngFor="let col of columns">
+          <!--Objects-->
+          <div *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'provincia'">
+              {{ rowData[col.field].nombre }}
+            </div>
+            <div *ngSwitchCase="'canton'">
+              {{ rowData[col.field].nombre }}
+            </div>
+            <div *ngSwitchCase="'parroquia'">
+              {{ rowData[col.field].nombre }}
+            </div>
+          </div>
+          <!--Fields-->
+          <div *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'catastroEstado'">
+              <div *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_continente' ||
+                          rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_galapagos';
+                          else elseBlock1">
+                Revisar en "Ver Registros"
+              </div>
+              <ng-template #elseBlock1>
+                {{ rowData['tramiteActual']?.tipo?.nombre }}
+                <br>
+                {{ rowData['tramiteActual']?.catastro?.estado?.nombre }}
+              </ng-template>
+            </div>
+            <div *ngSwitchCase="'ubicacionString'">
+              {{
+                rowData['ubicacion'].callePrincipal + ', '
+                + rowData['ubicacion'].calleNumeracion + ', '
+                + rowData['ubicacion'].calleInterseccion
+              }}
+            </div>
+            <div *ngSwitchCase="'catastro'">
+              <div *ngIf="rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_continente' ||
+                          rowData['tramiteActual']?.actividad?.codigo==='alimentos_bebidas_galapagos';
+                          else elseBlock2">
+                Revisar en "Ver Registros"
+              </div>
+              <ng-template #elseBlock2>
+                {{ rowData['tramiteActual']?.catastro?.numeroRegistro ? rowData['tramiteActual']?.catastro?.numeroRegistro : 'Sin Registro' }}
+                <br>
+                {{ rowData['tramiteActual']?.catastro?.fechaRegistro | date:'longDate' }}
+              </ng-template>
+            </div>
+            <div *ngSwitchCase="'nombreComercial'">
+              {{ rowData[col.field] }}
+              <br>
+              <p-tag *ngIf="rowData['estado']?.codigo==='cerrado'" value="CERRADO" severity="danger"></p-tag>
+              <p-tag *ngIf="rowData[col.field]===null || rowData[col.field]===''" value="SIN NOMBRE COMERCIAL"
+                     severity="danger"></p-tag>
+            </div>
+            <div *ngSwitchCase="'updatedAt'">{{ rowData[col.field]|date }}</div>
+            <div *ngSwitchDefault>{{ rowData[col.field] }}</div>
+          </div>
+        </td>
+
+        <td class="text-center">
+          <button pButton icon="pi pi-search" class="" pTooltip="Ver Trámites"
+                  (click)="mostrarTramites(rowData)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{ messageService.paginatorNoRecordsFound }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-card *ngIf="ruc?.id && esEstablecimientoSeleccionado" header="Trámites">
+  <app-tramites [establecimientoId]="establecimientoSeleccionado.id!"
+                (esEstablecimientoSeleccionadoOut)="esEstablecimientoSeleccionado=$event"
+  ></app-tramites>
+</p-card>
+
+<p-card *ngIf="ruc?.id && numeroRuc.valid">
+  <app-datos-sri [ruc]="ruc" [esCatastrado]="true"></app-datos-sri>
+  <br>
+  <app-datos-supercias [numeroRucEstatico]="ruc.numero"></app-datos-supercias>
+</p-card>

@@ -1,0 +1,53 @@
+<h1>Proceso de Acreditación de Actividades Turísticas</h1>
+<p-card class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+      <p>Establecimiento Seleccionado:</p>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12 text-left">
+      <h3>{{establecimiento.numero}} - {{establecimiento.nombreComercial}}</h3>
+    </div>
+    <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12 text-left">
+      <button type="button" pButton pRipple icon="pi pi-arrow-left" label="Regresar a Establecimientos"
+              (click)="redireccionarEstablecimientos()"></button>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+      <p>Trámite Seleccionado:</p>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12 text-left">
+      <h3>{{establecimiento.tramiteActual?.tipo?.nombre}}</h3>
+    </div>
+  </div>
+  <div class="formgrid grid">
+    <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+      <p>Número de Registro:</p>
+    </div>
+    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12 text-left">
+      <h3>{{establecimiento.tramiteActual?.catastro?.numeroRegistro || 'No cuenta con Registro de Turismo'}}</h3>
+    </div>
+  </div>
+</p-card>
+
+<br>
+
+<div class="panel-messages-warn">
+  <h3>Declaración Juramentada</h3>
+  <br>
+  <p class="text-justify">
+    Declaro, bajo juramento, que los datos consignados en éste sistema reflejan la realidad y autorizo al
+    {{environment.MINISTERIO}} a verificar la información en cualquier momento, al tiempo que me sujeto, a las sanciones
+    previstas en la ley en caso de falsedad o perjurio.
+  </p>
+</div>
+
+<p-card>
+  <p-steps [model]="fases" [activeIndex]="faseActual"></p-steps>
+  <app-datos-persona *ngIf="faseActual===0"
+                     (faseActualOut)="faseActual=$event"></app-datos-persona>
+  <app-datos-establecimiento *ngIf="faseActual===1"
+                             (faseActualOut)="faseActual=$event"></app-datos-establecimiento>
+  <app-datos-acreditacion-turistica *ngIf="faseActual===2"
+                                    (faseActualOut)="faseActual=$event"></app-datos-acreditacion-turistica>
+</p-card>

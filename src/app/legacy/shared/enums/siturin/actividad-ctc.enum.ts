@@ -1,0 +1,6 @@
+export enum ActividadCtcCodigoEnum {
+  ALOJAMIENTO_ACTIVIDADES_TURISTICAS = 'alojamiento',
+  ALIMENTOS_BEBIDAS_ACTIVIDADES_TURISTICAS = 'alimentos_bebidas',
+  OPERACION_ACTIVIDADES_TURISTICAS = 'operacion',
+  TRANSPORTE_ACTIVIDADES_TURISTICAS = 'transporte',
+}

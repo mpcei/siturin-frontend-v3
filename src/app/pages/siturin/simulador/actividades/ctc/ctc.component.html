@@ -1,0 +1,72 @@
+<div *ngIf="clasificacion && personseriaJuridica">
+  <div class="panel-messages-info">
+    <h3>{{ clasificacion?.nombre }}</h3>
+
+    <br>
+    <p class="text-justify">
+      {{ clasificacion?.descripcion }}
+    </p>
+  </div>
+
+  <p-divider></p-divider>
+
+  <h1>REQUISITOS DOCUMENTALES</h1>
+
+  <p-divider></p-divider>
+
+  <form [formGroup]="form">
+    <div *ngIf="personseriaJuridica.codigo =='natural'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <h1>No Aplica</h1>
+      </div>
+
+    </div>
+
+    <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneUsoSuelos"
+               label='Al momento de la inspección se presentará certificado actualizado del registro de la propiedad en el que se determine la titularidad del predio a favor de la comunidad u organización comunitaria en el que se desarrollará la actividad como Centro de Turismo Comunitario, con el señalamiento de linderos y límites.'
+               [required]="tieneUsoSuelosField"></label>
+        <p>
+          <p-toggleswitch id="tieneUsoSuelos" formControlName="tieneUsoSuelos"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneInformeTecnico"
+               label='Al momento de la inspección se presentará Informe técnico que justifique la calidad comunitaria de la organización que solicita el registro, expedido por la Secretaría de Gestión y Desarrollo de Pueblos y Nacionalidades, o la entidad que ejerza dichas atribuciones.'
+               [required]="tieneInformeTecnicoField"></label>
+        <p>
+          <p-toggleswitch id="tieneInformeTecnico" formControlName="tieneInformeTecnico"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneNombramientoVigente"
+               label='Al momento de la inspección se presentará nombramiento vigente que acredite la representación legal del peticionario.'
+               [required]="tieneNombramientoVigenteField"></label>
+        <p>
+          <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneActividad"
+               label='Al momento de la inspección se presentará la copia certificada del Estatuto de la comunidad, en la que debe indicar que sí podrán realizar la actividad de turismo comunitario.'
+               [required]="tieneActividadField"></label>
+        <p>
+          <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneRuc"
+               label='Al momento de la inspección se presentará el Registro único de contribuyentes (RUC), de la persona jurídica solicitante, en la que conste, como una de sus actividades la prestación de servicios turísticos.'
+               [required]="tieneRucField"></label>
+        <p>
+          <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

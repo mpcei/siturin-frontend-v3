@@ -1,0 +1,773 @@
+<p-divider></p-divider>
+
+<p-panel class="p-fluid">
+  <form [formGroup]="formulario">
+    <!-- state & isVisible -->
+    <div class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="espacioFisicoPermanente" label="Espacio físico Permanente:"
+               [required]="espacioFisicoPermanenteField"></label>
+        <p-select id="espacioFisicoPermanente"
+                    formControlName="espacioFisicoPermanente"
+                    dataKey="id"
+                    [options]="espacioFisicoPermanentes"
+                    optionLabel="nombre"
+                    [filter]="false"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="espacioFisicoPermanenteField.errors"
+               [touched]="espacioFisicoPermanenteField.touched"
+               [dirty]="espacioFisicoPermanenteField.dirty">
+        </small>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="esAreaProtegida"
+               label="¿Realiza actividades autorizadas por la Autoridad Ambiental Nacional en el Subsistema
+                      Estatal del Sistema de Áreas Naturales Protegidas, de conformidad con lo establecido en los artículos 8 y
+                      9 de la Ley de Turismo dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas?"
+               [required]="esAreaProtegidaField"></label>
+        <p>
+          <p-toggleswitch id="esAreaProtegida" formControlName="esAreaProtegida" [trueValue]="true"></p-toggleswitch>
+        </p>
+        <small appErrorMessage
+               [errors]="esAreaProtegidaField.errors"
+               [touched]="esAreaProtegidaField.touched"
+               [dirty]="esAreaProtegidaField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="esAreaProtegidaField.value" class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="contratoAreaProtegida"
+               label="Al momento de la inspección se presentará la licencia única de funcionamiento:"
+               [required]="contratoAreaProtegidaField"></label>
+        <p-toggleswitch id="contratoAreaProtegida"
+                       formControlName="contratoAreaProtegida"
+                       [trueValue]="true"></p-toggleswitch>
+        <small appErrorMessage
+               [errors]="contratoAreaProtegidaField.errors"
+               [touched]="contratoAreaProtegidaField.touched"
+               [dirty]="contratoAreaProtegidaField.dirty">
+        </small>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="personalAcreditadoIdioma" [required]="personalAcreditadoIdiomaField">
+          "De <b>{{ totalTrabajadores }}</b> empleados declarados en la sección de Personal del establecimiento ¿Cuántas
+          personas están acreditadas como mínimo el nivel B1 de conocimiento de al menos un idioma extranjero de acuerdo
+          al Marco Común Europeo para las Lenguas?".
+        </label>
+
+        <div class="grid">
+          <div class="xl:col-3 lg:col-3 md:col-3 sm:col-12">
+            <p-inputNumber id="personalAcreditadoIdioma"
+                           formControlName="personalAcreditadoIdioma"
+                           [showButtons]="true"
+                           [min]="1"
+                           [max]="totalTrabajadores"
+            ></p-inputNumber>
+
+            <small appErrorMessage
+                   [errors]="personalAcreditadoIdiomaField.errors"
+                   [touched]="personalAcreditadoIdiomaField.touched"
+                   [dirty]="personalAcreditadoIdiomaField.dirty">
+            </small>
+          </div>
+          <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+            <b *ngIf="Math.round(personalAcreditadoIdiomaField.value / totalTrabajadores * 100)>=20;else elseBlock">
+              SI CUMPLE:
+              <br>
+              El {{ Math.round(personalAcreditadoIdiomaField.value / totalTrabajadores * 100) }}%
+              de empleados es superior o igual al 20% requerido, de acuerdo a lo detallado en el artículo 12
+              del Acuerdo ministerial Nro. 007-2024
+            </b>
+            <ng-template #elseBlock>
+              <b class="p-error">
+                NO CUMPLE:
+                <br>
+                El {{ Math.round(personalAcreditadoIdiomaField.value / totalTrabajadores * 100) }}%
+                de empleados es inferior al 20% requerido, de acuerdo a lo detallado en el artículo 12
+                del Acuerdo ministerial Nro. 007-2024
+              </b>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<div *ngIf="Math.round(personalAcreditadoIdiomaField.value / totalTrabajadores * 100)>=20">
+  <div *ngIf="clasificacion.value?.codigo==='agencia_viajes_internacional'
+            || clasificacion.value?.codigo==='agencia_viajes_dual'
+            || clasificacion.value?.codigo==='operador_turistico'
+"
+  >
+    <p-panel header="Representantes Ventas">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar Representante de Ventas contratado por el establecimiento.
+        </p>
+      </div>
+
+      <br>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div class="field">
+          <label appLabel for="tieneRepresentantesVentas"
+                 label="Declaro que el establecimiento, al momento del envío de la solicitud, ha contratado Representante de Ventas"
+                 [required]="tieneRepresentatesVentasField"></label>
+          <p>
+            <p-toggleswitch id="tieneRepresentantesVentas" formControlName="tieneRepresentantesVentas"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneRepresentatesVentasField.errors"
+                 [touched]="tieneRepresentatesVentasField.touched"
+                 [dirty]="tieneRepresentatesVentasField.dirty">
+          </small>
+          <p></p>
+        </div>
+      </form>
+
+      <p-table *ngIf="tieneRepresentatesVentasField.value"
+               dataKey="id"
+               styleClass="p-datatable-striped"
+               [value]="representantesVentasField.value"
+               [columns]="columnasRepresentantesVentasTabla"
+               [loading]="(cargado$|async)!">
+        <ng-template pTemplate="caption">
+          <div class="formgrid grid">
+            <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+            </div>
+            <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+              <button pButton type="button"
+                      class="p-button-success"
+                      label="Agregar Representante de Ventas"
+                      icon="pi pi-plus"
+                      (click)="mostrarDialogoNuevoRepresentantesVentas()">
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+            <th class="text-center">
+              Opciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{ rowData.ruc }}
+            </td>
+            <td>
+              {{ rowData.razonSocial }}
+            </td>
+            <td>
+              <p-tag *ngIf="rowData.tieneTituloProfesional" value="Cumple"></p-tag>
+              <p-tag *ngIf="!rowData.tieneTituloProfesional" severity="danger" value="No Cumple"></p-tag>
+            </td>
+            <td>
+              <p-tag *ngIf="rowData.tieneContrato" value="Cumple"></p-tag>
+              <p-tag *ngIf="!rowData.tieneContrato" severity="danger" value="No Cumple"></p-tag>
+            </td>
+            <td>
+              <p-tag *ngIf="rowData.tieneExperenciaLaboral" value="Cumple"></p-tag>
+              <p-tag *ngIf="!rowData.tieneExperenciaLaboral" severity="danger" value="No Cumple"></p-tag>
+            </td>
+            <td style="text-align:center">
+              <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                      (click)="editarRepresentanteVenta(rowData,rowIndex)"
+                      class="p-button-warn p-button-rounded mr-2"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                      (click)="eliminarRepresentanteVenta(rowIndex)" class="p-button-danger p-button-rounded"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{ messageService.paginatorNoRecordsFound }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+
+    <p-divider></p-divider>
+  </div>
+
+  <div *ngIf="clasificacion.value?.codigo==='operador_turistico'
+            || clasificacion.value?.codigo==='agencia_viajes_dual'">
+    <p-panel header="Guías de Turismo">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar Guía de Turismo contratado por el establecimiento.
+        </p>
+      </div>
+
+      <br>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div class="field">
+          <label appLabel for="tieneGuiasTurismo"
+                 label="Declaro que el establecimiento, al momento del envío de la solicitud, ha contratado Guías de Turismo"
+                 [required]="tieneGuiasTurismoField"></label>
+          <p>
+            <p-toggleswitch id="tieneGuiasTurismo" formControlName="tieneGuiasTurismo"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneGuiasTurismoField.errors"
+                 [touched]="tieneGuiasTurismoField.touched"
+                 [dirty]="tieneGuiasTurismoField.dirty">
+          </small>
+          <p></p>
+        </div>
+      </form>
+
+      <p-table *ngIf="tieneGuiasTurismoField.value"
+               dataKey="id"
+               styleClass="p-datatable-striped"
+               [value]="guiasTurismoField.value"
+               [columns]="columnasGuiasTurismoTabla"
+               [loading]="(cargado$|async)!">
+        <ng-template pTemplate="caption">
+          <div class="formgrid grid">
+            <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+            </div>
+            <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+              <button pButton type="button"
+                      class="p-button-success"
+                      label="Agregar Guía de Turismo"
+                      icon="pi pi-plus"
+                      (click)="mostrarDialogoNuevoGuiasTurismo()">
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+            <th class="text-center">
+              Opciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{ rowData.cedula }}
+            </td>
+            <td>
+              {{ rowData.nombres }}
+            </td>
+            <!--          <td>-->
+            <!--            <p-tag *ngIf="rowData.esGuia" severity="success" value="Es Guía de Turismo"></p-tag>-->
+            <!--            <p-tag *ngIf="!rowData.esGuia" severity="danger" value="No es Guía de Turismo"></p-tag>-->
+            <!--          </td>-->
+            <td style="text-align:center">
+              <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                      (click)="editarGuiaTurismo(rowData,rowIndex)"
+                      class="p-button-warn p-button-rounded mr-2"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                      (click)="eliminarGuiaTurismo(rowIndex)" class="p-button-danger p-button-rounded"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{ messageService.paginatorNoRecordsFound }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+
+    <p-divider></p-divider>
+  </div>
+
+  <div *ngIf="clasificacion.value?.codigo==='operador_turistico'
+            || clasificacion.value?.codigo==='agencia_viajes_dual'">
+    <p-panel header="Compañías de Transporte Turístico">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar Compañía de Transporte Turístico contratado por el establecimiento.
+        </p>
+      </div>
+
+      <br>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div class="field">
+          <label appLabel for="tieneCompaniasTransporteTuristico"
+                 label="Declaro que el establecimiento, al momento del envío de la solicitud, ha firmado un contrato con una Compañía de Transporte Turístico"
+                 [required]="tieneCompaniasTransporteTuristicoField"></label>
+          <p>
+            <p-toggleswitch id="tieneCompaniasTransporteTuristico"
+                           formControlName="tieneCompaniasTransporteTuristico"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneCompaniasTransporteTuristicoField.errors"
+                 [touched]="tieneCompaniasTransporteTuristicoField.touched"
+                 [dirty]="tieneCompaniasTransporteTuristicoField.dirty">
+          </small>
+          <p></p>
+        </div>
+      </form>
+
+      <p-table *ngIf="tieneCompaniasTransporteTuristicoField.value"
+               dataKey="id"
+               styleClass="p-datatable-striped"
+               [value]="companiasTransporteTuristicoField.value"
+               [columns]="columnasCompaniasTransporteTuristicoTabla"
+               [loading]="(cargado$|async)!">
+        <ng-template pTemplate="caption">
+          <div class="formgrid grid">
+            <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+            </div>
+            <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+              <button pButton type="button"
+                      class="p-button-success"
+                      label="Agregar Compañía de Transporte Turístico"
+                      icon="pi pi-plus"
+                      (click)="mostrarDialogoNuevoCompaniasTransporteTuristico()">
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+            <th class="text-center">
+              Opciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{ rowData.ruc }}
+            </td>
+            <td>
+              {{ rowData.razonSocial }}
+            </td>
+            <td>
+              {{ rowData.tipoContribuyente }}
+            </td>
+            <td style="text-align:center">
+              <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                      (click)="editarCompaniaTransporteTuristico(rowData,rowIndex)"
+                      class="p-button-warn p-button-rounded mr-2"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                      (click)="eliminarCompaniaTransporteTuristico(rowIndex)"
+                      class="p-button-danger p-button-rounded"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{ messageService.paginatorNoRecordsFound }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+
+    <p-divider></p-divider>
+  </div>
+
+  <div *ngIf="clasificacion.value?.codigo==='operador_turistico'
+            || clasificacion.value?.codigo==='agencia_viajes_dual'">
+    <p-panel header="Modalidades de Turismo de Aventura">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar las modalidades de turismo de aventura que ofrece el establecimiento.
+        </p>
+      </div>
+
+      <br>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div class="field">
+          <label appLabel for="tieneModalidadesTurismoAventura"
+                 label="¿Su establecimiento desarrolla modalidades de aventura?"
+                 [required]="tieneModalidadesTurismoAventuraField"></label>
+          <p>
+            <p-toggleswitch id="tieneModalidadesTurismoAventura"
+                           formControlName="tieneModalidadesTurismoAventura"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneModalidadesTurismoAventuraField.errors"
+                 [touched]="tieneModalidadesTurismoAventuraField.touched"
+                 [dirty]="tieneModalidadesTurismoAventuraField.dirty">
+          </small>
+          <p></p>
+        </div>
+
+        <div *ngIf="tieneModalidadesTurismoAventuraField.value" class="field">
+          <label appLabel for="tieneModalidadAventuraOtraAgencia"
+                 label=" ¿Su establecimiento desarrolla modalidades de aventura contratando otra Agencia Operadora de Turismo?"
+                 [required]="tieneModalidadAventuraOtraAgenciaField"></label>
+          <p>
+            <p-toggleswitch id="tieneModalidadAventuraOtraAgencia"
+                           formControlName="tieneModalidadAventuraOtraAgencia"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneModalidadAventuraOtraAgenciaField.errors"
+                 [touched]="tieneModalidadAventuraOtraAgenciaField.touched"
+                 [dirty]="tieneModalidadAventuraOtraAgenciaField.dirty">
+          </small>
+          <p></p>
+        </div>
+
+        <div *ngIf="tieneModalidadesTurismoAventuraField.value">
+          <div class="panel-messages-warn field">
+            <h3>Atención</h3>
+            <br>
+            <p class="text-justify">
+              Si su respuesta es afirmativa, por favor registre las modalidades de turismo de aventura que ofrece el
+              establecimiento.
+            </p>
+          </div>
+
+          <div class="field">
+            <label appLabel for="modalidadesTurismoAventuraAgua" label="Agua:"
+                   [required]="modalidadesTurismoAventuraAguaField"></label>
+            <p-multiSelect
+              id="modalidadesTurismoAventuraAgua"
+              dataKey="id"
+              formControlName="modalidadesTurismoAventuraAgua"
+              [options]="modalidadesTurismoAventuraAgua"
+              display="chip"
+              [showClear]="true"
+              optionLabel="nombre"
+              filterBy="nombre"
+              [filter]="true"
+              placeholder="Seleccione una o varias">
+            </p-multiSelect>
+            <small appErrorMessage
+                   [errors]="modalidadesTurismoAventuraAguaField.errors"
+                   [touched]="modalidadesTurismoAventuraAguaField.touched"
+                   [dirty]="modalidadesTurismoAventuraAguaField.dirty">
+            </small>
+          </div>
+
+          <div class="field">
+            <label appLabel for="modalidadesTurismoAventuraAire" label="Aire:"
+                   [required]="modalidadesTurismoAventuraAireField"></label>
+            <p-multiSelect
+              id="modalidadesTurismoAventuraAire"
+              dataKey="id"
+              formControlName="modalidadesTurismoAventuraAire"
+              [options]="modalidadesTurismoAventuraAire"
+              display="chip"
+              [showClear]="true"
+              optionLabel="nombre"
+              filterBy="nombre"
+              [filter]="true"
+              placeholder="Seleccione una o varias">
+            </p-multiSelect>
+            <small appErrorMessage
+                   [errors]="modalidadesTurismoAventuraAireField.errors"
+                   [touched]="modalidadesTurismoAventuraAireField.touched"
+                   [dirty]="modalidadesTurismoAventuraAireField.dirty">
+            </small>
+          </div>
+
+          <div class="field">
+            <label appLabel for="modalidadesTurismoAventuraTierra" label="Tierra:"
+                   [required]="modalidadesTurismoAventuraTierraField"></label>
+            <p-multiSelect
+              id="modalidadesTurismoAventuraTierra"
+              dataKey="id"
+              formControlName="modalidadesTurismoAventuraTierra"
+              [options]="modalidadesTurismoAventuraTierra"
+              display="chip"
+              [showClear]="true"
+              optionLabel="nombre"
+              filterBy="nombre"
+              [filter]="true"
+              placeholder="Seleccione una o varias">
+            </p-multiSelect>
+            <small appErrorMessage
+                   [errors]="modalidadesTurismoAventuraTierraField.errors"
+                   [touched]="modalidadesTurismoAventuraTierraField.touched"
+                   [dirty]="modalidadesTurismoAventuraTierraField.dirty">
+            </small>
+          </div>
+        </div>
+      </form>
+
+      <app-normativa-modalidad-turismo-aventura *ngIf="tieneModalidadesTurismoAventuraField.value"
+                                                (normativaRespuestas)="llenarNormativaRespuestasModalidadesTurismoAventura($event)">
+      </app-normativa-modalidad-turismo-aventura>
+
+      <br>
+      <div class="panel-messages-info">
+        <h2>Nota:</h2>
+        <br>
+        <p>
+          1.- En el caso que contrate servicios de aventura a través de otras agencias operadoras de
+          turismo, recuerde que el {{environment.MINISTERIO}} verificará los contratos suscritos con
+          proveedores.
+        </p>
+        <p>
+          Al momento de la inspección se verificará los formatos o modelos de contratos que se
+          suscriben con los clientes.
+        </p>
+        <p>
+          2.- En la modalidad de cabalgata, donde se requiere el uso de animales para su
+          realización, se deberá salvaguardar la salud e integridad del animal.
+        </p>
+      </div>
+    </p-panel>
+
+    <p-divider></p-divider>
+  </div>
+
+  <app-normativa *ngIf="establecimientoSeleccionado.tramiteActual?.tipo?.codigo != 'actualizacion'"
+                 (normativaRespuestas)="llenarNormativaRespuestas($event)"
+                 [actividad]="actividad"
+                 [clasificacion]="clasificacion"></app-normativa>
+
+  <div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+    <h3>Problemas encontrados</h3>
+    <br>
+    <ul>
+      <li *ngFor="let campoInvalido of camposInvalidos">
+        {{ campoInvalido }}
+      </li>
+    </ul>
+  </div>
+
+  <form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <button pButton pRipple id="btnBack" type="button"
+                label="Atrás"
+                class="p-button-info p-button-outlined"
+                icon="pi pi-arrow-left"
+                (click)="faseActualOut.emit(1)"></button>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <button pButton pRipple id="btnFinalizar"
+                label="Guardar y Finalizar"
+                class="p-button-success"
+                icon="pi pi-save">
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<p-dialog header="Agregar Compania Transporte Turístico"
+          [(visible)]="dialogoNuevoCompaniasTransporteTuristico"
+          [modal]="true"
+          [style]="{width: '50vw',height: '50vw'}">
+  <form [formGroup]="formularioCompaniaTransporteTuristico" (ngSubmit)="agregarCompaniaTransporteTuristico()"
+        class="p-fluid">
+    <div class="field">
+      <label appLabel for="numeroRucCompaniaTransporteTuristico" label="Número de RUC:"
+             [required]="numeroRucCompaniaTransporteTuristicoField"></label>
+      <div class="p-inputgroup">
+        <button type="button" pButton pRipple icon="pi pi-search"
+                [loading]="(cargado$|async)!"
+                (click)="numeroRucCompaniaTransporteTuristicoField.updateValueAndValidity()"></button>
+        <input pInputText id="numeroRucCompaniaTransporteTuristico" formControlName="ruc"
+               pKeyFilter="int">
+      </div>
+      <small appErrorMessage
+             [errors]="numeroRucCompaniaTransporteTuristicoField.errors"
+             [touched]="numeroRucCompaniaTransporteTuristicoField.touched"
+             [dirty]="numeroRucCompaniaTransporteTuristicoField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <app-datos-sri *ngIf="numeroRucCompaniaTransporteTuristicoField.valid"
+                     [numeroRuc]="numeroRucCompaniaTransporteTuristicoField"
+                     (rucOutput)="llenarCompaniaTransporteTuristico($event)"></app-datos-sri>
+    </div>
+    <div *ngIf="razonSocialCompaniaTransporteTuristicoField.value" class="field">
+      <button pButton
+              class=""
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Agregar Guía de Turismo" [(visible)]="dialogoNuevoGuiasTurismo"
+          [modal]="true" [style]="{width: '50vw',height: '30vw'}">
+  <form [formGroup]="formularioGuiaTurismo" (ngSubmit)="agregarGuiaTurismo()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="numeroCedulaGuiaTurismo" label="Número de cédula:"
+             [required]="cedulaGuiaTurismoField"></label>
+      <div class="p-inputgroup">
+        <button type="button" pButton pRipple icon="pi pi-search"
+                [loading]="(cargado$|async)!"
+                (click)="cedulaGuiaTurismoField.updateValueAndValidity()"></button>
+        <input pInputText id="numeroCedulaGuiaTurismo" formControlName="cedula" pKeyFilter="int">
+      </div>
+      <small appErrorMessage
+             [errors]="cedulaGuiaTurismoField.errors"
+             [touched]="cedulaGuiaTurismoField.touched"
+             [dirty]="cedulaGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div class="field">
+      <label appLabel for="nombresGuiaTurismo" label="Nombres:"
+             [required]="nombresGuiaTurismoField"></label>
+      <input pInputText id="nombresGuiaTurismo" formControlName="nombres">
+      <small appErrorMessage
+             [errors]="nombresGuiaTurismoField.errors"
+             [touched]="nombresGuiaTurismoField.touched"
+             [dirty]="nombresGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div class="field">
+      <!--      <p-tag *ngIf="nombresGuiaTurismoField.value && esGuiaTurismoField.value" severity="success" value="Es Guía de Turismo"></p-tag>-->
+      <!--      <p-tag *ngIf="nombresGuiaTurismoField.value && !esGuiaTurismoField.value" severity="danger" value="No es Guía de Turismo"></p-tag>-->
+      <small appErrorMessage
+             [errors]="esGuiaTurismoField.errors"
+             [touched]="esGuiaTurismoField.touched"
+             [dirty]="esGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="nombresGuiaTurismoField.value" class="field">
+      <button pButton
+              class=""
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Agregar Representante de Ventas" [(visible)]="dialogoNuevoRepresentantesVentas"
+          [modal]="true" [style]="{width: '50vw',height: '50vw'}">
+  <form [formGroup]="formularioRepresentanteVentas" (ngSubmit)="agregarRepresentanteVenta()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="numeroRucRepresentanteVentas" label="Número de RUC"
+             [required]="numeroRucRepresentanteVentasField"></label>
+      <div class="p-inputgroup">
+        <button type="button" pButton pRipple icon="pi pi-search"
+                [loading]="(cargado$|async)!"
+                (click)="numeroRucRepresentanteVentasField.updateValueAndValidity()"></button>
+        <input pInputText id="numeroRucRepresentanteVentas" formControlName="ruc" pKeyFilter="int">
+      </div>
+      <small appErrorMessage
+             [errors]="numeroRucRepresentanteVentasField.errors"
+             [touched]="numeroRucRepresentanteVentasField.touched"
+             [dirty]="numeroRucRepresentanteVentasField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <app-datos-sri *ngIf="numeroRucRepresentanteVentasField.valid"
+                     [numeroRuc]="numeroRucRepresentanteVentasField"
+                     (rucOutput)="llenarRepresentanteVenta($event)"></app-datos-sri>
+    </div>
+    <div *ngIf="formularioRepresentanteVentas.value?.razonSocial">
+      <div class="field">
+        <div class="panel-messages-info">
+          <h3>Atención</h3>
+          <br>
+          <p class="text-justify">
+            Art. 28 del Reglamento de Operación e Intermediación Turística: La agencia de viajes internacional,
+            operadora
+            o dual que requiera de un representante de ventas, obligatoriamente deberá solicitar los siguientes
+            requisitos:
+          </p>
+          <p class="text-justify">
+            La agencia de viajes internacional o dual que haya contratado a un representante de ventas deberá contar con
+            el expediente que contenga todos los requisitos descritos en este artículo, de no cumplir con esta
+            disposición
+            se aplicarán las sanciones establecidas en la Ley de Turismo.
+          </p>
+        </div>
+      </div>
+      <div class="field">
+        <label appLabel for="tieneTituloProfesionalRepresentanteVentas"
+               label="Título profesional en turismo o ramas afines, o certificación en competencias laborales en intermediación turística."
+               [required]="tieneTituloProfesionalRepresentanteVentasField"></label>
+        <p>
+          <p-toggleswitch id="tieneTituloProfesionalRepresentanteVentas"
+                         formControlName="tieneTituloProfesional"></p-toggleswitch>
+        </p>
+        <small appErrorMessage
+               [errors]="tieneTituloProfesionalRepresentanteVentasField.errors"
+               [touched]="tieneTituloProfesionalRepresentanteVentasField.touched"
+               [dirty]="tieneTituloProfesionalRepresentanteVentasField.dirty">
+        </small>
+      </div>
+      <p-divider></p-divider>
+      <div class="field">
+        <label appLabel for="tieneContratoRepresentanteVentas"
+               label="Contrato suscrito con las agencias de viaje internacionales o duales que contengan como mínima: datos generales de los intervinientes, políticas de la agencia, condiciones de la prestación del servicio, derechos, obligaciones y responsabilidades."
+               [required]="tieneContratoRepresentanteVentasField"></label>
+        <p>
+          <p-toggleswitch id="tieneContratoRepresentanteVentas"
+                         formControlName="tieneContrato"></p-toggleswitch>
+        </p>
+        <small appErrorMessage
+               [errors]="tieneContratoRepresentanteVentasField.errors"
+               [touched]="tieneContratoRepresentanteVentasField.touched"
+               [dirty]="tieneContratoRepresentanteVentasField.dirty">
+        </small>
+      </div>
+      <p-divider></p-divider>
+      <div class="field">
+        <label appLabel for="tieneExperenciaLaboralRepresentanteVentas"
+               label="Experiencia probada de al menos tres años en agencias de servicios turísticos."
+               [required]="tieneExperenciaLaboralRepresentanteVentasField"></label>
+        <p>
+          <p-toggleswitch id="tieneExperenciaLaboralRepresentanteVentas"
+                         formControlName="tieneExperenciaLaboral"></p-toggleswitch>
+        </p>
+        <small appErrorMessage
+               [errors]="tieneExperenciaLaboralRepresentanteVentasField.errors"
+               [touched]="tieneExperenciaLaboralRepresentanteVentasField.touched"
+               [dirty]="tieneExperenciaLaboralRepresentanteVentasField.dirty">
+        </small>
+      </div>
+    </div>
+    <div *ngIf="razonSocialRepresentanteVentaField.value" class="field">
+      <button pButton
+              class=""
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

@@ -1,0 +1,282 @@
+<h1 class="mt-3">TARIFARIO RACK</h1>
+<div class="panel-messages-info mt-2">
+  <h1 class="mb-3">Fechas a ser consideradas para su declaración:</h1>
+  <ul>
+    <li>
+      <h3 class="mb-3 text-justify">
+        Del 01 de julio al 01 de diciembre - aplica Tarifario Rack año inmediato siguiente - sin multa
+      </h3>
+    </li>
+    <li>
+      <h3 class="mb-3 text-justify">
+        Del 02 de diciembre al 31 de diciembre - aplica Tarifario Rack año inmediato siguiente - con multa
+      </h3>
+    </li>
+    <li>
+      <h3 class="mb-3 text-justify">Del 01 de enero al 30 de junio - aplica Tarifario Rack año en curso - con multa
+      </h3>
+    </li>
+    <li>
+      <h3 class="mb-3 text-justify">Si el usuario al 01 de julio de cada año no ha declarado las tarifas rack del año en
+        curso, el
+        sistema bloqueará los campos del formulario y tomará como válida/vigente la última declaración de TR aprobada;
+        y, entrará en vigencia el periodo de declaración de las tarifas rack del año inmediato.
+      </h3>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!cargando">
+  <div>
+    <button pButton pRipple type="button"
+            class="mt-2"
+            label="Regresar a Establecimientos"
+            icon="pi pi-arrow-left"
+            [routerLink]="['/siturin/externo/establecimientos']"></button>
+  </div>
+
+  <p-divider></p-divider>
+  <div *ngIf="habitacionesField.value?.length">
+    <!--Tarifario Rack año en curso-->
+    <div class="p-fluid">
+      <div class="text-center">
+        <h1>Tarifario Rack año en curso ({{fechaActual.getFullYear()}})
+          <p-tag *ngIf="tieneTarifarioRackVigente" severity="success">Declarado</p-tag>
+          <p-tag *ngIf="!tieneTarifarioRackVigente" severity="danger">No ha declarado Tarifaro Rack año en curso</p-tag>
+        </h1>
+      </div>
+      <p-divider></p-divider>
+
+
+      <div class="formgrid grid">
+        <p-panel *ngFor="let habitacion of habitacionesVigentes;let index=index"
+                 [header]="'Habitación: '+ habitacion.tipoHabitacion?.nombre"
+                 class="field xl:col-3 lg:col-3 md:col-4 sm:col-12">
+          <form [formGroup]="formulario" class="p-fluid">
+            <ng-container formArrayName="habitaciones">
+              <ng-container *ngFor="let habitacionForm of habitacionesField.controls; let i = index">
+                <div *ngIf="i===index" [formGroupName]="i">
+                  <div class="formgrid grid">
+                    <div class="field">
+                      <b>Año Declaración:</b> {{habitacionesField.controls[i].get('anio')?.value}}
+                      <br>
+                      <b>Fecha Declaración:</b> {{habitacionesField.controls[i].get('fechaDeclaracion')?.value | date}}
+                    </div>
+                  </div>
+                  <div class="formgrid grid">
+                    <div class="field">
+                      <label appLabel for="habitacionTemporadaAltaVigente" label="Habitación Temporada Alta:"
+                             [required]="habitacionesField.controls[i].get('habitacionTemporadaAlta')"></label>
+                      <p-inputNumber id="habitacionTemporadaAltaVigente"
+                                     formControlName="habitacionTemporadaAlta"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesField.controls[i].get('habitacionTemporadaAlta')?.errors!"
+                             [touched]="habitacionesField.controls[i].get('habitacionTemporadaAlta')?.touched!"
+                             [dirty]="habitacionesField.controls[i].get('habitacionTemporadaAlta')?.dirty!">
+                      </small>
+                    </div>
+                    <div class="field">
+                      <label appLabel for="habitacionTemporadaBajaVigente" label="Habitación Temporada Baja:"
+                             [required]="habitacionesField.controls[i].get('habitacionTemporadaBaja')"></label>
+                      <p-inputNumber id="habitacionTemporadaBajaVigente"
+                                     formControlName="habitacionTemporadaBaja"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesField.controls[i].get('habitacionTemporadaBaja')?.errors!"
+                             [touched]="habitacionesField.controls[i].get('habitacionTemporadaBaja')?.touched!"
+                             [dirty]="habitacionesField.controls[i].get('habitacionTemporadaBaja')?.dirty!">
+                      </small>
+                    </div>
+                  </div>
+                  <div class="formgrid grid">
+                    <div class="field">
+                      <label appLabel for="personaTemporadaAltaVigente" label="Persona Temporada Alta:"
+                             [required]="habitacionesField.controls[i].get('personaTemporadaAlta')"></label>
+                      <p-inputNumber id="personaTemporadaAltaVigente"
+                                     formControlName="personaTemporadaAlta"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesField.controls[i].get('personaTemporadaAlta')?.errors!"
+                             [touched]="habitacionesField.controls[i].get('personaTemporadaAlta')?.touched!"
+                             [dirty]="habitacionesField.controls[i].get('personaTemporadaAlta')?.dirty!">
+                      </small>
+                    </div>
+                    <div class="field">
+                      <label appLabel for="personaTemporadaBajaVigente" label="Persona Temporada Baja:"
+                             [required]="habitacionesField.controls[i].get('personaTemporadaBaja')"></label>
+                      <p-inputNumber id="personaTemporadaBajaVigente"
+                                     formControlName="personaTemporadaBaja"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesField.controls[i].get('personaTemporadaBaja')?.errors!"
+                             [touched]="habitacionesField.controls[i].get('personaTemporadaBaja')?.touched!"
+                             [dirty]="habitacionesField.controls[i].get('personaTemporadaBaja')?.dirty!">
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </form>
+        </p-panel>
+      </div>
+    </div>
+
+    <div class="p-fluid">
+      <div class="text-center mb-3">
+        <p-tag *ngIf="disponibleTarifarioRackVigenteConMulta" severity="danger">
+          Declaración Tarifario Rack año en curso con multa
+        </p-tag>
+
+        <p-tag *ngIf="!tieneTarifarioRackVigente && !disponibleTarifarioRackInmediatoAnterior" severity="danger">
+          Declaración Tarifario Rack año en curso con multa y precargado del año inmediato anterior
+        </p-tag>
+      </div>
+    </div>
+
+
+    <div class="p-fluid mt-4">
+      <div class="field">
+        <button
+          *ngIf="!tieneTarifarioRackVigente || (disponibleTarifarioRackVigenteConMulta || disponibleTarifarioRackInmediatoAnterior)"
+          pButton pRipple label="Declarar Tarifario Rack año en curso"
+          class="p-button-success"
+          icon="pi pi-save"
+          (click)="guardarTarifarioRackVigente()"
+          [loading]="cargando"></button>
+      </div>
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <div *ngIf="disponibleTarifarioRackInmediatoSiguienteSinMulta || disponibleTarifarioRackInmediatoSiguienteConMulta">
+    <!--Tarifario Rack Inmediato Siguiente-->
+    <div class="p-fluid">
+      <div class="text-center">
+        <h1>Tarifario Rack año inmediato siguiente ({{fechaActual.getFullYear() + 1}})
+          <p-tag *ngIf="tieneTarifarioRackInmediatoSiguiente" severity="success">Declarado</p-tag>
+          <p-tag *ngIf="!tieneTarifarioRackInmediatoSiguiente" severity="danger">No ha declarado Tarifaro Rack año
+            inmediato siguiente
+          </p-tag>
+        </h1>
+      </div>
+
+      <p-divider></p-divider>
+
+      <div class="formgrid grid">
+
+        <p-panel *ngFor="let habitacion of habitacionesInmediatoSiguiente;let index=index"
+                 [header]="'Habitación: '+ habitacion.tipoHabitacion?.nombre"
+                 class="field xl:col-3 lg:col-3 md:col-4 sm:col-12">
+          <form [formGroup]="formulario" class="p-fluid">
+            <ng-container formArrayName="habitacionesTarifarioRackSiguiente">
+              <ng-container
+                *ngFor="let habitacionForm of habitacionesTarifarioRackSiguienteField.controls; let i = index">
+                <div *ngIf="i===index" [formGroupName]="i">
+                  <div class="formgrid grid">
+                    <div *ngIf="habitacionesTarifarioRackSiguienteField.controls[i].get('anio')?.value" class="field">
+                      <b>Año Declaración:</b> {{habitacionesTarifarioRackSiguienteField.controls[i].get('anio')?.value}}
+                      <br>
+                      <b>Fecha
+                        Declaración:</b> {{habitacionesTarifarioRackSiguienteField.controls[i].get('fechaDeclaracion')?.value | date}}
+                    </div>
+                  </div>
+                  <div class="formgrid grid">
+                    <div class="field">
+                      <label appLabel for="habitacionTemporadaAlta" label="Habitación Temporada Alta:"
+                             [required]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaAlta')"></label>
+                      <p-inputNumber id="habitacionTemporadaAlta"
+                                     formControlName="habitacionTemporadaAlta"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaAlta')?.errors!"
+                             [touched]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaAlta')?.touched!"
+                             [dirty]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaAlta')?.dirty!">
+                      </small>
+                    </div>
+                    <div class="field">
+                      <label appLabel for="habitacionTemporadaBaja" label="Habitación Temporada Baja:"
+                             [required]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaBaja')"></label>
+                      <p-inputNumber id="habitacionTemporadaBaja"
+                                     formControlName="habitacionTemporadaBaja"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaBaja')?.errors!"
+                             [touched]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaBaja')?.touched!"
+                             [dirty]="habitacionesTarifarioRackSiguienteField.controls[i].get('habitacionTemporadaBaja')?.dirty!">
+                      </small>
+                    </div>
+                  </div>
+                  <div class="formgrid grid">
+                    <div class="field">
+                      <label appLabel for="personaTemporadaAlta" label="Persona Temporada Alta:"
+                             [required]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaAlta')"></label>
+                      <p-inputNumber id="personaTemporadaAlta"
+                                     formControlName="personaTemporadaAlta"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaAlta')?.errors!"
+                             [touched]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaAlta')?.touched!"
+                             [dirty]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaAlta')?.dirty!">
+                      </small>
+                    </div>
+                    <div class="field">
+                      <label appLabel for="personaTemporadaBaja" label="Persona Temporada Baja:"
+                             [required]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaBaja')"></label>
+                      <p-inputNumber id="personaTemporadaBaja"
+                                     formControlName="personaTemporadaBaja"
+                                     [showButtons]="true"
+                                     mode="currency" currency="USD"
+                                     [min]="1"></p-inputNumber>
+                      <small appErrorMessage
+                             [errors]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaBaja')?.errors!"
+                             [touched]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaBaja')?.touched!"
+                             [dirty]="habitacionesTarifarioRackSiguienteField.controls[i].get('personaTemporadaBaja')?.dirty!">
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </form>
+        </p-panel>
+      </div>
+    </div>
+
+    <div class="p-fluid">
+      <div *ngIf="disponibleTarifarioRackInmediatoSiguienteConMulta" class="text-center mb-3">
+        <p-tag *ngIf="!tieneTarifarioRackInmediatoSiguiente" severity="danger">
+          Declaración Tarifario Rack año inmediato siguiente con multa
+        </p-tag>
+      </div>
+
+      <div
+        *ngIf="!tieneTarifarioRackInmediatoSiguiente && (disponibleTarifarioRackInmediatoSiguienteSinMulta || disponibleTarifarioRackInmediatoSiguienteConMulta)"
+        class="field">
+        <button pButton pRipple label="Declarar Tarifario Rack año inmediato siguiente"
+                class="p-button-success"
+                icon="pi pi-save"
+                (click)="guardarTarifarioRackInmediatoSiguiente()"
+                [loading]="cargando"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-skeleton *ngIf="cargando" type="form"></app-skeleton>

@@ -1,0 +1,42 @@
+<app-skeleton *ngIf="isLoadingSkeleton==='true'" type="form"></app-skeleton>
+
+<div *ngIf="isLoadingSkeleton==='error'" class="panel-messages-warn">
+  <h3>Importante</h3>
+  <br>
+  <p class="text-justify">
+    Hubo un error al consultar o el RUC no existe. Intente de nuevo.
+  </p>
+</div>
+
+<div *ngIf="isLoadingSkeleton==='false' && !esCatastrado" class="panel-messages-info">
+  <h3>Atención</h3>
+  <br>
+  <p class="text-justify">
+    La información presentada a continuación es proporcionada por la Superintendencia de Compañías, esta sección
+    tiene carácter informativo, por favor si desea actualizarla debe realizar el trámite en la entidad
+    correspondiente.
+
+    Si su compañía no es regulada por la Superintendencia de Compañías, seleccionar la personería jurídica
+    correspondiente, del combo de selección mostrado a continuación.
+  </p>
+  <br>
+  <a href="https://www.supercias.gob.ec/portalscvs/index.htm" target="_blank">Ir al Sitio Web de la Superintendencia
+    de Compañías</a>
+</div>
+
+<br>
+
+<div *ngIf="isLoadingSkeleton==='false'" class="panel-messages-secondary">
+  <h3 *ngIf="esCatastrado">Datos del Catastro</h3>
+  <h3 *ngIf="!esCatastrado">Datos de la Superintendencia De Compañías</h3>
+  <div class="grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+      <p>
+        Número de Expediente :
+      </p>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <p><b>{{numeroExpedienteSupercias}}</b></p>
+    </div>
+  </div>
+</div>

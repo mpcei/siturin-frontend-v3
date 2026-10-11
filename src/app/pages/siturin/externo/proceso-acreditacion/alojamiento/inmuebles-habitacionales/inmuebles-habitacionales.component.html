@@ -1,0 +1,245 @@
+<p-panel header="Capacidades del Establecimiento">
+  <div class="grid">
+    <div class="panel-messages-info field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+      <h3>¡Atención!</h3>
+      <br>
+      <div class="grid">
+        <p class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">Estimado usuario:</p>
+
+        <div *ngFor="let capacidadComentario of clasificacion.value?.capacidadesComentarios"
+             class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <p>
+            {{capacidadComentario}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p-table
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    editMode="row"
+    [value]="habitacionesField.value"
+    [columns]="columnasTipoHabitacionTabla"
+    [loading]="(cargado$|async)!">
+    <ng-template pTemplate="caption">
+      <div class="formgrid grid">
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <h3>Habitaciones del Establecimiento: {{totalHabitaciones}}</h3>
+          <small *ngIf="clasificacion.value?.minHabitaciones && clasificacion.value?.minHabitaciones>totalHabitaciones"
+                 class="p-error">
+            No cumple con el mínimo ({{clasificacion.value?.minHabitaciones}}) de habitaciones
+          </small>
+          <small *ngIf="clasificacion.value?.maxHabitaciones && clasificacion.value?.maxHabitaciones<totalHabitaciones"
+                 class="p-error">
+            No cumple con el máximo ({{clasificacion.value?.maxHabitaciones}}) de habitaciones
+          </small>
+        </div>
+        <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+          <h3>Plazas del Establecimiento: {{totalPlazas}}</h3>
+          <small *ngIf="clasificacion.value?.minPlazas && clasificacion.value?.minPlazas>totalPlazas"
+                 class="p-error">
+            No cumple con el mínimo ({{clasificacion.value?.minPlazas}}) de plazas
+          </small>
+          <small *ngIf="clasificacion.value?.maxPlazas && clasificacion.value?.maxPlazas<totalPlazas" class="p-error">
+            No cumple con el máximo ({{clasificacion.value?.maxPlazas}}) de plazas
+            <!--            para la clasificación {{clasificacion.value?.nombre}}-->
+          </small>
+        </div>
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <button pButton type="button"
+                  class="p-button-success"
+                  label="Agregar Tipo de Habitación"
+                  icon="pi pi-plus"
+                  (click)="mostrarDialogoNuevaHabitacion=true">
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+        <th class="text-center">
+          Opciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-rowIndex="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.tipoHabitacion?.nombre}}
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.tipoHabitacion?.nombre}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.habitaciones}}
+              <!--            <p-inputNumber id="habitaciones"-->
+              <!--                           [(ngModel)]="rowData.habitaciones"-->
+              <!--                           [showButtons]="true"-->
+              <!--                           [min]="1"-->
+              <!--                           [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>-->
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.habitaciones}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.camas}}
+              <!--            <input pInputText type="text" [(ngModel)]="rowData.camas">-->
+              <!--            <p-inputNumber id="camas"-->
+              <!--                           [(ngModel)]="rowData.camas"-->
+              <!--                           [showButtons]="true"-->
+              <!--                           [min]="1"-->
+              <!--                           [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>-->
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.camas}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.plazas}}
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.plazas}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                  (click)="editarHabitacion(rowData)" class="p-button-warn p-button-rounded mr-2"></button>
+          <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                  (click)="eliminarHabitacion(rowIndex)" class="p-button-danger p-button-rounded"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-panel>
+
+<p-divider *ngIf="habitacionesField.value?.length && validarHabitaciones()"></p-divider>
+
+<div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+  <h3>Problemas encontrados</h3>
+  <br>
+  <ul>
+    <li *ngFor="let campoInvalido of camposInvalidos">
+      {{campoInvalido}}
+    </li>
+  </ul>
+</div>
+
+<form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnBack" type="button"
+              label="Atrás"
+              class="p-button-info p-button-outlined"
+              icon="pi pi-arrow-left"
+              (click)="faseActualOut.emit(1)"></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnFinalizar"
+              label="Guardar y Finalizar"
+              class="p-button-success"
+              icon="pi pi-save"></button>
+    </div>
+  </div>
+</form>
+
+<p-dialog header="Agregar Habitación" [(visible)]="mostrarDialogoNuevaHabitacion" [modal]="true"
+          [style]="{width: '50vw'}">
+  <form [formGroup]="formularioHabitacion" (ngSubmit)="agregarHabitacion()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="habitacionTipo" label="Tipo:" [required]="habitacionTipoField"></label>
+      <p-select id="habitacionTipo"
+                  dataKey="id"
+                  formControlName="tipoHabitacion"
+                  [options]="tipoHabitaciones"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="habitacionTipoField.errors"
+             [touched]="habitacionTipoField.touched"
+             [dirty]="habitacionTipoField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="habitacionHabitaciones" label="Habitaciones:"
+             [required]="habitacionHabitacionesField"></label>
+      <p-inputNumber id="habitacionHabitaciones"
+                     formControlName="habitaciones"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esCama"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionHabitacionesField.errors"
+             [touched]="habitacionHabitacionesField.touched"
+             [dirty]="habitacionHabitacionesField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="camasNueva" label="Camas:" [required]="habitacionCamasField"></label>
+      <p-inputNumber id="camasNueva"
+                     formControlName="camas"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionCamasField.errors"
+             [touched]="habitacionCamasField.touched"
+             [dirty]="habitacionCamasField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="habitacionPlazas" label="Plazas:" [required]="habitacionPlazasField"></label>
+      <p-inputNumber id="habitacionPlazas"
+                     formControlName="plazas"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esPlaza"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionPlazasField.errors"
+             [touched]="habitacionPlazasField.touched"
+             [dirty]="habitacionPlazasField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <button pButton
+              class=""
+              label="Agregar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

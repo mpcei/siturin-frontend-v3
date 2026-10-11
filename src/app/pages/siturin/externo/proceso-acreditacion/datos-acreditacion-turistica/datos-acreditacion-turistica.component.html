@@ -1,0 +1,274 @@
+<app-skeleton *ngIf="isLoadingSkeleton" [type]="'card'"></app-skeleton>
+<p-card *ngIf="!isLoadingSkeleton"
+        [header]="panelHeader"
+        class="p-fluid">
+  <small [innerHTML]="this.messageService.requiredFields"></small>
+  <p-divider></p-divider>
+
+  <form [formGroup]="formulario">
+    <div *ngIf="establecimientoSeleccionado.tramiteActual?.tipo?.codigo !== 'actualizacion'" class="formgrid grid">
+      <div *ngIf="zonasGeograficas.length"
+           class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <label appLabel for="zonaGeografica" label="Zona Geográfica:" [required]="zonaGeograficaField"></label>
+        <p-select id="zonaGeografica"
+                    formControlName="zonaGeografica"
+                    dataKey="id"
+                    [options]="zonasGeograficas"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="zonaGeograficaField.errors"
+               [touched]="zonaGeograficaField.touched"
+               [dirty]="zonaGeograficaField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <label appLabel for="actividad" label="Actividad:" [required]="actividadField"></label>
+        <p-select id="actividad"
+                    formControlName="actividad"
+                    dataKey="id"
+                    [options]="actividades"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="actividadField.errors"
+               [touched]="actividadField.touched"
+               [dirty]="actividadField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="actividadField.value && clasificaciones.length"
+           class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <label appLabel for="clasificacion" label="Clasificación:" [required]="clasificacionField"></label>
+        <p-select id="clasificacion"
+                    formControlName="clasificacion"
+                    dataKey="id"
+                    [options]="clasificaciones"
+                    (onChange)="cargarNormativaPorClasificacion()"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="clasificacionField.errors"
+               [touched]="clasificacionField.touched"
+               [dirty]="clasificacionField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="actividadField.value
+                  && (actividadField.value?.codigo=='operacion_intermediacion_continente'
+                  || actividadField.value?.codigo=='operacion_intermediacion_galapagos')"
+           class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <label appLabel for="categoria" label="Categoria:" [required]="categoriaField"></label>
+        <p-select id="categoriaOI"
+                    formControlName="categoria"
+                    dataKey="id"
+                    [options]="categorias"
+                    optionLabel="nombre"
+                    placeholder="Cargando...">
+        </p-select>
+        <small appErrorMessage
+               [errors]="categoriaField.errors"
+               [touched]="categoriaField.touched"
+               [dirty]="categoriaField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="clasificacionField.value && categorias.length && !categoriaField.disabled
+                  && actividadField.value?.codigo!='operacion_intermediacion_continente'
+                  && actividadField.value?.codigo!='operacion_intermediacion_galapagos'"
+           class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <label appLabel for="categoria" label="Categoria:" [required]="categoriaField"></label>
+        <p-select id="categoria"
+                    formControlName="categoria"
+                    dataKey="id"
+                    [options]="categorias"
+                    (onChange)="cargarNormativaPorCategoria()"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="categoriaField.errors"
+               [touched]="categoriaField.touched"
+               [dirty]="categoriaField.dirty">
+        </small>
+      </div>
+      <div *ngIf="clasificacionField.valid && categorias.length && categoriaField.disabled
+      && (actividadField.value?.codigo=='alimentos_bebidas_continente' || actividadField.value?.codigo=='alimentos_bebidas_galapagos')"
+           class="panel-messages-info field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          La categoría se genera acorde al cumplimiento de la normativa.
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="establecimientoSeleccionado.tramiteActual?.tipo?.codigo === 'actualizacion'" class="formgrid grid">
+      <div class="field">
+        <h2>
+          {{ zonaGeograficaField.value?.nombre }} | {{ actividadField.value?.nombre }}
+          <br>
+          <span *ngIf="!establecimientoSeleccionado.tramiteActual?.actividad?.codigo?.includes('ctc')">
+            {{ clasificacionField.value?.nombre }} |
+            </span> {{ categoriaField.value?.nombre }}
+        </h2>
+      </div>
+    </div>
+
+    <div *ngIf="(mostrarNormativa || (
+                establecimientoSeleccionado.tramiteActual?.tipo?.codigo!=='nueva_clasificacion' &&
+                establecimientoSeleccionado.tramiteActual?.tipo?.codigo==='actualizacion' &&
+                establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo!=='inmuebles_habitacionales')) &&
+                establecimientoSeleccionado.tramiteActual?.actividad?.codigo!=='ctc_continente' &&
+                establecimientoSeleccionado.tramiteActual?.actividad?.codigo!=='ctc_galapagos'  &&
+                establecimientoSeleccionado.tramiteActual?.actividad?.codigo!=='transporte_continente' &&
+                establecimientoSeleccionado.tramiteActual?.actividad?.codigo!=='transporte_galapagos' &&
+                establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo!=='eventos'"
+         class="field">
+      <label appLabel for="tipoLocal" label="Su local es:" [required]="tipoLocalField"></label>
+      <p-select id="tipoLocal"
+                  formControlName="tipoLocal"
+                  dataKey="id"
+                  [options]="tipoLocales"
+                  optionLabel="nombre"
+                  [filter]="false"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="tipoLocalField.errors"
+             [touched]="tipoLocalField.touched"
+             [dirty]="tipoLocalField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="mostrarNormativa && tipoLocalField.value?.codigo==='espacio_compartido'" class="panel-messages-info">
+      <h3>Importante</h3>
+      <br>
+      <p>
+        Al momento de la inspección se presentará el contrato de uso o arriendo de por lo menos un (1) año.
+      </p>
+      <p-toggleswitch></p-toggleswitch>
+    </div>
+
+    <div *ngIf="flag">
+      <app-normativa-alimentos-bebidas
+        *ngIf="tipoLocalField.valid && clasificacionField.value &&
+            (actividadField.value?.codigo==='alimentos_bebidas_continente' || actividadField.value?.codigo==='alimentos_bebidas_galapagos')"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-alimentos-bebidas>
+
+      <app-normativa-alojamiento
+        *ngIf="(tipoLocalField.valid && actividadField.value?.codigo==='alojamiento_continente') && clasificacionField.value?.codigo!=='inmuebles_habitacionales'"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-alojamiento>
+
+      <app-inmuebles-habitacionales
+        *ngIf="clasificacionField.value?.codigo==='inmuebles_habitacionales' && categoriaField.value"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-inmuebles-habitacionales>
+
+      <app-normativa-alojamiento-galapagos
+        *ngIf="tipoLocalField.valid && actividadField.value?.codigo==='alojamiento_galapagos'"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-alojamiento-galapagos>
+
+      <app-normativa-operacion-intermediacion
+        *ngIf="tipoLocalField.valid && (actividadField.value?.codigo==='operacion_intermediacion_continente' ||
+              actividadField.value?.codigo==='operacion_intermediacion_galapagos')"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-operacion-intermediacion>
+
+      <app-ctc *ngIf="(
+                    actividadField.value?.codigo==='ctc_continente'
+                    || actividadField.value?.codigo==='ctc_galapagos')
+                    && categoriaField.value
+                    && establecimientoSeleccionado.tramiteActual?.tipo?.codigo!='actualizacion'
+                    && establecimientoSeleccionado.tramiteActual?.tipo?.codigo!='nueva_actividad'"
+               [actividad]="actividadField"
+               [clasificacion]="clasificacionField"
+               [categoria]="categoriaField"
+               (faseActualOut)="faseActualOut.emit($event)">
+      </app-ctc>
+
+      <app-ctc-actualizacion *ngIf="(
+                    actividadField.value?.codigo==='ctc_continente'
+                    || actividadField.value?.codigo==='ctc_galapagos')
+                    && categoriaField.value
+                    && establecimientoSeleccionado.tramiteActual?.tipo?.codigo==='actualizacion'"
+                             [actividad]="actividadField"
+                             [clasificacion]="clasificacionField"
+                             [categoria]="categoriaField"
+                             (faseActualOut)="faseActualOut.emit($event)">
+      </app-ctc-actualizacion>
+
+      <app-ctc-nueva-actividad *ngIf="(
+                    actividadField.value?.codigo==='ctc_continente'
+                    || actividadField.value?.codigo==='ctc_galapagos')
+                    && categoriaField.value
+                    && establecimientoSeleccionado.tramiteActual?.tipo?.codigo==='nueva_actividad'"
+                               [actividad]="actividadField"
+                               [clasificacion]="clasificacionField"
+                               [categoria]="categoriaField"
+                               (faseActualOut)="faseActualOut.emit($event)">
+      </app-ctc-nueva-actividad>
+
+      <app-transporte-registro *ngIf="(
+                    actividadField.value?.codigo==='transporte_continente'
+                    || actividadField.value?.codigo==='transporte_galapagos')
+                    && categoriaField.value"
+                               (faseActualOut)="faseActualOut.emit($event)"></app-transporte-registro>
+
+      <app-normativa-parque
+        *ngIf="tipoLocalField.valid && (actividadField.value?.codigo==='parques_continente' ||actividadField.value?.codigo==='parques_galapagos')"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-parque>
+
+      <app-normativa-evento
+        *ngIf="actividadField.value?.codigo==='eventos_continente' ||actividadField.value?.codigo==='eventos_galapagos'"
+        [actividad]="actividadField"
+        [clasificacion]="clasificacionField"
+        [categoria]="categoriaField"
+        (faseActualOut)="faseActualOut.emit($event)">
+      </app-normativa-evento>
+    </div>
+  </form>
+
+  <!--  <div *ngIf="!tipoLocalField.valid" class="formgrid grid">-->
+  <!--    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">-->
+  <!--      <button pButton pRipple id="btnBack" type="button"-->
+  <!--              label="Atrás"-->
+  <!--              class="p-button-outlined"-->
+  <!--              icon="pi pi-arrow-left"-->
+  <!--              (click)="faseActualOut.emit(1)"></button>-->
+  <!--    </div>-->
+  <!--  </div>-->
+</p-card>

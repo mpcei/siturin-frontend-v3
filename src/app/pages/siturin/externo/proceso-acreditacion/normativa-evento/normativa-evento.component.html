@@ -1,0 +1,96 @@
+<p-divider></p-divider>
+
+<form [formGroup]="formulario" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="esAreaProtegida"
+             label="Su establecimiento se encuentra dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas:"
+             [required]="esAreaProtegidaField"></label>
+      <p-toggleswitch id="esAreaProtegida" formControlName="esAreaProtegida" [trueValue]="true"></p-toggleswitch>
+      <small appErrorMessage
+             [errors]="esAreaProtegidaField.errors"
+             [touched]="esAreaProtegidaField.touched"
+             [dirty]="esAreaProtegidaField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="esAreaProtegidaField.value" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="contratoAreaProtegida"
+             label="Al momento de la inspección se presentará la delegación por contrato, convenio de cooperación de infraestructura o permisos correspondientes emitido por la Autoridad Ambiental Nacional o su equivalente:"
+             [required]="contratoAreaProtegidaField"></label>
+      <p-toggleswitch id="contratoAreaProtegida"
+                     formControlName="contratoAreaProtegida"
+                     [trueValue]="true"></p-toggleswitch>
+      <small appErrorMessage
+             [errors]="contratoAreaProtegidaField.errors"
+             [touched]="contratoAreaProtegidaField.touched"
+             [dirty]="contratoAreaProtegidaField.dirty">
+      </small>
+    </div>
+  </div>
+</form>
+
+<p-panel *ngIf="clasificacion.value && (clasificacion.value?.codigo == ClasificacionCodigoEnum.CONVENCIONES ||
+              clasificacion.value?.codigo ==ClasificacionCodigoEnum.SALAS)"
+         header="Capacidades del Establecimiento">
+  <form [formGroup]="formulario" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalCapacidades"
+               label="Capacidad en número de personas:"
+               [required]="totalCapacidadesField"></label>
+        <p-inputNumber id="totalCapacidades" formControlName="totalCapacidades" [showButtons]="true"
+                       [min]="0"></p-inputNumber>
+        <small appErrorMessage
+               [errors]="totalCapacidadesField.errors"
+               [touched]="totalCapacidadesField.touched"
+               [dirty]="totalCapacidadesField.dirty">
+        </small>
+        <p></p>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider></p-divider>
+
+<app-normativa
+  *ngIf="establecimientoSeleccionado.tramiteActual?.tipo?.codigo !='actualizacion'"
+  [actividad]="actividad"
+  [clasificacion]="clasificacion"
+  (normativaRespuestas)="llenarNormativaRespuestas($event)"></app-normativa>
+
+<div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+  <h3>Problemas encontrados</h3>
+  <br>
+  <ul>
+    <li *ngFor="let campoInvalido of camposInvalidos">
+      {{ campoInvalido }}
+    </li>
+  </ul>
+</div>
+
+<form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnBack" type="button"
+              label="Atrás"
+              class="p-button-outlined"
+              icon="pi pi-arrow-left"
+              (click)="faseActualOut.emit(1)"></button>
+    </div>
+    <div *ngIf="totalCapacidadesField.valid" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnFinalizar"
+              label="Guardar y Finalizar"
+              class="p-button-success"
+              icon="pi pi-save"
+      ></button>
+    </div>
+  </div>
+</form>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

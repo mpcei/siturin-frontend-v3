@@ -1,0 +1,512 @@
+<p-card header="Validador de Documentos">
+  <div class="panel-messages-info">
+    <h1>Atención</h1>
+    <br>
+    <p class="mb-2">Ingrese el número del Certificado de Registro de Turismo que desea validar.</p>
+    <p class="mb-2">Formato: <b>ruc.establecimiento.secuencial</b></p>
+    <p class="mb-2">Ejemplo: <b>0102030405001.003.20000054</b></p>
+  </div>
+
+  <div class="p-fluid mt-5">
+    <div class="field">
+    </div>
+    <div class="field">
+      <div class="p-inputgroup">
+        <button pButton pRipple icon="pi pi-search"
+                (click)="obtenerDatos(numeroRegistroControl.value)"></button>
+        <span class="p-float-label">
+                <input pInputText id="numeroRegistro" [formControl]="numeroRegistroControl">
+                <label
+                  for="numeroRegistro"></label>
+            </span>
+      </div>
+    </div>
+  </div>
+  <app-skeleton *ngIf="cargando" type="form"></app-skeleton>
+  <div *ngIf="catastro?.id && !cargando" class="p-fluid mt-5">
+    <div class="field">
+      <h1>Registro de Turismo</h1>
+    </div>
+
+    <!-- Estado de Registro de Turismo -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Estado de Registro de Turismo:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.estado?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- RUC -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>RUC:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.ruc?.numero }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Nombre Comercial -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Nombre Comercial:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.nombreComercial }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Número de Registro -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Número de Registro:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.numeroRegistro }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Fecha de Registro -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Fecha de Registro:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.fechaRegistro }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Fecha de Inspeccion -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Fecha de Inspección:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.inspeccionActual?.fechaInspeccion }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <div
+      *ngIf="catastro.tramite?.actividad?.codigo==='ctc_continente' || catastro.tramite?.actividad?.codigo==='ctc_galapagos'; else elseBlock">
+      <!-- Modalidad Turistica -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Modalidad Turística:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro.tramite?.actividad?.nombre }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+
+    <ng-template #elseBlock>
+      <!-- Actividad -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Actividad:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro.tramite?.actividad?.nombre }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Clasificación -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Clasificación:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro.tramite?.clasificacion?.nombre }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+    </ng-template>
+    <!-- Categoría -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Categoría:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.categoria?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Razón Social | Propietario -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Razón Social | Propietario:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.ruc?.razonSocial }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Nombre del Representante Legal -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Nombre del Representante Legal:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.ruc?.representanteLegalNombres }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Provincia -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Provincia:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.provincia?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Cantón -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Cantón:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.canton?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Parroquia -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Parroquia:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.parroquia?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Dirección -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Dirección:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.ubicacion?.callePrincipal }},
+          {{ catastro.tramite?.establecimiento?.ubicacion?.calleNumeracion }},
+          {{ catastro.tramite?.establecimiento?.ubicacion?.calleInterseccion }}
+        </p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Teléfono Principal -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Teléfono Principal:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.personaContacto?.telefonoPrincipal }}
+        </p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Correo Electrónico -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Correo Electrónico:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.personaContacto?.correo }}
+        </p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- ALIMENTOS Y BEBIDAS -->
+    <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('alimentos_bebidas')">
+      <!-- Capacidades en número de personas -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Capacidades en número de personas:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro?.tramite?.tramiteAlimentoBebida?.totalCapacidades }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /ALIMENTOS Y BEBIDAS -->
+
+    <!-- ALOJAMIENTO -->
+    <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('alojamiento')">
+      <!-- Habitaciones -->
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Habitaciones:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ totalHabitaciones }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Camas -->
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Camas:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ totalCamas }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Plazas -->
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Plazas:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ totalPlazas }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Servicios Complementarios -->
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales'" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Servicios Complementarios:</p>
+        </div>
+        <div [class]="textoClass">
+          <ul>
+            <li *ngFor="let servicioComplementario of catastro.tramite?.serviciosComplementarios">
+              {{ servicioComplementario?.clasificacion?.nombre }} : {{ servicioComplementario?.capacidad }}
+            </li>
+            <li *ngIf="!catastro.tramite?.serviciosComplementarios">NO</li>
+          </ul>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /ALOJAMIENTO -->
+
+    <!-- OPERACION E INTERMEDIACION -->
+    <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('operacion_intermediacion')">
+      <!-- Número de credencial de los guías que prestan los servicios en la agencia de viajes -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Número de credencial de los guías que prestan los servicios en la agencia de viajes:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro?.tramite?.guiasTurismoCatastrados?.length }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Companías de transporte con las que trabaja -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Companías de transporte con las que trabaja:</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro.tramite?.companiasTransporteTuristico?.length }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /OPERACION E INTERMEDIACION -->
+
+    <!-- CTC -->
+    <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('ctc')">
+      <!-- Actividades Permitidas en el CTC -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Actividades Permitidas en el CTC:</p>
+        </div>
+        <div [class]="textoClass">
+          <ul>
+            <li *ngFor="let ctcActividad of catastro?.tramite?.ctcActividades">
+              {{ ctcActividad.actividad?.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <!-- Servicios de transporte turistico -->
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Servicios de transporte turístico:</p>
+        </div>
+        <div [class]="textoClass">
+          <ul>
+            <li *ngFor="let trasnporte of catastro.tramite?.companiasTransporteTuristico">
+              {{ trasnporte.razonSocial }} / {{ trasnporte.ruc }} / {{ trasnporte.numeroAutorizacion }}
+              / {{ trasnporte.tipo?.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /CTC -->
+
+    <!-- TRANSPORTE -->
+    <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('transporte')">
+      <!-- Numero de unidades de embarcaciones -->
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Número de unidades de embarcaciones:</p>
+        </div>
+        <div [class]="textoClass">
+          {{ catastro.tramite?.tramiteTransporte?.totalUnidades }}
+        </div>
+      </div>
+
+      <!-- Total numero de puestos -->
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Total número de puestos:</p>
+        </div>
+        <div [class]="textoClass">
+          {{ catastro.tramite?.tramiteTransporte?.totalAsientos }}
+        </div>
+      </div>
+
+      <!-- Tipo de vehiculos -->
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Tipo de vehículos:</p>
+        </div>
+        <div [class]="textoClass">
+          <ul>
+            <li *ngFor="let transporte of catastro?.tramite?.transporteTerrestres">
+              {{ transporte.tipo?.nombre }} ({{ transporte?.capacidad }})
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Capacidad total de todos los vehiculos -->
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Capacidad total de todos los vehículos:</p>
+        </div>
+        <div [class]="textoClass">
+          {{ totalCapacidades }}
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /TRANSPORTE -->
+
+    <!-- PARQUES Y ORGANIZADORES DE EVENTOS -->
+    <!-- Capacidades en número de personas -->
+    <div
+      *ngIf="catastro?.tramite?.actividad?.codigo?.includes('parques') || catastro?.tramite?.actividad?.codigo?.includes('eventos')">
+      <div class="formgrid grid">
+        <div [class]="tituloClass">
+          <p>Capacidad del establecimiento en número de personas (aforo):</p>
+        </div>
+        <div [class]="textoClass">
+          <p>{{ catastro?.tramite?.tramiteParque?.totalCapacidades }}</p>
+          <p>{{ catastro?.tramite?.tramiteEvento?.totalCapacidades }}</p>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- /PARQUES Y ORGANIZADORES DE EVENTOS -->
+
+    <!-- Oferta Modalidades de Turismo de Aventura -->
+    <div *ngIf="catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales' && catastro.tramite?.actividad?.codigo!='transporte_continente'
+        && catastro.tramite?.actividad?.codigo!='transporte_galapagos'" class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Oferta Modalidades de Turismo de Aventura:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.modalidadesTurismoAventura?.length ? 'SI' : 'NO' }}</p>
+      </div>
+      <p-divider></p-divider>
+    </div>
+
+    <!-- Modalidades de Turismo de Aventura -->
+    <div
+      *ngIf="catastro?.tramite?.modalidadesTurismoAventura?.length && catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales'"
+      class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Modalidades de Turismo de Aventura:</p>
+      </div>
+      <div [class]="textoClass">
+        <ul>
+          <li *ngFor="let modalidad of catastro.tramite?.modalidadesTurismoAventura">
+            {{ modalidad.tipo?.nombre }}
+          </li>
+        </ul>
+      </div>
+      <p-divider></p-divider>
+    </div>
+
+    <!-- Técnico Responsable -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Técnico Responsable:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.asignacionActual?.usuarioInterno?.user?.name }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Dirección Zonal -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Dirección Zonal:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.provincia?.zonal?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!-- Director Zonal -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Nombre del Director Zonal Responsable:</p>
+      </div>
+      <div [class]="textoClass">
+        <p>{{ catastro.tramite?.establecimiento?.provincia?.zonal?.director }}</p>
+      </div>
+    </div>
+
+    <!-- Último Trámite Realizado -->
+    <div class="formgrid grid">
+      <div [class]="tituloClass">
+        <p>Último Trámite Realizado:</p>
+      </div>
+      <div [class]="textoClass">
+        <p class="uppercase">{{ catastro.tramite?.tipo?.nombre }}</p>
+      </div>
+    </div>
+    <p-divider></p-divider>
+
+    <!--  -->
+    <div class="field">
+      <button pButton pRipple icon="pi pi-sync" label="Nueva Búsqueda"
+              (click)="catastro={};numeroRegistroControl.reset()"></button>
+    </div>
+  </div>
+</p-card>

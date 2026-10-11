@@ -1,0 +1,75 @@
+<div *ngIf="categoria && personseriaJuridica">
+  <div *ngIf="zonaGeografica.codigo=='continente'">
+    <div class="panel-messages-info">
+      <h3>{{ clasificacion?.nombre }}</h3>
+
+      <br>
+      <p class="text-justify">
+        {{ clasificacion?.descripcion }}
+      </p>
+    </div>
+
+    <p-divider></p-divider>
+
+    <h1>REQUISITOS DOCUMENTALES</h1>
+
+    <p-divider></p-divider>
+
+    <form *ngIf="personseriaJuridica" [formGroup]="form">
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneRuc"
+                 label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC) o número de Régimen Simplificado para Emprendedores y Negocios Populares (RIMPE), u otro que determine la Autoridad Tributaria.'
+                 [required]="tieneRucField"></label>
+          <p>
+            <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div *ngIf="clasificacion.codigo!='inmuebles_habitacionales'"
+             class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneUsoSuelos"
+                 label='Al momento de la inspección se presentará el Certificado de Informe de compatibilidad de uso de suelo.'
+                 [required]="tieneUsoSuelosField"></label>
+          <p>
+            <p-toggleswitch id="tieneUsoSuelos" formControlName="tieneUsoSuelos"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneNombramientoVigente"
+                 label='Al momento de la inspección presentará el Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad correspondiente.'
+                 [required]="tieneNombramientoVigenteField"></label>
+          <p>
+            <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneActividad"
+                 label='Al momento de la inspección presentará el documento constitutivo de la misma debidamente aprobada por la autoridad correspondiente, en la que conste como su objeto social el desarrollo de la actividad de alojamiento turístico.'
+                 [required]="tieneActividadField"></label>
+          <p>
+            <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <div *ngIf="clasificacion.codigo=='inmuebles_habitacionales'" class="panel-messages-info">
+          <h3>Nota Importante:</h3>
+
+          <br>
+          <p class="text-justify">
+            Para la actividad de Inmuebles Habitacionales, se deberá obtener el RUC o, en su defecto, actualizar el
+            mismo en caso de ya contar con uno. Con la descripción de la actividad económica que se detalla a
+            continuación: <b>"Servicios de alojamiento prestados por anfitriones"</b>.
+          </p>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

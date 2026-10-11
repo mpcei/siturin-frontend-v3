@@ -1,0 +1,101 @@
+<app-skeleton *ngIf="isLoadingSkeleton==='true'" type="form"></app-skeleton>
+
+<div *ngIf="isLoadingSkeleton==='error'" class="panel-messages-warn">
+  <h3>Importante</h3>
+  <br>
+  <p class="text-justify">
+    Hubo un error al consultar o el RUC no existe. Intente de nuevo.
+  </p>
+</div>
+
+<div *ngIf="isLoadingSkeleton==='false' && !esCatastrado" class="panel-messages-info">
+  <h3>Atención</h3>
+  <br>
+  <p class="text-justify">
+    La información presentada a continuación es proporcionada por el Servicio de Rentas Internas, esta sección tiene
+    carácter informativo, por favor si desea actualizarla debe realizar el trámite en la entidad correspondiente.
+  </p>
+  <br>
+  <a href="https://srienlinea.sri.gob.ec/sri-en-linea/inicio/NAT" target="_blank">Ir al Sitio Web del SRI</a>
+</div>
+
+<br>
+
+<div *ngIf="isLoadingSkeleton==='false'" class="panel-messages-secondary">
+  <h3 *ngIf="esCatastrado || errorSri">Datos del Catastro</h3>
+  <h3 *ngIf="!esCatastrado && !errorSri">Datos del SRI</h3>
+  <div *ngIf="formulario.value">
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p class="mb-1">
+          RUC:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p class="mb-1"><b>{{ numeroField.value }}</b></p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p>
+          Estado:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p><b>{{ estadoContribuyenteField.value?.nombre }}</b></p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p class="mb-1">
+          Razón Social:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p class="mb-1"><b>{{ razonSocialField.value }}</b></p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p class="mb-1">
+          Tipo de Contribuyente:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p class="mb-1"><b>{{ tipoContribuyenteField.value?.nombre }}</b></p>
+      </div>
+    </div>
+    <div *ngIf="tipoContribuyenteField.value?.codigo==='SCD' || tipoContribuyenteField.value?.codigo==='juridica'"
+         class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p class="mb-1">
+          Identificación Representante Legal:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p class="mb-1"><b>{{ representanteLegalIdentificacionField.value }}</b></p>
+      </div>
+    </div>
+    <div *ngIf="tipoContribuyenteField.value?.codigo==='SCD' || tipoContribuyenteField.value?.codigo==='juridica'"
+         class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p>
+          Nombre Representante Legal:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p><b>{{ representanteLegalNombresField.value }}</b></p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+        <p>
+          Actividad Económica Principal:
+        </p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+        <p><b>{{ actividadEconomicaField.value }}</b></p>
+      </div>
+    </div>
+  </div>
+</div>

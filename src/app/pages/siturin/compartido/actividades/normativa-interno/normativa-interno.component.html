@@ -1,0 +1,33 @@
+<p-card header="Normativa">
+  <p-table
+    dataKey="id"
+    [value]="normativaRespuestas"
+    [scrollable]="true"
+    scrollHeight="600px">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="min-width:500px">Normativa</th>
+        <th style="min-width:100px">Respuesta</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+      <tr>
+        <td>
+          <h3 *ngIf="!rowData.esPregunta">{{rowData.nombre}}</h3>
+          <p *ngIf="rowData.esPregunta">{{rowData.nombre}}</p>
+        </td>
+        <td>
+          <p-tag *ngIf="rowData.esPregunta" [value]="rowData.cumple?'CUMPLE':'NO CUMPLE'"
+                 [severity]="$any((!rowData.cumple?'danger':''))"></p-tag>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="2">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

@@ -1,0 +1,208 @@
+<p-divider></p-divider>
+
+<form [formGroup]="formulario" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="esAreaProtegida"
+             label="Su establecimiento se encuentra dentro del Subsistema Estatal del Sistema Nacional de Áreas Protegidas:"
+             [required]="esAreaProtegidaField"></label>
+      <p-toggleswitch id="esAreaProtegida" formControlName="esAreaProtegida" [trueValue]="true"></p-toggleswitch>
+      <small appErrorMessage
+             [errors]="esAreaProtegidaField.errors"
+             [touched]="esAreaProtegidaField.touched"
+             [dirty]="esAreaProtegidaField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="esAreaProtegidaField.value" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <label appLabel for="contratoAreaProtegida"
+             label="Al momento de la inspección se presentará la delegación por contrato, convenio de cooperación de infraestructura o permisos correspondientes emitido por la Autoridad Ambiental Nacional o su equivalente:"
+             [required]="contratoAreaProtegidaField"></label>
+      <p-toggleswitch id="contratoAreaProtegida"
+                     formControlName="contratoAreaProtegida"
+                     [trueValue]="true"></p-toggleswitch>
+      <small appErrorMessage
+             [errors]="contratoAreaProtegidaField.errors"
+             [touched]="contratoAreaProtegidaField.touched"
+             [dirty]="contratoAreaProtegidaField.dirty">
+      </small>
+    </div>
+  </div>
+</form>
+<p-panel header="Capacidades del Establecimiento">
+  <form [formGroup]="formulario" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalCapacidades"
+               label="Capacidad en número de personas:"
+               [required]="totalCapacidadesField"></label>
+        <p-inputNumber id="totalCapacidades" formControlName="totalCapacidades" [showButtons]="true"
+                       [min]="0"></p-inputNumber>
+        <small appErrorMessage
+               [errors]="totalCapacidadesField.errors"
+               [touched]="totalCapacidadesField.touched"
+               [dirty]="totalCapacidadesField.dirty">
+        </small>
+        <p></p>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider></p-divider>
+
+<p-panel *ngIf="clasificacion.value?.codigo==ClasificacionCodigoEnum.TERMAS
+          || clasificacion.value?.codigo==ClasificacionCodigoEnum.BALNEARIOS
+          || clasificacion.value?.codigo==ClasificacionCodigoEnum.CENTROS
+          || clasificacion.value?.codigo==ClasificacionCodigoEnum.PARQUES"
+         header="Modalidades de Turismo de Aventura">
+  <div class="panel-messages-info field ">
+    <h3>Información</h3>
+    <br>
+    <p class="text-justify">
+      Registrar las modalidades de turismo de aventura que ofrece el establecimiento.
+    </p>
+  </div>
+
+  <form [formGroup]="formulario" class="p-fluid">
+    <div class="field">
+      <label appLabel for="tieneModalidadesTurismoAventura"
+             label="¿Su Establecimiento oferta alguna modalidad de turismo de aventura, dentro de sus linderos?"
+             [required]="tieneModalidadesTurismoAventuraField"></label>
+      <p>
+        <p-toggleswitch id="tieneModalidadesTurismoAventura"
+                       formControlName="tieneModalidadesTurismoAventura"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneModalidadesTurismoAventuraField.errors"
+             [touched]="tieneModalidadesTurismoAventuraField.touched"
+             [dirty]="tieneModalidadesTurismoAventuraField.dirty">
+      </small>
+      <p></p>
+    </div>
+
+    <div *ngIf="tieneModalidadesTurismoAventuraField.value">
+      <div class="panel-messages-info field">
+        <h3>Nota:</h3>
+        <br>
+        <p class="text-justify">Disposición General CUARTA. - Los establecimientos turísticos cuya clasificación sea:
+          <b *ngIf="clasificacion.value.codigo==ClasificacionCodigoEnum.TERMAS">Termas</b>
+          <b *ngIf="clasificacion.value.codigo==ClasificacionCodigoEnum.BALNEARIOS">Balnearios</b>
+          <b *ngIf="clasificacion.value.codigo==ClasificacionCodigoEnum.CENTROS">Centros de Recreación Turística</b>
+          <b *ngIf="clasificacion.value.codigo==ClasificacionCodigoEnum.PARQUES">Parque de Atracción Estable</b>, podrán
+          desarrollar modalidades turísticas de aventura, siempre que se realicen dentro de sus linderos, para lo cual
+          deberán regirse a lo establecido en el Reglamento de Operación Turística de Aventura y obtener las
+          autorizaciones establecidas en la Ley y sus reglamentos.</p>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAgua" label="Agua:"
+               [required]="modalidadesTurismoAventuraAguaField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAgua"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAgua"
+          [options]="modalidadesTurismoAventuraAgua"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAguaField.errors"
+               [touched]="modalidadesTurismoAventuraAguaField.touched"
+               [dirty]="modalidadesTurismoAventuraAguaField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAire" label="Aire:"
+               [required]="modalidadesTurismoAventuraAireField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAire"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAire"
+          [options]="modalidadesTurismoAventuraAire"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAireField.errors"
+               [touched]="modalidadesTurismoAventuraAireField.touched"
+               [dirty]="modalidadesTurismoAventuraAireField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraTierra" label="Tierra:"
+               [required]="modalidadesTurismoAventuraTierraField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraTierra"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraTierra"
+          [options]="modalidadesTurismoAventuraTierra"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraTierraField.errors"
+               [touched]="modalidadesTurismoAventuraTierraField.touched"
+               [dirty]="modalidadesTurismoAventuraTierraField.dirty">
+        </small>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider></p-divider>
+
+<app-normativa
+  *ngIf="establecimientoSeleccionado.tramiteActual?.tipo?.codigo !='actualizacion'"
+  [actividad]="actividad"
+  [clasificacion]="clasificacion"
+  (normativaRespuestas)="llenarNormativaRespuestas($event)"></app-normativa>
+
+<div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+  <h3>Problemas encontrados</h3>
+  <br>
+  <ul>
+    <li *ngFor="let campoInvalido of camposInvalidos">
+      {{ campoInvalido }}
+    </li>
+  </ul>
+</div>
+
+<form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnBack" type="button"
+              label="Atrás"
+              class="p-button-outlined"
+              icon="pi pi-arrow-left"
+              (click)="faseActualOut.emit(1)"></button>
+    </div>
+    <div *ngIf="totalCapacidadesField.valid" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnFinalizar"
+              label="Guardar y Finalizar"
+              class="p-button-success"
+              icon="pi pi-save"
+      ></button>
+    </div>
+  </div>
+</form>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

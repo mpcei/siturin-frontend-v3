@@ -1,0 +1,50 @@
+<div *ngIf="categoria && personseriaJuridica">
+  <div class="panel-messages-info">
+    <h3>{{ clasificacion?.nombre }}</h3>
+
+    <br>
+    <p class="text-justify">
+      {{ clasificacion?.descripcion }}
+    </p>
+  </div>
+
+  <p-divider></p-divider>
+
+  <h1>REQUISITOS DOCUMENTALES</h1>
+
+  <p-divider></p-divider>
+
+  <form *ngIf="personseriaJuridica" [formGroup]="form">
+    <div *ngIf="personseriaJuridica.codigo =='natural'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneRuc"
+               label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC), número de Régimen Simplificado para Emprendedores y Negocios Populares (RIMPE), u otro que determine la Autoridad Tributaria, en la que consten los datos informativos correspondientes a razón social, el nombre comercial, número del local, dirección y actividad del establecimiento del que se obtendrá el Registro de Turismo.'
+               [required]="tieneRucField"></label>
+        <p>
+          <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+        </p>
+      </div>
+
+    </div>
+
+    <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneRuc"
+               label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC) o Régimen Simplificado para Emprendedores y Negocios Populares (RIMPE) en el que conste la actividad regulada en este Reglamento.'
+               [required]="tieneRucField"></label>
+        <p>
+          <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+        </p>
+      </div>
+
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <label appLabel for="tieneActividad"
+               label='Documento constitutivo de la misma debidamente aprobada por la autoridad correspondiente, en la que conste como su objeto social el desarrollo de la actividad y/o modalidad turística.'
+               [required]="tieneActividadField"></label>
+        <p>
+          <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

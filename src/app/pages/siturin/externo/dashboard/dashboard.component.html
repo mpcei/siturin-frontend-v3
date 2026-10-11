@@ -1,0 +1,47 @@
+<div class="fondo">
+  <img src="assets/images/dashboard/background.jpg" alt="backgorund">
+  <img class="logo" src="assets/images/dashboard/logo.png" alt="">
+  <h2 class="texto text-justify">
+    El {{environment.MINISTERIO}} del Ecuador le da la cordial bienvenida a la plataforma SITURIN
+  </h2>
+
+  <h2 class="texto2 text-justify">
+    en donde podrá realizar los trámites pertinentes a la regularización de la actividad turística que usted ejerza.
+  </h2>
+</div>
+
+<p-dialog [(visible)]="dialogoTerminosCondiciones" [modal]="true" [closable]="false" [style]="{width:'600px'}">
+  <div class="p-fluid">
+    <div class="field">
+      <h1 class="text-center">Términos y Condiciones</h1>
+    </div>
+    <div class="field">
+      <pdf-viewer [src]="pdfSrc"
+                  [render-text]="true"
+                  [original-size]="false"
+                  style="width: 550px; height: 400px"
+      ></pdf-viewer>
+
+    </div>
+    <div class="field">
+      <button pButton class="p-button-success"
+              icon="pi pi-download"
+              label="Descargar"
+              (click)="descargarTerminosCondiciones()"></button>
+    </div>
+    <div class="field">
+      <p-checkbox name="groupname"
+                  label="He leído, entendido y por lo tanto acepto los términos y condiciones"
+                  [(ngModel)]="aceptaTerminosCondiciones" [binary]="true"></p-checkbox>
+      <button pButton pRipple label="Aceptar"
+              icon="pi pi-check"
+              class="mt-3"
+              [disabled]="!aceptaTerminosCondiciones"
+              (click)="aceptarTerminosCondiciones()"></button>
+    </div>
+    <div class="field">
+      <button pButton pRipple label="Cancelar" class="p-button-info"
+              (click)="cancelarTerminosCondiciones()"></button>
+    </div>
+  </div>
+</p-dialog>

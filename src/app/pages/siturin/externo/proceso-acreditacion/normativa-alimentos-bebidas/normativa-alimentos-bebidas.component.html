@@ -1,0 +1,342 @@
+<p-divider></p-divider>
+<p-panel *ngIf="establecimientoSeleccionado.tramiteActual?.clasificacion?.codigo != 'establecimiento_movil'
+                && (establecimientoSeleccionado.tramiteActual?.tipo?.codigo == 'registro' ||
+                establecimientoSeleccionado.tramiteActual?.tipo?.codigo == 'reingreso' ||
+                (establecimientoSeleccionado.tramiteActual?.tipo?.codigo != 'registro' &&
+                 establecimientoSeleccionado.tramiteActual?.tipo?.codigo != 'reingreso' &&
+                 esCambioUbicacion))"
+         class="field"
+         header="Certificado de Uso de Suelos o su Equivalente:">
+  <form [formGroup]="formulario">
+    <label appLabel for="usoSuelos"
+           label="Al momento de la inspección se presentará el Certificado de Informe de compatibilidad de uso de suelo:"
+           [required]="usoSuelosField"></label>
+
+    <p>
+      <p-toggleswitch id="usoSuelos" formControlName="usoSuelos"></p-toggleswitch>
+    </p>
+
+    <small appErrorMessage
+           [errors]="usoSuelosField.errors"
+           [touched]="usoSuelosField.touched"
+           [dirty]="usoSuelosField.dirty">
+    </small>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="usoSuelosField.valid"></p-divider>
+
+<p-panel *ngIf="usoSuelosField.valid" header="Tipo de Establecimiento">
+  <form [formGroup]="formulario" class="p-fluid">
+    <div formGroupName="tramiteAlimentoBebida" class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="tipoEstablecimiento"
+               label="Tipo de Establecimiento:"
+               [required]="tipoEstablecimientoField"></label>
+        <p-select id="tipoEstablecimiento"
+                    dataKey="id"
+                    formControlName="tipoEstablecimiento"
+                    [options]="tipoEstablecimientos"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="tipoEstablecimientoField.errors"
+               [touched]="tipoEstablecimientoField.touched"
+               [dirty]="tipoEstablecimientoField.dirty">
+        </small>
+      </div>
+      <div
+        *ngIf="tipoEstablecimientoField.value?.codigo==='cadena' || tipoEstablecimientoField.value?.codigo==='franquicia'"
+        class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="nombreEstablecimiento"
+               label="Nombre de la Franquicia o Cadena:"
+               [required]="nombreEstablecimientoField"></label>
+        <input pInputText id="nombreEstablecimiento" formControlName="nombreEstablecimiento">
+        <small appErrorMessage
+               [errors]="nombreEstablecimientoField.errors"
+               [touched]="nombreEstablecimientoField.touched"
+               [dirty]="nombreEstablecimientoField.dirty">
+        </small>
+      </div>
+    </div>
+    <div formGroupName="tramiteAlimentoBebida" *ngIf="tipoEstablecimientoField.value?.codigo==='franquicia'"
+         class="field">
+      <label appLabel for="tieneCertificadoConcesionFranquicia"
+             label="Al momento de la inspección se presentará la certificación de concesión de la franquicia:"
+             [required]="tieneCertificadoConcesionFranquiciaField"></label>
+      <p>
+        <p-toggleswitch id="tieneCertificadoConcesionFranquicia"
+                       formControlName="tieneCertificadoConcesionFranquicia"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneCertificadoConcesionFranquiciaField.errors"
+             [touched]="tieneCertificadoConcesionFranquiciaField.touched"
+             [dirty]="tieneCertificadoConcesionFranquiciaField.dirty">
+      </small>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="tipoEstablecimientoField.valid"></p-divider>
+
+<p-panel *ngIf="tipoEstablecimientoField.valid" header="Capacidades del Establecimiento">
+  <form [formGroup]="formulario" class="p-fluid">
+    <div formGroupName="tramiteAlimentoBebida" class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalMesas"
+               label="Mesas:"
+               [required]="totalMesasField"></label>
+        <p-inputNumber id="totalMesas" formControlName="totalMesas" [showButtons]="true" [min]="0"></p-inputNumber>
+        <small appErrorMessage
+               [errors]="totalMesasField.errors"
+               [touched]="totalMesasField.touched"
+               [dirty]="totalMesasField.dirty">
+        </small>
+        <p></p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalCapacidades"
+               label="Capacidad en número de personas:"
+               [required]="totalCapacidadesField"></label>
+        <p-inputNumber id="totalCapacidades" formControlName="totalCapacidades" [showButtons]="true"
+                       [min]="0"></p-inputNumber>
+        <small appErrorMessage
+               [errors]="totalCapacidadesField.errors"
+               [touched]="totalCapacidadesField.touched"
+               [dirty]="totalCapacidadesField.dirty">
+        </small>
+        <p></p>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="tipoEstablecimientoField.valid && tiposServicio.length"></p-divider>
+
+<p-panel *ngIf="tipoEstablecimientoField.valid && tiposServicio.length" header="Tipos de Servicio">
+  <div class="panel-messages-info field">
+    <h3>Información</h3>
+    <br>
+    <p class="text-justify">
+      Registre los tipos de servicio que ofrece su establecimiento.
+    </p>
+  </div>
+
+  <form [formGroup]="formulario" class="p-fluid">
+    <div formGroupName="tramiteAlimentoBebida" class="field">
+      <label appLabel for="tiposServicio"
+             label="Seleccione:"
+             [required]="tiposServicioField"></label>
+      <p-multiSelect
+        id="tiposServicio"
+        dataKey="id"
+        formControlName="tiposServicio"
+        [options]="tiposServicio"
+        display="chip"
+        [showClear]="true"
+        optionLabel="nombre"
+        filterBy="nombre"
+        [filter]="true"
+        placeholder="Seleccione una o varias">
+      </p-multiSelect>
+      <small appErrorMessage
+             [errors]="tiposServicioField.errors"
+             [touched]="tiposServicioField.touched"
+             [dirty]="tiposServicioField.dirty">
+      </small>
+      <p></p>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="tipoEstablecimientoField.valid && tiposCocina.length"></p-divider>
+
+<p-panel *ngIf="tipoEstablecimientoField.valid && tiposCocina.length" header="Tipos de Cocina">
+  <div class="panel-messages-info field">
+    <h3>Información</h3>
+    <br>
+    <p class="text-justify">
+      Si requiere la adición de un tipo de cocina en el listado, comuníquese con el {{environment.MINISTERIO}}.
+    </p>
+  </div>
+
+  <form [formGroup]="formulario" class="p-fluid">
+    <div formGroupName="tramiteAlimentoBebida" class="field">
+      <label appLabel for="tiposCocina"
+             label="Seleccione:"
+             [required]="tiposCocinaField"></label>
+      <p-multiSelect
+        id="tiposCocina"
+        dataKey="id"
+        formControlName="tiposCocina"
+        [options]="tiposCocina"
+        display="chip"
+        [showClear]="true"
+        optionLabel="nombre"
+        filterBy="nombre"
+        [filter]="true"
+        placeholder="Seleccione una o varias">
+      </p-multiSelect>
+      <small appErrorMessage
+             [errors]="tiposCocinaField.errors"
+             [touched]="tiposCocinaField.touched"
+             [dirty]="tiposCocinaField.dirty">
+      </small>
+      <p></p>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="tipoEstablecimientoField.valid"></p-divider>
+
+<p-panel *ngIf="tipoEstablecimientoField.valid &&
+                  clasificacion.value?.codigo != 'bar' && clasificacion.value?.codigo != 'discoteca'"
+         header="Modalidades de Turismo de Aventura">
+  <div class="panel-messages-info field ">
+    <h3>Información</h3>
+    <br>
+    <p class="text-justify">
+      Registrar las modalidades de turismo de aventura que ofrece el establecimiento.
+    </p>
+  </div>
+
+  <form [formGroup]="formulario" class="p-fluid">
+    <div class="field">
+      <label appLabel for="tieneModalidadesTurismoAventura"
+             label="¿Su Establecimiento oferta alguna modalidad de turismo de aventura, dentro de sus linderos?"
+             [required]="tieneModalidadesTurismoAventuraField"></label>
+      <p>
+        <p-toggleswitch id="tieneModalidadesTurismoAventura"
+                       formControlName="tieneModalidadesTurismoAventura"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneModalidadesTurismoAventuraField.errors"
+             [touched]="tieneModalidadesTurismoAventuraField.touched"
+             [dirty]="tieneModalidadesTurismoAventuraField.dirty">
+      </small>
+      <p></p>
+    </div>
+
+    <div *ngIf="tieneModalidadesTurismoAventuraField.value">
+      <div class="panel-messages-warn field">
+        <h3>Atención</h3>
+        <br>
+        <p>Por favor registre las modalidades de turismo de aventura que ofrece el establecimiento.</p>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAgua" label="Agua:"
+               [required]="modalidadesTurismoAventuraAguaField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAgua"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAgua"
+          [options]="modalidadesTurismoAventuraAgua"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAguaField.errors"
+               [touched]="modalidadesTurismoAventuraAguaField.touched"
+               [dirty]="modalidadesTurismoAventuraAguaField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAire" label="Aire:"
+               [required]="modalidadesTurismoAventuraAireField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAire"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAire"
+          [options]="modalidadesTurismoAventuraAire"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAireField.errors"
+               [touched]="modalidadesTurismoAventuraAireField.touched"
+               [dirty]="modalidadesTurismoAventuraAireField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraTierra" label="Tierra:"
+               [required]="modalidadesTurismoAventuraTierraField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraTierra"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraTierra"
+          [options]="modalidadesTurismoAventuraTierra"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraTierraField.errors"
+               [touched]="modalidadesTurismoAventuraTierraField.touched"
+               [dirty]="modalidadesTurismoAventuraTierraField.dirty">
+        </small>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-divider *ngIf="tipoEstablecimientoField.valid &&
+                  clasificacion.value?.codigo != 'bar' &&
+                  clasificacion.value?.codigo != 'discoteca'"></p-divider>
+
+<app-normativa
+  *ngIf="tipoEstablecimientoField.valid && establecimientoSeleccionado.tramiteActual?.tipo?.codigo !='actualizacion'"
+  [actividad]="actividad"
+  [clasificacion]="clasificacion"
+  (normativaRespuestas)="llenarNormativaRespuestas($event)"></app-normativa>
+
+<div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+  <h3>Problemas encontrados</h3>
+  <br>
+  <ul>
+    <li *ngFor="let campoInvalido of camposInvalidos">
+      {{campoInvalido}}
+    </li>
+  </ul>
+</div>
+
+<form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnBack" type="button"
+              label="Atrás"
+              class="p-button-outlined"
+              icon="pi pi-arrow-left"
+              (click)="faseActualOut.emit(1)"></button>
+    </div>
+    <div *ngIf="tipoEstablecimientoField.valid" class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnFinalizar"
+              label="Guardar y Finalizar"
+              class="p-button-success"
+              icon="pi pi-save"
+      ></button>
+    </div>
+  </div>
+</form>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

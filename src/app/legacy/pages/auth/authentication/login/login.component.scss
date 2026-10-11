@@ -1,0 +1,31 @@
+@media(min-width: 1000px) {
+  .login-form {
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 10px;
+  }
+
+  .login-information {
+    padding-left: 75px;
+    padding-right: 75px;
+    background-color: rgb(255, 255, 255, 0.5);
+  }
+}
+
+
+.login-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-image: url('/assets/images/auth/fondo.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+

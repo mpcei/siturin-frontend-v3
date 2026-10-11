@@ -1,0 +1,219 @@
+<p-card *ngIf="!esVisibleCatastro" [header]="titulo">
+  <form *ngIf="authService.role.name==='tecnico_zonal'" [formGroup]="filtro" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <p-select id="zonal"
+                    formControlName="zonal"
+                    dataKey="id"
+                    [options]="zonales"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione"
+                    (onChange)="obtenerCatastros()">
+        </p-select>
+      </div>
+    </div>
+  </form>
+  <form *ngIf="authService.role.name==='gad'" [formGroup]="filtro" class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <p-select id="dpa"
+                    formControlName="dpa"
+                    dataKey="id"
+                    [options]="dpa"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione"
+                    (onChange)="obtenerCatastros()">
+        </p-select>
+      </div>
+    </div>
+  </form>
+  <div class="panel-messages">
+    <div class="p-fluid">
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <button pButton type="button" label="Sincronizar Catastros"
+                  class="p-button-info mr-2"
+                  icon="pi pi-sync"
+                  (click)="obtenerCatastros()"></button>
+        </div>
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <button pButton type="button" label="Descargar Catastro"
+                  class="p-button-success mr-2"
+                  icon="pi pi-download"
+                  (click)="descargarCatastro()"></button>
+        </div>
+        <div *ngIf="this.authService.role.name===RolesEnum.DAC" class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <button pButton type="button" label="Descargar Gestión Trámites"
+                  class="mr-2"
+                  icon="pi pi-download"
+                  [loading]="(loaded$|async)!"
+                  (click)="descargarGestionTramites()"></button>
+        </div>
+        <!--      <p-select id="dpa"-->
+        <!--                  dataKey="id"-->
+        <!--                  [formControl]="dpaControl"-->
+        <!--                  class="mr-2"-->
+        <!--                  [options]="dpaControl.value"-->
+        <!--                  optionLabel="nombre"-->
+        <!--                  [filter]="true"-->
+        <!--                  placeholder="Seleccione">-->
+        <!--      </p-select>-->
+      </div>
+    </div>
+    <div class="grid">
+      <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <form [formGroup]="filtro" class="p-fluid">
+          <div class="formgrid grid">
+            <div class="xl:col-6">
+              <p-select id="actividad"
+                          dataKey="codigo"
+                          formControlName="actividad"
+                          class="mr-2"
+                          [options]="actividades"
+                          [filter]="true"
+                          [showClear]="true"
+                          (onChange)="obtenerCatastros()"
+                          optionLabel="nombre"
+                          placeholder="Todas las Actividades">
+              </p-select>
+            </div>
+            <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+              <p-select id="catastroEstados"
+                          dataKey="codigo"
+                          formControlName="estado"
+                          class="mr-2"
+                          [options]="catastroEstados"
+                          [filter]="true"
+                          [showClear]="true"
+                          (onChange)="obtenerCatastros()"
+                          optionLabel="nombre"
+                          placeholder="Todos los Estados">
+              </p-select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="xl:col-6">
+        <form [formGroup]="buscador" class="p-fluid">
+          <div class="formgrid grid">
+            <div class="xl:col-6">
+              <p-select id="tipo"
+                          dataKey="codigo"
+                          formControlName="tipo"
+                          class="mr-2"
+                          [options]="tiposFiltro"
+                          optionLabel="nombre"
+                          placeholder="Seleccione">
+              </p-select>
+            </div>
+            <div class="xl:col-6">
+            <span class="p-input-icon-left">
+             <i class="pi pi-search"></i>
+             <input pInputText type="text" formControlName="valor"
+                    [placeholder]="'Buscar por '+ tipoField.value?.nombre">
+            </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <p-paginator
+    [rows]="paginator.limit"
+    [totalRecords]="paginator.totalItems"
+    (onPageChange)="paginar($event)"></p-paginator>
+  <p-table
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="catastros"
+    [columns]="columnasTabla"
+    [loading]="(loaded$|async)!">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th class="text-center">
+          <button pButton pRipple type="button" class="p-button-help p-button-outlined p-button-rounded"
+                  icon="pi pi-cog"></button>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+      <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+        <td *ngFor="let col of columns">
+          <div [ngSwitch]="col.field">
+            <div *ngSwitchCase="'numeroEstablecimiento'">
+              {{rowData.tramite?.establecimiento.numero}}
+            </div>
+            <div *ngSwitchCase="'nombreEstablecimiento'">
+              {{rowData.tramite?.establecimiento.nombreComercial}}
+            </div>
+            <div *ngSwitchCase="'numeroRegistro'">
+              {{rowData[col.field]}}
+              <br>
+              {{rowData?.fechaRegistro | date:'longDate'}}
+            </div>
+            <div *ngSwitchCase="'ubicacion'">
+              {{rowData['tramite']?.provincia?.nombre}}
+              <br>
+              {{rowData['tramite']?.canton?.nombre}}
+              <br>
+              {{rowData['tramite']?.parroquia?.nombre}}
+            </div>
+            <div *ngSwitchCase="'estado'">
+              {{rowData?.tramite?.tipo?.nombre}}
+              <br>
+              {{rowData[col.field]?.nombre}}
+            </div>
+            <div *ngSwitchCase="'actividad'">
+              {{rowData?.tramite?.actividad?.nombre}}
+              <br>
+              {{rowData?.tramite?.clasificacion?.nombre}}
+              <br>
+              {{rowData?.tramite?.categoria?.nombre}}
+            </div>
+            <div *ngSwitchDefault>{{rowData[col.field]}}</div>
+          </div>
+        </td>
+        <td class="text-center">
+          <button pButton type="button" pTooltip="Ver Detalle"
+                  class="mr-2"
+                  icon="pi pi-eye"
+                  (click)="mostrarCatastro(rowData)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      {{messageService.paginatorTotalRegisters(paginator)}}
+    </ng-template>
+  </p-table>
+</p-card>
+
+<button *ngIf="esVisibleCatastro" pButton type="button" label="Regresar"
+        class="mb-3 mt-2"
+        icon="pi pi-arrow-left"
+        (click)="esVisibleCatastro=false"></button>
+
+<app-catastro-form *ngIf="esVisibleCatastro" [catastroSeleccionado]="catastroSeleccionado"
+                   (esVisibleCatastroOut)="esVisibleCatastro=$event;obtenerCatastros()"></app-catastro-form>
+
+<p-dialog [(visible)]="cargandoReporteCatastro" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">El catastro se está generando</p>
+  <br>
+  <p class="text-center">Esto puede tardar unos minutos</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

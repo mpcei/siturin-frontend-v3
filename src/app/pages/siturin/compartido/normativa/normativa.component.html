@@ -1,0 +1,111 @@
+<app-skeleton *ngIf="(cargado$|async)!" type="table"></app-skeleton>
+<p-card>
+  <p-table [value]="normativas" responsiveLayout="scroll" styleClass="p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <h1>Normativa</h1>
+      <div class="panel-messages-warn">
+        <h3>Atención</h3>
+        <br>
+        <p class="text-justify">
+          Los requisitos que se detallan a continuación serán verificados por los funcionarios
+          del {{ environment.MINISTERIO }} durante la visita a su establecimiento. Se recomienda asegurarse
+          de que su establecimiento cumpla con cada uno de ellos para facilitar el proceso de inspección.
+        </p>
+        <br>
+        <p>Los Requisitos marcados con <b class="p-error">*</b> son obligatorios</p>
+      </div>
+
+      <!--            <p-toggleswitch (onChange)="agregarTodasRespuesta($event)"></p-toggleswitch>-->
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>
+          <!--          <h3 *ngIf="!item.esPregunta">{{item.id + '-' + item.padre?.id + '-' + item.nombre}}</h3>-->
+          <h3 *ngIf="!item.esPregunta">{{ item.nombre }}</h3>
+          <p *ngIf="item.esPregunta">
+            <b *ngIf="item.esObligatorio" class="p-error">*</b>
+            <!--            {{item.id + '-' + item.padre?.id + '-' + item.nombre}}-->
+            {{ item.nombre }}
+            <p-tag *ngIf="item.esDescargable" [icon]="PrimeIcons.DOWNLOAD" value="Descargar Formato"
+                   (click)="descargarDocumento(item.codigo)"></p-tag>
+            <p-tag *ngIf="item.puntaje" [value]="'Puntos: (' +item.puntaje +')'"></p-tag>
+          </p>
+        </td>
+        <td>
+          <p-toggleswitch *ngIf="item.esPregunta" (onChange)="agregarRespuesta(item,$event.checked)"></p-toggleswitch>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <div *ngIf="configuracionCategorias.length" class="panel-messages-info p-fluid">
+    <div class="formgrid grid">
+      <div class="xl:col-6">
+        <h3 class="mb-3">Información:</h3>
+        <p class="mb-3">La sumatoria total de puntos (respuestas SI), seleccionado es <b>{{ totalPuntajeObtenido }}</b>
+          de
+          un
+          total
+          de <b>{{ totalPuntaje }}</b> puntos.
+        </p>
+        <p class="mb-3">
+          Con lo cual el puntaje de categorización obtenido es: <b>{{ totalPuntajeObtenidoCategoria.toFixed(2) }}</b>
+        </p>
+        <p>
+          La categoría obtenida es:
+          <b *ngIf="categoriaObtenida?.id">{{ categoriaObtenida.nombre }}</b>
+          <b class="p-error" *ngIf="!categoriaObtenida?.id">No es suficiente para aplicar por una categoría de
+            turismo.</b>
+        </p>
+      </div>
+      <div class="xl:col-6">
+        <h3 class="mb-3">Categorización:</h3>
+        <ul>
+          <li *ngFor="let configuracionCategoria of configuracionCategorias;let i = index" class="mb-3">
+            {{ configuracionCategoria.categoria?.nombre }}
+            <b *ngIf="i<configuracionCategorias.length-1"> Entre {{ configuracionCategoria.min }} y menor
+              que {{ configuracionCategoria.max! | maximoConfigracionCategoriaPipe }}</b>
+            <b *ngIf="i==configuracionCategorias.length-1">
+              De {{ configuracionCategoria.min }} {{ configuracionCategoria.max! | maximoConfigracionCategoriaPipe }}
+            </b>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div *ngIf="configuracionCategorias.length" class="panel-messages-info">
+    <p class="mb-3">
+      <b>Forma de Cálculo:</b>
+    </p>
+    <p *ngIf="actividad.value.codigo==='alimentos_bebidas_galapagos'" class="mb-3">Puntaje de Categorización = La
+      sumatoria de los ítems <b>({{ totalPuntajeObtenido }})</b>.</p>
+    <p *ngIf="actividad.value.codigo!='alimentos_bebidas_galapagos'" class="mb-3">Puntaje de Categorización =
+      ({{ totalPuntajeObtenido }} * 100) / ({{ totalPuntaje }})</p>
+    <p>
+      Le recordamos que su establecimiento puede acceder a varios registros de turismo, con la actividad de Alimentos y
+      Bebidas.
+    </p>
+  </div>
+
+  <div *ngIf="configuracionCategorias.length===0
+  && (actividad.value?.codigo==='alimentos_bebidas_continente'
+  || actividad.value?.codigo==='alimentos_bebidas_galapagos')"
+       class="panel-messages-info">
+    <h3 class="mb-3">Información:</h3>
+    <p>La categoría disponible para su establecimiento es <b>CATEGORÍA ÚNICA</b></p>
+  </div>
+
+  <br>
+
+  <div *ngIf="preguntasFaltantes.length" class="panel-messages-danger">
+    <h3>Faltan las siguientes secciones</h3>
+    <br>
+    <ul>
+      <li *ngFor="let pregunta of preguntasFaltantes">
+        {{ pregunta?.nombre }}
+      </li>
+    </ul>
+  </div>
+</p-card>

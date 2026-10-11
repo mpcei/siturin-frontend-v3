@@ -1,0 +1,37 @@
+<app-skeleton *ngIf="(cargado$|async)!" type="table"></app-skeleton>
+<p-card>
+  <p-table [value]="normativas" responsiveLayout="scroll" styleClass="p-datatable-striped">
+    <ng-template pTemplate="caption">
+      <h1>Normativa de Modalidad Turismo Aventura</h1>
+      <div class="panel-messages-warn">
+        <h3>Atención</h3>
+        <br>
+        <p class="text-justify">
+          <b>Reglamento de Agenciamiento Turístico - Disposición General Cuarta. –</b>
+          “Para efectos de control, las agencias de servicios turísticos deberán contar con un expediente
+          físico y digital que evidencie el cumplimiento de los requisitos establecidos en el presente
+          reglamento. Dicho expediente podrá ser solicitado al momento de la inspección por la
+          Autoridad Nacional de Turismo o el Gobierno Autónomo Descentralizado Municipal o
+          Metropolitano al que se le haya transferido esa facultad y atribución, de no contar con
+          dicho expediente será sancionado conforme a lo establecido en la normativa vigente.”
+        </p>
+        <br>
+        <p>Los Requisitos marcados con <b class="p-error">*</b> son obligatorios</p>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>
+          <h3 *ngIf="!item.esPregunta">{{item.nombre}}</h3>
+          <p *ngIf="item.esPregunta">
+            <b *ngIf="item.esObligatorio" class="p-error">*</b>
+            {{item.nombre}}
+          </p>
+        </td>
+        <td>
+          <p-toggleswitch *ngIf="item.esPregunta" (onChange)="agregarRespuesta(item,$event.checked)"></p-toggleswitch>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

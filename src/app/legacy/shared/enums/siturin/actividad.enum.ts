@@ -1,0 +1,16 @@
+export enum ActividadCodigoEnum {
+  ALIMENTOS_BEBIDAS_CONTINENTE = 'alimentos_bebidas_continente',
+  ALOJAMIENTO_CONTINENTE = 'alojamiento_continente',
+  ALIMENTOS_BEBIDAS_GALAPAGOS = 'alimentos_bebidas_galapagos',
+  ALOJAMIENTO_GALAPAGOS = 'alojamiento_galapagos',
+  OPERACION_INTERMEDIACION_CONTINENTE = 'operacion_intermediacion_continente',
+  OPERACION_INTERMEDIACION_GALAPAGOS = 'operacion_intermediacion_galapagos',
+  CTC_CONTINENTE = 'ctc_continente',
+  CTC_GALAPAGOS = 'ctc_galapagos',
+  TRANSPORTE_CONTINENTE = 'transporte_continente',
+  TRANSPORTE_GALAPAGOS = 'transporte_galapagos',
+  PARQUES_CONTINENTE = 'parques_continente',
+  PARQUES_GALAPAGOS = 'parques_galapagos',
+  EVENTOS_CONTINENTE = 'eventos_continente',
+  EVENTOS_GALAPAGOS = 'eventos_galapagos',
+}

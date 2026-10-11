@@ -1,0 +1,647 @@
+<app-datos-sri
+  *ngIf="catastroSeleccionado"
+  [esCatastrado]="true"
+  [ruc]="catastroSeleccionado.tramite?.establecimiento?.ruc!"
+  (cargando)="cargando=$event">
+</app-datos-sri>
+
+<form [formGroup]="formulario" (ngSubmit)="onSubmint()" class="p-fluid">
+  <p-card header="Información Adicional" class="p-fluid">
+    <div [formGroup]="formulario">
+      <div class="grid">
+        <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <div class="grid">
+            <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+              <label appLabel label="Sistema Origen:"
+                     [required]="observacionesInternoField"></label>
+              <h3>{{ sistemaOrigenField.value }}</h3>
+            </div>
+            <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+              <label appLabel label="Modificación Sistema:"
+                     [required]="observacionesInternoField"></label>
+              <h3>{{ authService.auth.name }} / Técnico {{ authService.role.name?.toUpperCase() }}</h3>
+            </div>
+            <div *ngIf="esEditable" class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+              <label appLabel for="observacionesInterno" label="Observaciones:"
+                     [required]="observacionesInternoField"></label>
+              <textarea pTextarea id="observacionesInterno" formControlName="observacionesInterno"></textarea>
+              <small appErrorMessage
+                     [errors]="observacionesInternoField.errors"
+                     [touched]="observacionesInternoField.touched"
+                     [dirty]="observacionesInternoField.dirty">
+              </small>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="esEditable" class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="archivo" label="Hoja de Planta o Memorando:"
+                 [required]="archivoField"></label>
+          <p-fileUpload
+            id="archivo"
+            chooseLabel="Buscar"
+            chooseIcon="pi pi-search"
+            uploadLabel="Subir archivos"
+            [auto]="true"
+            accept="application/pdf"
+            [maxFileSize]="10485760"
+            [customUpload]="true"
+            (onRemove)="removerArchivo()"
+            (uploadHandler)="cargarArchivo($event)">
+          </p-fileUpload>
+          <small appErrorMessage
+                 [errors]="archivoField.errors"
+                 [touched]="archivoField.touched"
+                 [dirty]="archivoField.dirty">
+          </small>
+        </div>
+      </div>
+    </div>
+  </p-card>
+
+  <p-card header="Registro de Turismo">
+    <div class="formgrid grid">
+      <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+        <label appLabel for="numeroRegistro" label="Número de Registro:"
+               [required]="numeroRegistroField"></label>
+        <input pInputText id="numeroRegistro" formControlName="numeroRegistro">
+        <small appErrorMessage
+               [errors]="numeroRegistroField.errors"
+               [touched]="numeroRegistroField.touched"
+               [dirty]="numeroRegistroField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="fechaRegistro" label="Fecha de Registro:"
+               [required]="fechaRegistroField"></label>
+        <!--        <input pInputText id="fechaRegistro" formControlName="fechaRegistro">-->
+        <p-datepicker id="fechaRegistro"
+                    formControlName="fechaRegistro"
+                    dateFormat="yy-mm-dd"
+                    [showButtonBar]="true"
+                    [firstDayOfWeek]="1"
+                    [showOnFocus]="false"
+                    [showIcon]="true"></p-datepicker>
+        <small appErrorMessage
+               [errors]="fechaRegistroField.errors"
+               [touched]="fechaRegistroField.touched"
+               [dirty]="fechaRegistroField.dirty">
+        </small>
+      </div>
+      <div *ngIf="esEditable" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="estado" label="Estado de Registro:"
+               [required]="estadoField"></label>
+        <p-select id="estado"
+                    formControlName="estado"
+                    dataKey="id"
+                    [options]="estados"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione"
+                    (onChange)="verificarEstadoInactivo()">
+        </p-select>
+        <small appErrorMessage
+               [errors]="estadoField.errors"
+               [touched]="estadoField.touched"
+               [dirty]="estadoField.dirty">
+        </small>
+      </div>
+
+      <div *ngIf="!esEditable" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel label="Estado de Registro:"></label>
+        <p>
+          {{ estadoField.value?.nombre }}
+        </p>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="actividad" label="Actividad:"
+               [required]="actividadField"></label>
+        <div>{{ actividadField.value?.nombre }}</div>
+        <small appErrorMessage
+               [errors]="actividadField.errors"
+               [touched]="actividadField.touched"
+               [dirty]="actividadField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="clasificacion" label="Clasificación:"
+               [required]="clasificacionField"></label>
+        <div>{{ clasificacionField.value?.nombre }}</div>
+        <small appErrorMessage
+               [errors]="clasificacionField.errors"
+               [touched]="clasificacionField.touched"
+               [dirty]="clasificacionField.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="categoria" label="Categoría:"
+               [required]="categoriaField"></label>
+        <div *ngIf="actividadField.value?.codigo==='operacion_intermediacion_continente' ||
+                     actividadField.value?.codigo==='operacion_intermediacion_galapagos'; else elseBlock">
+          No Aplica
+        </div>
+        <ng-template #elseBlock>
+          {{ categoriaField.value?.nombre }}
+        </ng-template>
+        <small appErrorMessage
+               [errors]="categoriaField.errors"
+               [touched]="categoriaField.touched"
+               [dirty]="categoriaField.dirty">
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+        <label appLabel for="tieneDeuda" label="Tiene Deuda:"></label>
+        <p-tag [value]="pagoField?.tieneDeuda ? 'SI' : 'NO'"
+               [severity]="$any((pagoField?.tieneDeuda ? 'danger' : 'primary'))"></p-tag>
+      </div>
+    </div>
+  </p-card>
+
+  <div formGroupName="tramite">
+    <p-card>
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="tipoLocal" label="Su local es:" [required]="tipoLocalField"></label>
+          <p-select id="tipoLocal"
+                      formControlName="tipoLocal"
+                      dataKey="id"
+                      [options]="tipoLocales"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione">
+          </p-select>
+          <small appErrorMessage
+                 [errors]="tipoLocalField.errors"
+                 [touched]="tipoLocalField.touched"
+                 [dirty]="tipoLocalField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="personeriaJuridica" label="Tipo Personería Jurídica:"
+                 [required]="personeriaJuridicaField"></label>
+          <input pInputText id="personeriaJuridica" [value]="personeriaJuridicaField.value?.nombre" disabled>
+          <small appErrorMessage
+                 [errors]="personeriaJuridicaField.errors"
+                 [touched]="personeriaJuridicaField.touched"
+                 [dirty]="personeriaJuridicaField.dirty">
+          </small>
+        </div>
+      </div>
+    </p-card>
+    <div formGroupName="establecimiento">
+      <!--Establecimiento-->
+      <p-card header="Establecimiento">
+        <div class="formgrid grid">
+          <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+            <label appLabel for="establecimientoNumero" label="Número:"
+                   [required]="establecimientoNumeroField"></label>
+            <input pInputText id="establecimientoNumero" formControlName="numero">
+            <small appErrorMessage
+                   [errors]="establecimientoNumeroField.errors"
+                   [touched]="establecimientoNumeroField.touched"
+                   [dirty]="establecimientoNumeroField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-12">
+            <label appLabel for="establecimientoNombreComercial" label="Nombre Comercial:"
+                   [required]="establecimientoNombreComercialField"></label>
+            <input pInputText id="establecimientoNombreComercial" formControlName="nombreComercial">
+            <small appErrorMessage
+                   [errors]="establecimientoNombreComercialField.errors"
+                   [touched]="establecimientoNombreComercialField.touched"
+                   [dirty]="establecimientoNombreComercialField.dirty">
+            </small>
+          </div>
+        </div>
+        <div class="formgrid grid">
+          <div class="field xl:col-7 lg:col-7 md:col-7 sm:col-12">
+            <label appLabel for="establecimientoPaginaWeb" label="Página Web:"
+                   [required]="establecimientopaginaWebField"></label>
+            <input pInputText id="establecimientoPaginaWeb" formControlName="paginaWeb">
+            <small appErrorMessage
+                   [errors]="establecimientopaginaWebField.errors"
+                   [touched]="establecimientopaginaWebField.touched"
+                   [dirty]="establecimientopaginaWebField.dirty">
+            </small>
+          </div>
+          <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+            <label appLabel for="establecimientoEstado" label="Estado:"
+                   [required]="establecimientoEstadoField"></label>
+            <p-select id="establecimientoEstado"
+                        formControlName="estado"
+                        dataKey="id"
+                        [options]="establecimientoEstados"
+                        optionLabel="nombre"
+                        [filter]="true"
+                        filterBy="nombre"
+                        placeholder="Seleccione">
+            </p-select>
+            <small appErrorMessage
+                   [errors]="establecimientoEstadoField.errors"
+                   [touched]="establecimientoEstadoField.touched"
+                   [dirty]="establecimientoEstadoField.dirty">
+            </small>
+          </div>
+        </div>
+      </p-card>
+      <!--DPA-->
+      <p-card header="DPA">
+        <div class="formgrid grid">
+          <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="provincia" label="Provincia:"
+                   [required]="provinciaField"></label>
+            <!--            <p-select id="provincia"-->
+            <!--                        formControlName="provincia"-->
+            <!--                        dataKey="id"-->
+            <!--                        [options]="provincias"-->
+            <!--                        optionLabel="nombre"-->
+            <!--                        [filter]="true"-->
+            <!--                        filterBy="nombre"-->
+            <!--                        placeholder="Seleccione">-->
+            <!--            </p-select>-->
+            {{ provinciaField.value?.nombre }}
+            <small appErrorMessage
+                   [errors]="provinciaField.errors"
+                   [touched]="provinciaField.touched"
+                   [dirty]="provinciaField.dirty">
+            </small>
+          </div>
+          <div *ngIf="provinciaField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="canton" label="Cantón:"
+                   [required]="cantonField"></label>
+            <!--            <p-select id="canton"-->
+            <!--                        formControlName="canton"-->
+            <!--                        dataKey="id"-->
+            <!--                        [options]="cantones"-->
+            <!--                        optionLabel="nombre"-->
+            <!--                        [filter]="true"-->
+            <!--                        filterBy="nombre"-->
+            <!--                        placeholder="Seleccione">-->
+            <!--            </p-select>-->
+            {{ cantonField.value?.nombre }}
+            <small appErrorMessage
+                   [errors]="cantonField.errors"
+                   [touched]="cantonField.touched"
+                   [dirty]="cantonField.dirty">
+            </small>
+          </div>
+          <div *ngIf="cantonField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+            <label appLabel for="parroquia" label="Parroquia:"
+                   [required]="parroquiaField"></label>
+            <!--            <p-select id="parroquia"-->
+            <!--                        formControlName="parroquia"-->
+            <!--                        dataKey="id"-->
+            <!--                        [options]="parroquias"-->
+            <!--                        optionLabel="nombre"-->
+            <!--                        [filter]="true"-->
+            <!--                        filterBy="nombre"-->
+            <!--                        placeholder="Seleccione">-->
+            <!--            </p-select>-->
+            {{ parroquiaField.value?.nombre }} / {{ parroquiaField.value?.tipoZona }}
+            <small appErrorMessage
+                   [errors]="parroquiaField.errors"
+                   [touched]="parroquiaField.touched"
+                   [dirty]="parroquiaField.dirty">
+            </small>
+          </div>
+        </div>
+      </p-card>
+      <!--Ubicacion-->
+      <p-card header="Ubicación">
+        <div formGroupName="ubicacion">
+          <div class="formgrid grid">
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="callePrincipal" label="Calle Principal:"
+                     [required]="callePrincipalField"></label>
+              <input pInputText id="callePrincipal" formControlName="callePrincipal">
+              <small appErrorMessage
+                     [errors]="callePrincipalField.errors"
+                     [touched]="callePrincipalField.touched"
+                     [dirty]="callePrincipalField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="calleNumeracion" label="Numeración:"
+                     [required]="calleNumeracionField"></label>
+              <input pInputText id="calleNumeracion" formControlName="calleNumeracion">
+              <small appErrorMessage
+                     [errors]="calleNumeracionField.errors"
+                     [touched]="calleNumeracionField.touched"
+                     [dirty]="calleNumeracionField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="calleInterseccion" label="Calle Intersección:"
+                     [required]="calleIntereseccionField"></label>
+              <input pInputText id="calleInterseccion" formControlName="calleInterseccion">
+              <small appErrorMessage
+                     [errors]="calleIntereseccionField.errors"
+                     [touched]="calleIntereseccionField.touched"
+                     [dirty]="calleIntereseccionField.dirty">
+              </small>
+            </div>
+          </div>
+
+          <div class="formgrid grid">
+            <div class="field xl:col-8 lg:col-8 md:col-12 sm:col-12">
+              <label appLabel for="calleReferencia" label="Referencia de Ubicación:"
+                     [required]="calleReferenciaField"></label>
+              <textarea pTextarea id="calleReferencia" formControlName="calleReferencia"></textarea>
+              <small appErrorMessage
+                     [errors]="calleReferenciaField.errors"
+                     [touched]="calleReferenciaField.touched"
+                     [dirty]="calleReferenciaField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+              <div class="formgrid grid">
+                <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+                  <label appLabel label="Latitud:" [required]="latitudField"></label>
+                  <input pInputText id="latitud" formControlName="latitud">
+                </div>
+                <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+                  <label appLabel label="Longitud:" [required]="longitudField"></label>
+                  <input pInputText id="longitud" formControlName="longitud">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+      <!--Persona de Contacto-->
+      <p-card header="Persona de Contacto">
+        <div formGroupName="personaContacto">
+          <div class="formgrid grid">
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="personaContactoIdentificacion" label="Cédula de Identidad:"
+                     [required]="personaContactoIdentificacionField"></label>
+              <div class="p-inputgroup">
+                <button type="button" pButton pRipple icon="pi pi-search"
+                        [loading]="(cargado$|async)!"
+                        (click)="personaContactoIdentificacionField.updateValueAndValidity()"></button>
+                <input pInputText id="personaContactoIdentificacion" formControlName="identificacion"
+                       pKeyFilter="int">
+              </div>
+              <small appErrorMessage
+                     [errors]="personaContactoIdentificacionField.errors"
+                     [touched]="personaContactoIdentificacionField.touched"
+                     [dirty]="personaContactoIdentificacionField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="personaContactoNombres" label="Datos del registro civil:"
+                     [required]="personaContactoNombresField"></label>
+              <input pInputText id="personaContactoNombres" formControlName="nombres">
+              <small appErrorMessage
+                     [errors]="personaContactoNombresField.errors"
+                     [touched]="personaContactoNombresField.touched"
+                     [dirty]="personaContactoNombresField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="correoPropietario" label="Correo Electrónico Propietario:"
+                     [required]="rucField"></label>
+              <input pInputText id="correoPropietario" [value]="correoPropietarioField" disabled>
+              <small appErrorMessage
+                     [errors]="rucField.errors"
+                     [touched]="rucField.touched"
+                     [dirty]="rucField.dirty">
+              </small>
+            </div>
+          </div>
+
+          <div class="formgrid grid">
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="personaContactoTelefonoPrincipal" label="Número de Teléfono Principal:"
+                     [required]="personaContactoTelefonoPrincipalField"></label>
+              <input pInputText id="personaContactoTelefonoPrincipal" formControlName="telefonoPrincipal"
+                     [minlength]="9"
+                     [maxlength]="10"
+                     pKeyFilter="int">
+              <small appErrorMessage
+                     [errors]="personaContactoTelefonoPrincipalField.errors"
+                     [touched]="personaContactoTelefonoPrincipalField.touched"
+                     [dirty]="personaContactoTelefonoPrincipalField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="personaContactoTelefonoSecundario" label="Número de Teléfono Secundario:"
+                     [required]="personaContactoTelefonoSecundarioField"></label>
+              <input pInputText id="personaContactoTelefonoSecundario" formControlName="telefonoSecundario"
+                     [minlength]="9"
+                     [maxlength]="10"
+                     pKeyFilter="int">
+              <!--        <p-inputMask id="personaContactoTelefonoSecundario" formControlName="telefonoSecundario"-->
+              <!--                     mask="(99) 9999-9999?" [unmask]="true"></p-inputMask>-->
+              <small appErrorMessage
+                     [errors]="personaContactoTelefonoSecundarioField.errors"
+                     [touched]="personaContactoTelefonoSecundarioField.touched"
+                     [dirty]="personaContactoTelefonoSecundarioField.dirty">
+              </small>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+              <label appLabel for="personaContactoCorreo" label="Correo Electrónico:"
+                     [required]="personaContactoCorreoField"></label>
+              <input pInputText id="personaContactoCorreo" formControlName="correo">
+              <small appErrorMessage
+                     [errors]="personaContactoCorreoField.errors"
+                     [touched]="personaContactoCorreoField.touched"
+                     [dirty]="personaContactoCorreoField.dirty">
+              </small>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+
+    <!--Total Trabajadores-->
+    <p-card>
+      <!--      <b class="p-error">(*)</b> {{totalTrabajadoresField.value}}-->
+      <h2>Personal del Establecimiento:
+        <small appErrorMessage
+               [errors]="totalTrabajadoresField.errors"
+               [touched]="totalTrabajadoresField.touched"
+               [dirty]="totalTrabajadoresField.dirty">
+        </small>
+      </h2>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalHombres" label="Total de hombres, que trabajan en el establecimiento:"
+                 [required]="totalHombresField"></label>
+          <p-inputNumber id="totalHombres" formControlName="totalHombres" [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalHombresField.errors"
+                 [touched]="totalHombresField.touched"
+                 [dirty]="totalHombresField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalHombresDiscapacidad" label="Del total hombres, cuantos tienen discapacidad:"
+                 [required]="totalHombresDiscapacidadField"></label>
+          <p-inputNumber id="totalHombresDiscapacidad" formControlName="totalHombresDiscapacidad" [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalHombresDiscapacidadField.errors"
+                 [touched]="totalHombresDiscapacidadField.touched"
+                 [dirty]="totalHombresDiscapacidadField.dirty">
+          </small>
+        </div>
+      </div>
+      <div class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalMujeres" label="Total de mujeres, que trabajan en el establecimiento:"
+                 [required]="totalMujeresField"></label>
+          <p-inputNumber id="totalMujeres" formControlName="totalMujeres" [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalMujeresField.errors"
+                 [touched]="totalMujeresField.touched"
+                 [dirty]="totalMujeresField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalMujeresDiscapacidad" label="Del total mujeres, cuantas tienen discapacidad:"
+                 [required]="totalMujeresDiscapacidadField"></label>
+          <p-inputNumber id="totalMujeresDiscapacidad" formControlName="totalMujeresDiscapacidad" [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalMujeresDiscapacidadField.errors"
+                 [touched]="totalMujeresDiscapacidadField.touched"
+                 [dirty]="totalMujeresDiscapacidadField.dirty">
+          </small>
+        </div>
+      </div>
+    </p-card>
+
+    <p-card header="Modalidades de Turismo Aventura">
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAgua" label="Agua:"
+               [required]="modalidadesTurismoAventuraAguaField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAgua"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAgua"
+          [options]="modalidadesTurismoAventuraAgua"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAguaField.errors"
+               [touched]="modalidadesTurismoAventuraAguaField.touched"
+               [dirty]="modalidadesTurismoAventuraAguaField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraAire" label="Aire:"
+               [required]="modalidadesTurismoAventuraAireField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraAire"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraAire"
+          [options]="modalidadesTurismoAventuraAire"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraAireField.errors"
+               [touched]="modalidadesTurismoAventuraAireField.touched"
+               [dirty]="modalidadesTurismoAventuraAireField.dirty">
+        </small>
+      </div>
+
+      <div class="field">
+        <label appLabel for="modalidadesTurismoAventuraTierra" label="Tierra:"
+               [required]="modalidadesTurismoAventuraTierraField"></label>
+        <p-multiSelect
+          id="modalidadesTurismoAventuraTierra"
+          dataKey="id"
+          formControlName="modalidadesTurismoAventuraTierra"
+          [options]="modalidadesTurismoAventuraTierra"
+          display="chip"
+          [showClear]="true"
+          optionLabel="nombre"
+          filterBy="nombre"
+          [filter]="true"
+          placeholder="Seleccione una o varias">
+        </p-multiSelect>
+        <small appErrorMessage
+               [errors]="modalidadesTurismoAventuraTierraField.errors"
+               [touched]="modalidadesTurismoAventuraTierraField.touched"
+               [dirty]="modalidadesTurismoAventuraTierraField.dirty">
+        </small>
+      </div>
+    </p-card>
+  </div>
+</form>
+
+<app-alojamiento
+  *ngIf="actividadField.value?.codigo==='alojamiento_continente' || actividadField.value?.codigo==='alojamiento_galapagos'"
+  [esEditable]="esEditable"
+  [actividad]="actividadField"
+  [clasificacion]="clasificacionField"
+  [categoria]="categoriaField"
+  [habitaciones]="habitacionesField.value"
+  [serviciosComplementarios]="serviciosComplementariosField.value"
+  [tramiteAlojamiento]="tramiteAlojamientoField.value"
+  (alojamientoOut)="alojamientoField.patchValue($event);">
+</app-alojamiento>
+
+<app-alimentos-bebidas
+  *ngIf="tramiteAlimentoBebidaField.value && actividadField.value?.codigo==='alimentos_bebidas_continente' || actividadField.value?.codigo==='alimentos_bebidas_galapagos'"
+  [esEditable]="esEditable"
+  [tramiteAlimentoBebida]="tramiteAlimentoBebidaField"
+  [actividad]="actividadField"
+  [clasificacion]="clasificacionField"
+  (alimentosBebidasOut)="alimentosBebidasField.patchValue($event)">
+</app-alimentos-bebidas>
+
+<app-operacion-intermediacion
+  *ngIf="actividadField.value?.codigo==='operacion_intermediacion_continente' || actividadField.value?.codigo==='operacion_intermediacion_galapagos'"
+  [esEditable]="esEditable"
+  [companiasTransporteTuristico]="companiasTransporteTuristicoField.value"
+  [guiasTurismo]="guiasTurismoField.value"
+  [representantesVentas]="representantesVentasField.value"
+  (operacionIntermediacionOut)="operacionIntermediacionField.patchValue($event)">
+</app-operacion-intermediacion>
+
+<div *ngIf="camposInvalidos.length" class="panel-messages-danger">
+  <h3>Problemas encontrados</h3>
+  <br>
+  <ul>
+    <li *ngFor="let campoInvalido of camposInvalidos">
+      {{ campoInvalido }}
+    </li>
+  </ul>
+</div>
+
+<div class="p-fluid">
+  <div class="field">
+    <button *ngIf="esEditable"
+            pButton pRipple type="button" label="Guardar Catastro" icon="pi pi-save"
+            (click)="guardarCatastro()"></button>
+  </div>
+</div>
+
+<p-dialog header="Trámite de Inactivación" [(visible)]="dialogoCausalesInactivacion"
+          [modal]="true"
+          [maximizable]="true">
+  <app-inactivacion-interno [tramiteActual]="catastroSeleccionado.tramite!"
+                            (dialogoOutput)="inactivarTramiteInactivacion($event)"
+                            (tramiteInactivacionOut)="tramiteInactivacionField.patchValue($event);pagoField.tieneDeuda = tramiteInactivacionField.value?.tieneDeuda"
+  ></app-inactivacion-interno>
+</p-dialog>

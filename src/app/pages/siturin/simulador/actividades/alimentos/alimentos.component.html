@@ -1,0 +1,128 @@
+<div *ngIf="clasificacion && personseriaJuridica">
+  <div *ngIf="zonaGeografica.codigo=='continente'">
+    <div class="panel-messages-info">
+      <h3>{{ clasificacion?.nombre }}</h3>
+
+      <br>
+      <p class="text-justify">
+        {{ clasificacion?.descripcion }}
+      </p>
+    </div>
+
+    <p-divider></p-divider>
+
+    <h1>REQUISITOS DOCUMENTALES</h1>
+
+    <p-divider></p-divider>
+
+    <form *ngIf="personseriaJuridica" [formGroup]="form">
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneRuc"
+                 label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC) o número de Régimen Simplificado para Emprendedores y Negocios Populares (RIMPE), u otro que determine la Autoridad Tributaria.'
+                 [required]="tieneRucField"></label>
+          <p>
+            <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div *ngIf="clasificacion.codigo != 'establecimiento_movil'" class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneUsoSuelos"
+                 label='Al momento de la inspección se presentará el Certificado de Informe de compatibilidad de uso de suelo.'
+                 [required]="tieneUsoSuelosField"></label>
+          <p>
+            <p-toggleswitch id="tieneUsoSuelos" formControlName="tieneUsoSuelos"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneNombramientoVigente"
+                 label='Al momento de la inspección presentará el Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad correspondiente.'
+                 [required]="tieneNombramientoVigenteField"></label>
+          <p>
+            <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneActividad"
+                 label='Al momento de la inspección presentará el documento constitutivo de la misma debidamente aprobada por la autoridad  correspondiente, en la que conste como su objeto social el desarrollo de la actividad de alimentos y bebidas.'
+                 [required]="tieneActividadField"></label>
+          <p>
+            <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="zonaGeografica.codigo=='galapagos'">
+    <div class="panel-messages-info">
+      <h3>{{ clasificacion?.nombre }}</h3>
+
+      <br>
+      <p class="text-justify">
+        {{ clasificacion?.descripcion }}
+      </p>
+    </div>
+
+    <p-divider></p-divider>
+
+    <h1>REQUISITOS DOCUMENTALES</h1>
+
+    <p-divider></p-divider>
+
+    <form *ngIf="personseriaJuridica" [formGroup]="form">
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneRuc"
+                 label='Al momento de la inspección presentará el Registro Único de Contribuyentes (RUC) o número de Régimen Simplificado para Emprendedores y Negocios Populares (RIMPE), u otro que determine la Autoridad Tributaria.'
+                 [required]="tieneRucField"></label>
+          <p>
+            <p-toggleswitch id="tieneRuc" formControlName="tieneRuc"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div *ngIf="clasificacion.codigo != 'establecimiento_movil'" class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneUsoSuelos"
+                 label='Al momento de la inspección presentará el Certificado de Informe de compatibilidad de uso de suelo otorgado por el gobierno autónomo descentralizado municipal, o documento equivalente que habilite ejercer el servicio de alimentos y bebidas en el predio indicado.'
+                 [required]="tieneUsoSuelosField"></label>
+          <p>
+            <p-toggleswitch id="tieneUsoSuelos" formControlName="tieneUsoSuelos"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneLocal"
+                 label='Documento que acredite la situación legal del local, si es arrendado, cedido, propio o bajo cualquier figura permitida por la ley.'
+                 [required]="tieneLocalField"></label>
+          <p>
+            <p-toggleswitch id="tieneLocal" formControlName="tieneLocal"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="personseriaJuridica.codigo =='juridica'" class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneNombramientoVigente"
+                 label='Al momento de la inspección presentará el Nombramiento vigente del o los representantes legales, debidamente inscrito ante la autoridad correspondiente.'
+                 [required]="tieneNombramientoVigenteField"></label>
+          <p>
+            <p-toggleswitch id="tieneNombramientoVigente" formControlName="tieneNombramientoVigente"></p-toggleswitch>
+          </p>
+        </div>
+
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <label appLabel for="tieneActividad"
+                 label='Al momento de la inspección presentará el documento constitutivo de la misma debidamente aprobada por la autoridad  correspondiente, en la que conste como su objeto social el desarrollo de la actividad de alimentos y bebidas.'
+                 [required]="tieneActividadField"></label>
+          <p>
+            <p-toggleswitch id="tieneActividad" formControlName="tieneActividad"></p-toggleswitch>
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

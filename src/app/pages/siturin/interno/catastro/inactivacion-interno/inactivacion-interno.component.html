@@ -1,0 +1,131 @@
+<form [formGroup]="formulario" (ngSubmit)="crearTramite()" class="p-fluid">
+<!--  <div class="formgrid grid">-->
+<!--    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">-->
+<!--      <label appLabel for="provincia" label="Provincia:"-->
+<!--             [required]="provinciaField"></label>-->
+<!--      <p-select id="provincia"-->
+<!--                  formControlName="provincia"-->
+<!--                  dataKey="id"-->
+<!--                  [options]="provincias"-->
+<!--                  optionLabel="nombre"-->
+<!--                  [filter]="true"-->
+<!--                  filterBy="nombre"-->
+<!--                  placeholder="Seleccione">-->
+<!--      </p-select>-->
+<!--      <small appErrorMessage-->
+<!--             [errors]="provinciaField.errors"-->
+<!--             [touched]="provinciaField.touched"-->
+<!--             [dirty]="provinciaField.dirty">-->
+<!--      </small>-->
+<!--    </div>-->
+<!--    <div *ngIf="provinciaField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">-->
+<!--      <label appLabel for="canton" label="Canton:"-->
+<!--             [required]="cantonField"></label>-->
+<!--      <p-select id="canton"-->
+<!--                  formControlName="canton"-->
+<!--                  dataKey="id"-->
+<!--                  [options]="cantones"-->
+<!--                  optionLabel="nombre"-->
+<!--                  [filter]="true"-->
+<!--                  filterBy="nombre"-->
+<!--                  placeholder="Seleccione">-->
+<!--      </p-select>-->
+<!--      <small appErrorMessage-->
+<!--             [errors]="cantonField.errors"-->
+<!--             [touched]="cantonField.touched"-->
+<!--             [dirty]="cantonField.dirty">-->
+<!--      </small>-->
+<!--    </div>-->
+<!--    <div *ngIf="cantonField.value?.id" class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">-->
+<!--      <label appLabel for="parroquia" label="Parroquia:"-->
+<!--             [required]="parroquiaField"></label>-->
+<!--      <p-select id="parroquia"-->
+<!--                  formControlName="parroquia"-->
+<!--                  dataKey="id"-->
+<!--                  [options]="parroquias"-->
+<!--                  optionLabel="nombre"-->
+<!--                  [filter]="true"-->
+<!--                  filterBy="nombre"-->
+<!--                  placeholder="Seleccione">-->
+<!--      </p-select>-->
+<!--      <small appErrorMessage-->
+<!--             [errors]="parroquiaField.errors"-->
+<!--             [touched]="parroquiaField.touched"-->
+<!--             [dirty]="parroquiaField.dirty">-->
+<!--      </small>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <p-divider></p-divider>-->
+<!--  <div class="field">-->
+<!--    <label appLabel for="personeriaJuridica" label="Tipo de Personería Jurídica:"-->
+<!--           [required]="personeriaJuridicaField"></label>-->
+<!--    <p-select id="personeriaJuridica"-->
+<!--                formControlName="personeriaJuridica"-->
+<!--                dataKey="id"-->
+<!--                [options]="personeriaJuridicas"-->
+<!--                optionLabel="nombre"-->
+<!--                [filter]="true"-->
+<!--                filterBy="nombre"-->
+<!--                placeholder="Seleccione">-->
+<!--    </p-select>-->
+<!--    <small appErrorMessage-->
+<!--           [errors]="personeriaJuridicaField.errors"-->
+<!--           [touched]="personeriaJuridicaField.touched"-->
+<!--           [dirty]="personeriaJuridicaField.dirty">-->
+<!--    </small>-->
+<!--  </div>-->
+<!--  <p-divider></p-divider>-->
+  <div class="field">
+    <label appLabel for="tieneDeuda" label="¿Con Deuda?:"
+           [required]="tieneDeudaField"></label>
+    <p>
+      <p-toggleswitch id="tieneDeuda" formControlName="tieneDeuda"></p-toggleswitch>
+    </p>
+    <small appErrorMessage
+           [errors]="tieneDeudaField.errors"
+           [touched]="tieneDeudaField.touched"
+           [dirty]="tieneDeudaField.dirty">
+    </small>
+  </div>
+  <div class="field">
+    <label appLabel for="tipoCausaInactivacion" label="Tipo de Causa de la Inactivación:"
+           [required]="tipoCausaInactivacionField"></label>
+    <p-select id="tipoCausaInactivacion"
+                formControlName="tipoCausaInactivacion"
+                dataKey="id"
+                [options]="tiposCausaInactivacion"
+                optionLabel="nombre"
+                [filter]="true"
+                filterBy="nombre"
+                placeholder="Seleccione">
+    </p-select>
+    <small appErrorMessage
+           [errors]="tipoCausaInactivacionField.errors"
+           [touched]="tipoCausaInactivacionField.touched"
+           [dirty]="tipoCausaInactivacionField.dirty">
+    </small>
+  </div>
+  <p-divider></p-divider>
+  <div class="field">
+    <label appLabel label="Causales de Inactivación:"
+           [required]="causalesInactivacionField"></label>
+    <br>
+    <small appErrorMessage
+           [errors]="causalesInactivacionField.errors"
+           [touched]="causalesInactivacionField.touched"
+           [dirty]="causalesInactivacionField.dirty">
+    </small>
+    <div *ngFor="let causalIncumplimiento of causalesInactivacion; let i= index" class="field mt-6">
+      <p-checkbox
+        [inputId]="'causalesIncumplimiento'+i"
+        name="causalesIncumplimiento"
+        [value]="causalIncumplimiento"
+        [formControl]="causalesInactivacionField">
+      </p-checkbox>
+      <label [for]="'causalesIncumplimiento'+i" class="ml-2">{{ causalIncumplimiento.nombre! }}</label>
+    </div>
+  </div>
+  <div class="field">
+    <button pButton pRipple type="button" icon="pi pi-save" class="" label="Guardar" (click)="onSubmit()"></button>
+  </div>
+</form>

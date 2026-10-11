@@ -1,0 +1,217 @@
+<app-skeleton *ngIf="isLoadingSkeleton" [type]="'card'"></app-skeleton>
+
+<div *ngIf="personeriaJuridicas">
+  <p-card *ngIf="!isLoadingSkeleton"
+          [header]="panelHeader"
+          class="p-fluid">
+    <small [innerHTML]="this.messageService.requiredFields"></small>
+
+    <p-divider></p-divider>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label appLabel for="personeriaJuridica" label="Tipo de Contribuyente:"
+               [required]="personeriaJuridicaField"></label>
+        <p-select id="personeriaJuridica"
+                    formControlName="personeriaJuridica"
+                    dataKey="id"
+                    [options]="personeriaJuridicas"
+                    optionLabel="nombre"
+                    [filter]="true"
+                    filterBy="nombre"
+                    placeholder="Seleccione">
+        </p-select>
+        <small appErrorMessage
+               [errors]="personeriaJuridicaField.errors"
+               [touched]="personeriaJuridicaField.touched"
+               [dirty]="personeriaJuridicaField.dirty">
+        </small>
+      </div>
+
+      <div class="formgrid grid">
+        <div *ngIf="personeriaJuridicaField.valid && zonasGeograficas.length"
+             class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="zonaGeografica" label="Zona Geográfica:" [required]="zonaGeograficaField"></label>
+          <p-select id="zonaGeografica"
+                      formControlName="zonaGeografica"
+                      dataKey="id"
+                      [options]="zonasGeograficas"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione">
+          </p-select>
+          <small appErrorMessage
+                 [errors]="zonaGeograficaField.errors"
+                 [touched]="zonaGeograficaField.touched"
+                 [dirty]="zonaGeograficaField.dirty">
+          </small>
+        </div>
+        <div *ngIf="zonaGeograficaField.valid && actividades.length" class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="actividad" label="Actividad:" [required]="actividadField"></label>
+          <p-select id="actividad"
+                      formControlName="actividad"
+                      dataKey="id"
+                      [options]="actividades"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione">
+          </p-select>
+          <small appErrorMessage
+                 [errors]="actividadField.errors"
+                 [touched]="actividadField.touched"
+                 [dirty]="actividadField.dirty">
+          </small>
+        </div>
+        <div *ngIf="actividadField.valid && clasificaciones.length" class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="clasificacion" label="Clasificación:" [required]="clasificacionField"></label>
+          <p-select id="clasificacion"
+                      formControlName="clasificacion"
+                      (onChange)="cargarNormativaPorClasificacion()"
+                      dataKey="id"
+                      [options]="clasificaciones"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione">
+          </p-select>
+          <small appErrorMessage
+                 [errors]="clasificacionField.errors"
+                 [touched]="clasificacionField.touched"
+                 [dirty]="clasificacionField.dirty">
+          </small>
+        </div>
+        <div *ngIf="clasificacionField.valid && categorias.length
+      && (actividadField.value?.codigo == 'alojamiento_continente'
+      || actividadField.value?.codigo == 'alojamiento_galapagos'
+      || actividadField.value?.codigo == 'ctc_continente'
+      || actividadField.value?.codigo == 'ctc_galapagos'
+      || actividadField.value?.codigo == 'parques_continente'
+      || actividadField.value?.codigo == 'parques_galapagos'
+      || actividadField.value?.codigo == 'eventos_continente'
+      || actividadField.value?.codigo == 'eventos_galapagos'
+      )"
+             class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <label appLabel for="categoria" label="Categoria:" [required]="categoriaField"></label>
+          <p-select id="categoria"
+                      formControlName="categoria"
+                      (onChange)="cargarNormativaPorCategoria()"
+                      dataKey="id"
+                      [options]="categorias"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione">
+          </p-select>
+          <small appErrorMessage
+                 [errors]="categoriaField.errors"
+                 [touched]="categoriaField.touched"
+                 [dirty]="categoriaField.dirty">
+          </small>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <app-alojamiento *ngIf="actividadField.value?.codigo?.includes('alojamiento') && categoriaField.valid"
+                           [zonaGeografica]="zonaGeograficaField.value"
+                           [clasificacion]="clasificacionField.value"
+                           [categoria]="categoriaField.value"
+                           [personseriaJuridica]="personeriaJuridicaField.value"></app-alojamiento>
+
+          <app-alimentos *ngIf="actividadField.value?.codigo?.includes('alimentos')"
+                         [zonaGeografica]="zonaGeograficaField.value"
+                         [clasificacion]="clasificacionField.value"
+                         [personseriaJuridica]="personeriaJuridicaField.value"></app-alimentos>
+
+          <app-parques *ngIf="actividadField.value?.codigo?.includes('parques')"
+                       [zonaGeografica]="zonaGeograficaField.value"
+                       [clasificacion]="clasificacionField.value"
+                       [categoria]="categoriaField.value"
+                       [personseriaJuridica]="personeriaJuridicaField.value"></app-parques>
+
+          <app-eventos *ngIf="actividadField.value?.codigo?.includes('eventos')"
+                       [zonaGeografica]="zonaGeograficaField.value"
+                       [clasificacion]="clasificacionField.value"
+                       [categoria]="categoriaField.value"
+                       [personseriaJuridica]="personeriaJuridicaField.value"></app-eventos>
+
+          <app-operacion-intermediacion *ngIf="actividadField.value?.codigo?.includes('operacion_intermediacion')"
+                                        [zonaGeografica]="zonaGeograficaField.value"
+                                        [clasificacion]="clasificacionField.value"
+                                        [categoria]="categoriaField.value"
+                                        [personseriaJuridica]="personeriaJuridicaField.value"></app-operacion-intermediacion>
+
+          <app-transporte *ngIf="actividadField.value?.codigo?.includes('transporte')"
+                          [zonaGeografica]="zonaGeograficaField.value"
+                          [clasificacion]="clasificacionField.value"
+                          [personseriaJuridica]="personeriaJuridicaField.value"></app-transporte>
+
+          <app-ctc *ngIf="actividadField.value?.codigo?.includes('ctc')"
+                   [zonaGeografica]="zonaGeograficaField.value"
+                   [clasificacion]="clasificacionField.value"
+                   [categoria]="categoriaField.value"
+                   [personseriaJuridica]="personeriaJuridicaField.value"></app-ctc>
+        </div>
+      </div>
+    </form>
+  </p-card>
+
+  <!--  <p-card *ngIf="mostrarNormativa">-->
+
+  <!--  </p-card>-->
+
+  <p-card
+    *ngIf="mostrarNormativa && (actividadField.value?.codigo != 'ctc_continente' && actividadField.value?.codigo != 'ctc_galapagos')">
+    <app-normativa
+      [actividad]="actividadField"
+      [clasificacion]="clasificacionField"></app-normativa>
+  </p-card>
+
+  <p-card
+    *ngIf="mostrarNormativa && personeriaJuridicaField.value?.codigo == 'juridica' && (actividadField.value?.codigo == 'ctc_continente' || actividadField.value?.codigo == 'ctc_galapagos')">
+    <app-normativa
+      [actividad]="actividadField"
+      [clasificacion]="clasificacionField"></app-normativa>
+  </p-card>
+
+  <p-tabs [value]="0" *ngIf="((actividadField.value?.codigo == 'ctc_continente' || actividadField.value?.codigo == 'ctc_galapagos') && personeriaJuridicaField.value?.codigo == 'juridica') && categoriaField.value">
+    <p-tablist>
+      <p-tab [value]="0"><i class="pi pi-apple mr-2"></i> <span>ALIMENTOS Y BEBIDAS</span></p-tab>
+      <p-tab [value]="1"><i class="pi pi-building mr-2"></i> <span>ALOJAMIENTO</span></p-tab>
+      <p-tab [value]="2"><i class="pi pi-globe mr-2"></i> <span>OPERACIÓN TURÍSTICA COMUNITARIA</span></p-tab>
+      <p-tab [value]="3"><i class="pi pi-car mr-2"></i> <span>TRANSPORTE TURÍSTICO</span></p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel [value]="0">
+      <app-normativa-generica
+        [modeloId]="175"
+        modeloTipo="actividades_turisticas"></app-normativa-generica>
+      </p-tabpanel>
+      <p-tabpanel [value]="1">
+      <app-normativa-generica
+        [modeloId]="174"
+        modeloTipo="actividades_turisticas"></app-normativa-generica>
+      </p-tabpanel>
+      <p-tabpanel [value]="2">
+      <p-panel header="Modalidades de Turismo Aventura">
+        <div class="panel-messages-info">
+          <h3>Importante</h3>
+          <br>
+          <p class="text-justify">
+            Registrar las modalidades de turismo de aventura que ofrece el establecimiento.
+          </p>
+        </div>
+
+        <app-normativa-generica
+          [modeloId]="176"
+          modeloTipo="actividades_turisticas"></app-normativa-generica>
+      </p-panel>
+      </p-tabpanel>
+      <p-tabpanel [value]="3">
+      <h1>No cuenta con normativa para TRANSPORTE TURÍSTICO</h1>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

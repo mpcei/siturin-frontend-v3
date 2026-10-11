@@ -1,0 +1,664 @@
+<div class="panel-messages-info">
+  <h3>Importante:</h3>
+  <br>
+  <p>
+    Declaro la disponibilidad física de los documentos que validan el cumplimiento de los siguientes requisitos, que
+    serán presentados en la inspección
+  </p>
+</div>
+
+<p-card header="Requisitos documentales requeridos al momento de la inspección">
+  <form [formGroup]="formulario" class="p-fluid formgrid" (ngSubmit)="onSubmit()">
+    <div class="field ">
+      <label appLabel for="tieneCertificadoRegistroPropiedad"
+             label='Certificado actualizado del registro de la propiedad en el que se determine la titularidad del predio a favor de la comunidad u organización comunitaria.'
+             [required]="tieneCertificadoRegistroPropiedadField"></label>
+      <p>
+        <p-toggleswitch id="tieneCertificadoRegistroPropiedad"
+                       formControlName="tieneCertificadoRegistroPropiedad"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneCertificadoRegistroPropiedadField.errors"
+             [touched]="tieneCertificadoRegistroPropiedadField.touched"
+             [dirty]="tieneCertificadoRegistroPropiedadField.dirty">
+      </small>
+    </div>
+    <p-divider></p-divider>
+
+    <div class="field ">
+      <label appLabel for="tieneInformeTecnico"
+             label='Informe técnico que justifique la calidad comunitaria de la organización que solicita el registro, expedido por la Secretaría de Gestión y Desarrollo de Pueblos y Nacionalidades, o la entidad que ejerza dichas atribuciones.'
+             [required]="tieneInformeTecnicoField"></label>
+      <p>
+        <p-toggleswitch id="tieneInformeTecnico" formControlName="tieneInformeTecnico"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneInformeTecnicoField.errors"
+             [touched]="tieneInformeTecnicoField.touched"
+             [dirty]="tieneInformeTecnicoField.dirty">
+      </small>
+    </div>
+    <p-divider></p-divider>
+
+    <div class="field ">
+      <label appLabel for="tieneEstatuto"
+             label='Copia certificada del Estatuto de la comunidad, en la que debe indicar que sí podrán realizar la actividad de turismo comunitario.'
+             [required]="tieneEstatutoField"></label>
+      <p>
+        <p-toggleswitch id="tieneEstatuto" formControlName="tieneEstatuto"></p-toggleswitch>
+      </p>
+      <small appErrorMessage
+             [errors]="tieneEstatutoField.errors"
+             [touched]="tieneEstatutoField.touched"
+             [dirty]="tieneEstatutoField.dirty">
+      </small>
+    </div>
+    <p-divider></p-divider>
+  </form>
+</p-card>
+
+<app-normativa
+  [actividad]="actividad"
+  [clasificacion]="clasificacion"
+  (normativaRespuestas)="llenarNormativaRespuestasGeneral($event)"></app-normativa>
+
+<div class="panel-messages-info">
+  <h1 class="mb-3">Importante</h1>
+
+  <p>
+    Es obligatorio declarar al menos una de las siguientes Actividades Turísticas:
+  </p>
+</div>
+
+<p-card header="ACTIVIDADES TURÍSTICAS" class="p-fluid">
+  <div class="formgrid grid">
+    <div *ngFor="let actividadTuristica of actividadesTuristicas; let i= index"
+         class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+      <p-checkbox
+        [inputId]="'actividadesTuristicas'+i"
+        name="actividadTuristica"
+        [value]="actividadTuristica"
+        [formControl]="actividadesTuristicasField"
+        (onChange)="seleccionarActividadTuristica()">
+      </p-checkbox>
+      <label [for]="'actividadesTuristicas'+i" class="ml-2">{{ actividadTuristica.nombre! }}</label>
+    </div>
+  </div>
+</p-card>
+
+<p-tabs *ngIf="indiceActividades>-1" [value]="indiceActividades" (valueChange)="indiceActividades=$any($event)">
+  <p-tablist>
+    <p-tab [value]="0" *ngIf="tieneAlimentosBebidas"><i class="pi pi-apple mr-2"></i> <span>ALIMENTOS Y BEBIDAS</span></p-tab>
+    <p-tab [value]="1" *ngIf="tieneAlojamiento"><i class="pi pi-building mr-2"></i> <span>ALOJAMIENTO</span></p-tab>
+    <p-tab [value]="2" *ngIf="tieneOperacion"><i class="pi pi-globe mr-2"></i> <span>OPERACIÓN TURÍSTICA COMUNITARIA</span></p-tab>
+    <p-tab [value]="3" *ngIf="tieneTransporte"><i class="pi pi-car mr-2"></i> <span>TRANSPORTE TURÍSTICO</span></p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel [value]="0" *ngIf="tieneAlimentosBebidas">
+    <form [formGroup]="formulario" class="p-fluid">
+      <div formGroupName="actividadAlimentosBebidas" class="formgrid grid">
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalMesas" label="Mesas:" [required]="totalMesasField"></label>
+          <p-inputNumber id="totalMesas" formControlName="totalMesas" [showButtons]="true" [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalMesasField.errors"
+                 [touched]="totalMesasField.touched"
+                 [dirty]="totalMesasField.dirty">
+          </small>
+          <p></p>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+          <label appLabel for="totalCapacidades"
+                 label="Capacidad en número de personas:"
+                 [required]="totalCapacidadesField"></label>
+          <p-inputNumber id="totalCapacidades" formControlName="totalCapacidades" [showButtons]="true"
+                         [min]="0"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalCapacidadesField.errors"
+                 [touched]="totalCapacidadesField.touched"
+                 [dirty]="totalCapacidadesField.dirty">
+          </small>
+          <p></p>
+        </div>
+      </div>
+    </form>
+    <app-normativa-generica *ngIf="tieneAlimentosBebidas"
+                            [modeloId]="alimentosBebidasId"
+                            modeloTipo="actividades_turisticas"
+                            (normativaRespuestas)="llenarNormativaRespuestasAlimentosBebidas($event)"></app-normativa-generica>
+    </p-tabpanel>
+    <p-tabpanel [value]="1" *ngIf="tieneAlojamiento">
+    <form [formGroup]="formulario" class="p-fluid">
+      <div formGroupName="actividadAlojamiento" class="formgrid grid">
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="totalHabitaciones" label="Habitaciones:"
+                 [required]="totalHabitacionesField"></label>
+          <p-inputNumber id="totalHabitaciones"
+                         formControlName="totalHabitaciones"
+                         [showButtons]="true"
+                         [min]="1"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalHabitacionesField.errors"
+                 [touched]="totalHabitacionesField.touched"
+                 [dirty]="totalHabitacionesField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="totalCamas" label="Camas:" [required]="totalCamasField"></label>
+          <p-inputNumber id="totalCamas"
+                         formControlName="totalCamas"
+                         [showButtons]="true"
+                         [min]="1"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalCamasField.errors"
+                 [touched]="totalCamasField.touched"
+                 [dirty]="totalCamasField.dirty">
+          </small>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <label appLabel for="totalPlazas" label="Plazas:" [required]="totalPlazasField"></label>
+          <p-inputNumber id="totalPlazas"
+                         formControlName="totalPlazas"
+                         [showButtons]="true"
+                         [min]="1"></p-inputNumber>
+          <small appErrorMessage
+                 [errors]="totalPlazasField.errors"
+                 [touched]="totalPlazasField.touched"
+                 [dirty]="totalPlazasField.dirty">
+          </small>
+        </div>
+      </div>
+    </form>
+    <app-normativa-generica *ngIf="tieneAlojamiento"
+                            [modeloId]="alojamientoId"
+                            modeloTipo="actividades_turisticas"
+                            (normativaRespuestas)="llenarNormativaRespuestasAlojamiento($event)"></app-normativa-generica>
+    </p-tabpanel>
+    <p-tabpanel [value]="2" *ngIf="tieneOperacion">
+    <p-panel header="Modalidades de Turismo Aventura">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar las modalidades de turismo de aventura que ofrece el establecimiento.
+        </p>
+      </div>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div formGroupName="actividadOperacion">
+          <div class="field">
+            <label appLabel for="tieneModalidadesTurismoAventura"
+                   label="¿Su Establecimiento oferta alguna modalidad de turismo de aventura, dentro de sus linderos?"
+                   [required]="tieneModalidadesTurismoAventuraField"></label>
+            <p>
+              <p-toggleswitch id="tieneModalidadesTurismoAventura"
+                             formControlName="tieneModalidadesTurismoAventura"></p-toggleswitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="tieneModalidadesTurismoAventuraField.errors"
+                   [touched]="tieneModalidadesTurismoAventuraField.touched"
+                   [dirty]="tieneModalidadesTurismoAventuraField.dirty">
+            </small>
+            <p></p>
+          </div>
+
+          <div *ngIf="tieneModalidadesTurismoAventuraField.value">
+            <div class="panel-messages-warn field">
+              <h3>Atención</h3>
+              <br>
+              <p class="text-justify">
+                Si su respuesta es afirmativa, por favor registre las modalidades de turismo de aventura que ofrece el
+                establecimiento.
+              </p>
+            </div>
+
+            <div class="field">
+              <label appLabel for="modalidadesTurismoAventuraAgua" label="Agua:"
+                     [required]="modalidadesTurismoAventuraAguaField"></label>
+              <p-multiSelect
+                id="modalidadesTurismoAventuraAgua"
+                dataKey="id"
+                formControlName="modalidadesTurismoAventuraAgua"
+                [options]="modalidadesTurismoAventuraAgua"
+                display="chip"
+                [showClear]="true"
+                optionLabel="nombre"
+                filterBy="nombre"
+                [filter]="true"
+                placeholder="Seleccione una o varias">
+              </p-multiSelect>
+              <small appErrorMessage
+                     [errors]="modalidadesTurismoAventuraAguaField.errors"
+                     [touched]="modalidadesTurismoAventuraAguaField.touched"
+                     [dirty]="modalidadesTurismoAventuraAguaField.dirty">
+              </small>
+            </div>
+
+            <div class="field">
+              <label appLabel for="modalidadesTurismoAventuraAire" label="Aire:"
+                     [required]="modalidadesTurismoAventuraAireField"></label>
+              <p-multiSelect
+                id="modalidadesTurismoAventuraAire"
+                dataKey="id"
+                formControlName="modalidadesTurismoAventuraAire"
+                [options]="modalidadesTurismoAventuraAire"
+                display="chip"
+                [showClear]="true"
+                optionLabel="nombre"
+                filterBy="nombre"
+                [filter]="true"
+                placeholder="Seleccione una o varias">
+              </p-multiSelect>
+              <small appErrorMessage
+                     [errors]="modalidadesTurismoAventuraAireField.errors"
+                     [touched]="modalidadesTurismoAventuraAireField.touched"
+                     [dirty]="modalidadesTurismoAventuraAireField.dirty">
+              </small>
+            </div>
+
+            <div class="field">
+              <label appLabel for="modalidadesTurismoAventuraTierra" label="Tierra:"
+                     [required]="modalidadesTurismoAventuraTierraField"></label>
+              <p-multiSelect
+                id="modalidadesTurismoAventuraTierra"
+                dataKey="id"
+                formControlName="modalidadesTurismoAventuraTierra"
+                [options]="modalidadesTurismoAventuraTierra"
+                display="chip"
+                [showClear]="true"
+                optionLabel="nombre"
+                filterBy="nombre"
+                [filter]="true"
+                placeholder="Seleccione una o varias">
+              </p-multiSelect>
+              <small appErrorMessage
+                     [errors]="modalidadesTurismoAventuraTierraField.errors"
+                     [touched]="modalidadesTurismoAventuraTierraField.touched"
+                     [dirty]="modalidadesTurismoAventuraTierraField.dirty">
+              </small>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <app-normativa-generica *ngIf="tieneModalidadesTurismoAventuraField.value"
+                              [modeloId]="operacionId"
+                              modeloTipo="actividades_turisticas"
+                              (normativaRespuestas)="llenarNormativaRespuestasOperacion($event)"></app-normativa-generica>
+
+      <div class="panel-messages-info">
+        <h2>Nota:</h2>
+        <br>
+        <p>
+          1.- En el caso que contrate servicios de aventura a través de otras agencias operadoras de
+          turismo, recuerde que el {{environment.MINISTERIO}} verificará los contratos suscritos con
+          proveedores.
+        </p>
+        <p>
+          Al momento de la inspección se verificará los formatos o modelos de contratos que se
+          suscriben con los clientes.
+        </p>
+        <p>
+          2.- En la modalidad de cabalgata, donde se requiere el uso de animales para su
+          realización, se deberá salvaguardar la salud e integridad del animal.
+        </p>
+      </div>
+    </p-panel>
+
+    <p-divider></p-divider>
+
+    <p-panel header="Guías de Turismo">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar Guía de Turismo contratado por el establecimiento.
+        </p>
+      </div>
+
+      <form [formGroup]="formulario" class="p-fluid">
+        <div formGroupName="actividadOperacion">
+          <div class="field">
+            <label appLabel for="tieneGuiasTurismo"
+                   label="Declaro que el establecimiento, al momento del envío de la solicitud, ha contratado Guías de Turismo"
+                   [required]="tieneGuiasTurismoField"></label>
+            <p>
+              <p-toggleswitch id="tieneGuiasTurismo" formControlName="tieneGuiasTurismo"></p-toggleswitch>
+            </p>
+            <small appErrorMessage
+                   [errors]="tieneGuiasTurismoField.errors"
+                   [touched]="tieneGuiasTurismoField.touched"
+                   [dirty]="tieneGuiasTurismoField.dirty">
+            </small>
+            <p></p>
+          </div>
+        </div>
+      </form>
+
+      <p-table *ngIf="tieneGuiasTurismoField.value"
+               dataKey="id"
+               styleClass="p-datatable-striped"
+               [value]="guiasTurismoField.value"
+               [columns]="columnasGuiasTurismoTabla"
+               [loading]="(cargado$|async)!">
+        <ng-template pTemplate="caption">
+          <div class="formgrid grid">
+            <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+            </div>
+            <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+              <button pButton type="button"
+                      class="p-button-success"
+                      label="Agregar Guía de Turismo"
+                      icon="pi pi-plus"
+                      (click)="mostrarDialogoNuevoGuiasTurismo()">
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+            <th class="text-center">
+              Opciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{rowData.cedula}}
+            </td>
+            <td>
+              {{rowData.nombres}}
+            </td>
+            <!--          <td>-->
+            <!--            <p-tag *ngIf="rowData.esGuia" severity="success" value="Es Guía de Turismo"></p-tag>-->
+            <!--            <p-tag *ngIf="!rowData.esGuia" severity="danger" value="No es Guía de Turismo"></p-tag>-->
+            <!--          </td>-->
+            <td style="text-align:center">
+              <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                      (click)="editarGuiaTurismo(rowData,rowIndex)"
+                      class="p-button-warn p-button-rounded mr-2"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                      (click)="eliminarGuiaTurismo(rowIndex)" class="p-button-danger p-button-rounded"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{messageService.paginatorNoRecordsFound}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+    </p-tabpanel>
+    <p-tabpanel [value]="3" *ngIf="tieneTransporte">
+    <p-panel header="Compañías de Transporte Turístico">
+      <div class="panel-messages-info">
+        <h3>Importante</h3>
+        <br>
+        <p class="text-justify">
+          Registrar Compañía de Transporte Turístico contratado por el establecimiento.
+        </p>
+      </div>
+
+      <br>
+
+      <form [formGroup]="transporteField" class="p-fluid">
+        <div class="field">
+          <label appLabel for="tieneCompaniasTransporteTuristico"
+                 label="Declaro que el establecimiento, al momento del envío de la solicitud, ha firmado un contrato con una Compañía de Transporte Turístico"
+                 [required]="tieneCompaniasTransporteTuristicoField"></label>
+          <p>
+            <p-toggleswitch id="tieneCompaniasTransporteTuristico"
+                           formControlName="tieneCompaniasTransporteTuristico"></p-toggleswitch>
+          </p>
+          <small appErrorMessage
+                 [errors]="tieneCompaniasTransporteTuristicoField.errors"
+                 [touched]="tieneCompaniasTransporteTuristicoField.touched"
+                 [dirty]="tieneCompaniasTransporteTuristicoField.dirty">
+          </small>
+          <p></p>
+        </div>
+      </form>
+
+      <p-table *ngIf="tieneCompaniasTransporteTuristicoField.value"
+               dataKey="id"
+               styleClass="p-datatable-striped"
+               [value]="companiasTransporteTuristicoField.value"
+               [columns]="columnasCompaniasTransporteTuristicoTabla"
+               [loading]="(cargado$|async)!">
+        <ng-template pTemplate="caption">
+          <div class="formgrid grid">
+            <div class="field xl:col-9 lg:col-9 md:col-9 sm:col-12">
+
+            </div>
+            <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+              <button pButton type="button"
+                      class="p-button-success"
+                      label="Agregar Compañía de Transporte Turístico"
+                      icon="pi pi-plus"
+                      (click)="mostrarDialogoNuevoCompaniasTransporteTuristico()">
+              </button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
+            <th class="text-center">
+              Opciones
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{rowData.ruc}}
+            </td>
+            <td>
+              {{rowData.razonSocial}}
+            </td>
+            <td>
+              {{rowData.tipoContribuyente}}
+            </td>
+            <td>
+              {{rowData?.tipo?.nombre}}
+            </td>
+            <td style="text-align:center">
+              <button pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                      (click)="editarCompaniaTransporteTuristico(rowData,rowIndex)"
+                      class="p-button-warn p-button-rounded mr-2"></button>
+              <button pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                      (click)="eliminarCompaniaTransporteTuristico(rowIndex)"
+                      class="p-button-danger p-button-rounded"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="columns.length">
+              {{messageService.paginatorNoRecordsFound}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>
+
+<div class="panel-messages-danger" *ngIf="errores.length>0">
+  <h1>Importante:</h1>
+  <ul class="mt-3">
+    <li *ngFor="let error of errores">
+      {{error}}
+    </li>
+  </ul>
+</div>
+
+<form [formGroup]="formulario" (ngSubmit)="guardarTramite()" class="p-fluid">
+  <div class="formgrid grid">
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnBack" type="button"
+              label="Atrás"
+              class="p-button-info p-button-outlined"
+              icon="pi pi-arrow-left"
+              (click)="faseActualOut.emit(1)"></button>
+    </div>
+    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+      <button pButton pRipple id="btnFinalizar"
+              label="Guardar y Finalizar"
+              class="p-button-success"
+              icon="pi pi-save"></button>
+    </div>
+  </div>
+</form>
+
+<p-dialog [(visible)]="dialogoCrearTramite" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Su Trámite se está procesando</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>
+
+<p-dialog header="Agregar Guía de Turismo" [(visible)]="dialogoNuevoGuiasTurismo"
+          [modal]="true" [style]="{width: '50vw',height: '30vw'}">
+  <form [formGroup]="formularioGuiaTurismo" (ngSubmit)="agregarGuiaTurismo()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="numeroCedulaGuiaTurismo" label="Número de cédula:"
+             [required]="cedulaGuiaTurismoField"></label>
+      <div class="p-inputgroup">
+        <button type="button" pButton pRipple icon="pi pi-search"
+
+                (click)="cedulaGuiaTurismoField.updateValueAndValidity()"></button>
+        <input pInputText id="numeroCedulaGuiaTurismo" formControlName="cedula" pKeyFilter="int">
+      </div>
+      <small appErrorMessage
+             [errors]="cedulaGuiaTurismoField.errors"
+             [touched]="cedulaGuiaTurismoField.touched"
+             [dirty]="cedulaGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="esGuiaTurismoField.value" class="field">
+      <label appLabel for="nombresGuiaTurismo" label="Nombres:"
+             [required]="nombresGuiaTurismoField"></label>
+      <!--      <input pInputText id="nombresGuiaTurismo" formControlName="nombres">-->
+      <p>{{nombresGuiaTurismoField.value}}</p>
+      <small appErrorMessage
+             [errors]="nombresGuiaTurismoField.errors"
+             [touched]="nombresGuiaTurismoField.touched"
+             [dirty]="nombresGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="esGuiaTurismoField.value" class="field">
+      <label appLabel for="licenciasGuiaTurismo" label="Licencias:"
+             [required]="licenciasGuiaTurismoField"></label>
+      <!--      <input pInputText id="licenciasGuiaTurismo" formControlName="licencias">-->
+      <ul>
+        <li *ngFor="let licencia of licenciasGuiaTurismoField.value">
+          Número Credencial: <b>{{licencia.numeroCredencial}}</b> - Fecha Caducidad: <b>{{licencia.fechaCaducidad}}</b>
+        </li>
+      </ul>
+      <small appErrorMessage
+             [errors]="licenciasGuiaTurismoField.errors"
+             [touched]="licenciasGuiaTurismoField.touched"
+             [dirty]="licenciasGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div class="field">
+      <p-tag *ngIf="esGuiaTurismoField.value === false && cedulaGuiaTurismoField?.value?.length===10" severity="danger"
+             value="No es Guía de Turismo"></p-tag>
+      <!--      <p-tag *ngIf="nombresGuiaTurismoField.value && !esGuiaTurismoField.value" severity="danger" value="No es Guía de Turismo"></p-tag>-->
+      <small appErrorMessage
+             [errors]="esGuiaTurismoField.errors"
+             [touched]="esGuiaTurismoField.touched"
+             [dirty]="esGuiaTurismoField.dirty">
+      </small>
+    </div>
+
+    <div *ngIf="esGuiaTurismoField.value" class="field">
+      <button pButton
+              class=""
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Agregar Compania Transporte Turístico"
+          [(visible)]="dialogoNuevoCompaniasTransporteTuristico"
+          [modal]="true"
+          [style]="{width: '50vw',height: '50vw'}">
+  <form [formGroup]="formularioCompaniaTransporteTuristico" (ngSubmit)="agregarCompaniaTransporteTuristico()"
+        class="p-fluid">
+    <div class="field">
+      <label appLabel for="numeroRucCompaniaTransporteTuristico" label="Número de RUC:"
+             [required]="numeroRucCompaniaTransporteTuristicoField"></label>
+      <div class="p-inputgroup">
+        <button type="button" pButton pRipple icon="pi pi-search"
+                [loading]="(cargado$|async)!"
+                (click)="numeroRucCompaniaTransporteTuristicoField.updateValueAndValidity()"></button>
+        <input pInputText id="numeroRucCompaniaTransporteTuristico" formControlName="ruc"
+               pKeyFilter="int">
+      </div>
+      <small appErrorMessage
+             [errors]="numeroRucCompaniaTransporteTuristicoField.errors"
+             [touched]="numeroRucCompaniaTransporteTuristicoField.touched"
+             [dirty]="numeroRucCompaniaTransporteTuristicoField.dirty">
+      </small>
+    </div>
+    <div *ngIf="numeroRucCompaniaTransporteTuristicoField.valid" class="field">
+      <label appLabel for="tipo" label="Clasificación:"
+             [required]="tipoField"></label>
+
+      <p-select id="tipo"
+                  formControlName="tipo"
+                  dataKey="id"
+                  [options]="transporteTipos"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+
+      <small appErrorMessage
+             [errors]="tipoField.errors"
+             [touched]="tipoField.touched"
+             [dirty]="tipoField.dirty">
+      </small>
+    </div>
+    <div *ngIf="tipoField.value" class="field">
+      <label for="numeroAutorizacion">{{numeroAutorizacionLabel}}</label>
+
+      <input pInputText id="numeroAutorizacion" formControlName="numeroAutorizacion">
+
+      <small appErrorMessage
+             [errors]="numeroAutorizacionField.errors"
+             [touched]="numeroAutorizacionField.touched"
+             [dirty]="numeroAutorizacionField.dirty">
+      </small>
+    </div>
+    <div *ngIf="numeroRucCompaniaTransporteTuristicoField.valid" class="field">
+      <app-datos-sri [numeroRuc]="numeroRucCompaniaTransporteTuristicoField"
+                     (rucOutput)="llenarCompaniaTransporteTuristico($event)"></app-datos-sri>
+    </div>
+    <div *ngIf="razonSocialCompaniaTransporteTuristicoField.value" class="field">
+      <button pButton
+              class=""
+              label="Guardar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>

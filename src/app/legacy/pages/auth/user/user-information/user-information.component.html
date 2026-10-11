@@ -1,0 +1,71 @@
+<app-skeleton *ngIf="isLoadingSkeleton" [type]="'card'"></app-skeleton>
+<form *ngIf="!isLoadingSkeleton" [formGroup]="formUser" (ngSubmit)="onSubmitUserInformation()" class="p-fluid">
+  <!--username-->
+  <!--  <div class="field">-->
+  <!--    <label appLabel for="username" label="Username:" [required]="usernameField"></label>-->
+  <!--    <input pInputText type="text" id="username" formControlName="username" pKeyFilter="alphanum"/>-->
+  <!--    <small appErrorMessage-->
+  <!--           [errors]="usernameField.errors"-->
+  <!--           [touched]="usernameField.touched"-->
+  <!--           [dirty]="usernameField.dirty">-->
+  <!--    </small>-->
+  <!--  </div>-->
+  <!--name-->
+  <div class="formgrid grid">
+    <div *ngIf="identificationField.value" class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+      <label appLabel for="identification" label="Identificación:" [required]="identificationField"></label>
+      <input pInputText type="text" id="identification" formControlName="identification"/>
+      <small appErrorMessage
+             [errors]="identificationField.errors"
+             [touched]="identificationField.touched"
+             [dirty]="identificationField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+      <label appLabel for="name" label="Nombres:" [required]="nameField"></label>
+      <input pInputText type="text" id="name" formControlName="name"/>
+      <small appErrorMessage
+             [errors]="nameField.errors"
+             [touched]="nameField.touched"
+             [dirty]="nameField.dirty">
+      </small>
+    </div>
+    <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
+      <label appLabel for="email" label="Correo Electrónico:" [required]="emailField"></label>
+      <input pInputText type="email" id="email" formControlName="email" class="mb-1"/>
+      <small appErrorMessage
+             [errors]="emailField.errors"
+             [touched]="emailField.touched"
+             [dirty]="emailField.dirty">
+      </small>
+    </div>
+  </div>
+  <div *ngIf="authService.role.name==='externo'" class="field">
+    <a pButton pRipple target="_blank" label="Descargar Términos y Condiciones"
+       href="assets/archivos/terminos_condiciones.pdf" icon="pi pi-download"></a>
+  </div>
+  <div *ngIf="authService.role.name==='tecnico_zonal' || authService.role.name==='especialista_zonal'" class="field">
+    <a pButton pRipple target="_blank" label="Descargar Manual de Usuario"
+       href="assets/archivos/manual_interno.pdf" icon="pi pi-download"></a>
+  </div>
+  <!--email && phone-->
+  <!--  <div class="formgrid grid">-->
+  <!--    <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">-->
+  <!--      <label appLabel for="phone" label="Phone:" [required]="phoneField"></label>-->
+  <!--      <input pInputText type="text" id="phone" formControlName="phone"/>-->
+  <!--      <small appErrorMessage-->
+  <!--             [errors]="phoneField.errors"-->
+  <!--             [touched]="phoneField.touched"-->
+  <!--             [dirty]="phoneField.dirty">-->
+  <!--      </small>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <!--submit-->
+  <!--  <div class="field">-->
+  <!--    <button pButton pRipple id="submitUserInformation" type="submit"-->
+  <!--            label="Update User Information"-->
+  <!--            icon="pi pi-save"-->
+  <!--            [loading]="(loaded$|async)!"></button>-->
+  <!--  </div>-->
+</form>

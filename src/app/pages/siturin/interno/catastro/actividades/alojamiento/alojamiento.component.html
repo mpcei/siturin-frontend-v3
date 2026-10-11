@@ -1,0 +1,362 @@
+<p-card header="Capacidades del Establecimiento">
+  <p-table
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    editMode="row"
+    [value]="habitacionesField.value"
+    [columns]="columnasTipoHabitacionTabla"
+    [loading]="(cargado$|async)!">
+    <ng-template pTemplate="caption">
+      <div class="formgrid grid">
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <h3>Total Habitaciones: {{totalHabitaciones}}</h3>
+          <small *ngIf="clasificacion.value?.minHabitaciones && clasificacion.value?.minHabitaciones>totalHabitaciones"
+                 class="p-error">
+            No cumple con el mínimo ({{clasificacion.value?.minHabitaciones}}) de habitaciones
+          </small>
+          <small *ngIf="clasificacion.value?.maxHabitaciones && clasificacion.value?.maxHabitaciones<totalHabitaciones"
+                 class="p-error">
+            No cumple con el máximo ({{clasificacion.value?.maxHabitaciones}}) de habitaciones
+          </small>
+        </div>
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <h3>Total Camas: {{totalCamas}}</h3>
+        </div>
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <h3>Total Plazas: {{totalPlazas}}</h3>
+          <small *ngIf="clasificacion.value?.minPlazas && clasificacion.value?.minPlazas>totalPlazas"
+                 class="p-error">
+            No cumple con el mínimo ({{clasificacion.value?.minPlazas}}) de plazas
+          </small>
+          <small *ngIf="clasificacion.value?.maxPlazas && clasificacion.value?.maxPlazas<totalPlazas" class="p-error">
+            No cumple con el máximo ({{clasificacion.value?.maxPlazas}}) de plazas
+            <!--            para la clasificación {{clasificacion.value?.nombre}}-->
+          </small>
+        </div>
+        <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
+          <button *ngIf="esEditable && actividad.value?.codigo ==='alojamiento_continente'" pButton type="button"
+                  class="p-button-success"
+                  label="Agregar Tipo de Habitación"
+                  icon="pi pi-plus"
+                  (click)="mostrarDialogoNuevaHabitacion=true;indiceHabitacion=-1">
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+        <th class="text-center">
+          Opciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-rowIndex="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.tipoHabitacion?.nombre}}
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.tipoHabitacion?.nombre}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.habitaciones}}
+              <!--            <p-inputNumber id="habitaciones"-->
+              <!--                           [(ngModel)]="rowData.habitaciones"-->
+              <!--                           [showButtons]="true"-->
+              <!--                           [min]="1"-->
+              <!--                           [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>-->
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.habitaciones}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.camas}}
+              <!--            <input pInputText type="text" [(ngModel)]="rowData.camas">-->
+              <!--            <p-inputNumber id="camas"-->
+              <!--                           [(ngModel)]="rowData.camas"-->
+              <!--                           [showButtons]="true"-->
+              <!--                           [min]="1"-->
+              <!--                           [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>-->
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.camas}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              {{rowData.plazas}}
+              <!--            <p-inputNumber id="plazas"-->
+              <!--                           [(ngModel)]="rowData.plazas"-->
+              <!--                           [showButtons]="true"-->
+              <!--                           [min]="1"-->
+              <!--                           [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>-->
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.plazas}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td *ngIf="authService.role.name==='dac' || actividad.value?.codigo ==='alojamiento_continente'"
+            style="text-align:center">
+          <button *ngIf="esEditable" pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                  (click)="editarHabitacion(rowIndex,rowData)" class="p-button-warn p-button-rounded mr-2"></button>
+          <button *ngIf="esEditable" pButton pRipple type="button" icon="pi pi-trash" pTooltip="Eliminar"
+                  (click)="eliminarHabitacion(rowIndex)" class="p-button-danger p-button-rounded"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-card *ngIf="actividad.value.codigo==='alojamiento_galapagos'" header="Tarifario Rack">
+  <div *ngIf="habitacionesField.value?.length">
+    <!--Tarifario Rack año en curso-->
+    <div class="p-fluid">
+      <div class="text-center">
+        <h1>Tarifario Rack año en curso
+          <!--          ({{tramiteAlojamiento.anioRack}})-->
+          <!--          <p-tag *ngIf="tieneTarifarioRackVigente" severity="success">Declarado</p-tag>-->
+          <!--          <p-tag *ngIf="!tieneTarifarioRackVigente" severity="danger">No ha declarado Tarifaro Rack año en curso</p-tag>-->
+        </h1>
+      </div>
+      <p-divider></p-divider>
+
+      <div class="formgrid grid">
+        <p-panel *ngFor="let habitacion of habitacionesField.value;let index=index"
+                 [header]="'Habitación: '+ habitacion.tipoHabitacion?.nombre"
+                 class="field xl:col-3 lg:col-3 md:col-4 sm:col-12">
+          <div *ngIf="habitacion?.habitacionTarifa; else blockElse" class="p-fluid">
+            <div class="formgrid grid">
+              <div class="field">
+                <span>Año Declaración:</span> <b> {{habitacion.habitacionTarifa.anio}}</b>
+              </div>
+              <div class="field">
+                <span>Fecha Declaración:</span> <b> {{habitacion.habitacionTarifa.fechaDeclaracion | date}}</b>
+              </div>
+              <div class="field">
+                <label appLabel for="habitacionTemporadaAlta" label="Habitación Temporada Alta:"></label>
+                <b id="habitacionTemporadaAlta"> {{habitacion.habitacionTarifa.habitacionTemporadaAlta}}</b>
+              </div>
+              <div class="field">
+                <label appLabel for="habitacionTemporadaBaja" label="Habitación Temporada Baja:"></label>
+                <b id="habitacionTemporadaBaja"> {{habitacion.habitacionTarifa.habitacionTemporadaBaja}}</b>
+              </div>
+            </div>
+            <div class="formgrid grid">
+              <div class="field">
+                <label appLabel for="personaTemporadaAlta" label="Persona Temporada Alta:"></label>
+                <b id="personaTemporadaAlta"> {{habitacion.habitacionTarifa.personaTemporadaAlta}}</b>
+              </div>
+              <div class="field">
+                <label appLabel for="personaTemporadaBaja" label="Persona Temporada Baja:"></label>
+                <b id="personaTemporadaBaja"> {{habitacion.habitacionTarifa.personaTemporadaBaja}}</b>
+              </div>
+            </div>
+          </div>
+          <ng-template #blockElse>
+            <div class="panel-messages-warn">
+              <h3>No ha declarado el Tarifario Rack del año en curso</h3>
+            </div>
+          </ng-template>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+</p-card>
+
+<p-card header="Servicios Complementarios">
+  <p-table dataKey="id"
+           styleClass="p-datatable-striped"
+           [value]="serviciosComplementariosField.value"
+           [columns]="columnasServiciosComplementariosTabla"
+           [loading]="(cargado$|async)!">
+    <ng-template pTemplate="caption">
+      <div class="formgrid grid">
+        <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-12">
+
+        </div>
+        <div *ngIf="actividad.value?.codigo==='alojamiento_continente' && esEditable"
+             class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <button pButton type="button"
+                  class="p-button-success"
+                  label="Agregar Servicio Complementario"
+                  icon="pi pi-plus"
+                  (click)="mostrarDialogoNuevoServicioComplementario=true;indexServicioComplementario=-1;formularioServicioComplementario.reset()">
+          </button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+        <th class="text-center">
+          Opciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+      <tr>
+        <td>
+          {{rowData.clasificacion?.nombre}}
+        </td>
+        <td>
+          {{rowData.capacidad}}
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="esEditable" pButton pRipple type="button" icon="pi pi-pencil" pTooltip="Editar"
+                  (click)="editarServicioComplementario(rowData,rowIndex)"
+                  class="p-button-warn p-button-rounded mr-2"></button>
+          <button *ngIf="esEditable && actividad.value?.codigo==='alojamiento_continente' && esEditable" pButton pRipple
+                  type="button"
+                  icon="pi pi-trash" pTooltip="Eliminar"
+                  (click)="eliminarServicioComplementario(rowIndex)" class="p-button-danger p-button-rounded"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td [attr.colspan]="columns.length">
+          {{messageService.paginatorNoRecordsFound}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog header="Agregar Habitación" [(visible)]="mostrarDialogoNuevaHabitacion" [modal]="true"
+          [style]="{width: '50vw'}">
+  <form [formGroup]="formularioHabitacion" (ngSubmit)="agregarHabitacion()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="habitacionTipo" label="Tipo:" [required]="habitacionTipoField"></label>
+      <h2 *ngIf="actividad.value?.codigo ==='alojamiento_galapagos'">{{habitacionTipoField.value?.nombre}}</h2>
+      <p-select *ngIf="actividad.value?.codigo ==='alojamiento_continente'" id="habitacionTipo"
+                  dataKey="id"
+                  formControlName="tipoHabitacion"
+                  [options]="tipoHabitaciones"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="habitacionTipoField.errors"
+             [touched]="habitacionTipoField.touched"
+             [dirty]="habitacionTipoField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="habitacionHabitaciones" label="Habitaciones:"
+             [required]="habitacionHabitacionesField"></label>
+      <p-inputNumber id="habitacionHabitaciones"
+                     formControlName="habitaciones"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esCama"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionHabitacionesField.errors"
+             [touched]="habitacionHabitacionesField.touched"
+             [dirty]="habitacionHabitacionesField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="camasNueva" label="Camas:" [required]="habitacionCamasField"></label>
+      <p-inputNumber id="camasNueva"
+                     formControlName="camas"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esHabitacion"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionCamasField.errors"
+             [touched]="habitacionCamasField.touched"
+             [dirty]="habitacionCamasField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="habitacionPlazas" label="Plazas:" [required]="habitacionPlazasField"></label>
+      <p-inputNumber id="habitacionPlazas"
+                     formControlName="plazas"
+                     [showButtons]="true"
+                     [min]="1"
+                     [disabled]="!habitacionTipoField.value?.esPlaza"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="habitacionPlazasField.errors"
+             [touched]="habitacionPlazasField.touched"
+             [dirty]="habitacionPlazasField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <button pButton
+              class=""
+              label="Agregar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Agregar Servicio Complementario" [(visible)]="mostrarDialogoNuevoServicioComplementario"
+          [modal]="true" [style]="{width: '50vw',height: '30vw'}">
+  <form [formGroup]="formularioServicioComplementario" (ngSubmit)="agregarServicioComplementario()" class="p-fluid">
+    <div class="field">
+      <label appLabel for="clasificacion" label="Clasificación:" [required]="clasificacionField"></label>
+      <p-select id="clasificacion"
+                  dataKey="id"
+                  formControlName="clasificacion"
+                  [options]="clasificaciones"
+                  optionLabel="nombre"
+                  [filter]="true"
+                  filterBy="nombre"
+                  placeholder="Seleccione">
+      </p-select>
+      <small appErrorMessage
+             [errors]="clasificacionField.errors"
+             [touched]="clasificacionField.touched"
+             [dirty]="clasificacionField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <label appLabel for="capacidad" label="Capacidad en número de personas:"
+             [required]="capacidadField"></label>
+      <p-inputNumber id="capacidad"
+                     formControlName="capacidad"
+                     [showButtons]="true"
+                     [min]="1"></p-inputNumber>
+      <small appErrorMessage
+             [errors]="capacidadField.errors"
+             [touched]="capacidadField.touched"
+             [dirty]="capacidadField.dirty">
+      </small>
+    </div>
+    <div class="field">
+      <button pButton
+              class=""
+              label="Agregar"
+              icon="pi pi-save">
+      </button>
+    </div>
+  </form>
+</p-dialog>

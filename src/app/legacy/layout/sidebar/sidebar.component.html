@@ -1,0 +1,118 @@
+<div id="sidebar" class="sidebar" [ngClass]="{'close':closed}" (mouseleave)="closeMenu()">
+  <div class="logo-details">
+    <!--    <a *ngIf="closed" href="javascript:void(0);"><i class="pi pi-arrow-right" (click)="showCloseMenu()"></i></a>-->
+    <!--    <a *ngIf="!closed" href="javascript:void(0);"><i class="pi pi-arrow-left" (click)="showCloseMenu()"></i></a>-->
+    <span class="logo_name ml-3"> SITURIN</span>
+    <span class="logo_name ml-3">V {{ version }}</span>
+    <!--    <a *ngIf="!closed" href="javascript:void(0);">-->
+    <!--      <i class='pi'-->
+    <!--         [ngClass]="{'pi-lock-open':!closedLock && !closed,'pi-lock':closedLock && !closed}"-->
+    <!--         (click)="closedLock=!closedLock">-->
+    <!--      </i>-->
+    <!--    </a>-->
+  </div>
+  <ul class="nav-links">
+    <!--Dashboard-->
+    <li>
+      <div class="icon-link">
+        <a (click)="redirectToDashboard()">
+          <i class="pi pi-home"></i>
+          <span class="link_name">Inicio</span>
+        </a>
+      </div>
+    </li>
+
+    <!--Simulador-->
+    <li>
+      <div class="icon-link">
+        <a [routerLink]="['/siturin/simulador']">
+          <i class="pi pi-calculator"></i>
+          <span class="link_name">Simulador Normativa</span>
+        </a>
+      </div>
+    </li>
+
+    <!--Menus-->
+    <li [id]="index" *ngFor="let item of menus,let index = index" [ngClass]="{'showMenu':showedMenu}"
+        (mouseenter)="showCloseMenu()">
+      <div class="icon-link">
+        <a [routerLink]="item.routerLink">
+          <i [class]="item.icon"></i>
+          <span class="link_name">{{ item.label }}</span>
+        </a>
+        <i *ngIf="item?.children?.length" class="pi pi-chevron-down arrow" (click)="showSubMenu(index)"></i>
+      </div>
+      <!--      <ul class="sub-menu">-->
+      <!--        <li>-->
+      <!--          <a class="link_name" [routerLink]="item.routerLink">{{item.label}}</a>-->
+      <!--          <a *ngFor="let subItem of item.children" [routerLink]="subItem.routerLink">{{subItem.label}}</a>-->
+      <!--        </li>-->
+      <!--      </ul>-->
+    </li>
+
+    <!--My Profile-->
+    <!--    <li>-->
+    <!--      <div class="icon-link">-->
+    <!--        <button pButton class="p-button-info p-button-text" (click)="redirectProfile()">-->
+    <!--          <i class="pi pi-id-card"></i>-->
+    <!--          <span class="link_name">Mi Perfil</span>-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </li>-->
+
+    <!--Profile-->
+    <li>
+      <div class="icon-link">
+        <i class="pi pi-user"></i>
+        <a pButton class="p-button-warn p-button-text" (click)="redirectProfile()">
+          <p>{{ authService.auth ? authService.auth.name : '' }}</p>
+        </a>
+      </div>
+    </li>
+
+    <li *ngIf="authService.role?.name==='externo'">
+      <div class="icon-link">
+        <i class="pi pi-book"></i>
+        <a pButton pRipple target="_blank" label="Descargar Manual de Usuario"
+           class="p-button-warn p-button-text"
+           href="../../../assets/archivos/manual_externo.pdf"></a>
+      </div>
+    </li>
+
+    <!--Logout-->
+    <li>
+      <div class="icon-link">
+        <button pButton class="p-button-danger p-button-text" (click)="logout()">
+          <i class="pi pi-sign-out"></i>
+          <span class="link_name">Cerrar Sesión</span>
+        </button>
+      </div>
+    </li>
+
+    <!--Profile-->
+    <!--    <li>-->
+    <!--      <div class="profile-details">-->
+    <!--        <div class="profile-content">-->
+    <!--          <a href="javascript:void(0);" (click)="showCloseMenu()">-->
+    <!--            <img src="assets/images/layout/sidebar/user-profile.png" alt="profileImg">-->
+    <!--          </a>-->
+    <!--        </div>-->
+    <!--        <div class="name-job">-->
+    <!--          <a href="javascript:void(0);" (click)="redirectProfile()" class="profile_name">-->
+    <!--            <small>{{authService.auth ? authService.auth.username.split('@')[0] : ''}}</small>-->
+    <!--          </a>-->
+    <!--          <a href="javascript:void(0);" (click)="redirectProfile()" class="profile_name">-->
+    <!--            <small>@{{authService.auth ? authService.auth.username.split('@')[1] : ''}}</small>-->
+    <!--          </a>-->
+    <!--          <a href="javascript:void(0);" class="job" (click)="redirectProfile()">Mi Perfil</a>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </li>-->
+  </ul>
+</div>
+
+<p-dialog [(visible)]="logoutDialog" [modal]="true" [closable]="false" [style]="{width:'30%'}">
+  <p class="text-center">Cerrando Sesión</p>
+  <br>
+  <app-progress-bar [message]="'Por favor espere...'"></app-progress-bar>
+</p-dialog>

@@ -34,6 +34,11 @@ export const appRoutes: Routes = [
         loadComponent: () => import('@layout/component/app.layout-blank'),
         children: [{ path: '', loadChildren: () => import('./app/pages/public/public.routes') }]
     },
+    {
+        path: MY_ROUTES.siturinPage.base,
+        loadComponent: () => import('@layout/component/app.layout-blank'),
+        loadChildren: () => import('./app/pages/siturin/siturin.routes')
+    },
 
     { path: '**', redirectTo: MY_ROUTES.errorPages.notFound.absolute }
 ];

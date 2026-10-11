@@ -1,0 +1,51 @@
+<p-panel header="Tipo de Establecimiento">
+  <form class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="tipoEstablecimiento" label="Tipo de Establecimiento:"></label>
+        <input pInputText id="tipoEstablecimiento" [value]="tramiteAlimentoBebida?.tipoEstablecimiento?.nombre" disabled>
+      </div>
+      <div
+        *ngIf="tramiteAlimentoBebida?.tipoEstablecimiento?.codigo==='cadena' || tramiteAlimentoBebida?.tipoEstablecimiento?.codigo==='franquicia'"
+        class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="nombreEstablecimiento" label="Nombre de la Franquicia o Cadena:"></label>
+        <input pInputText id="nombreEstablecimiento" [value]="tramiteAlimentoBebida.nombreEstablecimiento" disabled>
+      </div>
+    </div>
+  </form>
+</p-panel>
+
+<p-card header="Capacidades del Establecimiento">
+  <form class="p-fluid">
+    <div class="formgrid grid">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalMesas" label="Mesas:"></label>
+        <input pInputText id="totalMesas" [value]="tramiteAlimentoBebida?.totalMesas" disabled>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
+        <label appLabel for="totalCapacidades" label="Capacidad en número de personas:"></label>
+        <input pInputText id="totalCapacidades" [value]="tramiteAlimentoBebida?.totalCapacidades" disabled>
+      </div>
+    </div>
+  </form>
+</p-card>
+
+<p-card header="Tipos de Servicios">
+  <div class="field">
+    <ul>
+      <li *ngFor="let tipoServicio of tramiteAlimentoBebida?.tiposServicio">
+        {{tipoServicio?.nombre}}
+      </li>
+    </ul>
+  </div>
+</p-card>
+
+<p-card header="Tipos de Cocinas">
+  <div class="field">
+    <ul>
+      <li *ngFor="let tipoCocina of tramiteAlimentoBebida?.tiposCocina">
+        {{tipoCocina?.nombre}}
+      </li>
+    </ul>
+  </div>
+</p-card>
