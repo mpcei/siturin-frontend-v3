@@ -25,6 +25,7 @@ import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
 import { debounceTime } from 'rxjs';
 import { AutoFocus } from 'primeng/autofocus';
+import { AuthHttpService as AuthHttpServiceLegacy } from '@/legacy/services/auth/auth-http.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -64,6 +65,7 @@ export default class SignUpComponent implements OnInit {
     private readonly catalogueHttpService = inject(CatalogueHttpService);
     private readonly catalogueService = inject(CatalogueService);
     private readonly authHttpService = inject(AuthHttpService);
+    private readonly authHttpServiceLegacy = inject(AuthHttpServiceLegacy);
     private readonly router = inject(Router);
 
     constructor() {
@@ -247,6 +249,13 @@ export default class SignUpComponent implements OnInit {
     }
 
     private signUpExternal() {
+        const payloadLegacy={
+            username:this.form.value['email'],
+            ruc: this.form.value['ruc'],
+            confirmationPassword:this.form.value['passwordConfirm'],
+            newPassword:this.form.value['password']
+        }
+        this.authHttpServiceLegacy.registerExternalUser(payloadLegacy).subscribe((response) => {console.log(response)});
         this.authHttpService.signUpExternal(this.form.value).subscribe({
             next: (_) => {
                 this.form.reset();
