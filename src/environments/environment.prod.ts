@@ -1,4 +1,4 @@
-const HOST = 'https://api-siturin.economicoproductivo.gob.ec:8443/public';
+const HOST = 'https://mailpit.economicoproductivo.gob.ec/public';
 export const environment = {
     production: true,
     APP_URL: 'https://siturin.economicoproductivo.gob.ec',
