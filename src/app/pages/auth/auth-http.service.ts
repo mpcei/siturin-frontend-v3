@@ -74,7 +74,7 @@ export class AuthHttpService {
             // 6. Asignación de variables de sesión
             tap((response: SignInResponseInterface) => {
                 const { data } = response;
-
+//this.authHttpLegacy.loginLegacy(response.loginLegacy)
                 this.authService.accessToken = data.accessToken;
                 this.authService.refreshToken = data.refreshToken;
                 this.authService.auth = data.auth;

@@ -36,7 +36,7 @@ export const appRoutes: Routes = [
     },
     {
         path: MY_ROUTES.siturinPage.base,
-        loadComponent: () => import('@layout/component/app.layout-blank'),
+        loadComponent: () => import('@layout/component/app.layout-main'),
         loadChildren: () => import('./app/pages/siturin/siturin.routes')
     },
 

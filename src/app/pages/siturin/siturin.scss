@@ -1,0 +1,149 @@
+* {
+//   margin: 0;
+//   padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+//
+body {
+//   position: relative;
+//   min-height: 100vh;
+//   width: 100%;
+}
+
+.p-toolbar {
+  //background: rgba(63, 81, 181, 0.10) !important;
+  background: #3f51b51f !important;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.p-card {
+  //background: rgba(63, 81, 181, 0.03) !important;
+  margin-top: 5px;
+  //background: #3f51b51f !important;
+}
+
+.p-panel .panel-header {
+  color: rgba(6, 27, 97, 0.897) !important;
+}
+
+.p-panel i.pi {
+  color: rgba(6, 27, 97, 0.897) !important;
+  font-size: 1.5rem;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+  //background: rgba(63, 81, 181, 0.01) !important;
+  margin-top: 5px;
+  color: rgba(6, 27, 97, 0.897) !important;
+  //background: #3f51b51f !important;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link i {
+  font-size: 1.5rem;
+}
+
+.p-paginator {
+  //background: rgba(232, 238, 255, 0.5);
+  margin-bottom: 5px;
+}
+
+.p-button {
+  //background: rgba(63, 81, 181, 0.92) !important;
+  //background: #3F51B5 !important;
+  //color: white !important;
+}
+
+.p-button.p-button-success {
+  //background: rgba(25, 135, 84, 0.92) !important;
+  //background: #689f38 !important;
+}
+
+.p-button.p-button-warning {
+  //background: rgba(255, 193, 7, 0.92) !important;
+  //background: rgba(255, 224, 138, 1) !important;
+  //background: #fbc02d !important;
+}
+
+.p-button.p-button-danger {
+  //background: rgba(255, 77, 79, 0.92) !important;
+  //background: #d32f2f !important;
+}
+
+.p-button.p-button-info {
+  //background: rgba(62, 142, 208, 0.92) !important;
+}
+
+.p-button.p-button-secondary {
+  //background: rgba(108, 117, 125, 0.92) !important;
+}
+
+.p-button.p-button-secondary .p-button-outlined:enabled:hover {
+  //background: #ffffff !important;
+  //color: rgba(108, 117, 125, 0.92) !important;
+}
+
+.p-button.p-button-help {
+  //background: rgb(156, 39, 176) !important;
+}
+
+.panel-messages-secondary {
+  background: #d1e2f0;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.panel-messages-info {
+  background: #B3E5FC;
+  color: #01579B;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.panel-messages-success {
+  background: #689F38;
+  color: white;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.panel-messages {
+  background: white;
+  color: black;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.panel-messages-warn {
+  background: #FFECB3;
+  color: #7f6003;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.panel-messages-danger {
+  background: #f8d7da;
+  color: #721c24;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}

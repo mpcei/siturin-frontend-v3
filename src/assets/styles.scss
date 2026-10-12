@@ -7,8 +7,8 @@
 @use "@fortawesome/fontawesome-free/css/all.css";
 
 /* 3. Tailwind (Debe ir después de los @use de Sass para no romper la regla) */
+@use '../app/pages/siturin/siturin.scss';
 @import './tailwind.css';
-
 @layer components {
     .custom-form-card {
         @apply p-6 rounded-lg shadow-md mt-2;

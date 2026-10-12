@@ -290,54 +290,54 @@ export const MY_ROUTES = {
         },
         externo: {
             base: 'externo',
-            absolute: '/main/siturin/externo',
+            absolute: '/siturin/externo',
             procesoAcreditacion: {
                 base: 'externo/proceso-acreditacion',
-                absolute: '/main/siturin/externo/proceso-acreditacion'
+                absolute: '/siturin/externo/proceso-acreditacion'
             },
             tarifarioRack: {
                 base: 'externo/proceso-acreditacion/tarifario-rack',
-                absolute: '/main/siturin/externo/proceso-acreditacion/tarifario-rack'
+                absolute: '/siturin/externo/proceso-acreditacion/tarifario-rack'
             },
             establecimientos: {
                 base: 'externo/establecimientos',
-                absolute: '/main/siturin/externo/establecimientos'
+                absolute: '/siturin/externo/establecimientos'
             },
             dashboard: {
                 base: 'externo/dashboard',
-                absolute: '/main/siturin/externo/dashboard'
+                absolute: '/siturin/externo/dashboard'
             }
         },
         interno: {
             base: 'interno',
-            absolute: '/main/siturin/interno',
+            absolute: '/siturin/interno',
             tecnicoZonal: {
                 base: 'interno/tecnico-zonal',
-                absolute: '/main/siturin/interno/tecnico-zonal'
+                absolute: '/siturin/interno/tecnico-zonal'
             },
             especialistaZonal: {
                 base: 'interno/especialista-zonal',
-                absolute: '/main/siturin/interno/especialista-zonal'
+                absolute: '/siturin/interno/especialista-zonal'
             },
             catastrosDac: {
                 base: 'interno/catastros-dac',
-                absolute: '/main/siturin/interno/catastros-dac'
+                absolute: '/siturin/interno/catastros-dac'
             },
             catastrosGad: {
                 base: 'interno/catastros-gad',
-                absolute: '/main/siturin/interno/catastros-gad'
+                absolute: '/siturin/interno/catastros-gad'
             },
             catastrosZonal: {
                 base: 'interno/catastros-zonal',
-                absolute: '/main/siturin/interno/catastros-zonal'
+                absolute: '/siturin/interno/catastros-zonal'
             },
             bitacora: {
                 base: 'interno/bitacora',
-                absolute: '/main/siturin/interno/bitacora'
+                absolute: '/siturin/interno/bitacora'
             },
             dashboard: {
                 base: 'interno/dashboard',
-                absolute: '/main/siturin/interno/dashboard'
+                absolute: '/siturin/interno/dashboard'
             }
         }
     }

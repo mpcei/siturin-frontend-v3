@@ -5,8 +5,6 @@ import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 
 const externoGuards = {
-    canActivate: [RoleGuard, ValidatedQuestionGuard],
-    data: { roles: [RolesEnum.EXTERNO] }
 };
 
 export default [

@@ -39,7 +39,7 @@ export class RolesHttpService {
   findAll(page: number = 0, search: string = ''): Observable<RoleModel[]> {
     const url = this.API_URL;
 
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     const params = new HttpParams()
       .append('page', page)
       .append('search', search);
@@ -58,9 +58,10 @@ export class RolesHttpService {
 
   findOne(id: string): Observable<RoleModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
