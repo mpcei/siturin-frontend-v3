@@ -22,5 +22,5 @@ export const environment = {
     API_URL_INTERNO: `${HOST}/api/v1/public`,
     URL_VALIDADOR_DOCUMENTO: 'http://siturin-pruebas.economicoproductivo.gob.ec/document-validator?q=',
 
-    MINISTERIO_UPPER: 'MINISTERIO DE PRODUCCIÓN, COMERCIO EXTERIOR E INVERSIONES'
+    MINISTERIO_UPPER: 'MINISTERIO DE DESARROLLO ECONÓMICO Y PRODUCTIVO'
 };
