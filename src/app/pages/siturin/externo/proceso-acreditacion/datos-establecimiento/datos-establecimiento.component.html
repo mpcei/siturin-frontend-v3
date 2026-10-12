@@ -213,13 +213,13 @@
       </div>
       <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
         <label appLabel for="latitud" label="Latitud:" [required]="latitudField"></label>
-        <input *ngIf="esEditableUbicacion" pInputText id="latitud" formControlName="latitud" [disabled]="!esEditableUbicacion">
+        <input *ngIf="esEditableUbicacion" pInputText id="latitud" formControlName="latitud" [disabled]="true">
         <input *ngIf="!esEditableUbicacion" pInputText id="latitud2" [value]="establecimientoSeleccionado.ubicacion?.latitud"
                [disabled]="true">
       </div>
       <div class="field xl:col-2 lg:col-4 md:col-4 sm:col-12">
         <label appLabel for="longitud" label="Longitud:" [required]="longitudField"></label>
-        <input *ngIf="esEditableUbicacion" pInputText id="longitud" formControlName="longitud">
+        <input *ngIf="esEditableUbicacion" pInputText id="longitud" formControlName="longitud" [disabled]="true">
         <input *ngIf="!esEditableUbicacion" pInputText id="longitud2" [value]="establecimientoSeleccionado.ubicacion?.longitud"
                [disabled]="true">
       </div>
