@@ -33,7 +33,7 @@
   </form>
   <div class="panel-messages">
     <div class="p-fluid">
-      <div class="formgrid grid">
+      <div class="flex flex-wrap gap-2 mb-3">
         <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
           <button pButton type="button" label="Sincronizar Catastros"
                   class="p-button-info mr-2"
@@ -64,11 +64,11 @@
         <!--      </p-select>-->
       </div>
     </div>
-    <div class="grid">
-      <div class="xl:col-6 lg:col-6 md:col-6 sm:col-12">
-        <form [formGroup]="filtro" class="p-fluid">
-          <div class="formgrid grid">
-            <div class="xl:col-6">
+    <div class="caption-container">
+      
+        <form [formGroup]="filtro" class="filtros-container">
+
+            <div class="filtro-tipo">
               <p-select id="actividad"
                           dataKey="codigo"
                           formControlName="actividad"
@@ -93,14 +93,14 @@
                           optionLabel="nombre"
                           placeholder="Todos los Estados">
               </p-select>
-            </div>
+
           </div>
         </form>
-      </div>
-      <div class="xl:col-6">
-        <form [formGroup]="buscador" class="p-fluid">
-          <div class="formgrid grid">
-            <div class="xl:col-6">
+     
+
+        <form [formGroup]="buscador" class="filtros-container">
+
+            <div class="filtro-tipo">
               <p-select id="tipo"
                           dataKey="codigo"
                           formControlName="tipo"
@@ -110,16 +110,16 @@
                           placeholder="Seleccione">
               </p-select>
             </div>
-            <div class="xl:col-6">
-            <span class="p-input-icon-left">
+            <div class="filtro-valor">
+
              <i class="pi pi-search"></i>
              <input pInputText type="text" formControlName="valor"
                     [placeholder]="'Buscar por '+ tipoField.value?.nombre">
-            </span>
+
             </div>
-          </div>
+
         </form>
-      </div>
+
     </div>
   </div>
   <p-paginator
