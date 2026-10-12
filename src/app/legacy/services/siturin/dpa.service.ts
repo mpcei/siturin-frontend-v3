@@ -35,6 +35,7 @@ export class DpaService {
   }
 
   verificarDpa() {
+    
     if (!this.dpa) {
       this.dpaHttpService.obtenerDpa().subscribe((dpa) => {
         this.dpa = dpa;

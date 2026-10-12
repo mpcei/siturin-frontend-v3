@@ -32,9 +32,10 @@ export class TramitesHttpService {
 
   obtenerTramiteCatastroSeleccionado(tramiteId: number = 0): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/catastros/seleccionado`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponsePaginator>(url).pipe(
+    return this.httpClient.get<ServerResponsePaginator>(url, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -44,8 +45,9 @@ export class TramitesHttpService {
 
   devolverTramite(tramiteId: number, payload: AsignacionModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/devolver`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -56,8 +58,9 @@ export class TramitesHttpService {
 
   obtenerArchivosInspecciones(tramiteId: number): Observable<FileModel[]> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/archivos-inspecciones`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -67,8 +70,9 @@ export class TramitesHttpService {
 
   agendarTramiteUsuarioInterno(tramiteId: number, payload: InspeccionModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/agendar-usuario-interno`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -79,8 +83,9 @@ export class TramitesHttpService {
 
   agendarTramiteUsuarioExterno(tramiteId: number, payload: InspeccionModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/agendar-usuario-externo`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -91,8 +96,9 @@ export class TramitesHttpService {
 
   guardarTramiteFase1(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/fase1`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         // this.messageService.success(response);
@@ -103,8 +109,9 @@ export class TramitesHttpService {
 
   guardarTramiteFase2(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/fase2`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         // this.messageService.success(response);
@@ -115,8 +122,9 @@ export class TramitesHttpService {
 
   guardarTramiteInactivacion(tramiteId: number, payload: CatalogoModel[]): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/inactivacion`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -127,8 +135,9 @@ export class TramitesHttpService {
 
   guardarTramiteAlojamientoContinente(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/alojamiento-continente`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -139,8 +148,9 @@ export class TramitesHttpService {
 
   guardarTramiteAlimentoBebidaContinente(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/alimentos-bebidas-continente`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -151,8 +161,9 @@ export class TramitesHttpService {
 
   guardarTramiteOperacionIntermediacionContinente(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/operacion-intermediacion-continente`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -163,8 +174,9 @@ export class TramitesHttpService {
 
   guardarTramiteAlojamientoGalapagos(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/alojamiento-galapagos`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -175,8 +187,9 @@ export class TramitesHttpService {
 
   guardarTramiteAlojamientoCertificadoInactivacion(tramiteId: number, certificadoInactivacion: FormData): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/certificado-inactivacion`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, certificadoInactivacion).pipe(
+    return this.httpClient.post<ServerResponse>(url, certificadoInactivacion, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -188,8 +201,9 @@ export class TramitesHttpService {
   guardarTramiteTransporte(payload: any): Observable<TramiteModel> {
     return of({});
     const url = `${this.API_URL_PRIVATE}/transportes`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -200,8 +214,9 @@ export class TramitesHttpService {
 
   guardarTramiteParques(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/parques`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -212,8 +227,9 @@ export class TramitesHttpService {
 
   guardarTramiteEventos(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/eventos`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -224,8 +240,9 @@ export class TramitesHttpService {
 
   guardarEstadoInspeccion(tramiteId: number, payload: FormData): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/${tramiteId}/estado-inspeccion`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -236,8 +253,9 @@ export class TramitesHttpService {
 
   obtenerActividadesPorZonaGeografica(zonaGeograficaId: number): Observable<CatalogoModel[]> {
     const url = `${this.API_URL_PUBLIC}/zonas-geograficas/${zonaGeograficaId}`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -247,8 +265,9 @@ export class TramitesHttpService {
 
   obtenerTramitesPorEstablecimiento(establecimientoId: number): Observable<TramiteModel[]> {
     const url = `${this.API_URL_PRIVATE}/establecimientos/${establecimientoId}`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -258,8 +277,9 @@ export class TramitesHttpService {
 
   obtenerTodosTramitesPorEstablecimiento(establecimientoId: number): Observable<TramiteModel[]> {
     const url = `${this.API_URL_PRIVATE}/establecimientos/${establecimientoId}/todos`;
+    const headers = new HttpHeaders().append('origin', 'siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -269,7 +289,7 @@ export class TramitesHttpService {
 
   findAll(page: number = 1, search: string = ''): Observable<CatalogueModel[]> {
     const url = this.API_URL_PUBLIC;
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     const params = new HttpParams().append('page', page).append('search', search);
     this.coreService.showLoad();
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
@@ -285,14 +305,16 @@ export class TramitesHttpService {
 
   findOne(id: string): Observable<UserModel> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => response.data)
     );
   }
 
   update(id: string, payload: UpdateUserDto): Observable<UserModel> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.put<ServerResponse>(url, payload).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.put<ServerResponse>(url, payload, {headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -302,7 +324,8 @@ export class TramitesHttpService {
 
   remove(id: string): Observable<boolean> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.delete<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -312,7 +335,8 @@ export class TramitesHttpService {
 
   removeAll(id: CatalogueModel[]): Observable<boolean> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.delete<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -335,11 +359,13 @@ export class TramitesHttpService {
 
   obtenerDocumento(catastroId: number, codigo: string) {
     const url = `${this.API_URL_PRIVATE}/${catastroId}/documentos/${codigo}/descargar`;
-    return this.httpClient.get(url, {responseType: 'blob' as 'json'});
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.get(url, {responseType: 'blob' as 'json', headers});
   }
 
   obtenerReporteTramitesPorUsuarioInterno(usuarioInternoId: number) {
     const url = `${this.API_URL_PRIVATE}/reportes/usuario-interno/${usuarioInternoId}`;
-    return this.httpClient.get(url, {responseType: 'blob' as 'json'});
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.get(url, {responseType: 'blob' as 'json', headers});
   }
 }

@@ -15,6 +15,7 @@ import { EstablecimientoModel } from '@/legacy/models/siturin';
 import { EstablecimientosService } from '@/legacy/services/siturin';
 
 @Component({
+    host: { class: 'siturin-legacy' },
     selector: 'app-proceso-acreditacion',
     templateUrl: './proceso-acreditacion.component.html',
     styleUrls: ['./proceso-acreditacion.component.scss'],

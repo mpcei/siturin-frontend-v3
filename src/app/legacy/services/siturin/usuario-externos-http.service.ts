@@ -25,7 +25,8 @@ export class UsuarioExternosHttpService {
 
   aceptarTerminosCondiciones(usuarioExternoId: number): Observable<UserModel> {
     const url = `${this.API_URL_PRIVATE}/${usuarioExternoId}/terminos-condiciones`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;

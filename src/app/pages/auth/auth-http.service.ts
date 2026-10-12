@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueInterface } from '@utils/interfaces';
 import { ActivityHttpService } from '@/pages/core/shared/services';
+import { AuthHttpService as AuthHttpServiceLegacy } from '@/legacy/services/auth';
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +26,7 @@ export class AuthHttpService {
     private readonly router = inject(Router);
     private readonly activityHttpService = inject(ActivityHttpService);
     private readonly coreSessionStorageService = inject(CoreSessionStorageService);
+    private readonly authHttpLegacy = inject(AuthHttpServiceLegacy);
 
     refreshToken() {
         const url = `${this.apiUrl}/refresh-token`;
@@ -74,7 +76,7 @@ export class AuthHttpService {
             // 6. Asignación de variables de sesión
             tap((response: SignInResponseInterface) => {
                 const { data } = response;
-//this.authHttpLegacy.loginLegacy(response.loginLegacy)
+                this.authHttpLegacy.loginLegacy(data.userLegacy)
                 this.authService.accessToken = data.accessToken;
                 this.authService.refreshToken = data.refreshToken;
                 this.authService.auth = data.auth;

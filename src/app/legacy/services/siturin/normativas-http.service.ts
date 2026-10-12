@@ -24,7 +24,8 @@ export class NormativasHttpService {
 
   create(payload: CreateUserDto): Observable<UserModel> {
     const url = `${this.API_URL_PUBLIC}`;
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -34,8 +35,9 @@ export class NormativasHttpService {
 
   obtenerNormativasPorClasificacion(clasificacionId: number): Observable<NormativaModel[]> {
     const url = `${this.API_URL_PUBLIC}/clasificaciones/${clasificacionId}`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -46,8 +48,9 @@ export class NormativasHttpService {
 
   obtenerNormativasPorCategoria(categoriaId: number): Observable<NormativaModel[]> {
     const url = `${this.API_URL_PUBLIC}/categorias/${categoriaId}`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -57,8 +60,9 @@ export class NormativasHttpService {
 
   obtenerNormativasPorCatalogo(catalogoId: number): Observable<NormativaModel[]> {
     const url = `${this.API_URL_PUBLIC}/catalogos/${catalogoId}`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     // this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         // this.coreService.hideLoad();
         return response.data
@@ -68,8 +72,9 @@ export class NormativasHttpService {
 
   obtenerNormativasModalidadesTurismoAventuraCTC(actividadId: number): Observable<NormativaModel[]> {
     const url = `${this.API_URL_PUBLIC}/modalidades-turismo-aventura-ctc?actividadId=${actividadId}`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data
@@ -79,7 +84,7 @@ export class NormativasHttpService {
 
   findAll(page: number = 1, search: string = ''): Observable<CatalogueModel[]> {
     const url = this.API_URL_PUBLIC;
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     const params = new HttpParams().append('page', page).append('search', search);
     this.coreService.showLoad();
     return this.httpClient.get<ServerResponse>(url, {headers, params}).pipe(
@@ -95,14 +100,16 @@ export class NormativasHttpService {
 
   findOne(id: string): Observable<UserModel> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => response.data)
     );
   }
 
   update(id: string, payload: UpdateUserDto): Observable<UserModel> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.put<ServerResponse>(url, payload).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.put<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -112,7 +119,8 @@ export class NormativasHttpService {
 
   remove(id: string): Observable<boolean> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.delete<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -122,7 +130,8 @@ export class NormativasHttpService {
 
   removeAll(id: CatalogueModel[]): Observable<boolean> {
     const url = `${this.API_URL_PUBLIC}/${id}`;
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.delete<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;

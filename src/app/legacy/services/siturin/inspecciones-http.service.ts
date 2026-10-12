@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient,HttpHeaders} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -24,8 +24,9 @@ export class InspeccionesHttpService {
 
   obtenerInspeccionesPorTramiteTodos(tramiteId: number): Observable<InspeccionModel[]> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}/todos`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;

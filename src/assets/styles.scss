@@ -1,4 +1,5 @@
 /* 1. Módulos de Sass (ESTOS DEBEN IR PRIMERO OBLIGATORIAMENTE) */
+@use 'sass:meta';
 @use './layout/layout.scss';
 @use './demo/demo.scss';
 
@@ -42,4 +43,15 @@
     margin-top: .25rem;
     font-size: .75rem;
     color: var(--p-red-500);
+}
+
+/* SITURIN V2 (legacy): PrimeFlex (grid, col-*, field, flex...) solo dentro de las pantallas viejas para no chocar con Tailwind */
+.siturin-legacy {
+    @include meta.load-css('primeflex/primeflex');
+
+    .p-fluid {
+        .p-inputtext, .p-select, .p-multiselect, .p-inputnumber, .p-datepicker, .p-textarea, .p-password, .p-autocomplete {
+            width: 100%;
+        }
+    }
 }

@@ -25,7 +25,8 @@ export class CatalogosSiturinHttpService {
 
   obtenerCatalogos(): Observable<CatalogoModel[]> {
     const url = `${this.API_URL_PUBLIC}`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2');
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -35,10 +36,11 @@ export class CatalogosSiturinHttpService {
 
   obtenerCatalogosPorClasificacion(clasificacionId: number, tipo: CatalogoSiturinTipoEnum): Observable<CatalogoModel[]> {
     const url = `${this.API_URL_PUBLIC}/clasificaciones/${clasificacionId}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     const params = new HttpParams().append('tipo', tipo);
 
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url, {params}).pipe(
+    return this.httpClient.get<ServerResponse>(url, {params,headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data

@@ -26,16 +26,18 @@ export class TecnicoZonalHttpService {
 
   generarReporteTramitesPorUsuarioInternoXLSX(tecnicoId: number) {
     const url = `${this.API_URL_PRIVATE}/${tecnicoId}/asignaciones/reportes`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     const params = new HttpParams().append('tipo', CoreEnum.XLSX);
-    return this.httpClient.get(url, {params, responseType: 'blob' as 'json'}).subscribe(reporte => {
+    return this.httpClient.get(url, {params, responseType: 'blob' as 'json',headers}).subscribe(reporte => {
       this.coreService.descargarDocumentoXLSX(reporte, 'bandeja_tecnico_zonal_' + format(new Date(), 'yyyy_MM_dd HH_mm_ss'));
     });
   }
 
   obtenerAsignacionesPorTramiteTodos(tramiteId: number): Observable<AsignacionModel[]> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}/todos`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -45,17 +47,19 @@ export class TecnicoZonalHttpService {
 
   generarReporteTramitesXLSX() {
     const url = `${this.API_URL_PRIVATE}/reporte-asignaciones`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     const params = new HttpParams().append('tipo', CoreEnum.XLSX);
     this.coreService.showLoad();
-    return this.httpClient.get(url, {params, responseType: 'blob' as 'json'}).subscribe(reporte => {
+    return this.httpClient.get(url, {params, responseType: 'blob' as 'json',headers}).subscribe(reporte => {
       this.coreService.descargarDocumentoXLSX(reporte, 'bandeja_tecnico_dac_' + format(new Date(), 'yyyy_MM_dd HH_mm_ss'));
       this.coreService.hideLoad();
     });
   }
   reasignarTramiteTecnicoZonal(tramiteId: number, usuarioInternoId: number, payload: AsignacionModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}/usuarios-internos/${usuarioInternoId}/tecnico-zonal`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -67,7 +71,7 @@ export class TecnicoZonalHttpService {
   obtenerTramitesNoAtendidosPorUsuarioInterno(usuarioInternoId: number,page: number = 0, buscador: any = null): Observable<ServerResponsePaginator> {
     const url = `${this.API_URL_PRIVATE}/no-atendidos/tecnico-zonal/${usuarioInternoId}`;
 
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     let params = new HttpParams().append('page', page).append('limit', 15);
 
     this.coreService.showLoad();
@@ -82,7 +86,7 @@ export class TecnicoZonalHttpService {
   obtenerTramitesAtendidosPorUsuarioInterno(usuarioInternoId: number,page: number = 0, buscador: any = null): Observable<ServerResponsePaginator> {
     const url = `${this.API_URL_PRIVATE}/atendidos/tecnico-zonal/${usuarioInternoId}`;
 
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     let params = new HttpParams().append('page', page).append('limit', 20);
 
     this.coreService.showLoad();

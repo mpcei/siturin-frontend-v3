@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -24,8 +24,9 @@ export class AsignacionesHttpService {
 
   obtenerAsignacionesPorTramite(tramiteId: number): Observable<AsignacionModel[]> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -35,8 +36,9 @@ export class AsignacionesHttpService {
 
   obtenerAsignacionesPorTramiteTodos(tramiteId: number): Observable<AsignacionModel[]> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}/todos`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -46,8 +48,9 @@ export class AsignacionesHttpService {
 
   reasignarTramiteTecnicoZonal(tramiteId: number, usuarioInternoId: number, payload: AsignacionModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/tramites/${tramiteId}/usuarios-internos/${usuarioInternoId}/tecnico-zonal`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);

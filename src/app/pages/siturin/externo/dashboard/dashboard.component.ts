@@ -11,6 +11,7 @@ import { UsuarioExternosHttpService } from '@/legacy/services/siturin';
 import { AuthHttpService, AuthService } from '@/legacy/services/auth';
 
 @Component({
+    host: { class: 'siturin-legacy' },
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],

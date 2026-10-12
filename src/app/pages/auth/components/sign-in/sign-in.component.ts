@@ -139,6 +139,7 @@ export default class SignInComponent {
                 this.roleControl.setValidators([Validators.required]);
             },
             error: (err) => {
+                console.log(err)
                 if (err.error.error === 'ACCOUNT_UNVERIFIED_EMAIL') {
                     this.requestEmailVerificationModal = true;
                 }

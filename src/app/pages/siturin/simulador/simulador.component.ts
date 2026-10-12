@@ -4,6 +4,7 @@ import { ActividadTuristicaComponent } from './actividad-turistica/actividad-tur
 
 @Component({
     selector: 'app-simulador',
+    host: { class: 'siturin-legacy' },
     templateUrl: './simulador.component.html',
     styleUrls: ['./simulador.component.scss'],
     imports: [ActividadTuristicaComponent]

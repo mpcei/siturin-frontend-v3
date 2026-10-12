@@ -156,17 +156,17 @@ export class AppMenu implements OnInit {
             {
                 label: 'Catrasto Turístico',
                 icon: FontAwesome.DATABASE_SOLID,
-                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.catastrosZonal.absolute]
             },
             {
                 label: 'Trámites',
                 icon: FontAwesome.CLIPBOARD_LIST_SOLID,
-                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.tecnicoZonal.absolute]
             },
             {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
-                routerLink: [MY_ROUTES.corePages.technician.process.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.bitacora.absolute]
             }
         ];
     }
@@ -228,19 +228,14 @@ export class AppMenu implements OnInit {
                 routerLink: [MY_ROUTES.corePages.specialist.simulator.absolute]
             },
             {
-                label: 'Catrasto Turístico',
-                icon: FontAwesome.DATABASE_SOLID,
-                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
-            },
-            {
                 label: 'Trámites',
                 icon: FontAwesome.CLIPBOARD_LIST_SOLID,
-                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.especialistaZonal.absolute]
             },
             {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
-                routerLink: [MY_ROUTES.corePages.specialist.process.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.bitacora.absolute]
             }
         ];
     }
@@ -255,17 +250,12 @@ export class AppMenu implements OnInit {
             {
                 label: 'Catrasto Turístico',
                 icon: FontAwesome.DATABASE_SOLID,
-                routerLink: [MY_ROUTES.corePages.dac.cadastre.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.catastrosDac.absolute]
             },
             {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
-                routerLink: [MY_ROUTES.corePages.dac.processLog.absolute]
-            },
-            {
-                label: 'Gantt',
-                icon: FontAwesome.CHART_BAR_REGULAR,
-                routerLink: ['/main/core/dac/gantt']
+                routerLink: [MY_ROUTES.siturinPage.interno.bitacora.absolute]
             }
         ];
     }
@@ -280,12 +270,12 @@ export class AppMenu implements OnInit {
             {
                 label: 'Catrasto Turístico',
                 icon: FontAwesome.DATABASE_SOLID,
-                routerLink: [MY_ROUTES.corePages.gad.cadastre.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.catastrosGad.absolute]
             },
             {
                 label: 'Bitácora',
                 icon: FontAwesome.CLOCK_ROTATE_LEFT_SOLID,
-                routerLink: [MY_ROUTES.corePages.gad.processLog.absolute]
+                routerLink: [MY_ROUTES.siturinPage.interno.bitacora.absolute]
             }
         ];
     }

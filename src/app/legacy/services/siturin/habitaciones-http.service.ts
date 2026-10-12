@@ -25,7 +25,8 @@ export class HabitacionesHttpService {
 
   actualizarTarifarioRack(tramiteId:number,payload: HabitacionTarifaModel[]): Observable<HabitacionTarifaModel[]> {
     const url = `${this.API_URL_PRIVATE}/tarifario-rack `;
-    return this.httpClient.put<ServerResponse>(url, {habitacionTarifas:payload}).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.put<ServerResponse>(url, {habitacionTarifas:payload,headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -35,7 +36,8 @@ export class HabitacionesHttpService {
 
   actualizarTarifarioRackInmediatoSiguiente(payload: HabitacionTarifaModel[]): Observable<HabitacionTarifaModel[]> {
     const url = `${this.API_URL_PRIVATE}/tarifario-rack-inmediato-siguiente`;
-    return this.httpClient.put<ServerResponse>(url, {habitacionTarifas:payload}).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.put<ServerResponse>(url, {habitacionTarifas:payload,headers}).pipe(
       map(response => {
         this.messageService.success(response);
         return response.data;
@@ -45,7 +47,8 @@ export class HabitacionesHttpService {
 
   obtenerTarifarioRack(tramiteid: number): Observable<HabitacionModel[]> {
     const url = `${this.API_URL_PRIVATE}/tarifario-rack/tramites/${tramiteid}`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin','siturin2')
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         return response.data;
       })

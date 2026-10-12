@@ -25,7 +25,8 @@ export class ZonalesHttpService {
 
   obtenerUsuariosInternosPorZonal(zonalId: number): Observable<UsuarioInternoModel[]> {
     const url = `${this.API_URL_PRIVATE}/${zonalId}/usuarios-internos`;
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    const headers = new HttpHeaders().append('origin', 'siturin2');
+    return this.httpClient.get<ServerResponse>(url, {headers}).pipe(
       map(response => {
         return response.data;
       })

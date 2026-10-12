@@ -12,7 +12,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     let headers = req.headers ? req.headers : new HttpHeaders();
     if (headers.get('origin') == 'siturin2') {
         if (authServiceLegacy.token && !headers.get('Authorization')) {
-            headers = headers.append('Authorization', authServiceLegacy.token);
+            headers = headers.append('Authorization', `Bearer ${authServiceLegacy.token.replace(/"/g, '')}`);
         }
     } else {
         if (authService.accessToken && !headers.get('Authorization')) {

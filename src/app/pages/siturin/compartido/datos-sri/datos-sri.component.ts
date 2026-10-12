@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { NgIf } from '@angular/common';
@@ -13,22 +13,23 @@ import { DinardapHttpService } from '@/legacy/services/siturin';
     imports: [NgIf, SkeletonComponent]
 })
 export class DatosSriComponent implements OnInit {
+    private dinardapHttpService = inject(DinardapHttpService);
+    private formBuilder = inject(FormBuilder);
     @Input() numeroRuc: AbstractControl = new FormControl();
     @Input() ruc: RucModel = {};
     @Input() esCatastrado: boolean = false;
     @Output() rucOutput: EventEmitter<any> = new EventEmitter();
     @Output() cargando: EventEmitter<boolean> = new EventEmitter(false);
 
-    private dinardapHttpService = Inject(DinardapHttpService);
-    private formBuilder = Inject(FormBuilder);
 
     isLoadingSkeleton: string = 'true';
     errorSri: boolean = false;
-    formulario: FormGroup = this.nuevoFormulario;
+    formulario!: FormGroup ;
 
     constructor() {}
 
     ngOnInit(): void {
+        this.formulario=this.nuevoFormulario;
         this.formulario.patchValue(this.ruc);
 
         if (this.esCatastrado) {

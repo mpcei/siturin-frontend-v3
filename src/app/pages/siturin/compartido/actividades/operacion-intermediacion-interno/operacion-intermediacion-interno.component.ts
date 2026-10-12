@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Bind } from 'primeng/bind';
 import { Card } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -22,7 +22,7 @@ export class OperacionIntermediacionInternoComponent implements OnInit {
     columnasCompaniasTransporteTuristicoTabla: ColumnModel[] = this.configurarColumnasCompaniasTransporteTuristicoTabla();
     columnasGuiasTurismoTabla: ColumnModel[] = this.configurarColumnasGuiasTurismoTabla();
     columnasRepresentantesVentasTabla: ColumnModel[] = this.configurarColumnasRepresentantesVentasTabla();
-    public messageService = Inject(MessageService);
+    public messageService = inject(MessageService);
     constructor() {}
 
     ngOnInit(): void {}

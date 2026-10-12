@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '@env/environment';
 import {BehaviorSubject, Observable, retry} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -23,8 +23,9 @@ export class ApiRestInternosHttpService {
 
   obtenerGuia(cedula: string): Observable<GuiaTurismoModel> {
     const url = `${this.API_URL_INTERNO}/siete/guia/${cedula}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       retry(2),
       map(response => {
         this.coreService.hideLoad();

@@ -32,8 +32,9 @@ export class CtcHttpService {
 
   guardarTramiteContinente(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/catastros-continente`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);
@@ -44,8 +45,9 @@ export class CtcHttpService {
 
   guardarTramiteGalapagos(payload: EstablecimientoModel): Observable<TramiteModel> {
     const url = `${this.API_URL_PRIVATE}/catastros-galapagos`;
+    const headers = new HttpHeaders().append('origin','siturin2')
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response);

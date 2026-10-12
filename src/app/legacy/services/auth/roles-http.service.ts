@@ -25,9 +25,10 @@ export class RolesHttpService {
 
   create(payload: CreateRoleDto): Observable<RoleModel> {
     const url = `${this.API_URL}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -71,9 +72,10 @@ export class RolesHttpService {
 
   update(id: string, payload: UpdateRoleDto): Observable<RoleModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.put<ServerResponse>(url, payload).pipe(
+    return this.httpClient.put<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -84,9 +86,10 @@ export class RolesHttpService {
 
   remove(id: string): Observable<RoleModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    return this.httpClient.delete<ServerResponse>(url,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -97,9 +100,10 @@ export class RolesHttpService {
 
   removeAll(roles: RoleModel[]): Observable<RoleModel[]> {
     const url = `${this.API_URL}/remove-all`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.patch<ServerResponse>(url, roles).pipe(
+    return this.httpClient.patch<ServerResponse>(url, roles,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();

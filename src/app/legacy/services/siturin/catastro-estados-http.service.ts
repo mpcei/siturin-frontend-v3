@@ -24,8 +24,9 @@ export class CatastroEstadosHttpService {
 
   obtenerCatastroEstados(): Observable<CatastroEstadoModel[]> {
     const url = `${this.API_URL_PRIVATE}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;

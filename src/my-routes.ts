@@ -288,6 +288,12 @@ export const MY_ROUTES = {
             base: 'simulador',
             absolute: '/siturin/simulador'
         },
+        consultaCatastro: {
+            base: 'consulta-catastros',
+            absolute: '/siturin/consulta-catastros',
+            absoluteLegacy: 'siturin/consulta-catastros'
+
+        },
         externo: {
             base: 'externo',
             absolute: '/siturin/externo',

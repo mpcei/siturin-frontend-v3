@@ -25,9 +25,10 @@ export class UsersHttpService {
 
   create(payload: CreateUserDto): Observable<UserModel> {
     const url = `${this.API_URL}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.post<ServerResponse>(url, payload).pipe(
+    return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -39,7 +40,7 @@ export class UsersHttpService {
   findAll(page: number = 0, search: string = ''): Observable<UserModel[]> {
     const url = this.API_URL;
 
-    const headers = new HttpHeaders().append('pagination', 'true');
+    const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
     const params = new HttpParams()
       .append('page', page)
       .append('search', search);
@@ -58,9 +59,10 @@ export class UsersHttpService {
 
   findOne(id: string): Observable<UserModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.get<ServerResponse>(url).pipe(
+    return this.httpClient.get<ServerResponse>(url,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         return response.data;
@@ -70,9 +72,10 @@ export class UsersHttpService {
 
   update(id: string, payload: UpdateUserDto): Observable<UserModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.put<ServerResponse>(url, payload).pipe(
+    return this.httpClient.put<ServerResponse>(url, payload,{headers}).pipe(
       map(response => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -83,9 +86,10 @@ export class UsersHttpService {
 
   reactivate(id: string): Observable<UserModel> {
     const url = `${this.API_URL}/${id}/reactivate`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.put<ServerResponse>(url, null,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -96,9 +100,10 @@ export class UsersHttpService {
 
   remove(id: string): Observable<UserModel> {
     const url = `${this.API_URL}/${id}`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.delete<ServerResponse>(url).pipe(
+    return this.httpClient.delete<ServerResponse>(url,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -109,9 +114,10 @@ export class UsersHttpService {
 
   removeAll(users: UserModel[]): Observable<UserModel[]> {
     const url = `${this.API_URL}/remove-all`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.patch<ServerResponse>(url, users).pipe(
+    return this.httpClient.patch<ServerResponse>(url, users,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();
@@ -122,9 +128,10 @@ export class UsersHttpService {
 
   suspend(id: string): Observable<UserModel> {
     const url = `${this.API_URL}/${id}/suspend`;
+    const headers = new HttpHeaders().append('origin','siturin2');
 
     this.coreService.showLoad();
-    return this.httpClient.put<ServerResponse>(url, null).pipe(
+    return this.httpClient.put<ServerResponse>(url, null,{headers}).pipe(
       map((response) => {
         this.coreService.hideLoad();
         this.messageService.success(response).then();

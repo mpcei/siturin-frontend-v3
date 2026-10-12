@@ -13,4 +13,5 @@ export interface DataSignInInterface {
     accessToken: string;
     refreshToken: string;
     roles: RoleInterface[];
+    userLegacy: any;
 }

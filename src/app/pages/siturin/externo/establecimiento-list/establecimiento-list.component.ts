@@ -26,6 +26,7 @@ import { CoreService, MessageService } from '@/legacy/services/core';
 import { ActividadCodigoEnum, CatalogoSiturinTipoEnum, CatastroEstadoEnum, ClasificacionCodigoEnum, EstablecimientoEstadoEnum, InspeccionEstadoFechaEnum, RucEstadoEnum, TramiteTiposEnum } from '@/legacy/shared/enums';
 
 @Component({
+    host: { class: 'siturin-legacy' },
     selector: 'app-establecimiento-list',
     templateUrl: './establecimiento-list.component.html',
     styleUrls: ['./establecimiento-list.component.scss'],
@@ -116,6 +117,7 @@ export class EstablecimientoListComponent implements OnInit {
 
     obtenerTramiteTipos() {
         this.tramiteTipos = this.catalogosSiturinService.obtenerCatalogosPorTipo(CatalogoSiturinTipoEnum.TRAMITE_TIPOS);
+        console.log(this.tramiteTipos)
         this.obtenerEstablecimientos();
     }
 
