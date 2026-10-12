@@ -1,36 +1,39 @@
-<div class="p-fluid">
-  <div class="formgrid grid">
-    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-      <h1>Especialista Zonal</h1>
-    </div>
-    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-      <p-select id="zonal"
-                  [formControl]="zonalControl"
-                  dataKey="id"
-                  [options]="zonales"
-                  optionLabel="nombre"
-                  [filter]="true"
-                  filterBy="nombre"
-                  placeholder="Seleccione"
-                  (onChange)="recargarTramites(indiceTab)">
-      </p-select>
-    </div>
-    <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-      <p-select id="dpa"
-                  [formControl]="dpaControl"
-                  dataKey="id"
-                  [options]="dpa"
-                  optionLabel="nombre"
-                  [filter]="true"
-                  filterBy="nombre"
-                  [showClear]="true"
-                  placeholder="Todas las Provincias"
-                  (onChange)="recargarTramites(indiceTab)">
-      </p-select>
+<div class="">
+  <div class="grid">
+  <div class="" >
+    <h1>Especialista Zonal</h1>
+  </div>
+    <div class="flex flex-wrap gap-3">
+        <div class="field flex-auto md:flex-initial xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <p-select id="zonal"
+                      [formControl]="zonalControl"
+                      dataKey="id"
+                      [options]="zonales"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      placeholder="Seleccione"
+                      (onChange)="recargarTramites(indiceTab)">
+          </p-select>
+        </div>
+        <div class="field flex-auto md:flex-initial xl:col-4 lg:col-4 md:col-4 sm:col-12">
+          <p-select id="dpa"
+                      [formControl]="dpaControl"
+                      dataKey="id"
+                      [options]="dpa"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      [showClear]="true"
+                      placeholder="Todas las Provincias"
+                      (onChange)="recargarTramites(indiceTab)">
+          </p-select>
+        </div>
+
     </div>
   </div>
-  <div class="formgrid grid">
-    <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
+  <div class="formgrid grid mt-3">
+    <div class="field col-12">
       <button pButton type="button" label="Descargar Bandeja"
               class="p-button-success"
               icon="pi pi-download"
@@ -49,7 +52,7 @@
   <p-tabpanels>
     <p-tabpanel [value]="0">
     <div class="panel-messages p-fluid">
-      <div class="formgrid grid">
+      <div class="flex flex-wrap gap-2 mb-3">
         <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
           <button pButton type="button" label="Sincronizar Trámites"
                   class="p-button-info mr-2"
@@ -94,14 +97,14 @@
              (onRowUnselect)="quitarSeleccionarTramite($event)"
              sortField="inspeccionActual.fechaInspeccion">
       <ng-template pTemplate="caption">
-        <div class="grid">
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <div class="caption-container">
+
             <h2>Total de Trámites sin Atender: {{paginadorTramitesNoAtendidos?.totalItems}}</h2>
-          </div>
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <form [formGroup]="buscador" class="p-fluid">
-              <div class="formgrid grid">
-                <div class="xl:col-6">
+
+
+            <form [formGroup]="buscador" class="filtros-container">
+
+                <div class="filtro-tipo">
                   <p-select id="tipo"
                               dataKey="codigo"
                               formControlName="tipo"
@@ -111,16 +114,18 @@
                               placeholder="Seleccione el filtro">
                   </p-select>
                 </div>
-                <div class="xl:col-6">
-            <span class="p-input-icon-left">
+                <div class="filtro-valor">
+
              <i class="pi pi-search"></i>
-             <input pInputText type="text" formControlName="valor"
-                    [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
-            </span>
-                </div>
+             <input pInputText type="text"
+             formControlName="valor"
+                    [placeholder]="tipoField.value
+                    ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
+
+
               </div>
             </form>
-          </div>
+
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -224,7 +229,7 @@
     </p-tabpanel>
     <p-tabpanel [value]="1">
     <div class="panel-messages p-fluid">
-      <div class="formgrid grid">
+      <div class="flex flex-wrap gap-2 mb-3">
         <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
           <button pButton type="button" label="Sincronizar Trámites"
                   class="p-button-info mr-2"
@@ -264,14 +269,13 @@
              sortMode="single"
              scrollHeight="600px">
       <ng-template pTemplate="caption">
-        <div class="grid">
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <div class="caption-container">
             <h2>Total de Trámites Atendidos: {{paginadorTramitesAtendidos?.totalItems}}</h2>
-          </div>
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <form [formGroup]="buscador" class="p-fluid">
-              <div class="formgrid grid">
-                <div class="xl:col-6">
+
+
+            <form [formGroup]="buscador" class="filtros-container">
+
+                <div class="filtro-tipo">
                   <p-select id="tipo"
                               dataKey="codigo"
                               formControlName="tipo"
@@ -281,16 +285,16 @@
                               placeholder="Seleccione el filtro">
                   </p-select>
                 </div>
-                <div class="xl:col-6">
-            <span class="p-input-icon-left">
+                <div class="filtro-valor">
+
              <i class="pi pi-search"></i>
              <input pInputText type="text" formControlName="valor"
                     [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
-            </span>
-                </div>
+
+
               </div>
             </form>
-          </div>
+
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -394,7 +398,7 @@
     </p-tabpanel>
     <p-tabpanel [value]="2">
     <div class="panel-messages p-fluid">
-      <div class="formgrid grid">
+      <div class="flex flex-wrap gap-2 mb-3">
         <div class="field xl:col-2 lg:col-3 md:col-4 sm:col-12">
           <button pButton type="button" label="Sincronizar Trámites"
                   class="p-button-info mr-2"
@@ -441,35 +445,40 @@
              sortMode="single"
              scrollHeight="600px">
       <ng-template pTemplate="caption">
-        <div class="grid">
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <h2>Total de Trámites sin Asignar: {{paginadorTramitesSinAsignar?.totalItems}}</h2>
-          </div>
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <form [formGroup]="buscador" class="p-fluid">
-              <div class="formgrid grid">
-                <div class="xl:col-6">
-                  <p-select id="tipo"
-                              dataKey="codigo"
-                              formControlName="tipo"
-                              class="mr-2"
-                              [options]="tiposFiltro"
-                              optionLabel="nombre"
-                              placeholder="Seleccione el filtro">
-                  </p-select>
-                </div>
-                <div class="xl:col-6">
-            <span class="p-input-icon-left">
-             <i class="pi pi-search"></i>
-             <input pInputText type="text" formControlName="valor"
-                    [placeholder]="tipoField.value ? 'Buscar por '+ tipoField.value?.nombre:'Seleccione un filtro'">
-            </span>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </ng-template>
+    <div class="caption-container">
+
+        <h2>
+            Total de Trámites sin Asignar:
+            {{ paginadorTramitesSinAsignar?.totalItems }}
+        </h2>
+
+        <form [formGroup]="buscador" class="filtros-container">
+
+            <div class="filtro-tipo">
+                <p-select
+                    id="tipo"
+                    dataKey="codigo"
+                    formControlName="tipo"
+                    [options]="tiposFiltro"
+                    optionLabel="nombre"
+                    placeholder="Seleccione el filtro">
+                </p-select>
+            </div>
+
+            <div class="filtro-valor">
+                <i class="pi pi-search"></i>
+                <input
+                    pInputText
+                    type="text"
+                    formControlName="valor"
+                    [placeholder]="tipoField.value
+                        ? 'Buscar por ' + tipoField.value?.nombre
+                        : 'Seleccione un filtro'">
+            </div>
+
+        </form>
+    </div>
+</ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th style="min-width:300px" pSortableColumn="catastro.numeroRegistro">
