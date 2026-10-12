@@ -124,7 +124,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.external.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Proceso de Acreditación de Actividades Turísticas',
@@ -151,7 +151,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.technician.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Catrasto Turístico',
@@ -176,7 +176,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.guideTechnician.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Revisión Guianza Turística',
@@ -203,7 +203,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.director.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Aprobación Guianza Turística',
@@ -225,7 +225,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.specialist.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Trámites',
@@ -245,7 +245,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.dac.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Catrasto Turístico',
@@ -265,7 +265,7 @@ export class AppMenu implements OnInit {
             {
                 label: 'Simulador Normativa',
                 icon: FontAwesome.DESKTOP_SOLID,
-                routerLink: [MY_ROUTES.corePages.gad.simulator.absolute]
+                routerLink: [MY_ROUTES.corePages.shared.simulator.absolute]
             },
             {
                 label: 'Catrasto Turístico',
