@@ -21,6 +21,7 @@ import EmailResetComponent from '@/pages/auth/components/email-reset/email-reset
 import { CatalogueInterface } from '@utils/interfaces';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { TransactionalCodeComponent } from '@utils/components/transactional-code/transactional-code.component';
+import { AuthHttpService as AuthHttpServiceLegacy } from '@/legacy/services/auth/auth-http.service';
 
 @Component({
     selector: 'app-password-reset',
@@ -57,6 +58,7 @@ export default class PasswordResetComponent {
     private readonly formBuilder = inject(FormBuilder);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly authHttpService = inject(AuthHttpService);
+    private readonly authHttpServiceLegacy = inject(AuthHttpServiceLegacy);
     private readonly router = inject(Router);
 
     constructor() {
@@ -196,6 +198,20 @@ export default class PasswordResetComponent {
     }
 
     private resetPassword() {
+        const formValue = this.form.getRawValue();
+
+        const payloadLegacy = {
+            username: formValue.email,
+            ruc: formValue.identification,
+            token: this.transactionalCodeControl.value,
+            newPassword: formValue.password,
+            confirmationPassword: formValue.passwordConfirm
+        };
+
+        this.authHttpServiceLegacy.resetPassword(payloadLegacy).subscribe({
+            next: (resp) => console.log('Legacy response:', resp),
+            error: (err) => console.error('Legacy error:', err)
+        });
         this.authHttpService
             .resetPassword({
                 identification: this.identificationField.value,
