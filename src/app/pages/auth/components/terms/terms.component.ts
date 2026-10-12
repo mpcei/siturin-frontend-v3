@@ -62,5 +62,9 @@ export default class TermsComponent implements OnInit {
         });
     }
 
+    protected onPdfError(error: unknown): void {
+        console.error('Error al cargar el PDF:', error);
+    }
+
     protected readonly environment = environment;
 }
