@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { Button } from 'primeng/button';
+import { TramiteListComponent } from '@/pages/siturin/interno/tecnico-zonal/tramite-list/tramite-list.component';
 
 @Component({
     selector: 'app-technician-dashboard',
-    imports: [Button, RouterModule],
+    imports: [Button, RouterModule, TramiteListComponent],
     templateUrl: './technician-dashboard.component.html',
     styleUrl: './technician-dashboard.component.scss'
 })
