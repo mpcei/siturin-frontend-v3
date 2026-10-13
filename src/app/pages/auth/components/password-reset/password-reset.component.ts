@@ -156,7 +156,7 @@ export default class PasswordResetComponent {
         if (this.allSecurityQuestions.length === 0) {
             this.customMessageService.showModalError({
                 summary: 'No tiene preguntas de seguridad registradas',
-                detail: 'Enviar un correo electrónico a tecnologia@produccion.gob.ec, adjuntando su cédula e indicando su número de RUC'
+                detail: `Enviar un correo electrónico a tecnologia@produccion.gob.ec solicitando el cambio de correo electrónico registrado. \nAdjuntar una copia de la cédula de identidad e indicar el número de RUC correspondiente.`
             });
             return;
         }
