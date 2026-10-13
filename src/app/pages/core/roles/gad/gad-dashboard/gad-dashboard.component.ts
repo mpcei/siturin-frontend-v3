@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { CatastroListComponent } from '@/pages/siturin/interno/catastro/catastro-list/catastro-list.component';
 
 @Component({
     selector: 'app-gad-dashboard',
-    imports: [],
+    imports: [
+        CatastroListComponent
+    ],
     templateUrl: './gad-dashboard.component.html',
     styleUrl: './gad-dashboard.component.scss'
 })

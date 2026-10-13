@@ -54,7 +54,7 @@ export default class TermsComponent implements OnInit {
             accept: () => {
                 this.authHttpService.acceptTermsConditions(true).subscribe({
                     next: (_) => {
-                        this.router.navigate([MY_ROUTES.adminPages.user.profile.absolute], { replaceUrl: true });
+                        this.router.navigate([MY_ROUTES.dashboards.absolute], { replaceUrl: true });
                     }
                 });
             },
