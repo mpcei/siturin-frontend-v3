@@ -25,75 +25,75 @@
   <h3 *ngIf="esCatastrado || errorSri">Datos del Catastro</h3>
   <h3 *ngIf="!esCatastrado && !errorSri">Datos del SRI</h3>
   <div *ngIf="formulario.value">
-    <div class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p class="mb-1">
           RUC:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <p class="mb-1"><b>{{ numeroField.value }}</b></p>
       </div>
     </div>
-    <div class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p>
           Estado:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p><b>{{ estadoContribuyenteField.value?.nombre }}</b></p>
       </div>
     </div>
-    <div class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p class="mb-1">
           Razón Social:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p class="mb-1"><b>{{ razonSocialField.value }}</b></p>
       </div>
     </div>
-    <div class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p class="mb-1">
           Tipo de Contribuyente:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p class="mb-1"><b>{{ tipoContribuyenteField.value?.nombre }}</b></p>
       </div>
     </div>
     <div *ngIf="tipoContribuyenteField.value?.codigo==='SCD' || tipoContribuyenteField.value?.codigo==='juridica'"
-         class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+         class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p class="mb-1">
           Identificación Representante Legal:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p class="mb-1"><b>{{ representanteLegalIdentificacionField.value }}</b></p>
       </div>
     </div>
     <div *ngIf="tipoContribuyenteField.value?.codigo==='SCD' || tipoContribuyenteField.value?.codigo==='juridica'"
-         class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+         class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p>
           Nombre Representante Legal:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p><b>{{ representanteLegalNombresField.value }}</b></p>
       </div>
     </div>
-    <div class="grid">
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-right">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 ">
         <p>
           Actividad Económica Principal:
         </p>
       </div>
-      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12 text-left">
+      <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-12">
         <p><b>{{ actividadEconomicaField.value }}</b></p>
       </div>
     </div>
