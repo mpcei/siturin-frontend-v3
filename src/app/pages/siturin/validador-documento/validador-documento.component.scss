@@ -2,3 +2,11 @@
   font-size: 20px;
   font-weight: bold;
 }
+.titulo {
+  color: #495057; /* Un color gris oscuro para el título, opcional */
+}
+
+.texto {
+  word-break: break-word; /* Fuerza a que los textos largos (como correos o RUCs) bajen a la siguiente línea si no caben */
+  color: #212529; /* Negro para contrastar la respuesta */
+}

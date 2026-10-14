@@ -24,12 +24,12 @@
   </div>
   <app-skeleton *ngIf="cargando" type="form"></app-skeleton>
   <div *ngIf="catastro?.id && !cargando" class="p-fluid mt-5">
-    <div class="field">
+    <div class="grid mb-3 align-items-center">
       <h1>Registro de Turismo</h1>
     </div>
 
     <!-- Estado de Registro de Turismo -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Estado de Registro de Turismo:</p>
       </div>
@@ -40,7 +40,7 @@
     <p-divider></p-divider>
 
     <!-- RUC -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>RUC:</p>
       </div>
@@ -51,7 +51,7 @@
     <p-divider></p-divider>
 
     <!-- Nombre Comercial -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Nombre Comercial:</p>
       </div>
@@ -62,7 +62,7 @@
     <p-divider></p-divider>
 
     <!-- Número de Registro -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Número de Registro:</p>
       </div>
@@ -73,7 +73,7 @@
     <p-divider></p-divider>
 
     <!-- Fecha de Registro -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Fecha de Registro:</p>
       </div>
@@ -84,7 +84,7 @@
     <p-divider></p-divider>
 
     <!-- Fecha de Inspeccion -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Fecha de Inspección:</p>
       </div>
@@ -97,7 +97,7 @@
     <div
       *ngIf="catastro.tramite?.actividad?.codigo==='ctc_continente' || catastro.tramite?.actividad?.codigo==='ctc_galapagos'; else elseBlock">
       <!-- Modalidad Turistica -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Modalidad Turística:</p>
         </div>
@@ -110,7 +110,7 @@
 
     <ng-template #elseBlock>
       <!-- Actividad -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Actividad:</p>
         </div>
@@ -121,7 +121,7 @@
       <p-divider></p-divider>
 
       <!-- Clasificación -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Clasificación:</p>
         </div>
@@ -133,7 +133,7 @@
 
     </ng-template>
     <!-- Categoría -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Categoría:</p>
       </div>
@@ -144,7 +144,7 @@
     <p-divider></p-divider>
 
     <!-- Razón Social | Propietario -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Razón Social | Propietario:</p>
       </div>
@@ -155,7 +155,7 @@
     <p-divider></p-divider>
 
     <!-- Nombre del Representante Legal -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Nombre del Representante Legal:</p>
       </div>
@@ -166,7 +166,7 @@
     <p-divider></p-divider>
 
     <!-- Provincia -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Provincia:</p>
       </div>
@@ -177,7 +177,7 @@
     <p-divider></p-divider>
 
     <!-- Cantón -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Cantón:</p>
       </div>
@@ -188,7 +188,7 @@
     <p-divider></p-divider>
 
     <!-- Parroquia -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Parroquia:</p>
       </div>
@@ -199,7 +199,7 @@
     <p-divider></p-divider>
 
     <!-- Dirección -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Dirección:</p>
       </div>
@@ -213,7 +213,7 @@
     <p-divider></p-divider>
 
     <!-- Teléfono Principal -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Teléfono Principal:</p>
       </div>
@@ -225,7 +225,7 @@
     <p-divider></p-divider>
 
     <!-- Correo Electrónico -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Correo Electrónico:</p>
       </div>
@@ -239,7 +239,7 @@
     <!-- ALIMENTOS Y BEBIDAS -->
     <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('alimentos_bebidas')">
       <!-- Capacidades en número de personas -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Capacidades en número de personas:</p>
         </div>
@@ -254,7 +254,7 @@
     <!-- ALOJAMIENTO -->
     <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('alojamiento')">
       <!-- Habitaciones -->
-      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Habitaciones:</p>
         </div>
@@ -265,7 +265,7 @@
       <p-divider></p-divider>
 
       <!-- Camas -->
-      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Camas:</p>
         </div>
@@ -276,7 +276,7 @@
       <p-divider></p-divider>
 
       <!-- Plazas -->
-      <div *ngIf="catastro.tramite?.habitaciones?.length" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.habitaciones?.length" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Plazas:</p>
         </div>
@@ -287,7 +287,7 @@
       <p-divider></p-divider>
 
       <!-- Servicios Complementarios -->
-      <div *ngIf="catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales'" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Servicios Complementarios:</p>
         </div>
@@ -307,7 +307,7 @@
     <!-- OPERACION E INTERMEDIACION -->
     <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('operacion_intermediacion')">
       <!-- Número de credencial de los guías que prestan los servicios en la agencia de viajes -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Número de credencial de los guías que prestan los servicios en la agencia de viajes:</p>
         </div>
@@ -318,7 +318,7 @@
       <p-divider></p-divider>
 
       <!-- Companías de transporte con las que trabaja -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Companías de transporte con las que trabaja:</p>
         </div>
@@ -333,7 +333,7 @@
     <!-- CTC -->
     <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('ctc')">
       <!-- Actividades Permitidas en el CTC -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Actividades Permitidas en el CTC:</p>
         </div>
@@ -348,7 +348,7 @@
       <p-divider></p-divider>
 
       <!-- Servicios de transporte turistico -->
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Servicios de transporte turístico:</p>
         </div>
@@ -368,7 +368,7 @@
     <!-- TRANSPORTE -->
     <div *ngIf="catastro?.tramite?.actividad?.codigo?.includes('transporte')">
       <!-- Numero de unidades de embarcaciones -->
-      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Número de unidades de embarcaciones:</p>
         </div>
@@ -378,7 +378,7 @@
       </div>
 
       <!-- Total numero de puestos -->
-      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='maritimo'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Total número de puestos:</p>
         </div>
@@ -388,7 +388,7 @@
       </div>
 
       <!-- Tipo de vehiculos -->
-      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Tipo de vehículos:</p>
         </div>
@@ -402,7 +402,7 @@
       </div>
 
       <!-- Capacidad total de todos los vehiculos -->
-      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="formgrid grid">
+      <div *ngIf="catastro.tramite?.clasificacion?.codigo==='terrestre'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Capacidad total de todos los vehículos:</p>
         </div>
@@ -418,7 +418,7 @@
     <!-- Capacidades en número de personas -->
     <div
       *ngIf="catastro?.tramite?.actividad?.codigo?.includes('parques') || catastro?.tramite?.actividad?.codigo?.includes('eventos')">
-      <div class="formgrid grid">
+      <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
         <div [class]="tituloClass">
           <p>Capacidad del establecimiento en número de personas (aforo):</p>
         </div>
@@ -433,7 +433,7 @@
 
     <!-- Oferta Modalidades de Turismo de Aventura -->
     <div *ngIf="catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales' && catastro.tramite?.actividad?.codigo!='transporte_continente'
-        && catastro.tramite?.actividad?.codigo!='transporte_galapagos'" class="formgrid grid">
+        && catastro.tramite?.actividad?.codigo!='transporte_galapagos'" class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Oferta Modalidades de Turismo de Aventura:</p>
       </div>
@@ -446,7 +446,7 @@
     <!-- Modalidades de Turismo de Aventura -->
     <div
       *ngIf="catastro?.tramite?.modalidadesTurismoAventura?.length && catastro.tramite?.clasificacion?.codigo!='inmuebles_habitacionales'"
-      class="formgrid grid">
+      class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Modalidades de Turismo de Aventura:</p>
       </div>
@@ -461,7 +461,7 @@
     </div>
 
     <!-- Técnico Responsable -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Técnico Responsable:</p>
       </div>
@@ -472,7 +472,7 @@
     <p-divider></p-divider>
 
     <!-- Dirección Zonal -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Dirección Zonal:</p>
       </div>
@@ -483,7 +483,7 @@
     <p-divider></p-divider>
 
     <!-- Director Zonal -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Nombre del Director Zonal Responsable:</p>
       </div>
@@ -493,7 +493,7 @@
     </div>
 
     <!-- Último Trámite Realizado -->
-    <div class="formgrid grid">
+    <div class="flex justify-between col-12 md:col-4 font-bold  md:text-right px-2">
       <div [class]="tituloClass">
         <p>Último Trámite Realizado:</p>
       </div>
