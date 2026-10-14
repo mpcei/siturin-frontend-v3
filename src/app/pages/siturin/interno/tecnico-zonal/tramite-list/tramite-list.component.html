@@ -1,5 +1,5 @@
 <h1>Técnico Zonal</h1>
-
+<h1>hola</h1>
 <p-tabs [value]="0" (valueChange)="$any($event)===1?obtenerTramitesAtendidosPorUsuarioInterno():null;indiceTab=$any($event)">
   <p-tablist>
     <p-tab [value]="0">Trámites No Atendidos</p-tab>
@@ -113,7 +113,7 @@
              <i class="pi pi-search"></i>
              <input pInputText type="text" [formControl]="buscador"
                     placeholder="Buscar por RUC, Número de Registro, Nombre Comercial">
-            
+
           </div>
         </div>
       </ng-template>
@@ -736,90 +736,148 @@
 </p-dialog>
 
 <!--Agendar Trámite-->
-<p-dialog [header]="dialogoTitulo"
-          [(visible)]="dialogoAgendarTramite"
-          [modal]="true" [style]="{width: '100%'}">
-  <div class="p-fluid">
-    <div class="formgrid grid">
-      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-        <small style="color: blue">
-          Referencia al art 5, del Acuerdo
-          Ministerial Nro. 2023 – 016 , señala: "En caso de que no se hayan realizado las
-          inspecciones agendadas por el usuario dentro de los plazos establecidos para los
-          trámites de registro, reingreso, recategorización y reclasificación, la Autoridad Nacional
-          de Turismo o el Gobierno Autónomo Descentralizado al que se le haya conferido dicha
-          atribución, ejecutarán las inspecciones que correspondan, <b>en un plazo máximo de 30
-          (treinta) días</b>, posteriores a la fecha de vencimiento determinada para el agendamiento.
-        </small>
+<p-dialog
+  [header]="dialogoTitulo"
+  [(visible)]="dialogoAgendarTramite"
+  [modal]="true"
+  [style]="{ width: '100%', maxWidth: '800px' }"
+  styleClass="custom-dialog-header">
+
+  <div class="flex flex-col gap-6 pt-2 pb-4">
+
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="flex items-center gap-2 text-blue-800 font-bold border-b border-blue-200 pb-2">
+        <i class="pi pi-info-circle text-xl"></i>
+        <span>Información Importante (Art. 5, Acuerdo Ministerial Nro. 2023 – 016)</span>
       </div>
-      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
-        Número de Establecimiento: <b>{{ tramiteSeleccionado.establecimiento?.numero }}</b>
+      <p class="text-sm text-blue-900 leading-relaxed text-justify">
+        En caso de que no se hayan realizado las inspecciones agendadas por el usuario dentro de los plazos
+        establecidos para los trámites de registro, reingreso, recategorización y reclasificación, la Autoridad
+        Nacional de Turismo o el GAD al que se le haya conferido dicha atribución, ejecutarán las inspecciones
+        que correspondan, <b class="font-extrabold text-blue-950 bg-blue-200 px-1 rounded">en un plazo máximo de 30 (treinta) días</b>,
+        posteriores a la fecha de vencimiento determinada para el agendamiento.
+      </p>
+    </div>
+
+    <!--  DATOS DEL TRÁMITE -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
+      <div class="flex flex-col gap-1">
+        <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">N° Establecimiento</span>
+        <span class="text-lg font-bold text-gray-800">{{ tramiteSeleccionado.establecimiento?.numero }}</span>
       </div>
-      <div class="field xl:col-3 lg:col-3 md:col-3 sm:col-12">
-        Fecha Inspección:
-        <b>{{ fechaAgendaTramite.value|date:'EEEE, d/MMM/y HH:mm' }}</b>
-        <b *ngIf="!fechaAgendaTramite.valid" class="p-error">No ha seleccionado una fecha</b>
+
+      @if (tramiteSeleccionado.inspeccionActual?.estadoFecha?.codigo === 'solicitada') {
+        <div class="flex flex-col gap-1">
+          <span class="text-xs text-gray-500 uppercase font-bold tracking-wider">Fecha de Solicitud</span>
+          <span class="text-lg font-bold text-gray-800">{{ tramiteSeleccionado.inspeccionActual?.fechaSolicitud | date:'EEEE, d/MMMM/y' }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- CONTROLES DE AGENDAMIENTO -->
+    <div class="flex flex-col gap-4 border border-gray-200 rounded-lg p-5">
+
+      <!-- Cabecera de acción -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-gray-800">Selección de Fecha y Hora</h3>
+          <p class="text-sm text-gray-500">
+            {{ fechaConfirmada.value ? 'Seleccione la hora específica para la inspección.' : 'Seleccione el día y la hora tentativa.' }}
+          </p>
+        </div>
+
+        <!-- Toggle de Confirmación (Solo si aplica) -->
+        @if (tramiteSeleccionado.inspeccionActual?.estadoFecha?.codigo === 'solicitada') {
+          <div class="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-full">
+            <span class="font-bold text-gray-700 text-sm">Confirmar Fecha:</span>
+            <p-toggleswitch id="fechaConfirmada" [formControl]="fechaConfirmada"></p-toggleswitch>
+          </div>
+        }
       </div>
-      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
-        <button pButton
-                type="button"
-                class=""
-                label="Agendar"
-                icon="pi pi-save"
-                [disabled]="!fechaAgendaTramite.valid"
-                (click)="agendarTramite()">
+
+      <!-- Contenedor del Calendario -->
+      <div class="flex flex-col items-center justify-center pt-2">
+
+        <!-- MODO 1: SOLO HORA (Fecha Confirmada) -->
+        @if (fechaConfirmada.value) {
+          <p-datepicker
+            id="horaAgendaTramite"
+            [formControl]="horaAgendaTramite"
+            [inline]="true"
+            [defaultDate]="fechaActual"
+            hourFormat="24"
+            [timeOnly]="true">
+          </p-datepicker>
+        }
+
+        <!-- MODO 2: FECHA Y HORA COMPLETA (Fecha No Confirmada) -->
+        @else {
+          <p-datepicker
+            id="fechaAgendaTramite"
+            [formControl]="fechaAgendaTramite"
+            appendTo="body"
+            [inline]="true"
+            hourFormat="24"
+            dateFormat="yy-mm-dd"
+            [defaultDate]="fechaActual"
+            [firstDayOfWeek]="1"
+            [numberOfMonths]="1"
+            [minDate]="fechaActual"
+            [maxDate]="fechaMaximaAgenda"
+            [disabledDays]="[0,6]"
+            [showTime]="true">
+          </p-datepicker>
+        }
+
+        <!-- Manejo de Errores -->
+        <div class="h-6 mt-2 text-center">
+          <small appErrorMessage
+                 [errors]="fechaAgendaTramite.errors"
+                 [touched]="fechaAgendaTramite.touched"
+                 [dirty]="fechaAgendaTramite.dirty">
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER DEL MODAL (Botón de Acción) -->
+  <ng-template pTemplate="footer">
+    <div class="flex flex-col md:flex-row items-center justify-between w-full border-t pt-4">
+
+      <!-- Resumen visual de la fecha elegida antes de guardar -->
+      <div class="flex flex-col text-left mb-4 md:mb-0">
+        <span class="text-xs text-gray-500 font-bold uppercase">Agendamiento Seleccionado</span>
+        @if (fechaAgendaTramite.valid) {
+          <span class="text-base font-bold text-primary">{{ fechaAgendaTramite.value | date:'EEEE, d/MMM/y HH:mm' }}</span>
+        } @else {
+          <span class="text-base text-red-500 font-medium">Aún no ha seleccionado una fecha/hora</span>
+        }
+      </div>
+
+      <!-- Botones -->
+      <div class="flex gap-2 w-full md:w-auto">
+        <button
+          pButton
+          pRipple
+          label="Cancelar"
+          icon="pi pi-times"
+          class="p-button-text p-button-secondary w-full md:w-auto"
+          (click)="dialogoAgendarTramite = false">
+        </button>
+        <button
+          pButton
+          pRipple
+          label="Agendar Inspección"
+          icon="pi pi-calendar-plus"
+          class="w-full md:w-auto"
+          [disabled]="!fechaAgendaTramite.valid"
+          (click)="agendarTramite()">
         </button>
       </div>
     </div>
-    <div *ngIf="tramiteSeleccionado.inspeccionActual?.estadoFecha?.codigo==='solicitada'" class="formgrid grid">
-      <div class="field xl:col-5 lg:col-5 md:col-5 sm:col-12">
-        Fecha Solicitud: <b>{{ tramiteSeleccionado.inspeccionActual?.fechaSolicitud | date:'EEEE, d/MMMM/y' }}</b>
-      </div>
-      <div class="field xl:col-4 lg:col-4 md:col-4 sm:col-12">
-        <label for="fechaConfirmada" style="font-size: 25px"><b>Confirmar Fecha:</b></label>
-        <p-toggleswitch id="fechaConfirmada" [formControl]="fechaConfirmada" class="ml-2"></p-toggleswitch>
-      </div>
-    </div>
-    <div *ngIf="fechaConfirmada.value" class="field">
-      <p-datepicker id="horaAgendaTramite" [formControl]="horaAgendaTramite"
-                  [inline]="true"
-                  [defaultDate]="fechaActual"
-                  hourFormat="24"
-                  [timeOnly]="true">
-      </p-datepicker>
-      <small appErrorMessage
-             [errors]="fechaAgendaTramite.errors"
-             [touched]="fechaAgendaTramite.touched"
-             [dirty]="fechaAgendaTramite.dirty">
-      </small>
-    </div>
-    <div *ngIf="fechaConfirmada.value" class="field">
-      <div class="panel-messages-info">
-        <p>Seleccione la hora, en la que se va a realizar la inspección.</p>
-      </div>
-    </div>
-    <div *ngIf="!fechaConfirmada.value" class="field">
-      <p-datepicker id="fechaAgendaTramite" [formControl]="fechaAgendaTramite"
-                  appendTo="body"
-                  [inline]="true"
-                  hourFormat="24"
-                  dateFormat="yy-mm-dd"
-                  [defaultDate]="fechaActual"
-                  [firstDayOfWeek]="1"
-                  [numberOfMonths]="2"
-                  [minDate]="fechaActual"
-                  [maxDate]="fechaMaximaAgenda"
-                  [disabledDays]="[0,6]"
-                  [showTime]="true"></p-datepicker>
-      <small appErrorMessage
-             [errors]="fechaAgendaTramite.errors"
-             [touched]="fechaAgendaTramite.touched"
-             [dirty]="fechaAgendaTramite.dirty">
-      </small>
-    </div>
-  </div>
+  </ng-template>
 </p-dialog>
-
 <!--Resultado Inspección-->
 <p-dialog *ngIf="dialogoResultadoInspeccion" [header]="dialogoTitulo"
           [(visible)]="dialogoResultadoInspeccion"

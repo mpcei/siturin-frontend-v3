@@ -28,11 +28,10 @@
         @apply flex flex-row gap-2 col-span-12;
     }
 
-    .custom-form-title {
+    .custom-form-section {
         @apply text-xl font-semibold col-span-12;
     }
 }
-
 .p-toolbar {
     @apply rounded-lg shadow-md;
     background: var(--surface-card) !important;
