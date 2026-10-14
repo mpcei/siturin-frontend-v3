@@ -147,7 +147,7 @@ export class TramiteListComponent implements OnInit {
     horaAgendaTramite: FormControl = new FormControl(new Date(), []);
     fechaConfirmada: FormControl = new FormControl(false, [Validators.required]);
     dialogoDevolverTramite: boolean = false;
-    dialogoAgendarTramite: boolean = true;
+    dialogoAgendarTramite: boolean = false;
     dialogoResultadoInspeccion: boolean = false;
     dialogoDescargas: boolean = false;
     dialogoHistorialAsignaciones: boolean = false;
