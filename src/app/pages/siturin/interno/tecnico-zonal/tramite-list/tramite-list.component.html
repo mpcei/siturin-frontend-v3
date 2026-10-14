@@ -8,7 +8,7 @@
   <p-tabpanels>
     <p-tabpanel [value]="0">
     <div *ngIf="!cargandoTramites" class="panel-messages p-fluid">
-      <div class="grid">
+      <div class="flex flex-wrap gap-2 mb-3">
         <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
           <button pButton type="button" label="Sincronizar Trámites"
                   class="p-button-info mr-2"
@@ -38,7 +38,7 @@
       </div>
       <p-divider></p-divider>
 
-      <div class="grid">
+      <div class="flex flex-wrap gap-3 justify-center">
         <div class="field xl:col-4 lg:col-4 md:col-6 sm:col-12">
           <button pButton type="button" label="1. Agendar"
                   class=""
@@ -67,7 +67,7 @@
 
       <p-divider></p-divider>
 
-      <div class="grid">
+      <div class="flex flex-wrap gap-3">
         <div class="field xl:col-3 lg:col-3 md:col-6 sm:col-12">
           <button pButton type="button" label="Devolver Trámite"
                   class="p-button-warn mr-2"
@@ -108,12 +108,12 @@
           <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
             <h2>Total de Trámites sin Atender: {{ paginadorTramitesNoAtendidos?.totalItems }}</h2>
           </div>
-          <div class="xl:col-12 lg:col-12 md:col-12 sm:col-12">
-            <span class="p-input-icon-left">
+          <div class="filtro-valor">
+
              <i class="pi pi-search"></i>
              <input pInputText type="text" [formControl]="buscador"
                     placeholder="Buscar por RUC, Número de Registro, Nombre Comercial">
-            </span>
+            
           </div>
         </div>
       </ng-template>
