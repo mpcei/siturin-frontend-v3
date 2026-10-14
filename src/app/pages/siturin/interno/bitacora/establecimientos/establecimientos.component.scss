@@ -1,0 +1,14 @@
+.filtro-valor {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 300px;
+    flex: 0 0 300px;
+}
+.filtros-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+}

@@ -27,9 +27,8 @@ export class ValidadorDocumentoComponent implements OnInit {
   totalCamas: number = 0;
   totalPlazas: number = 0;
   totalCapacidades: number = 0;
-  tituloClass: string = 'field xl:col-6 lg:col-6 md:col-6 sm:col-6 text-right titulo'
-  textoClass: string = 'field xl:col-6 lg:col-6 md:col-6 sm:col-6 text-left texto'
-
+  tituloClass: string = 'col-12 md:col-6 text-left md:text-right font-bold flex align-items-center md:justify-content-end titulo';
+textoClass: string = 'col-12 md:col-6 text-left flex align-items-center texto';
   constructor(private activatedRoute: ActivatedRoute,
               private catastrosHttpService: CatastrosHttpService,
               private messageService: MessageService) {
@@ -54,6 +53,7 @@ export class ValidadorDocumentoComponent implements OnInit {
     numeroRegistro = numeroRegistro?.trim();
     if (numeroRegistro.length > 0) {
       this.catastrosHttpService.obtenerCatastroValidadorDocumento(numeroRegistro).subscribe(catastro => {
+          console.log(catastro);
         this.catastro = catastro;
         this.cargando = false;
         this.catastro.tramite?.habitaciones?.forEach(habitacion => {
