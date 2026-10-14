@@ -1,6 +1,7 @@
-import { computed, effect, Injectable, signal } from "@angular/core";
-import { DocumetnValidatorState, INITIAL_STATE, SECTION_KEYS } from "./document-validator.state";
-import { pickKeys } from "@/utils/helpers/pickKeys.helper";
+import { computed, effect, Injectable, signal } from '@angular/core';
+import { DocumetnValidatorState, INITIAL_STATE, SECTION_KEYS } from './document-validator.state';
+import { pickKeys } from '@/utils/helpers/pickKeys.helper';
+import { CatastroModel } from '@/legacy/models/siturin';
 
 const FORM_STATE_KEY = 'formState';
 
@@ -8,6 +9,9 @@ const FORM_STATE_KEY = 'formState';
 export class DocumentValidatorStore {
     readonly formState = signal<DocumetnValidatorState>(this.loadFromStorage());
     readonly formErrors = signal<Record<string, string[]>>({});
+
+    loaded = signal<boolean>(false);
+    catastro = signal<CatastroModel | null>(null);
 
     readonly documetnValidatorData = computed(() => this.formState().documetnValidatorData);
 
@@ -29,7 +33,6 @@ export class DocumentValidatorStore {
             }
         }));
     }
-
 
     private loadFromStorage(): DocumetnValidatorState {
         const stored = sessionStorage.getItem(FORM_STATE_KEY);

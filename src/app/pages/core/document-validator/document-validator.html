@@ -34,8 +34,7 @@
                     label="Validar"
                     (click)="obtenerDatos()"
                 ></button>
-                <div>
-                </div>
+                <div></div>
             </div>
             @if (formData.registerNumber().touched() && formData.registerNumber().invalid()) {
             <small class="p-error block mt-1">{{ formData.registerNumber().errors()[0] }}</small>
@@ -43,11 +42,11 @@
         </div>
     </div>
 
-    @if (cargando()) {
+    @if (store.loaded()) {
     <div class="custom-form-card">
         <app-skeleton type="form"></app-skeleton>
     </div>
-    } @if (!cargando() && catastro(); as data) { @if (data.id) {
+    } @if (!store.loaded() && store.catastro(); as data) { @if (data.id) {
     <div class="custom-form-card relative border-t-4 border-t-green-500">
         <div class="absolute top-4 right-6 hidden md:block">
             <button
@@ -59,202 +58,10 @@
                 (click)="nuevaBusqueda()"
             ></button>
         </div>
+        <app-document-general-info/>
+        <app-document-location-contact/>
+        <app-document-technical-capacities/>
 
-        <!-- Encabezado de resultado -->
-        <div class="flex items-center gap-3 mb-6">
-            <i class="pi pi-verified text-3xl text-green-500"></i>
-            <div>
-                <h2 class="text-2xl font-bold text-gray-800">Registro Encontrado</h2>
-                <p class="text-sm text-gray-500">Los datos del establecimiento están vigentes en el catastro.</p>
-            </div>
-        </div>
-
-        <!-- BLOQUE 1: DATOS DEL ESTABLECIMIENTO Y REGISTRO -->
-        <div class="custom-form-section text-primary-600 border-b pb-1 mb-4 mt-6">Información General</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Número de Registro</span>
-                <span class="text-base font-bold text-gray-900">{{ data.numeroRegistro }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Estado de Registro</span>
-                <span class="text-sm mt-1">
-                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded font-medium border border-green-200">{{ data.estado?.nombre }}</span>
-                </span>
-            </div>
-            <div class="flex flex-col lg:col-span-2">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Razón Social | Propietario</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.establecimiento?.ruc?.razonSocial }}</span>
-            </div>
-            <div class="flex flex-col lg:col-span-2">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Nombre Comercial</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.establecimiento?.nombreComercial }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">RUC</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.establecimiento?.ruc?.numero }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Representante Legal</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.establecimiento?.ruc?.representanteLegalNombres }}</span>
-            </div>
-        </div>
-
-        <!-- BLOQUE 2: UBICACIÓN Y CONTACTO -->
-        <div class="custom-form-section text-primary-600 border-b pb-1 mb-4 mt-8">Ubicación y Contacto</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Territorio (Prov / Can / Parr)</span>
-                <span class="text-base font-medium text-gray-900"> {{ data.tramite?.establecimiento?.provincia?.nombre }} / {{ data.tramite?.establecimiento?.canton?.nombre }} / {{ data.tramite?.establecimiento?.parroquia?.nombre }} </span>
-            </div>
-            <div class="flex flex-col lg:col-span-2">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Dirección Exacta</span>
-                <span class="text-base font-medium text-gray-900">
-                    {{ data.tramite?.establecimiento?.ubicacion?.callePrincipal }}, {{ data.tramite?.establecimiento?.ubicacion?.calleNumeracion }}, {{ data.tramite?.establecimiento?.ubicacion?.calleInterseccion }}
-                </span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Teléfono Principal</span>
-                <span class="text-base font-medium text-gray-900">{{ data.tramite?.establecimiento?.personaContacto?.telefonoPrincipal }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Correo Electrónico</span>
-                <span class="text-base font-medium text-gray-900">{{ data.tramite?.establecimiento?.personaContacto?.correo }}</span>
-            </div>
-        </div>
-
-        <!-- BLOQUE 3: ACTIVIDAD TURÍSTICA -->
-        <div class="custom-form-section text-primary-600 border-b pb-1 mb-4 mt-8">Clasificación Turística</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            @if (data.tramite?.actividad?.codigo === 'ctc_continente' || data.tramite?.actividad?.codigo === 'ctc_galapagos') {
-            <div class="flex flex-col lg:col-span-2">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Modalidad Turística</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.actividad?.nombre }}</span>
-            </div>
-            } @else {
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Actividad</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.actividad?.nombre }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Clasificación</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.clasificacion?.nombre }}</span>
-            </div>
-            }
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-500 uppercase font-semibold">Categoría</span>
-                <span class="text-base font-bold text-gray-900">{{ data.tramite?.categoria?.nombre }}</span>
-            </div>
-        </div>
-
-        <!-- BLOQUE 4: CAPACIDADES TÉCNICAS (Con fondo diferenciado para resaltarlo) -->
-        <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mt-8 mb-6">
-            <h4 class="text-sm font-bold text-gray-700 uppercase mb-4 border-b pb-2">Capacidades e Instalaciones</h4>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- ALIMENTOS Y BEBIDAS -->
-                @if (data.tramite?.actividad?.codigo?.includes('alimentos_bebidas') || data.tramite?.actividad?.codigo?.includes('parques') || data.tramite?.actividad?.codigo?.includes('eventos')) {
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Aforo (Personas)</span>
-                    <span class="text-xl font-bold text-primary">{{ data.tramite?.tramiteAlimentoBebida?.totalCapacidades || data.tramite?.tramiteParque?.totalCapacidades || data.tramite?.tramiteEvento?.totalCapacidades || 0 }}</span>
-                </div>
-                }
-
-                <!-- ALOJAMIENTO -->
-                @if (data.tramite?.actividad?.codigo?.includes('alojamiento') && data.tramite?.habitaciones?.length) {
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Habitaciones</span>
-                    <span class="text-xl font-bold text-primary">{{ totalHabitaciones() }}</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Camas</span>
-                    <span class="text-xl font-bold text-primary">{{ totalCamas() }}</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Plazas</span>
-                    <span class="text-xl font-bold text-primary">{{ totalPlazas() }}</span>
-                </div>
-                }
-
-                <!-- TRANSPORTE MARÍTIMO -->
-                @if (data.tramite?.actividad?.codigo?.includes('transporte') && data.tramite?.clasificacion?.codigo === 'maritimo') {
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Unidades (Embarcaciones)</span>
-                    <span class="text-xl font-bold text-primary">{{ data.tramite?.tramiteTransporte?.totalUnidades }}</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Total Puestos</span>
-                    <span class="text-xl font-bold text-primary">{{ data.tramite?.tramiteTransporte?.totalAsientos }}</span>
-                </div>
-                }
-
-                <!-- TRANSPORTE TERRESTRE -->
-                @if (data.tramite?.actividad?.codigo?.includes('transporte') && data.tramite?.clasificacion?.codigo === 'terrestre') {
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Capacidad Total de Vehículos</span>
-                    <span class="text-xl font-bold text-primary">{{ totalCapacidades() }}</span>
-                </div>
-                }
-
-                <!-- TURISMO AVENTURA -->
-                @if (data.tramite?.clasificacion?.codigo !== 'inmuebles_habitacionales' && data.tramite?.actividad?.codigo !== 'transporte_continente' && data.tramite?.actividad?.codigo !== 'transporte_galapagos') {
-                <div class="flex flex-col">
-                    <span class="text-xs text-gray-500 font-semibold">Oferta Turismo de Aventura</span>
-                    <span class="text-base font-bold text-primary">{{ data.tramite?.modalidadesTurismoAventura?.length ? 'SÍ OFERTA' : 'NO OFERTA' }}</span>
-                </div>
-                }
-            </div>
-
-            <!-- Listas técnicas detalladas dentro del cuadro -->
-            @if (data.tramite?.actividad?.codigo?.includes('alojamiento') && data.tramite?.clasificacion?.codigo !== 'inmuebles_habitacionales') {
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <span class="text-xs text-gray-500 font-semibold block mb-2">Servicios Complementarios</span>
-                <div class="flex flex-wrap gap-2">
-                    @for (servicio of data.tramite?.serviciosComplementarios; track $index) {
-                    <span class="px-2 py-1 bg-white border rounded text-xs text-gray-700 shadow-sm">{{ servicio?.clasificacion?.nombre }}: {{ servicio?.capacidad }}</span>
-                    } @empty {
-                    <span class="text-sm text-gray-500">No registra</span>
-                    }
-                </div>
-            </div>
-            } @if (data.tramite?.modalidadesTurismoAventura?.length && data.tramite?.clasificacion?.codigo !== 'inmuebles_habitacionales') {
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                <span class="text-xs text-gray-500 font-semibold block mb-2">Modalidades de Aventura</span>
-                <ul class="list-disc list-inside text-sm text-gray-700">
-                    @for (modalidad of data.tramite?.modalidadesTurismoAventura; track $index) {
-                    <li>{{ modalidad.tipo?.nombre }}</li>
-                    }
-                </ul>
-            </div>
-            }
-        </div>
-
-        <!-- BLOQUE 5: DATOS INSTITUCIONALES (Fechas y Responsables - Texto más pequeño) -->
-        <div class="custom-form-section text-gray-400 text-sm border-b pb-1 mb-4 mt-8">Gestión Institucional</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-2 text-sm">
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-400 uppercase">Técnico Responsable</span>
-                <span class="text-gray-700">{{ data.tramite?.asignacionActual?.usuarioInterno?.user?.name || 'N/A' }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-400 uppercase">Dirección Zonal</span>
-                <span class="text-gray-700">{{ data.tramite?.establecimiento?.provincia?.zonal?.nombre || 'N/A' }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-400 uppercase">Director Zonal</span>
-                <span class="text-gray-700">{{ data.tramite?.establecimiento?.provincia?.zonal?.director || 'N/A' }}</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-gray-400 uppercase">Fecha de Registro</span>
-                <span class="text-gray-700">{{ data.fechaRegistro }}</span>
-            </div>
-        </div>
-
-        <!-- Botón Nueva Búsqueda Mobile -->
         <div class="mt-8 md:hidden">
             <button
                 pButton

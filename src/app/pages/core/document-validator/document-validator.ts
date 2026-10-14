@@ -18,14 +18,16 @@ import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { LabelDirective } from '@/utils/directives/label.directive';
+import { DocumentTechnicalCapacities } from './components/document-technical-capacities';
+import { DocumentLocationContact } from './components/document-location-contact';
+import { DocumentGeneralInfo } from './components/document-general-info';
 
 @Component({
     selector: 'app-document-validator',
     templateUrl: './document-validator.html',
-    imports: [Bind, Card, ButtonDirective, Ripple, FormsModule, InputText, SkeletonComponent, Divider, FormField, InputGroup, InputGroupAddon, LabelDirective]
+    imports: [Bind, ButtonDirective, Ripple, FormsModule, InputText, SkeletonComponent, FormField, InputGroup, InputGroupAddon, LabelDirective, DocumentTechnicalCapacities, DocumentLocationContact, DocumentGeneralInfo]
 })
 export class DocumentValidator implements OnInit {
-    // Servicios
     private readonly activatedRoute = inject(ActivatedRoute);
     private readonly catastrosHttpService = inject(CatastrosHttpService);
     protected readonly store = inject(DocumentValidatorStore);
@@ -36,37 +38,9 @@ export class DocumentValidator implements OnInit {
 
     protected FontAwesome=FontAwesome
 
-    cargando = signal<boolean>(false);
-    catastro = signal<CatastroModel | null>(null);
-
-    totalHabitaciones = computed(() => {
-        const habitaciones = this.catastro()?.tramite?.habitaciones || [];
-        return habitaciones.reduce((sum, h) => sum + (h?.habitaciones || 0), 0);
-    });
-
-    totalCamas = computed(() => {
-        const habitaciones = this.catastro()?.tramite?.habitaciones || [];
-        return habitaciones.reduce((sum, h) => sum + (h?.camas || 0), 0);
-    });
-
-    totalPlazas = computed(() => {
-        const habitaciones = this.catastro()?.tramite?.habitaciones || [];
-        return habitaciones.reduce((sum, h) => sum + (h?.plazas || 0), 0);
-    });
-
-    totalCapacidades = computed(() => {
-        const transportes = this.catastro()?.tramite?.transporteTerrestres || [];
-        return transportes.reduce((sum, t) => sum + (t?.capacidad || 0), 0);
-    });
-
-    // Estilos UI
-    tituloClass = 'col-12 md:col-6 text-left md:text-right font-bold flex align-items-center md:justify-content-end titulo';
-    textoClass = 'col-12 md:col-6 text-left flex align-items-center texto';
-
     ngOnInit(): void {
         this.activatedRoute.queryParams.subscribe((params) => {
             if (params['q']) {
-                // Seteamos el valor usando el signal interno
                 this.formData.registerNumber().value.set(params['q']);
                 this.obtenerDatos();
             }
@@ -85,22 +59,22 @@ export class DocumentValidator implements OnInit {
             return;
         }
 
-        this.catastro.set(null);
+        this.store.catastro.set(null);
         const numero = this.formData.registerNumber().value().trim();
 
-        this.cargando.set(true);
+        this.store.loaded.set(true);
 
         this.catastrosHttpService.obtenerCatastroValidadorDocumento(numero).subscribe({
             next: (catastro) => {
-                this.catastro.set(catastro);
-                this.cargando.set(false);
+                this.store.catastro.set(catastro);
+                this.store.loaded.set(false);
             },
-            error: () => this.cargando.set(false)
+            error: () => this.store.loaded.set(false)
         });
     }
 
     nuevaBusqueda() {
-        this.catastro.set(null);
+        this.store.catastro.set(null);
         this.store.reset();
     }
 }
