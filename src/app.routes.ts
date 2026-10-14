@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { tokenGuard } from '@/guards/token.guard';
 import { accountGuard } from '@/guards/account.guard';
+import { ValidadorDocumentoComponent } from '@/pages/siturin/validador-documento/validador-documento.component';
 
 export const appRoutes: Routes = [
     { path: '', redirectTo: MY_ROUTES.dashboards.absolute, pathMatch: 'full' },
@@ -38,6 +39,11 @@ export const appRoutes: Routes = [
         path: MY_ROUTES.siturinPage.base,
         loadComponent: () => import('@layout/component/app.layout-main'),
         loadChildren: () => import('./app/pages/siturin/siturin.routes')
+    },
+
+    {
+        path: MY_ROUTES.documentValidator.base,
+        component: ValidadorDocumentoComponent,
     },
 
     { path: '**', redirectTo: MY_ROUTES.errorPages.notFound.absolute }

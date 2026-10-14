@@ -18,7 +18,7 @@ export const environment = {
 
     API_URL_DINARDAP: `${HOST}/api/v1/public`,
     API_URL_INTERNO: `${HOST}/api/v1/public`,
-    URL_VALIDADOR_DOCUMENTO: 'http://siturin.economicoproductivo.gob.ec/document-validator?q=',
+    URL_VALIDADOR_DOCUMENTO: 'https://siturin.economicoproductivo.gob.ec/document-validator?q=',
 
     MINISTERIO_UPPER: 'MINISTERIO DE DESARROLLO ECONÓMICO Y PRODUCTIVO'
 };
