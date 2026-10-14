@@ -54,6 +54,7 @@ export class ValidadorDocumentoComponent implements OnInit {
     numeroRegistro = numeroRegistro?.trim();
     if (numeroRegistro.length > 0) {
       this.catastrosHttpService.obtenerCatastroValidadorDocumento(numeroRegistro).subscribe(catastro => {
+          console.log(catastro);
         this.catastro = catastro;
         this.cargando = false;
         this.catastro.tramite?.habitaciones?.forEach(habitacion => {
