@@ -346,5 +346,9 @@ export const MY_ROUTES = {
                 absolute: '/siturin/interno/dashboard'
             }
         }
+    },
+    documentValidator: {
+        base: 'document-validator',
+        absolute: '/document-validator',
     }
 };
