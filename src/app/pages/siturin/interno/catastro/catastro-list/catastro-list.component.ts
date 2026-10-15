@@ -268,13 +268,13 @@ export class CatastroListComponent implements OnInit {
     }
 
     exportExcel() {
-        // import('xlsx').then((xlsx) => {
-        //     const worksheet = xlsx.utils.json_to_sheet(this.catastroExport);
-        //     const workbook = { Sheets: { Catastros: worksheet }, SheetNames: ['Catastros'] };
-        //     const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-        //     this.saveAsExcelFile(excelBuffer, 'catastro_' + format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
-        //     this.cargandoReporteCatastro = false;
-        // });
+        import('xlsx').then((xlsx) => {
+            const worksheet = xlsx.utils.json_to_sheet(this.catastroExport);
+            const workbook = { Sheets: { Catastros: worksheet }, SheetNames: ['Catastros'] };
+            const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+            this.saveAsExcelFile(excelBuffer, 'catastro_' + format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
+            this.cargandoReporteCatastro = false;
+        });
     }
 
     saveAsExcelFile(buffer: any, fileName: string): void {
