@@ -8,6 +8,7 @@ export const environment = {
     APP_VERSION: '3.0.0',
     API_URL: 'https://api-siturin.economicoproductivo.gob.ec/api/v1',
     API_ASSETS: 'https://api-siturin.economicoproductivo.gob.ec/assets',
+    API_MINIO: 'https://api-minio.economicoproductivo.gob.ec/siturin',
     MINISTERIO: 'Ministerio de Desarrollo Económico y Productivo',
     HOST,
     STORAGE_URL: `${HOST}/storage`,
