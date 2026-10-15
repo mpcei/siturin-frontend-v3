@@ -7,7 +7,16 @@ import { map } from 'rxjs/operators';
 import { ServerResponse, ServerResponsePaginator } from '@models/http-response';
 import { CoreService, MessageService } from '@services/core';
 import { CatalogueModel, FileModel, PaginatorModel } from '@models/core';
-import { AsignacionModel, CatalogoModel, CatastroModel, DpaModel, EstablecimientoModel, InspeccionModel, TramiteModel, ZonalModel } from '@models/siturin';
+import {
+    AsignacionModel,
+    CatalogoModel,
+    CatastroModel,
+    DpaModel,
+    EstablecimientoModel,
+    InspeccionModel,
+    TramiteModel,
+    ZonalModel
+} from '@models/siturin';
 import { RolesEnum } from '@shared/enums';
 
 @Injectable({
@@ -23,7 +32,8 @@ export class CatastrosHttpService {
         private httpClient: HttpClient,
         private coreService: CoreService,
         private messageService: MessageService
-    ) {}
+    ) {
+    }
 
     obtenerCatastroTramiteSeleccionado(catastroId: number = 0): Observable<CatastroModel> {
         const url = `${this.API_URL_PRIVATE}/${catastroId}/tramites/seleccionado`;
@@ -72,9 +82,9 @@ export class CatastrosHttpService {
 
     obtenerCatastroReportePorDAC(filtro: any = null): Observable<any> {
         const url = `${this.API_URL_PRIVATE}/reportes/dac`;
-        console.log('descargando');
+
         const headers = new HttpHeaders().append('origin', 'siturin2');
-        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro, headers }).pipe(
+        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro }, { headers }).pipe(
             map((response) => {
                 return response.data;
             })
@@ -83,14 +93,14 @@ export class CatastrosHttpService {
 
     obtenerCatastroReportePorDACBackup(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/dac`;
-        const headers = new HttpHeaders().append('origin','siturin2');
-        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json',headers });
+        const headers = new HttpHeaders().append('origin', 'siturin2');
+        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json', headers });
     }
 
     obtenerCatastroReportePorGAD(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/gad`;
-        const headers = new HttpHeaders().append('origin','siturin2');
-        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro,headers }).pipe(
+        const headers = new HttpHeaders().append('origin', 'siturin2');
+        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro},{ headers }).pipe(
             map((response) => {
                 return response.data;
             })
@@ -99,14 +109,14 @@ export class CatastrosHttpService {
 
     obtenerCatastroReportePorGADBackup(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/gad`;
-        const headers = new HttpHeaders().append('origin','siturin2');
-        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json',headers });
+        const headers = new HttpHeaders().append('origin', 'siturin2');
+        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json', headers });
     }
 
     obtenerCatastroReportePorZonal(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/zonal`;
-        const headers = new HttpHeaders().append('origin','siturin2');
-        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro ,headers}).pipe(
+        const headers = new HttpHeaders().append('origin', 'siturin2');
+        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro}, {headers }).pipe(
             map((response) => {
                 return response.data;
             })
@@ -115,13 +125,13 @@ export class CatastrosHttpService {
 
     obtenerCatastroReportePorZonalBackup(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/zonal`;
-        const headers = new HttpHeaders().append('origin','siturin2');
-        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json',headers });
+        const headers = new HttpHeaders().append('origin', 'siturin2');
+        return this.httpClient.patch(url, { filtro }, { responseType: 'blob' as 'json', headers });
     }
 
     obtenerCatastrosPorDAC(page: number = 0, buscador: any = null, filtro: any = null): Observable<CatastroModel[]> {
         const url = `${this.API_URL_PRIVATE}/catastrados-dac`;
-        const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
+        const headers = new HttpHeaders().append('pagination', 'true').append('origin', 'siturin2');
         let params = new HttpParams().append('page', page);
 
         this.coreService.showLoad();
@@ -138,7 +148,7 @@ export class CatastrosHttpService {
 
     obtenerCatastrosPorGAD(page: number = 0, buscador: any = null, filtro: any = null): Observable<CatastroModel[]> {
         const url = `${this.API_URL_PRIVATE}/catastrados-gad`;
-        const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
+        const headers = new HttpHeaders().append('pagination', 'true').append('origin', 'siturin2');
         let params = new HttpParams().append('page', page);
         this.coreService.showLoad();
         return this.httpClient.patch<ServerResponsePaginator>(url, { buscador, filtro }, { params, headers }).pipe(
@@ -154,7 +164,7 @@ export class CatastrosHttpService {
 
     obtenerCatastrosPorZonal(page: number = 0, buscador: any = null, filtro: any = null): Observable<CatastroModel[]> {
         const url = `${this.API_URL_PRIVATE}/catastrados-zonal`;
-        const headers = new HttpHeaders().append('pagination', 'true').append('origin','siturin2');
+        const headers = new HttpHeaders().append('pagination', 'true').append('origin', 'siturin2');
         let params = new HttpParams().append('page', page);
         this.coreService.showLoad();
         return this.httpClient.patch<ServerResponsePaginator>(url, { buscador, filtro }, { params, headers }).pipe(
@@ -181,10 +191,10 @@ export class CatastrosHttpService {
                 break;
         }
         const url = `${this.API_URL_PRIVATE}/${catastroId}/catastrados-${rol}`;
-        const headers = new HttpHeaders().append('origin','siturin2');
+        const headers = new HttpHeaders().append('origin', 'siturin2');
 
         this.coreService.showLoad();
-        return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
+        return this.httpClient.post<ServerResponse>(url, payload, { headers }).pipe(
             map((response) => {
                 this.coreService.hideLoad();
                 this.messageService.success(response);
@@ -195,9 +205,9 @@ export class CatastrosHttpService {
 
     guardarCatastroPorDAC2(catastroId: number, payload: CatastroModel): Observable<CatastroModel> {
         const url = `${this.API_URL_PRIVATE}/${catastroId}/catastrados-dac`;
-        const headers = new HttpHeaders().append('origin','siturin2');
+        const headers = new HttpHeaders().append('origin', 'siturin2');
         this.coreService.showLoad();
-        return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
+        return this.httpClient.post<ServerResponse>(url, payload, { headers }).pipe(
             map((response) => {
                 this.coreService.hideLoad();
                 this.messageService.success(response);
@@ -208,7 +218,7 @@ export class CatastrosHttpService {
 
     guardarAdjuntoCatastroPorDAC(catastroId: number, payload: FormData): Observable<CatastroModel> {
         const url = `${this.API_URL_PRIVATE}/${catastroId}/catastrados-dac/adjunto`;
-        const headers = new HttpHeaders().append('origin','siturin2');
+        const headers = new HttpHeaders().append('origin', 'siturin2');
         this.coreService.showLoad();
         return this.httpClient.post<ServerResponse>(url, payload).pipe(
             map((response) => {
