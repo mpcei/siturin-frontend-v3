@@ -195,6 +195,7 @@ export class CatastroListComponent implements OnInit {
         switch (this.authService.role.name) {
             case RolesEnum.DAC:
                 this.cargandoReporteCatastro = true;
+                console.log('descargando');
                 this.catastrosHttpService.obtenerCatastroReportePorDAC(this.filtro.value).subscribe(
                     (documento) => {
                         // this.coreService.descargarDocumentoXLSX(documento, 'catastro');

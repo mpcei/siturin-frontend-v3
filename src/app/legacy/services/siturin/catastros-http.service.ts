@@ -72,6 +72,7 @@ export class CatastrosHttpService {
 
     obtenerCatastroReportePorDAC(filtro: any = null): Observable<any> {
         const url = `${this.API_URL_PRIVATE}/reportes/dac`;
+        console.log('descargando');
         const headers = new HttpHeaders().append('origin', 'siturin2');
         return this.httpClient.patch<ServerResponsePaginator>(url, { filtro, headers }).pipe(
             map((response) => {
