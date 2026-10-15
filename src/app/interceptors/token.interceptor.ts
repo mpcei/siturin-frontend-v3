@@ -10,6 +10,8 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     const authServiceLegacy = inject(AuthServiceLegacy);
     const authHttpService = inject(AuthHttpService);
     let headers = req.headers ? req.headers : new HttpHeaders();
+    console.log('headers', headers.get('origin'));
+    console.log('headers', headers.get('origin')== 'siturin2');
     if (headers.get('origin') == 'siturin2') {
         if (authServiceLegacy.token && !headers.get('Authorization')) {
             headers = headers.append('Authorization', `Bearer ${authServiceLegacy.token.replace(/"/g, '')}`);
