@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
-import { ValidadorDocumentoComponent } from '../siturin/validador-documento/validador-documento.component';
-import { DocumentValidator } from '../core/document-validator/document-validator';
+import DashboardsComponent from '@/pages/dashboards/dashboards.component';
 
 export default [
     {
         path: '',
         title: 'SITURIN V3',
-        loadComponent:()=> DocumentValidator
+        loadComponent:()=> DashboardsComponent
     }
 ] as Routes;
