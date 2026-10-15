@@ -16,7 +16,7 @@ import { Tag } from 'primeng/tag';
 import { DatePicker } from 'primeng/datepicker';
 import { Select } from 'primeng/select';
 import { CatalogueInterface } from '@utils/interfaces';
-import { CatalogueTypeEnum } from '@utils/enums';
+import { CatalogueTypeEnum, RoleEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { AuthService } from '@/pages/auth/auth.service';
 import { dateOnlyToLocalDate } from '@utils/helpers/formats.helper';
@@ -168,7 +168,7 @@ export default class UserProfileComponent implements OnInit {
                     birthdate: dateOnlyToLocalDate(response.birthdate)
                 });
 
-                if (response.avatar) this.avatarUrl = `${environment.API_ASSETS}/${response.avatar}`;
+                if (response.avatar) this.avatarUrl = `${environment.API_MINIO}/${response.avatar}`;
 
                 this.roles = response.roles;
             }
@@ -239,4 +239,6 @@ export default class UserProfileComponent implements OnInit {
     goToSecurityQuestions() {
         this.router.navigate([MY_ROUTES.publicPages.securityQuestions.absolute]);
     }
+
+    protected readonly RoleEnum = RoleEnum;
 }

@@ -1,5 +1,5 @@
-const HOST = 'http://localhost:8000';
-
+// const HOST = 'http://localhost:8000';
+const HOST = 'https://mailpit.economicoproductivo.gob.ec/public';
 export const environment = {
     production: false,
     APP_URL: 'http://localhost:4200',
@@ -9,6 +9,7 @@ export const environment = {
     APP_VERSION: '3.0.0',
     API_URL: 'http://localhost:3000/api/v1',
     API_ASSETS: 'http://localhost:3000/assets',
+    API_MINIO: 'https://api-minio.economicoproductivo.gob.ec/siturin',
     MINISTERIO: 'Ministerio de Desarrollo Económico y Productivo',
 
     HOST,
