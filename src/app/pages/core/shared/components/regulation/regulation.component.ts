@@ -226,4 +226,12 @@ export class RegulationComponent {
     }
 
     protected readonly PrimeIcons = PrimeIcons;
+
+    downloadDocument(code: string) {
+        switch (code) {
+            case  'informed_consent':
+                window.open('assets/archivos/regulation/informed_consent.pdf');
+                break;
+        }
+    }
 }

@@ -48,14 +48,20 @@
 
                                         {{ item.value.name }}
 
+                                        aaa{{item.value.downloadable}}aaa
+                                        @if (item.value.downloadable) {
+                                            <p-tag [icon]="PrimeIcons.DOWNLOAD" value="Descargar Formato"
+                                                   (click)="downloadDocument(item.value.downloadableCode)"></p-tag>
+                                        }
+
                                         @if (item.value.score) {
-                                            <p-tag [value]="'Puntos: ( ' + item.value.score + ' )'" [rounded]="true"/>
+                                            <p-tag [value]="'Puntos: ( ' + item.value.score + ' )'" [rounded]="true" />
                                         }
                                     </p>
                                 </div>
 
                                 <div [formGroupName]="j" class="md:col-span-1 custom-form-field">
-                                    <app-toggle-switch id="isCompliant" formControlName="isCompliant"/>
+                                    <app-toggle-switch id="isCompliant" formControlName="isCompliant" />
                                 </div>
                             }
                         </div>
