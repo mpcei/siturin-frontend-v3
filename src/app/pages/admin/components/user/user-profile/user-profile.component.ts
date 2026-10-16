@@ -136,10 +136,10 @@ export default class UserProfileComponent implements OnInit {
     buildForm() {
         this.form = this.formBuilder.group({
             identification: [{ value: null, disabled: true }, [Validators.required]],
-            username: [null, [Validators.required]],
+            username: [{ value: null, disabled: true }, [Validators.required]],
             name: [{ value: null, disabled: true }, [Validators.required]],
             lastname: [null],
-            email: [null, [Validators.required, invalidEmailValidator()]],
+            email: [{ value: null, disabled: true }, [Validators.required, invalidEmailValidator()]],
             cellPhone: [null],
             phone: [null],
             birthdate: [{ value: null, disabled: true }, [Validators.required]],
