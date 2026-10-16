@@ -5,7 +5,12 @@ import { MenuItem, PrimeIcons } from 'primeng/api';
 import { BreadcrumbService } from '@layout/service';
 import { TableModule } from 'primeng/table';
 import { CredentialInterface, EstablishmentInterface } from '@modules/core/shared/interfaces';
-import { EstablishmentHttpService, FormStateService, GuideHttpService, RucHttpService } from '@modules/core/roles/external/services';
+import {
+    EstablishmentHttpService,
+    FormStateService,
+    GuideHttpService,
+    RucHttpService
+} from '@modules/core/roles/external/services';
 import { environment } from '@env/environment';
 import { AuthService } from '@/pages/auth/auth.service';
 import { Button } from 'primeng/button';
@@ -22,17 +27,24 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
-import { CredentialStateSeverityPipe, EstablishmentNumberPipe, ExpiredCredentialPipe } from '@modules/core/shared/pipes';
+import {
+    CredentialStateSeverityPipe,
+    EstablishmentNumberPipe,
+    ExpiredCredentialPipe
+} from '@modules/core/shared/pipes';
 import { Card } from 'primeng/card';
 import { DatePipe } from '@angular/common';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { InactivationComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
+import {
+    InactivationComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/inactivation/inactivation.component';
 import { Divider } from 'primeng/divider';
 import { ReportsHttpService } from '@/pages/core/shared/services';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
     selector: 'app-guide-establishment-list',
-    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe, CredentialStateSeverityPipe, ButtonActionComponent, ButtonActionComponent],
+    imports: [Message, ReactiveFormsModule, TableModule, Button, Paginator, ButtonActionComponent, Tooltip, Tag, EstablishmentNumberPipe, Card, DatePipe, Divider, ExpiredCredentialPipe, CredentialStateSeverityPipe, ButtonActionComponent, ButtonActionComponent, Dialog],
     templateUrl: './guide-establishment-list.component.html',
     providers: [DialogService],
     styles: [
@@ -72,6 +84,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     private readonly formStateService = inject(FormStateService);
     private dialogService = inject(DialogService);
     ref?: DynamicDialogRef | null;
+    protected visibleModalPhoto = false;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Guianza Turística' }]);
@@ -182,7 +195,10 @@ export default class GuideEstablishmentListComponent implements OnInit {
         const type = await this.catalogueService.findByCode(processType, CatalogueTypeEnum.processes_type);
 
         if (!type) {
-            this.customMessageService.showModalError({ summary: 'El tipo de trámite no existe', detail: 'Intente de nuevo' });
+            this.customMessageService.showModalError({
+                summary: 'El tipo de trámite no existe',
+                detail: 'Intente de nuevo'
+            });
             return;
         }
 
@@ -220,9 +236,9 @@ export default class GuideEstablishmentListComponent implements OnInit {
     protected updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {
-                console.log(response)
+                console.log(response);
                 let auth = this.authService.auth;
-                console.log(auth)
+                console.log(auth);
                 auth.birthdate = response.birthdate;
                 auth.nationality = response.nationality;
                 auth.sex = response.sex;
@@ -237,6 +253,10 @@ export default class GuideEstablishmentListComponent implements OnInit {
     }
 
     protected downloadRegistrationCertificate() {
+        if (!this.authService.auth.avatar) {
+            this.visibleModalPhoto = true;
+            return;
+        }
         this.reportsHttpService.downloadRegistrationCertificate(this.establishment().process?.cadastre!);
     }
 
@@ -266,4 +286,8 @@ export default class GuideEstablishmentListComponent implements OnInit {
     protected readonly CatalogueEstablishmentsStateEnum = CatalogueEstablishmentsStateEnum;
     protected readonly CatalogueCadastreStatesStateEnum = CatalogueCadastreStatesStateEnum;
     protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
+
+    goToProfile(){
+        this.router.navigate([MY_ROUTES.adminPages.user.profile.absolute]);
+    }
 }

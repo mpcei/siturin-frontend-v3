@@ -278,3 +278,39 @@
         [enabled]="true"
         (isHide)="isButtonActionsEnabled = $event" />
 }
+
+<p-dialog [(visible)]="visibleModalPhoto" [modal]="true" [style]="{ width: '40rem' }">
+    <ng-template #header>
+        <h5>Estimado/a usuario/a:</h5>
+    </ng-template>
+
+    <p>
+        Si requiere descargar su Registro de Turismo de Guía de Turismo actualizado, ingrese al siguiente enlace y siga
+        las instrucciones para cargar su fotografía de perfil:
+    </p>
+
+    <p-button [outlined]="true" label="Ir a Mi Perfil" (onClick)="goToProfile()" />
+
+    <p-divider/>
+
+    <p>
+        <b>La fotografía deberá cumplir con los siguientes parámetros:</b>
+    </p>
+    <ul>
+        <li>- A color.</li>
+        <li>- Tamaño carné: 30 mm de ancho × 45 mm de alto.</li>
+        <li>- Fondo blanco.</li>
+        <li>- Formato: JPG o PNG.</li>
+        <li>- Tamaño máximo del archivo: 1 MB.</li>
+        <li>- Posición del rostro: cabeza recta y mirada al frente.</li>
+        <li>- Sin accesorios: no utilizar gorras, sombreros, gafas, lentes, joyas u otros accesorios.</li>
+        <li>- Cabello recogido.</li>
+    </ul>
+    <p-divider/>
+    <p>
+        Una vez cargada la fotografía conforme a estos requisitos, podrá continuar con el proceso para descargar su
+        Registro de Turismo actualizado.
+    </p>
+
+    <p>        Gracias por su colaboración.</p>
+</p-dialog>
