@@ -57,7 +57,8 @@ import { Tooltip } from 'primeng/tooltip';
     ],
     template: `
         <div class="login-page min-h-screen flex items-center justify-center bg-gray-50 px-4">
-            <div class="box w-full max-w-7xl bg-white rounded-xl shadow-md overflow-hidden grid grid-cols-1 lg:grid-cols-7">
+            <div
+                class="box w-full max-w-7xl bg-white rounded-xl shadow-md overflow-hidden grid grid-cols-1 lg:grid-cols-7">
                 <!-- COLUMNA IZQUIERDA -->
                 <div class="lg:col-span-3 p-6 lg:p-10 flex flex-col justify-center">
                     <!-- Logo / Header -->
@@ -69,7 +70,8 @@ import { Tooltip } from 'primeng/tooltip';
                     <!-- Aquí renderizas varios componentes -->
                     <ng-content select="[left-content]">
                         <router-outlet />
-                        <p-button severity="secondary" [label]="environment.APP_VERSION" pTooltip="Versión del sistema" [icon]="FontAwesome.CODE_BRANCH_SOLID" [text]="true" />
+                        <p-button severity="secondary" [label]="environment.APP_VERSION" pTooltip="Versión del sistema"
+                                  [icon]="FontAwesome.CODE_BRANCH_SOLID" [text]="true" />
                     </ng-content>
                 </div>
 
@@ -80,13 +82,15 @@ import { Tooltip } from 'primeng/tooltip';
                         <ng-content select="[right-header]">
                             <div class="font-semibold text-xl text-center">{{ environment.APP_NAME }}</div>
 
-                            <p-divider/>
+                            <p-divider />
 
                             <p-message severity="info">
                                 <p>
                                     <i [class]="FontAwesome.TRIANGLE_EXCLAMATION_SOLID"></i>
-                                    <b>Importante:</b> Estimado Usuario, si su establecimiento o su actividad de guianza turística la realiza dentro del cantón Quito,
-                                    por favor acérquese a las oficinas de <b>Quito Turismo</b> para solicitar su <b>Certificado de Registro Turístico</b>.
+                                    <b>Importante:</b> Estimado Usuario, si su establecimiento o su actividad de guianza
+                                    turística la realiza dentro del cantón Quito,
+                                    por favor acérquese a las oficinas de <b>Quito Turismo</b> para solicitar su <b>Certificado
+                                    de Registro Turístico</b>.
                                 </p>
                                 <p>
                                     <i [class]="FontAwesome.LOCATION_DOT_SOLID"></i>
@@ -102,7 +106,8 @@ import { Tooltip } from 'primeng/tooltip';
 
                                 <p>
                                     <i [class]="FontAwesome.ENVELOPE_SOLID"></i>
-                                    <b>Correo electrónico:</b> <a href="mailto:info@quito-turismo.gob.ec"> info@quito-turismo.gob.ec</a>
+                                    <b>Correo electrónico:</b> <a href="mailto:info@quito-turismo.gob.ec"> info@quito
+                                    -turismo.gob.ec</a>
                                 </p>
                             </p-message>
                         </ng-content>
@@ -114,41 +119,76 @@ import { Tooltip } from 'primeng/tooltip';
                             <div class="flex flex-col gap-2">
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div class="md:col-span-1 flex flex-col gap-2">
-                                        <p-button pTooltip="Ir a Simulador" [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID" styleClass="w-full" severity="info" [text]="true" [raised]="true" (onClick)="goToSimulator()" />
+                                        <p-button pTooltip="Ir a Simulador"
+                                                  [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
+                                                  styleClass="w-full" severity="info" [text]="true" [raised]="true"
+                                                  (onClick)="goToSimulator()" />
                                     </div>
                                     <div class="md:col-span-11 flex flex-col gap-2">
-                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">Simulador de Normativa</h6>
-                                        <small style="color:var(--text-color-secondary)">Permite validar si se cumple o no con los requisitos para acceder a una clasificación y categoría específica.</small>
+                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">Simulador de
+                                            Normativa</h6>
+                                        <small style="color:var(--text-color-secondary)">Permite validar si se cumple o
+                                            no con los requisitos para acceder a una clasificación y categoría
+                                            específica.</small>
                                     </div>
                                 </div>
                                 <p-divider />
 
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div class="md:col-span-1 flex flex-col gap-2">
-                                        <p-button pTooltip="Descargar" [icon]="FontAwesome.DOWNLOAD_SOLID" styleClass="w-full" [text]="true" [raised]="true" (onClick)="downloadPDF('steps')" />
+                                        <p-button pTooltip="Descargar" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                  styleClass="w-full" [text]="true" [raised]="true"
+                                                  (onClick)="downloadPDF('steps')" />
                                     </div>
                                     <div class="md:col-span-11 flex flex-col gap-2">
-                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">5 Pasos para obtener un Registro de Turismo</h6>
+                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">5 Pasos para obtener
+                                            un Registro de Turismo</h6>
+                                    </div>
+                                </div>
+                                <p-divider />
+
+                                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                    <div class="md:col-span-11 flex flex-col gap-2">
+                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">
+                                            Manual de Usuario
+                                        </h6>
+                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">
+                                            <span class="mr-24 ml-6">Interno</span> <span>Externo</span>
+                                        </h6>
+
+                                        <div class="md:col-span-1 flex flex-row gap-2">
+                                            <p-button pTooltip="Manual Guianza" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                      styleClass="w-full" [text]="true" [raised]="true"
+                                                      (onClick)="downloadPDF('manual_guianza_internal')" ></p-button>
+
+                                            <p-button pTooltip="Manual otras actividades"
+                                                      [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                      styleClass="w-full" [text]="true" [raised]="true"
+                                                      (onClick)="downloadPDF('manual_internal')" ></p-button>
+
+                                            <p-button pTooltip="Manual Guianza" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                      class="ml-10"
+                                                      styleClass="w-full" [text]="true" [raised]="true"
+                                                      (onClick)="downloadPDF('manual_guianza_external')" ></p-button>
+
+                                            <p-button pTooltip="Manual otras actividades"
+                                                      [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                      styleClass="w-full" [text]="true" [raised]="true"
+                                                      (onClick)="downloadPDF('manual_external')" ></p-button>
+                                        </div>
                                     </div>
                                 </div>
                                 <p-divider />
 
                                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                                     <div class="md:col-span-1 flex flex-col gap-2">
-                                        <p-button pTooltip="Descargar" [icon]="FontAwesome.DOWNLOAD_SOLID" styleClass="w-full" [text]="true" [raised]="true" (onClick)="downloadPDF('manual')" />
+                                        <p-button pTooltip="Descargar" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                                                  styleClass="w-full" [text]="true" [raised]="true"
+                                                  (onClick)="downloadPDF('legal')" />
                                     </div>
                                     <div class="md:col-span-11 flex flex-col gap-2">
-                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">Manual de usuario</h6>
-                                    </div>
-                                </div>
-                                <p-divider />
-
-                                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                                    <div class="md:col-span-1 flex flex-col gap-2">
-                                        <p-button pTooltip="Descargar" [icon]="FontAwesome.DOWNLOAD_SOLID" styleClass="w-full" [text]="true" [raised]="true" (onClick)="downloadPDF('legal')" />
-                                    </div>
-                                    <div class="md:col-span-11 flex flex-col gap-2">
-                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">Términos Y Condiciones</h6>
+                                        <h6 class="mb-5" style="color:var(--text-color-secondary)">Términos Y
+                                            Condiciones</h6>
                                     </div>
                                 </div>
                             </div>
@@ -197,8 +237,17 @@ export default class AppLayoutAuth {
             case 'steps':
                 window.open(`${environment.APP_PATH_ASSETS}/auth/files/steps.pdf`, '_blank');
                 break;
-            case 'manual':
-                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual.pdf`, '_blank');
+            case 'manual_guianza_internal':
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual_guianza_internal.pdf`, '_blank');
+                break;
+            case 'manual_internal':
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual_internal.pdf`, '_blank');
+                break;
+            case 'manual_guianza_external':
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual_guianza_external.pdf`, '_blank');
+                break;
+            case 'manual_external':
+                window.open(`${environment.APP_PATH_ASSETS}/auth/files/manual_external.pdf`, '_blank');
                 break;
             case 'legal':
                 window.open(`${environment.APP_PATH_ASSETS}/auth/files/legal.pdf`, '_blank');
