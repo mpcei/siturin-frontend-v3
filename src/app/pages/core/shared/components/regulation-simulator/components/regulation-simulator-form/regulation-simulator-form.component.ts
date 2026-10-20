@@ -119,4 +119,6 @@ export class RegulationSimulatorFormComponent implements OnInit {
     get categoryField(): AbstractControl {
         return this.form.controls['category'];
     }
+
+    protected readonly CatalogueActivitiesCodeEnum = CatalogueActivitiesCodeEnum;
 }
