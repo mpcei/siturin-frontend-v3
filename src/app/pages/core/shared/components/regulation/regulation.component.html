@@ -10,9 +10,10 @@
                             <p class="text-lg font-bold">Atención</p>
 
                             <p>
-                                Los requisitos listados a continuación serán revisados por el inspector del Ministerio
-                                de Turismo el día de la visita a su establecimiento. Asegúrese que su establecimiento
-                                cumpla con aquellos seleccionados.
+                                Los requisitos que se detallan a continuación serán verificados por los funcionarios del
+                                {{ environment.MINISTERIO }} durante la visita a su establecimiento. Se recomienda asegurarse
+                                de que su establecimiento cumpla con cada uno de ellos para facilitar el proceso de
+                                inspección.
                             </p>
 
                             <p>
@@ -40,28 +41,41 @@
 
                         <div formArrayName="items" class="custom-form-grid">
                             @for (item of getRegulationItemsField(i).controls; track item.value.id; let j = $index) {
-                                <div [formGroupName]="j" class="md:col-span-11 custom-form-field">
-                                    <p class="text-justify">
-                                        @if (item.value.isMandatory) {
-                                            <span class="text-red-500 ml-1">*</span>
-                                        }
+                                <div
+                                    [formGroupName]="j"
+                                    class="flex flex-row flex-nowrap items-start gap-3 custom-form-field"
+                                >
+                                    <div class="shrink-0">
+                                        <app-toggle-switch
+                                            id="isCompliant"
+                                            formControlName="isCompliant"
+                                        />
+                                    </div>
 
-                                        {{ item.value.name }}
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-justify">
+                                            @if (item.value.isMandatory) {
+                                                <span class="text-red-500 ml-1">*</span>
+                                            }
 
-                                        aaa{{item.value.downloadable}}aaa
-                                        @if (item.value.downloadable) {
-                                            <p-tag [icon]="PrimeIcons.DOWNLOAD" value="Descargar Formato"
-                                                   (click)="downloadDocument(item.value.downloadableCode)"></p-tag>
-                                        }
+                                            {{ item.value.name }}
 
-                                        @if (item.value.score) {
-                                            <p-tag [value]="'Puntos: ( ' + item.value.score + ' )'" [rounded]="true" />
-                                        }
-                                    </p>
-                                </div>
+                                            @if (item.value.downloadable) {
+                                                <p-tag
+                                                    [icon]="PrimeIcons.DOWNLOAD"
+                                                    value="Descargar Formato"
+                                                    (click)="downloadDocument(item.value.downloadableCode)"
+                                                />
+                                            }
 
-                                <div [formGroupName]="j" class="md:col-span-1 custom-form-field">
-                                    <app-toggle-switch id="isCompliant" formControlName="isCompliant" />
+                                            @if (item.value.score) {
+                                                <p-tag
+                                                    [value]="'Puntos: ( ' + item.value.score + ' )'"
+                                                    [rounded]="true"
+                                                />
+                                            }
+                                        </p>
+                                    </div>
                                 </div>
                             }
                         </div>
@@ -71,3 +85,85 @@
         </form>
     }
 </p-fluid>
+@if (categoryConfigurations.length) {
+    <div class="panel-messages-info p-fluid">
+        <div class="custom-form-grid md:grid-cols-12">
+            <div class="custom-form-field xl:col-span-6">
+                <h3 class="mb-3">Información:</h3>
+                <p class="mb-3">La sumatoria total de puntos (respuestas SI), seleccionado es
+                    <b>{{ totalScore() }}</b>
+                    de
+                    un
+                    total
+                    de <b>{{ totalCategoryScore() }}</b> puntos.
+                </p>
+                <p class="mb-3">
+                    Con lo cual el puntaje de categorización obtenido es:
+                    <b>{{ totalAverageScore().toFixed(2) }}</b>
+                </p>
+                <p>
+                    La categoría obtenida es:
+                    <b>{{ categoryField.value?.name }}</b>
+                    @if (!categoryField.value) {
+                        <b class="p-error">
+                            No es suficiente para aplicar por una categoría de turismo.
+                        </b>
+                    }
+                </p>
+            </div>
+            <div class="custom-form-field xl:col-span-6">
+                <h3 class="mb-3">Categorización:</h3>
+                <ul>
+                    @for (item of categoryConfigurations; track item; let i = $index) {
+                        <li class="mb-3">
+                            {{ item.category.name }}
+
+                            @if (i == categoryConfigurations.length - 1) {
+                                <b>
+                                    De {{ item.min }} {{ item.max! | maximoConfigracionCategoriaPipe }}
+                                </b>
+                            }
+
+                            @if (i < categoryConfigurations.length - 1) {
+                                <b>
+                                    Entre {{ item.min }} y menor que {{ item.max! | maximoConfigracionCategoriaPipe }}
+                                </b>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="panel-messages-info">
+        <p class="mb-3">
+            <b>Forma de Cálculo:</b>
+        </p>
+
+        @if (activityCode() === 'alimentos_bebidas_galapagos') {
+            <p class="mb-3">
+                Puntaje de Categorización = La sumatoria de los ítems <b>({{ totalAverageScore().toFixed(2) }})</b>.</p>
+        }
+
+        @if (activityCode() != 'alimentos_bebidas_galapagos') {
+            <p class="mb-3">
+                Puntaje de Categorización = ({{ totalAverageScore().toFixed(2) }})</p>
+        }
+
+        <p>
+            Le recordamos que su establecimiento puede acceder a varios registros de turismo, con la actividad de
+            Alimentos y Bebidas.
+        </p>
+    </div>
+}
+
+@if (categoryConfigurations.length === 0 && (activityCode() === 'alimentos_bebidas_continente' || activityCode() === 'alimentos_bebidas_galapagos')) {
+    <div
+        class="panel-messages-info">z
+        <h3 class="mb-3">Información:</h3>
+        <p>La categoría disponible para su establecimiento es <b>CATEGORÍA ÚNICA</b></p>
+    </div>
+}

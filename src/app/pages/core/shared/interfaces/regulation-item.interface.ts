@@ -8,4 +8,6 @@ export interface RegulationItemInterface {
     sort: number;
     enabled: boolean;
     isCompliant?: boolean;
+    downloadable: boolean;
+    downloadableCode: string;
 }

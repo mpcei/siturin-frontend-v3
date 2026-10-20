@@ -3,7 +3,11 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ButtonModule } from 'primeng/button';
 import { RegulationHttpService } from '@modules/core/shared/services/regulation-http.service';
-import { RegulationItemInterface, RegulationResponseInterface, RegulationSectionInterface } from '@modules/core/shared/interfaces';
+import {
+    RegulationItemInterface,
+    RegulationResponseInterface,
+    RegulationSectionInterface
+} from '@modules/core/shared/interfaces';
 import { ValidationTypeEnum } from '../regulation-simulator/enum';
 import { Divider } from 'primeng/divider';
 import { Fluid } from 'primeng/fluid';
@@ -14,10 +18,13 @@ import { CatalogueActivitiesCodeEnum } from '@/utils/enums';
 import { CategoryConfigurationsHttpService } from '../../services/category-configurations.http.service';
 import { CategoryConfigurationInterface } from '@/pages/core/shared/interfaces/category-configuration.interface';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
+import { MaximoConfigracionCategoriaPipe } from '@shared/pipes/siturin/maximo-configracion-categoria.pipe';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-regulation',
-    imports: [ReactiveFormsModule, ToggleSwitchModule, ButtonModule, Divider, Fluid, Message, Tag, ToggleSwitchComponent],
+    imports: [ReactiveFormsModule, ToggleSwitchModule, ButtonModule, Divider, Fluid, Message, Tag, ToggleSwitchComponent, MaximoConfigracionCategoriaPipe, NgForOf, NgIf, JsonPipe],
     templateUrl: './regulation.component.html'
 })
 export class RegulationComponent {
@@ -32,6 +39,9 @@ export class RegulationComponent {
     isProtectedArea = input<boolean>(false);
     isAdventureRequirement = input<boolean>(false);
     activityCode = input<string | undefined>();
+    totalScore = signal<number>(0);
+    totalAverageScore = signal<number>(0);
+    totalCategoryScore = signal<number>(0);
 
     protected form!: FormGroup;
     protected sections = signal<RegulationSectionInterface[]>([]);
@@ -39,6 +49,10 @@ export class RegulationComponent {
     private errorMessages: string[] = [];
 
     private readonly loadRegulations = effect(() => {
+        this.totalScore.set(0);
+        this.totalAverageScore.set(0);
+        this.totalCategoryScore.set(0);
+
         if (this.modelId()?.length === 0) return this.sections.set([]);
 
         if (this.isAdventureRequirement()) {
@@ -47,6 +61,7 @@ export class RegulationComponent {
             });
         } else {
             this.regulationHttpService.getRegulationsByModelId(this.modelId()!).subscribe((resp) => {
+                console.log('2',resp);
                 this.sections.set(resp);
             });
         }
@@ -72,6 +87,8 @@ export class RegulationComponent {
         });
 
         this.form.valueChanges.subscribe((_) => {
+            this.getFormErrors();
+
             if (this.errorMessages.length === 0) {
                 this.dataOut.emit({ regulation: this.formattedResult });
             }
@@ -92,7 +109,9 @@ export class RegulationComponent {
                         name: [item.name],
                         isCompliant: [false],
                         isMandatory: [item.required],
-                        score: [item.score]
+                        score: [item.score],
+                        downloadable: [item.downloadable],
+                        downloadableCode: [item.downloadableCode],
                     })
                 )
             )
@@ -189,14 +208,18 @@ export class RegulationComponent {
     }
 
     validateScoreBased(selectedItems: RegulationItemInterface[]) {
-        const totalScore = selectedItems.reduce((sum, item) => sum + (item.score ?? 0), 0);
+        this.totalScore.set(selectedItems.reduce((sum, item) => sum + (item.score ?? 0), 0));
 
         const sortedCategories = [...this.categoryConfigurations].sort((a, b) => a.min - b.min);
+        const sections = this.sectionsField.value as Array<RegulationSectionInterface>;
+        const items = sections.find(item => item.validationType === 'SCORE_BASED').items;
+        this.totalCategoryScore.set(items.reduce((sum, item) => sum + (item.score ?? 0), 0));
 
+        this.totalAverageScore.set((this.totalScore() * 100 / this.totalCategoryScore()));
         let selectedCategory = null;
 
         for (const categoryConfig of sortedCategories) {
-            if (totalScore >= categoryConfig.min) {
+            if (this.totalScore() >= categoryConfig.min) {
                 selectedCategory = categoryConfig;
             }
         }
@@ -209,8 +232,12 @@ export class RegulationComponent {
     }
 
     setCategory(categoryConfiguration: CategoryConfigurationInterface) {
-        this.categoryField.enable();
-        this.categoryField.setValue(categoryConfiguration.category);
+        this.categoryField.enable({
+            emitEvent: false
+        });
+        this.categoryField.setValue(categoryConfiguration.category, {
+            emitEvent: false
+        });
     }
 
     get sectionsField(): FormArray {
@@ -234,4 +261,6 @@ export class RegulationComponent {
                 break;
         }
     }
+
+    protected readonly environment = environment;
 }
