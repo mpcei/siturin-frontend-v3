@@ -97,12 +97,16 @@ export default class GuideEstablishmentListComponent implements OnInit {
     findEstablishmentsByRuc(page = 1, search = null) {
         this.rucHttpService.findEstablishmentsByRuc(page, search, this.authService.auth.identification!).subscribe({
             next: (response) => {
-                const establishment = (response.data as EstablishmentInterface[]).find((item) => item.isCadastre);
+                const establishmentCadastre = (response.data as EstablishmentInterface[]).find((item) => item.isCadastre);
+                const establishments = response.data as EstablishmentInterface[];
+                const processExist = establishments.some(item => item.process);
+                console.log('exist', processExist);
 
-                if (establishment && establishment.isCadastre) {
-                    this.establishmentHttpService.findCadastreByEstablishment(establishment.id!).subscribe({
+
+                if (establishmentCadastre) {
+                    this.establishmentHttpService.findCadastreByEstablishment(establishmentCadastre.id!).subscribe({
                         next: (response) => {
-                            console.log(response);
+                            console.log('response 2', response);
                             this.establishment.set(response);
 
                             if (this.establishment().currentProcess) {
@@ -117,8 +121,15 @@ export default class GuideEstablishmentListComponent implements OnInit {
                         }
                     });
                 } else {
-                    this.establishments.set(response.data);
-                    this.pagination = response.pagination!;
+                    if (!processExist) {
+                        this.establishments.set(response.data);
+                        this.pagination = response.pagination!;
+                    } else {
+                        this.customMessageService.showModalWarn({
+                            summary: 'Tiene un tramite en curso',
+                            detail: 'No puede gestionar otro trámite de Guianza'
+                        });
+                    }
                 }
             }
         });
@@ -236,9 +247,8 @@ export default class GuideEstablishmentListComponent implements OnInit {
     protected updateGuideInformation(establishment: EstablishmentInterface, processType: CatalogueProcessesTypeEnum) {
         this.guideHttpService.updateGuideInformation(this.authService.auth.identification!).subscribe({
             next: async (response: any) => {
-                console.log(response);
                 let auth = this.authService.auth;
-                console.log(auth);
+
                 auth.birthdate = response.birthdate;
                 auth.nationality = response.nationality;
                 auth.sex = response.sex;
@@ -276,8 +286,6 @@ export default class GuideEstablishmentListComponent implements OnInit {
 
         if (this.ref) {
             this.ref.onClose.subscribe((result) => {
-                console.log('Modal cerrado');
-                console.log(result);
                 this.updateSRIEstablishments();
             });
         }
@@ -287,7 +295,7 @@ export default class GuideEstablishmentListComponent implements OnInit {
     protected readonly CatalogueCadastreStatesStateEnum = CatalogueCadastreStatesStateEnum;
     protected readonly CatalogueProcessesTypeEnum = CatalogueProcessesTypeEnum;
 
-    goToProfile(){
+    goToProfile() {
         this.router.navigate([MY_ROUTES.adminPages.user.profile.absolute]);
     }
 }
