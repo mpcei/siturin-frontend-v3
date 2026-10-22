@@ -61,7 +61,6 @@ export class RegulationComponent {
             });
         } else {
             this.regulationHttpService.getRegulationsByModelId(this.modelId()!).subscribe((resp) => {
-                console.log('2',resp);
                 this.sections.set(resp);
             });
         }
@@ -219,7 +218,7 @@ export class RegulationComponent {
         let selectedCategory = null;
 
         for (const categoryConfig of sortedCategories) {
-            if (this.totalScore() >= categoryConfig.min) {
+            if (this.totalAverageScore() >= categoryConfig.min) {
                 selectedCategory = categoryConfig;
             }
         }
