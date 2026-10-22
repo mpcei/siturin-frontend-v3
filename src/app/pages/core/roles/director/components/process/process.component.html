@@ -73,11 +73,11 @@
                                             pTooltip="Ir al Trámite"
                                             [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
                                             (onClick)="goToProcess(item?.process?.id,item?.id,true)"
-                                        />
+                                        ></p-button>
                                     </td>
                                     <td>
-                                        @if (item?.process?.cadastre) {
-                                            {{ item?.process?.cadastre?.registerNumber }}
+                                        @if (item?.process?.establishment?.cadastre) {
+                                            {{ item?.process?.establishment?.cadastre?.registerNumber }}
                                         } @else {
                                             Sin registro
                                         }
@@ -105,8 +105,8 @@
                                     </td>
                                     <td>{{ item?.process?.type?.name }}</td>
                                     <td>
-                                        @if (item?.process?.cadastre) {
-                                            {{ item?.process?.cadastre?.state?.name }}
+                                        @if (item?.process?.establishment?.cadastre) {
+                                            {{ item?.process?.establishment?.cadastre?.state?.name }}
                                         } @else {
                                             Sin estado
                                         }
@@ -178,11 +178,11 @@
                                             pTooltip="Ir al Trámite"
                                             [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
                                             (onClick)="goToProcess(item?.process?.id,item?.id,false)"
-                                        />
+                                        ></p-button>
                                     </td>
                                     <td>
-                                        @if (item?.process?.cadastre) {
-                                            {{ item?.process?.cadastre?.registerNumber }}
+                                        @if (item?.process?.establishment?.cadastre) {
+                                            {{ item?.process?.establishment?.cadastre?.registerNumber }}
                                         } @else {
                                             Sin registro
                                         }
@@ -210,8 +210,8 @@
                                     </td>
                                     <td>{{ item?.process?.type?.name }}</td>
                                     <td>
-                                        @if (item?.process?.cadastre) {
-                                            {{ item?.process?.cadastre?.state?.name }}
+                                        @if (item?.process?.establishment?.cadastre) {
+                                            {{ item?.process?.establishment?.cadastre?.state?.name }}
                                         } @else {
                                             Sin estado
                                         }
