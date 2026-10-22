@@ -1,5 +1,5 @@
 // const HOST = 'http://localhost:8000';
-const HOST = 'https://mailpit.economicoproductivo.gob.ec/public';
+const HOST = 'https://api-siturin-legacy-qa.economicoproductivo.gob.ec/public';
 export const environment = {
     production: false,
     APP_URL: 'http://localhost:4200',
