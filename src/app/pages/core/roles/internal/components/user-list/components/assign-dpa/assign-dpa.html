@@ -1,0 +1,147 @@
+<p-dialog
+    [header]="'Asignar DPA: ' + (user()?.user?.name || '') + ' ' + (user()?.user?.lastname || '')"
+    [visible]="visible()"
+    (visibleChange)="closeDialog()"
+    [modal]="true"
+    [style]="{width: '50vw'}"
+    [draggable]="false"
+    [resizable]="false"
+>
+    <div class="p-fluid">
+        <div class="field mb-5">
+            <label
+                for="dpaSelect"
+                class="font-semibold block mb-2"
+                >Seleccionar Territorio (DPA)</label
+            >
+            <div class="flex gap-3">
+                @if(isDac()){
+                <p-select
+                    id="dpaSelect"
+                    [options]="provinces()"
+                    [ngModel]="selectedProvince()"
+                    (ngModelChange)="selectedProvince.set($event)"
+                    placeholder="Seleccione una provincia"
+                    [filter]="true"
+                    appendTo="body"
+                    optionLabel="name"
+                >
+                </p-select>
+                <p-select
+                    id="dpaSelect"
+                    [options]="cantons()"
+                    [ngModel]="selectedNewDpa()"
+                    (ngModelChange)="selectedNewDpa.set($event)"
+                    placeholder="Seleccione un nivel territorial / Cantón"
+                    [filter]="true"
+                    appendTo="body"
+                    optionLabel="name"
+                >
+                </p-select>
+                <p-button
+                    [icon]="FontAwesome.PLUS_SOLID"
+                    severity="success"
+                    [disabled]="!selectedNewDpa()"
+                    (onClick)="addDpa()"
+                    label="Agregar"
+                    >
+                </p-button>
+
+                }@else {
+                <p-select
+                    id="dpaSelect"
+                    [options]="provinces()"
+                    [ngModel]="selectedNewDpa()"
+                    (ngModelChange)="selectedNewDpa.set($event)"
+                    placeholder="Seleccione un nivel territorial"
+                    [filter]="true"
+                    appendTo="body"
+                    optionLabel="name"
+                >
+                </p-select>
+                <p-button
+                    [icon]="FontAwesome.PLUS_SOLID"
+                    severity="success"
+                    [disabled]="!selectedNewDpa()"
+                    (onClick)="addDpa()"
+                    label="Agregar"
+                    >
+                </p-button>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4 border-t pt-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Territorios Asignados Actualmente</h3>
+            <p-table
+                [value]="assignedDpas()"
+                [scrollable]="true"
+                scrollHeight="250px"
+                styleClass="p-datatable-sm"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nombre del DPA (Prov/Can)</th>
+                        <th class="text-center">Habilitado</th>
+                        <th class="text-center">Tiene Procesos</th>
+                        <th class="text-center">Quitar</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template
+                    pTemplate="body"
+                    let-dpaUser
+                >
+                    <tr>
+                        <td class="font-medium">{{ dpaUser.dpa?.name }}</td>
+                        <td class="text-center">
+                            <p-toggleSwitch
+                                [(ngModel)]="dpaUser.enabled"
+                                (onChange)="toggleEnabled(dpaUser.id, dpaUser.enabled)"
+                            >
+                            </p-toggleSwitch>
+                        </td>
+                        <td class="text-center">
+                            <p-toggleSwitch
+                                [(ngModel)]="dpaUser.hasProcess"
+                                disabled="true"
+                                (onChange)="toggleProcess(dpaUser.dpaId, dpaUser.hasProcess)"
+                            >
+                            </p-toggleSwitch>
+                        </td>
+                        <td class="text-center">
+                            <p-button
+                                [icon]="FontAwesome.TRASH_SOLID"
+                                styleClass="p-button-rounded p-button-danger p-button-text"
+                                pTooltip="Eliminar"
+                                (onClick)="removeDpa(dpaUser.id)"
+                            >
+                            </p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td
+                            colspan="3"
+                            class="text-center p-4 text-gray-500"
+                        >
+                            No tiene territorios asignados.
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button
+            label="Cerrar"
+            icon="pi pi-times"
+            styleClass="p-button-text p-button-secondary"
+            (onClick)="closeDialog()"
+        >
+        </p-button>
+    </ng-template>
+</p-dialog>

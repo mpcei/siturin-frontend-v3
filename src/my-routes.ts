@@ -126,6 +126,18 @@ export const MY_ROUTES = {
                 absolute: '/main/core/external/guide-establishments'
             }
         },
+        internal: {
+            base: 'internal',
+            absolute: '/main/core/internal',
+            dashboard: {
+                base: 'dashboard',
+                absolute: '/main/core/internal/dashboard'
+            },
+            process: {
+                base: 'process',
+                absolute: '/main/core/internal/process'
+            },
+        },
         technician: {
             base: 'technician',
             absolute: '/main/core/technician',

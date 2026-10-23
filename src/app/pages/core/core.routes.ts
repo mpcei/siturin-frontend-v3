@@ -11,6 +11,10 @@ export default [
         loadChildren: () => import('@modules/core/roles/gad/gad.routes')
     },
     {
+        path: MY_ROUTES.corePages.internal.base,
+        loadChildren: () => import('@modules/core/roles/internal/internal.routes')
+    },
+    {
         path: MY_ROUTES.corePages.dac.base,
         loadChildren: () => import('@modules/core/roles/dac/dac.routes')
     },
