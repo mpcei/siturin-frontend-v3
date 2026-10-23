@@ -220,7 +220,7 @@ export class CatastrosHttpService {
         const url = `${this.API_URL_PRIVATE}/${catastroId}/catastrados-dac/adjunto`;
         const headers = new HttpHeaders().append('origin', 'siturin2');
         this.coreService.showLoad();
-        return this.httpClient.post<ServerResponse>(url, payload).pipe(
+        return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
             map((response) => {
                 this.coreService.hideLoad();
                 return response.data;
