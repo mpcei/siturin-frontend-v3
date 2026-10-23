@@ -6,7 +6,6 @@ import {
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
 import { CtcComponent } from './components/ctc/ctc.component';
-import { Message } from 'primeng/message';
 import { AccommodationContinentComponent } from './components/accommodation-continent/accommodation.component';
 import { FoodDrinkContinentComponent } from './components/food-drink-continent/food-drink-continent.component';
 import { FoodDrinkGalapagosComponent } from './components/food-drink-galapagos/food-drink-galapagos.component';
@@ -29,7 +28,6 @@ import { GuideComponent } from '@/pages/core/shared/components/regulation-simula
         ToggleSwitchModule,
         FormsModule,
         CtcComponent,
-        Message,
         FoodDrinkContinentComponent,
         FoodDrinkGalapagosComponent,
         AgencyComponent,
