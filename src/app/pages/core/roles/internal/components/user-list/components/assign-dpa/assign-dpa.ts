@@ -34,7 +34,7 @@ export class AssignDpaComponent implements OnInit {
 
     protected cantons = signal<DpaInterface[]>([]);
     protected provinces = signal<DpaInterface[]>([]);
-    protected isDac = signal(false);
+    protected isGad = signal(false);
     FontAwesome=FontAwesome
     constructor() {
         effect(() => {
@@ -43,16 +43,16 @@ export class AssignDpaComponent implements OnInit {
             if (!currentUser || !currentUser.roles) {
                 return;
             }
-            this.isDac.set(currentUser.roles.some((role) => role.code === RoleEnum.DAC));
+            this.isGad.set(currentUser.roles.some((role) => role.code === RoleEnum.GAD));
         });
         effect(async () => {
             console.log(this.assignedDpas())
             const province = this.selectedProvince();
-            const isDac = this.isDac();
+            const isGad = this.isGad();
 
             this.selectedNewDpa.set(null);
 
-            if (!isDac || !province?.id) {
+            if (!isGad || !province?.id) {
                 this.cantons.set([]);
                 return;
             }
