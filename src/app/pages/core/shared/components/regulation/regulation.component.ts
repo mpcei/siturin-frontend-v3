@@ -19,12 +19,11 @@ import { CategoryConfigurationsHttpService } from '../../services/category-confi
 import { CategoryConfigurationInterface } from '@/pages/core/shared/interfaces/category-configuration.interface';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { MaximoConfigracionCategoriaPipe } from '@shared/pipes/siturin/maximo-configracion-categoria.pipe';
-import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-regulation',
-    imports: [ReactiveFormsModule, ToggleSwitchModule, ButtonModule, Divider, Fluid, Message, Tag, ToggleSwitchComponent, MaximoConfigracionCategoriaPipe, NgForOf, NgIf, JsonPipe],
+    imports: [ReactiveFormsModule, ToggleSwitchModule, ButtonModule, Divider, Fluid, Message, Tag, ToggleSwitchComponent, MaximoConfigracionCategoriaPipe],
     templateUrl: './regulation.component.html'
 })
 export class RegulationComponent {
@@ -110,7 +109,7 @@ export class RegulationComponent {
                         isMandatory: [item.required],
                         score: [item.score],
                         downloadable: [item.downloadable],
-                        downloadableCode: [item.downloadableCode],
+                        downloadableCode: [item.downloadableCode]
                     })
                 )
             )
@@ -208,13 +207,13 @@ export class RegulationComponent {
 
     validateScoreBased(selectedItems: RegulationItemInterface[]) {
         this.totalScore.set(selectedItems.reduce((sum, item) => sum + (item.score ?? 0), 0));
-
         const sortedCategories = [...this.categoryConfigurations].sort((a, b) => a.min - b.min);
         const sections = this.sectionsField.value as Array<RegulationSectionInterface>;
         const items = sections.find(item => item.validationType === 'SCORE_BASED').items;
         this.totalCategoryScore.set(items.reduce((sum, item) => sum + (item.score ?? 0), 0));
 
         this.totalAverageScore.set((this.totalScore() * 100 / this.totalCategoryScore()));
+
         let selectedCategory = null;
 
         for (const categoryConfig of sortedCategories) {
@@ -223,20 +222,29 @@ export class RegulationComponent {
             }
         }
 
-        if (selectedCategory) {
-            this.setCategory(selectedCategory);
-        } else {
+        this.setCategory(selectedCategory);
+
+        if (!selectedCategory) {
             this.errorMessages.push('No es suficiente para aplicar por una categoría de turismo.');
         }
     }
 
     setCategory(categoryConfiguration: CategoryConfigurationInterface) {
-        this.categoryField.enable({
-            emitEvent: false
-        });
-        this.categoryField.setValue(categoryConfiguration.category, {
-            emitEvent: false
-        });
+        if (categoryConfiguration) {
+            this.categoryField.enable({
+                emitEvent: false
+            });
+            this.categoryField.setValue(categoryConfiguration.category, {
+                emitEvent: false
+            });
+        } else {
+            this.categoryField.setValue(null, {
+                emitEvent: false
+            });
+            this.categoryField.disable({
+                emitEvent: false
+            });
+        }
     }
 
     get sectionsField(): FormArray {
