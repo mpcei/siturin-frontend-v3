@@ -28,12 +28,11 @@ import { InputText } from 'primeng/inputtext';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ReportsHttpService } from '@/pages/core/shared/services';
 import { AuthService } from '@/pages/auth/auth.service';
-import { MapComponent } from '@utils/components/map/map.component';
 
 @Component({
     selector: 'app-process',
     standalone: true,
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, DatePicker, Dialog, FormsModule, InputText, LabelDirective, ReactiveFormsModule, MapComponent],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, DatePicker, Dialog, FormsModule, InputText, LabelDirective, ReactiveFormsModule],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {

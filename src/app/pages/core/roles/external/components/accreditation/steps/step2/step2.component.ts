@@ -1,19 +1,33 @@
-import { Component, EventEmitter, inject, OnInit, output, Output, OutputEmitterRef, QueryList, signal, ViewChildren, WritableSignal } from '@angular/core';
+import {
+    Component,
+    inject,
+    OnInit,
+    output,
+    OutputEmitterRef,
+    QueryList,
+    signal,
+    ViewChildren,
+    WritableSignal
+} from '@angular/core';
 import { Button } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { CoreSessionStorageService, CustomMessageService } from '@utils/services';
 import { BusinessInfoComponent } from './business-info-component/business-info-component.component';
-import { StaffComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/staff/staff.component';
-import { ContactPersonComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/contact-person/contact-person.component';
-import { Fluid } from 'primeng/fluid';
-import { AddressComponent } from '@modules/core/roles/external/components/accreditation/steps/step2/address/address.component';
+import {
+    StaffComponent
+} from '@modules/core/roles/external/components/accreditation/steps/step2/staff/staff.component';
+import {
+    ContactPersonComponent
+} from '@modules/core/roles/external/components/accreditation/steps/step2/contact-person/contact-person.component';
+import {
+    AddressComponent
+} from '@modules/core/roles/external/components/accreditation/steps/step2/address/address.component';
 import { ChildStep2FormEnum, CoreEnum } from '@utils/enums';
 import { ProcessHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-step2',
-    imports: [Button, BusinessInfoComponent, StaffComponent, ContactPersonComponent, Fluid, AddressComponent],
+    imports: [Button, BusinessInfoComponent, StaffComponent, ContactPersonComponent, AddressComponent],
     templateUrl: './step2.component.html',
 })
 export class Step2Component implements OnInit {

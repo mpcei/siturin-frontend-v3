@@ -9,7 +9,6 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { FileUpload } from 'primeng/fileupload';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
@@ -26,7 +25,7 @@ import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-requirement-readmission',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
     templateUrl: './requirement-readmission.component.html'
 })
 export class RequirementReadmissionComponent implements OnInit {

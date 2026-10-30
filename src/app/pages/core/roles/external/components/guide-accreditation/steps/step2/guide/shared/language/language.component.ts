@@ -18,7 +18,6 @@ import { CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
@@ -51,7 +50,6 @@ export interface LanguageInterface {
         ListBasicComponent,
         DialogModule,
         ToggleSwitchComponent,
-        FileUpload,
         ButtonActionComponent,
         Tag,
         FileUploadComponent

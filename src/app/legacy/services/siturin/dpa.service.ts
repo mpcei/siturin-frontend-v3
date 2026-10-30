@@ -21,21 +21,21 @@ export class DpaService {
   }
 
   set dpa(dpa: DpaModel[]) {
-    localStorage.setItem('dpa', JSON.stringify(dpa));
+    localStorage.setItem('dpa-legacy', JSON.stringify(dpa));
   }
 
   get dpa(): DpaModel[] {
-    return JSON.parse(String(localStorage.getItem('dpa'))) as DpaModel[];
+    return JSON.parse(String(localStorage.getItem('dpa-legacy'))) as DpaModel[];
   }
 
   obtenerProvinciasPorZonal(zonalId: number): DpaModel[] {
     console.log('zonalId', zonalId);
-    const dpa = JSON.parse(String(localStorage.getItem('dpa'))) as DpaModel[];
+    const dpa = JSON.parse(String(localStorage.getItem('dpa-legacy'))) as DpaModel[];
     return dpa.filter(dpa => dpa?.zonal?.id === zonalId);
   }
 
   verificarDpa() {
-    
+
     if (!this.dpa) {
       this.dpaHttpService.obtenerDpa().subscribe((dpa) => {
         this.dpa = dpa;

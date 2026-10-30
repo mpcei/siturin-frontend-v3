@@ -3,6 +3,7 @@ import { MY_ROUTES } from '@routes';
 import { tokenGuard } from '@/guards/token.guard';
 import { accountGuard } from '@/guards/account.guard';
 import { ValidadorDocumentoComponent } from '@/pages/siturin/validador-documento/validador-documento.component';
+import { ConsultaCatastroComponent } from '@/pages/core/search-cadastre/consulta-catastro.component';
 
 export const appRoutes: Routes = [
     { path: '', redirectTo: MY_ROUTES.dashboards.absolute, pathMatch: 'full' },
@@ -45,6 +46,11 @@ export const appRoutes: Routes = [
     {
         path: MY_ROUTES.documentValidator.base,
         component: ValidadorDocumentoComponent,
+    },
+
+    {
+        path: MY_ROUTES.consultaCatastro.base,
+        component: ConsultaCatastroComponent,
     },
 
     { path: '**', redirectTo: MY_ROUTES.errorPages.notFound.absolute }

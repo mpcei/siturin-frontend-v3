@@ -350,5 +350,9 @@ export const MY_ROUTES = {
     documentValidator: {
         base: 'document-validator',
         absolute: '/document-validator',
-    }
+    },
+    consultaCatastro: {
+        base: 'consulta-catastros',
+        absolute: '/consulta-catastros',
+    },
 };

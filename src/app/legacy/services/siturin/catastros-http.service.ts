@@ -24,6 +24,7 @@ import { RolesEnum } from '@shared/enums';
 })
 export class CatastrosHttpService {
     API_URL_PUBLIC = `${environment.API_URL_PUBLIC}/catastros`;
+    API_URL = `${environment.API_URL}`;
     API_URL_PRIVATE = `${environment.API_URL_PRIVATE}/catastros`;
     private pagination = new BehaviorSubject<PaginatorModel>(this.coreService.paginator);
     public pagination$ = this.pagination.asObservable();
@@ -229,20 +230,20 @@ export class CatastrosHttpService {
     }
 
     obtenerConsultaCatastros(page = 1, busqueda: string, provinciaId: number | null, cantonId: number | null, actividadCodigo: string | null): Observable<ServerResponsePaginator> {
-        const url = `${this.API_URL_PUBLIC}/consulta-catastros`;
+        const url = `${this.API_URL}/core/shared/search-cadastres/find`;
 
-        let params = new HttpParams().append('page', page).append('busqueda', busqueda);
+        let params = new HttpParams().append('page', page);
 
         if (provinciaId) {
-            params = params.append('provinciaId', provinciaId);
+            // params = params.append('provincia', provinciaId);
         }
 
         if (cantonId) {
-            params = params.append('cantonId', cantonId);
+            params = params.append('canton', cantonId);
         }
 
         if (actividadCodigo) {
-            params = params.append('actividadCodigo', actividadCodigo);
+            params = params.append('activity', actividadCodigo);
         }
 
         this.coreService.showLoad();
