@@ -19,6 +19,15 @@ import {
 } from '@models/siturin';
 import { RolesEnum } from '@shared/enums';
 
+export interface EstablecimientoFilters {
+    page: number;
+    provinciaId: number | null;
+    cantonId: number | null;
+    actividadCodigo: string | null;
+    tradeName?: string | null;
+    ruc?: string | null;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -229,27 +238,33 @@ export class CatastrosHttpService {
         );
     }
 
-    obtenerConsultaCatastros(page = 1, busqueda: string, provinciaId: number | null, cantonId: number | null, actividadCodigo: string | null): Observable<ServerResponsePaginator> {
+    obtenerConsultaCatastros(payload: EstablecimientoFilters): Observable<ServerResponsePaginator> {
         const url = `${this.API_URL}/core/shared/search-cadastres/find`;
 
-        let params = new HttpParams().append('page', page);
+        let params = new HttpParams().append('page', payload.page);
 
-        if (provinciaId) {
+        if (payload.provinciaId) {
             // params = params.append('provincia', provinciaId);
         }
 
-        if (cantonId) {
-            params = params.append('canton', cantonId);
+        if (payload.cantonId) {
+            params = params.append('canton', payload.cantonId);
         }
 
-        if (actividadCodigo) {
-            params = params.append('activity', actividadCodigo);
+        if (payload.actividadCodigo) {
+            params = params.append('activity', payload.actividadCodigo);
         }
 
-        this.coreService.showLoad();
+        if (payload.ruc) {
+            params = params.append('ruc', payload.ruc);
+        }
+
+        if (payload.tradeName) {
+            params = params.append('tradeName', payload.tradeName);
+        }
+
         return this.httpClient.get<ServerResponsePaginator>(url, { params }).pipe(
             map((response) => {
-                this.coreService.hideLoad();
                 return response;
             })
         );

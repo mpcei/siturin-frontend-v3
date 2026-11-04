@@ -19,7 +19,7 @@
                       optionLabel="nombre"
                       [filter]="true"
                       filterBy="nombre"
-                      (onChange)="obtenerDatos(numeroRegistroControl.value)"
+                      (onChange)="findCadastre()"
                       [showClear]="true"
                       placeholder="Todas las provincias">
             </p-select>
@@ -32,7 +32,7 @@
                       optionLabel="nombre"
                       [filter]="true"
                       filterBy="nombre"
-                      (onChange)="obtenerDatos(numeroRegistroControl.value)"
+                      (onChange)="findCadastre()"
                       [showClear]="true"
                       placeholder="Todos los Cantones">
             </p-select>
@@ -44,26 +44,28 @@
                       optionLabel="nombre"
                       [filter]="true"
                       filterBy="nombre"
-                      (onChange)="obtenerDatos(numeroRegistroControl.value)"
+                      (onChange)="findCadastre()"
                       [showClear]="true"
                       placeholder="Todas las Actividades">
             </p-select>
         </div>
         <div class="custom-form-field md:col-span-4">
-            <div class="p-inputgroup">
-                <p-button icon="pi pi-search" label="Buscar"
-                          (click)="obtenerDatos(numeroRegistroControl.value)">
-                </p-button>
-
-                <span class="p-float-label">
-                <input pInputText id="numeroRegistro" [formControl]="numeroRegistroControl"
-                       placeholder="Ingrese el nombre comercial del establecimiento que desea consultar"
-                       (keyup)="consultar($event,numeroRegistroControl.value)">
-                <label
-                    for="numeroRegistro"></label>
-            </span>
-            </div>
+            <p-inputgroup>
+                <p-button label="Limpiar" severity="info" (onClick)="rucSearch.set('');findCadastre()"/>
+                <input pInputText id="ruc"
+                       placeholder="Busar por RUC"
+                       [(ngModel)]="rucSearch">
+            </p-inputgroup>
         </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-inputgroup>
+                <p-button label="Limpiar" severity="info" (onClick)="tradeNameSearch.set('');findCadastre()" />
+                <input pInputText id="tradeName"
+                       placeholder="Buscar por nombre comercial"
+                       [(ngModel)]="tradeNameSearch">
+            </p-inputgroup>
+        </div>
+
         <div class="custom-form-field md:col-span-12">
             <p-paginator
                 [rows]="paginator.limit"
@@ -115,9 +117,6 @@
                     <tr>
                         <td>
                             {{ rowData.stateCadastre }}
-                            <button pButton class="p-button-rounded p-button-text" [icon]="PrimeIcons.INFO_CIRCLE"
-                                    (mouseenter)="mostrarEstado(op,$event,rowData.stateCadastre)"
-                                    (mouseleave)="op.hide()"></button>
                         </td>
                         <td>
                             {{ rowData.ruc }}
@@ -154,8 +153,8 @@
                 </ng-template>
             </p-table>
         </div>
-    </div>
 
+    </div>
 </div>
 
 <p-popover #op>
