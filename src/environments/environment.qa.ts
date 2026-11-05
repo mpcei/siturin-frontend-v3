@@ -5,7 +5,7 @@ export const environment = {
     APP_URL: 'https://siturin-qa.economicoproductivo.gob.ec',
     APP_SHORT_NAME: 'SITURIN',
     APP_NAME: 'Sistema de Turismo Inteligente',
-    APP_PATH_ASSETS: '/production',
+    APP_PATH_ASSETS: '/development',
     APP_VERSION: '3.0.2',
     API_URL: 'https://api-siturin-qa.economicoproductivo.gob.ec/api/v1',
     API_ASSETS: 'https://api-siturin-qa.economicoproductivo.gob.ec/assets',
