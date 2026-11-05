@@ -194,7 +194,7 @@ export class ConsultaCatastroComponent implements OnInit {
                 codigo: 'ctc', nombre: 'CENTROS DE TURISMO COMUNITARIO'
             },
             {
-                codigo: 'eventos  ', nombre: '"ORGANIZADORES DE EVENTOS, CONGRESOS Y CONVENCIONES"'
+                codigo: 'eventos  ', nombre: 'ORGANIZADORES DE EVENTOS, CONGRESOS Y CONVENCIONES'
             },
             {
                 codigo: 'operacion_intermediacion', nombre: 'AGENCIAMIENTO TURÍSTICO'
@@ -206,9 +206,11 @@ export class ConsultaCatastroComponent implements OnInit {
                 codigo: 'transporte', nombre: 'TRANSPORTE TURÍSTICO'
             },
             {
-                codigo: 'guias', nombre: 'TRANSPORTE TURÍSTICO'
+                codigo: 'guias', nombre: 'GUIANZA TURÍSTICA'
             }
         );
+
+        this.actividades.sort()
     }
 
     mostrarModal(catastro: CatastroModel) {
