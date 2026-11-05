@@ -18,6 +18,8 @@ import {
     ZonalModel
 } from '@models/siturin';
 import { RolesEnum } from '@shared/enums';
+import { HttpResponseInterface } from '@/pages/auth/interfaces';
+import { FileInterface } from '@utils/interfaces';
 
 export interface EstablecimientoFilters {
     page: number;
@@ -110,7 +112,7 @@ export class CatastrosHttpService {
     obtenerCatastroReportePorGAD(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/gad`;
         const headers = new HttpHeaders().append('origin', 'siturin2');
-        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro},{ headers }).pipe(
+        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro }, { headers }).pipe(
             map((response) => {
                 return response.data;
             })
@@ -126,7 +128,7 @@ export class CatastrosHttpService {
     obtenerCatastroReportePorZonal(filtro: any = null) {
         const url = `${this.API_URL_PRIVATE}/reportes/zonal`;
         const headers = new HttpHeaders().append('origin', 'siturin2');
-        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro}, {headers }).pipe(
+        return this.httpClient.patch<ServerResponsePaginator>(url, { filtro }, { headers }).pipe(
             map((response) => {
                 return response.data;
             })
@@ -230,7 +232,7 @@ export class CatastrosHttpService {
         const url = `${this.API_URL_PRIVATE}/${catastroId}/catastrados-dac/adjunto`;
         const headers = new HttpHeaders().append('origin', 'siturin2');
         this.coreService.showLoad();
-        return this.httpClient.post<ServerResponse>(url, payload,{headers}).pipe(
+        return this.httpClient.post<ServerResponse>(url, payload, { headers }).pipe(
             map((response) => {
                 this.coreService.hideLoad();
                 return response.data;
@@ -268,6 +270,36 @@ export class CatastrosHttpService {
                 return response;
             })
         );
+    }
+
+    findCadastreFile() {
+        const url = `${this.API_URL}/core/shared/search-cadastres/file`;
+
+        return this.httpClient.get<HttpResponseInterface>(url).pipe(
+            map((response) => {
+                return response.data;
+            })
+        );
+    }
+
+
+    downloadCadastreFile(file: FileInterface) {
+        const url = `${this.API_URL}/core/shared/search-cadastres/${file.id}/download`;
+
+        this.httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
+            .subscribe(response => {
+                const filePath = URL.createObjectURL(new Blob([response]));
+
+                const downloadLink = document.createElement('a');
+
+                downloadLink.href = filePath;
+
+                downloadLink.setAttribute('download', file.originalName!);
+
+                document.body.appendChild(downloadLink);
+
+                downloadLink.click();
+            });
     }
 
     obtenerConsultaCatastrosQr(numeroRegistro: string): Observable<ServerResponsePaginator> {

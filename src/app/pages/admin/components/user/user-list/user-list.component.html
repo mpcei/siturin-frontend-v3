@@ -1,16 +1,14 @@
 <div class="custom-form-card">
-    @if (items().length > 0) {
-        <app-list
-            title="Listado de Usuarios"
-            [pagination]="pagination"
-            [items]="items()"
-            [cols]="cols"
-            [buttonActions]="buttonActions"
-            (onCreate)="onCreate()"
-            (onSearch)="onSearch($event)"
-            (onSelect)="onSelect($event)"
-            (onPagination)="onPagination($event)" />
-    }
+    <app-list
+        title="Listado de Usuarios"
+        [pagination]="pagination"
+        [items]="items()"
+        [cols]="cols"
+        [buttonActions]="buttonActions"
+        (onCreate)="onCreate()"
+        (onSearch)="onSearch($event)"
+        (onSelect)="onSelect($event)"
+        (onPagination)="onPagination($event)" />
 </div>
 
 <app-button-action

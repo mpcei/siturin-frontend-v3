@@ -1,5 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CatastrosHttpService, DpaHttpService, DpaService } from '@services/siturin';
 import { ActividadModel, CatastroModel, DpaModel } from '@models/siturin';
@@ -10,16 +9,16 @@ import { format } from 'date-fns';
 import { CatalogoSiturinTipoEnum } from '@shared/enums';
 import { PrimeIcons } from 'primeng/api';
 import { Select } from 'primeng/select';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Paginator } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { Popover } from 'primeng/popover';
 import { InputGroup } from 'primeng/inputgroup';
-import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { FileHttpService } from '@utils/services';
 
 @Component({
     selector: 'app-validador-documento',
@@ -31,26 +30,28 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
         InputText,
         Paginator,
         TableModule,
-        ButtonDirective,
         Popover,
         FormsModule,
-        InputGroup,
-        InputGroupAddon
+        InputGroup
     ],
     styleUrls: ['./consulta-catastro.component.scss']
 })
 export class ConsultaCatastroComponent implements OnInit {
 
-    private activatedRoute = inject(ActivatedRoute);
+    private fileHttpService = inject(FileHttpService);
     private catastrosHttpService = inject(CatastrosHttpService);
     private coreService = inject(CoreService);
     private dpaService = inject(DpaService);
     private dpaHttpService = inject(DpaHttpService);
     private messageService = inject(MessageService);
+    protected readonly environment = environment;
+    protected readonly PrimeIcons = PrimeIcons;
+    protected readonly FontAwesome = FontAwesome;
 
     numeroRegistroControl: FormControl = new FormControl<string>('', [Validators.required]);
     rucSearch = signal('');
     tradeNameSearch = signal('');
+    cadastreFile = signal(null);
 
     catastro: CatastroModel = {};
     catastros: CatastroModel[] = [];
@@ -92,6 +93,7 @@ export class ConsultaCatastroComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.findCadastreFile();
         this.obtenerActividades();
         this.obtenerDpa();
 
@@ -137,6 +139,15 @@ export class ConsultaCatastroComponent implements OnInit {
             },
             error: error => this.cargando = false
         });
+    }
+
+    findCadastreFile(){
+        this.catastrosHttpService.findCadastreFile().subscribe({
+            next: response => {
+                console.log(response.file);
+                this.cadastreFile.set(response.file)
+            },
+        })
     }
 
     obtenerDpa() {
@@ -202,7 +213,8 @@ export class ConsultaCatastroComponent implements OnInit {
         this.descripcion = descripcion;
     }
 
-    protected readonly environment = environment;
-    protected readonly PrimeIcons = PrimeIcons;
-    protected readonly FontAwesome = FontAwesome;
+    downloadCadastre(){
+        console.log(this.cadastreFile());
+        this.catastrosHttpService.downloadCadastreFile(this.cadastreFile());
+    }
 }

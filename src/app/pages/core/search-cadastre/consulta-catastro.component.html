@@ -66,6 +66,12 @@
             </p-inputgroup>
         </div>
 
+        <div class="custom-form-field md:col-span-4">
+            <p-button label="Descargar Catastrosss" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                      (onClick)="downloadCadastre()"
+            ></p-button>
+        </div>
+
         <div class="custom-form-field md:col-span-12">
             <p-paginator
                 [rows]="paginator.limit"

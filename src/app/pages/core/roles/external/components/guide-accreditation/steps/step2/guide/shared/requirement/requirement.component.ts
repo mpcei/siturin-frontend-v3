@@ -9,18 +9,21 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueProcessesTypeEnum, CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { FileUpload } from 'primeng/fileupload';
 import { JsonPipe } from '@angular/common';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
-import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideDegreesCodeEnum,
+    CatalogueGuideRequirementsCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
 import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
 
 @Component({
     selector: 'app-requirement',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, ToggleSwitchComponent, Divider, FileUploadComponent],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, JsonPipe, ToggleSwitchComponent, Divider, FileUploadComponent],
     templateUrl: './requirement.component.html'
 })
 export class RequirementComponent implements OnInit {

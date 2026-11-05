@@ -26,15 +26,11 @@ import { Router } from '@angular/router';
 import { MY_ROUTES } from '@routes';
 import { DateLongPipe } from '@utils/pipes/date-long.pipe';
 import { TableModule } from 'primeng/table';
-import { DatePipe } from '@angular/common';
-import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
-import { Tag } from 'primeng/tag';
-import { Tooltip } from 'primeng/tooltip';
 import { differenceInDays } from 'date-fns';
 
 @Component({
     selector: 'app-checklist-form',
-    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective, DateLongPipe, TableModule, DatePipe, EstablishmentNumberPipe, ProcessStateSeverityPipe, Tag, Tooltip],
+    imports: [ReactiveFormsModule, ToggleSwitch, FormsModule, Divider, Button, ProcessGuideValue, Message, Textarea, Dialog, ErrorMessageDirective, LabelDirective, DateLongPipe, TableModule],
     templateUrl: './checklist-form.component.html'
 })
 export class ChecklistFormComponent implements OnInit {

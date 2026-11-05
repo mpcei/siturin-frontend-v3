@@ -1,16 +1,15 @@
-import { Component, inject, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { PrimeIcons } from 'primeng/api';
-import { Message } from 'primeng/message';
 import { BreadcrumbService } from '@layout/service';
 import {
     InternalInspectionService
 } from '@/pages/core/roles/guide-technician/components/process/services/internal-inspection.service';
-import { DatePipe, JsonPipe } from '@angular/common';
-import { differenceInDays, format, formatDistanceToNow, isAfter } from 'date-fns';
+import { DatePipe } from '@angular/common';
+import { differenceInDays, format, isAfter } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { EstablishmentNumberPipe, ProcessStateSeverityPipe } from '@/pages/core/shared/pipes';
 import { Tag } from 'primeng/tag';
@@ -26,15 +25,13 @@ import { ReportsHttpService } from '@/pages/core/shared/services';
 import { AuthService } from '@/pages/auth/auth.service';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
 import { Dialog } from 'primeng/dialog';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { DatePicker } from 'primeng/datepicker';
-import { DateLongPipe } from '@utils/pipes/date-long.pipe';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, Message, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Select, Dialog, LabelDirective, JsonPipe, DatePicker, DateLongPipe],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Dialog, LabelDirective, DatePicker],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {

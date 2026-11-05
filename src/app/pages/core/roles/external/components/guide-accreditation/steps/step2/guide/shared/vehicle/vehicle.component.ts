@@ -18,7 +18,6 @@ import { CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputMask } from 'primeng/inputmask';
@@ -54,7 +53,6 @@ export interface VehicleInterface {
         ListBasicComponent,
         DialogModule,
         ToggleSwitchComponent,
-        FileUpload,
         ButtonActionComponent,
         InputNumber,
         InputMask,
