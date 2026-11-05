@@ -9,7 +9,7 @@ export const environment = {
     APP_VERSION: '3.0.2',
     API_URL: 'https://api-siturin-qa.economicoproductivo.gob.ec/api/v1',
     API_ASSETS: 'https://api-siturin-qa.economicoproductivo.gob.ec/assets',
-    API_MINIO: 'https://api-minio.economicoproductivo.gob.ec/siturin',
+    API_MINIO: 'https://api-minio-qa.economicoproductivo.gob.ec/siturin',
     MINISTERIO: '(QA) Ministerio de Desarrollo Económico y Productivo',
 
     HOST,
@@ -21,7 +21,7 @@ export const environment = {
 
     API_URL_DINARDAP: `${HOST}/api/v1/public`,
     API_URL_INTERNO: `${HOST}/api/v1/public`,
-    URL_VALIDADOR_DOCUMENTO: 'https://siturin-pruebas.economicoproductivo.gob.ec/document-validator?q=',
+    URL_VALIDADOR_DOCUMENTO: 'https://siturin-qa.economicoproductivo.gob.ec/document-validator?q=',
 
     MINISTERIO_UPPER: 'MINISTERIO DE DESARROLLO ECONÓMICO Y PRODUCTIVO'
 };
