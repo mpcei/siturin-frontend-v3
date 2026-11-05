@@ -18,11 +18,15 @@ import { CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
 import { ClassificationInterface } from '@/pages/core/shared/interfaces';
-import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideModalitiesCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
-import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideModalitiesCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    VehicleComponent
+} from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 import { Tag } from 'primeng/tag';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
@@ -51,7 +55,6 @@ export interface AdventureTourismModalityInterface {
         ListBasicComponent,
         DialogModule,
         ToggleSwitchComponent,
-        FileUpload,
         ButtonActionComponent,
         VehicleComponent,
         Tag,

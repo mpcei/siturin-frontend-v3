@@ -9,12 +9,15 @@ import { ErrorMessageDirective } from '@utils/directives/error-message.directive
 import { CatalogueInterface } from '@utils/interfaces';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
-import { FileUpload } from 'primeng/fileupload';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { Divider } from 'primeng/divider';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { isAfter } from 'date-fns';
-import { CatalogueGuideClassificationsCodeEnum, CatalogueGuideDegreesCodeEnum, CatalogueGuideRequirementsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
+import {
+    CatalogueGuideClassificationsCodeEnum,
+    CatalogueGuideDegreesCodeEnum,
+    CatalogueGuideRequirementsCodeEnum
+} from '@/pages/core/shared/components/regulation-simulator/enum';
 import { Select } from 'primeng/select';
 import { CoreMessage } from '@/pages/core/shared/enums/core-message.enum';
 import { FileUploadComponent } from '@/pages/core/shared/components/file-upload-ui/file-upload.component';
@@ -22,7 +25,7 @@ import { environment } from '@env/environment';
 
 @Component({
     selector: 'app-requirement-expired',
-    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, FileUpload, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
+    imports: [ReactiveFormsModule, LabelDirective, Message, ErrorMessageDirective, JsonPipe, Divider, DatePipe, Select, FileUploadComponent],
     templateUrl: './requirement-expired.component.html'
 })
 export class RequirementExpiredComponent implements OnInit {

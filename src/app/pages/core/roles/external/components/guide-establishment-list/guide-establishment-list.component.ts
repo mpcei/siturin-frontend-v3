@@ -100,13 +100,10 @@ export default class GuideEstablishmentListComponent implements OnInit {
                 const establishmentCadastre = (response.data as EstablishmentInterface[]).find((item) => item.isCadastre);
                 const establishments = response.data as EstablishmentInterface[];
                 const processExist = establishments.some(item => item.process);
-                console.log('exist', processExist);
-
 
                 if (establishmentCadastre) {
                     this.establishmentHttpService.findCadastreByEstablishment(establishmentCadastre.id!).subscribe({
                         next: (response) => {
-                            console.log('response 2', response);
                             this.establishment.set(response);
 
                             if (this.establishment().currentProcess) {

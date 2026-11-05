@@ -1,0 +1,170 @@
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-section">
+            <div class="panel-messages-info">
+                <p>Consulta Catastro Turístico Nacional</p>
+
+                <p>
+                    Aplicativo para consulta de establecimientos que forman parte del Catastro Turístico Nacional
+                    del {{ environment.MINISTERIO }}.
+                </p>
+            </div>
+
+        </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-select id="province"
+                      [formControl]="provinciaField"
+                      dataKey="id"
+                      [options]="provincias"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      (onChange)="findCadastre()"
+                      [showClear]="true"
+                      placeholder="Todas las provincias">
+            </p-select>
+        </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-select id="canton"
+                      [formControl]="cantonField"
+                      dataKey="id"
+                      [options]="cantones"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      (onChange)="findCadastre()"
+                      [showClear]="true"
+                      placeholder="Todos los Cantones">
+            </p-select>
+        </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-select id="actividad"
+                      [formControl]="actividadField"
+                      [options]="actividades"
+                      optionLabel="nombre"
+                      [filter]="true"
+                      filterBy="nombre"
+                      (onChange)="findCadastre()"
+                      [showClear]="true"
+                      placeholder="Todas las Actividades">
+            </p-select>
+        </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-inputgroup>
+                <p-button label="Limpiar" severity="info" (onClick)="rucSearch.set('');findCadastre()"/>
+                <input pInputText id="ruc"
+                       placeholder="Busar por RUC"
+                       [(ngModel)]="rucSearch">
+            </p-inputgroup>
+        </div>
+        <div class="custom-form-field md:col-span-4">
+            <p-inputgroup>
+                <p-button label="Limpiar" severity="info" (onClick)="tradeNameSearch.set('');findCadastre()" />
+                <input pInputText id="tradeName"
+                       placeholder="Buscar por nombre comercial"
+                       [(ngModel)]="tradeNameSearch">
+            </p-inputgroup>
+        </div>
+
+        <div class="custom-form-field md:col-span-4">
+            <p-button label="Descargar Catastrosss" [icon]="FontAwesome.DOWNLOAD_SOLID"
+                      (onClick)="downloadCadastre()"
+            ></p-button>
+        </div>
+
+        <div class="custom-form-field md:col-span-12">
+            <p-paginator
+                [rows]="paginator.limit"
+                [totalRecords]="paginator.totalItems"
+                (onPageChange)="paginate($event)"></p-paginator>
+
+            <p-table dataKey="id"
+                     [value]="catastros"
+            >
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th>
+                            Estado del Establecimiento en el catastro
+                        </th>
+                        <th>
+                            RUC
+                        </th>
+                        <th>
+                            Nombre del Establecimiento
+                        </th>
+                        <th>
+                            Dirección
+                        </th>
+                        <th>
+                            Actividad - Clasificación
+                        </th>
+                        <th>
+                            Provincia
+                        </th>
+                        <th>
+                            Cantón
+                        </th>
+                        <th>
+                            Parroquia
+                        </th>
+
+                        <th>
+                            Correo electrónico
+                        </th>
+                        <th>
+                            Número telefónico
+                        </th>
+                        <th>
+                            Dirección web
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <tr>
+                        <td>
+                            {{ rowData.stateCadastre }}
+                        </td>
+                        <td>
+                            {{ rowData.ruc }}
+                        </td>
+                        <td>
+                            {{ rowData.tradeName }}
+                        </td>
+                        <td>
+                            {{ rowData.address }}
+                        </td>
+                        <td>
+                            {{ rowData.activity }} -
+                            {{ rowData.classification }}
+                        </td>
+                        <td>
+                            {{ rowData.province }}
+                        </td>
+                        <td>
+                            {{ rowData.canton }}
+                        </td>
+                        <td>
+                            {{ rowData.parish }}
+                        </td>
+                        <td>
+                            {{ rowData.email }}
+                        </td>
+                        <td>
+                            {{ rowData.phone }}
+                        </td>
+                        <td>
+                            {{ rowData.webPage }}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+</div>
+
+<p-popover #op>
+    <ng-template pTemplate="content">
+        {{ descripcion }}
+    </ng-template>
+</p-popover>

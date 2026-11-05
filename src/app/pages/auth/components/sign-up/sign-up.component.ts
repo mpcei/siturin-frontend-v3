@@ -1,5 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    AbstractControl,
+    FormArray,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    Validators
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -12,7 +21,14 @@ import { environment } from '@env/environment';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { ErrorMessageDirective } from '@utils/directives/error-message.directive';
-import { invalidEmailDomainValidator, invalidEmailValidator, matchPasswords, passwordPolicesValidator, unavailableEmailValidator, unavailableUserValidator } from '@utils/form-validators/custom-validator';
+import {
+    invalidEmailDomainValidator,
+    invalidEmailValidator,
+    matchPasswords,
+    passwordPolicesValidator,
+    unavailableEmailValidator,
+    unavailableUserValidator
+} from '@utils/form-validators/custom-validator';
 import { KeyFilter } from 'primeng/keyfilter';
 import { MY_ROUTES } from '@routes';
 import { CatalogueService } from '@utils/services/catalogue.service';
@@ -24,7 +40,6 @@ import { TransactionalCodeComponent } from '@utils/components/transactional-code
 import { CatalogueInterface } from '@utils/interfaces';
 import { Message } from 'primeng/message';
 import { debounceTime } from 'rxjs';
-import { AutoFocus } from 'primeng/autofocus';
 import { AuthHttpService as AuthHttpServiceLegacy } from '@/legacy/services/auth/auth-http.service';
 
 @Component({
@@ -46,8 +61,7 @@ import { AuthHttpService as AuthHttpServiceLegacy } from '@/legacy/services/auth
         KeyFilter,
         Tooltip,
         TransactionalCodeComponent,
-        Message,
-        AutoFocus
+        Message
     ]
 })
 export default class SignUpComponent implements OnInit {

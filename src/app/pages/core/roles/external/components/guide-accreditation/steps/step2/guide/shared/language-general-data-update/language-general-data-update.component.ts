@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output, OutputEmitterRef } from '@angular/core';
+import { Component, inject, OnInit, output, OutputEmitterRef } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Select } from 'primeng/select';
@@ -18,9 +18,7 @@ import { CustomMessageService } from '@utils/services';
 import { CatalogueTypeEnum } from '@utils/enums';
 import { CatalogueService } from '@utils/services/catalogue.service';
 import { ToggleSwitchComponent } from '@utils/components/toggle-switch/toggle-switch.component';
-import { FileUpload } from 'primeng/fileupload';
 import { ButtonActionComponent } from '@utils/components/button-action/button-action.component';
-import { ClassificationInterface } from '@/pages/core/shared/interfaces';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { FormStateService } from '@/pages/core/roles/external/services';
 import { Tag } from 'primeng/tag';
@@ -51,7 +49,6 @@ export interface LanguageInterface {
         ListBasicComponent,
         DialogModule,
         ToggleSwitchComponent,
-        FileUpload,
         ButtonActionComponent,
         Tag,
         FileUploadComponent
