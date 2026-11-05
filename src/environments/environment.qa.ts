@@ -9,7 +9,8 @@ export const environment = {
     APP_VERSION: '3.0.0',
     API_URL: 'https://api-siturin-qa.produccion.gob.ec/api/v1',
     API_ASSETS: 'https://api-siturin-qa.produccion.gob.ec/assets',
-    MINISTERIO: '(QA) Ministerio de Desarrollo Económico y Productivo'
+    API_MINIO: 'https://api-minio.economicoproductivo.gob.ec/siturin',
+    MINISTERIO: '(QA) Ministerio de Desarrollo Económico y Productivo',
 
     HOST,
     STORAGE_URL: `${HOST}/storage`,
