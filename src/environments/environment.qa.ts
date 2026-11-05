@@ -2,13 +2,13 @@ const HOST = 'https://api-siturin-legacy-qa.economicoproductivo.gob.ec/public';
 
 export const environment = {
     production: true,
-    APP_URL: 'https://siturin-qa.produccion.gob.ec',
+    APP_URL: 'https://siturin-qa.economicoproductivo.gob.ec',
     APP_SHORT_NAME: 'SITURIN',
     APP_NAME: 'Sistema de Turismo Inteligente',
     APP_PATH_ASSETS: '/production',
     APP_VERSION: '3.0.2',
-    API_URL: 'https://api-siturin-qa.produccion.gob.ec/api/v1',
-    API_ASSETS: 'https://api-siturin-qa.produccion.gob.ec/assets',
+    API_URL: 'https://api-siturin-qa.economicoproductivo.gob.ec/api/v1',
+    API_ASSETS: 'https://api-siturin-qa.economicoproductivo.gob.ec/assets',
     API_MINIO: 'https://api-minio.economicoproductivo.gob.ec/siturin',
     MINISTERIO: '(QA) Ministerio de Desarrollo Económico y Productivo',
 
