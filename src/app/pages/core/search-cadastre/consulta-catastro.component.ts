@@ -19,6 +19,7 @@ import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { FileHttpService } from '@utils/services';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-validador-documento',
@@ -32,7 +33,8 @@ import { FileHttpService } from '@utils/services';
         TableModule,
         Popover,
         FormsModule,
-        InputGroup
+        InputGroup,
+        Tooltip
     ],
     styleUrls: ['./consulta-catastro.component.scss']
 })
@@ -51,6 +53,7 @@ export class ConsultaCatastroComponent implements OnInit {
     numeroRegistroControl: FormControl = new FormControl<string>('', [Validators.required]);
     rucSearch = signal('');
     tradeNameSearch = signal('');
+    legalNameSearch = signal('');
     cadastreFile = signal(null);
 
     catastro: CatastroModel = {};
@@ -78,7 +81,7 @@ export class ConsultaCatastroComponent implements OnInit {
                 debounceTime(500),
                 distinctUntilChanged()
             )
-            .subscribe(ruc => {
+            .subscribe(() => {
                 this.findCadastre();
             });
 
@@ -87,7 +90,16 @@ export class ConsultaCatastroComponent implements OnInit {
                 debounceTime(500),
                 distinctUntilChanged()
             )
-            .subscribe(tradeName => {
+            .subscribe(() => {
+                this.findCadastre();
+            });
+
+        toObservable(this.legalNameSearch)
+            .pipe(
+                debounceTime(500),
+                distinctUntilChanged()
+            )
+            .subscribe(() => {
                 this.findCadastre();
             });
     }
@@ -130,7 +142,8 @@ export class ConsultaCatastroComponent implements OnInit {
             cantonId,
             actividadCodigo,
             ruc: this.rucSearch(),
-            tradeName: this.tradeNameSearch()
+            tradeName: this.tradeNameSearch(),
+            legalName: this.legalNameSearch(),
         }).subscribe({
             next: response => {
                 this.catastros = response.data;
@@ -141,13 +154,13 @@ export class ConsultaCatastroComponent implements OnInit {
         });
     }
 
-    findCadastreFile(){
+    findCadastreFile() {
         this.catastrosHttpService.findCadastreFile().subscribe({
             next: response => {
                 console.log(response.file);
-                this.cadastreFile.set(response.file)
-            },
-        })
+                this.cadastreFile.set(response.file);
+            }
+        });
     }
 
     obtenerDpa() {
@@ -213,8 +226,12 @@ export class ConsultaCatastroComponent implements OnInit {
         this.descripcion = descripcion;
     }
 
-    downloadCadastre(){
+    downloadCadastre() {
         console.log(this.cadastreFile());
         this.catastrosHttpService.downloadCadastreFile(this.cadastreFile());
+    }
+
+    goToDownloadCadastre() {
+        window.open('https://serviciosturismo.economicoproductivo.gob.ec/catastro-turistico');
     }
 }

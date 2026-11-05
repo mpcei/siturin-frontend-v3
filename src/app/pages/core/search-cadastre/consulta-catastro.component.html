@@ -51,7 +51,7 @@
         </div>
         <div class="custom-form-field md:col-span-4">
             <p-inputgroup>
-                <p-button label="Limpiar" severity="info" (onClick)="rucSearch.set('');findCadastre()"/>
+                <p-button label="Limpiar" severity="info" (onClick)="rucSearch.set('');findCadastre()" />
                 <input pInputText id="ruc"
                        placeholder="Busar por RUC"
                        [(ngModel)]="rucSearch">
@@ -65,10 +65,23 @@
                        [(ngModel)]="tradeNameSearch">
             </p-inputgroup>
         </div>
-
         <div class="custom-form-field md:col-span-4">
-            <p-button label="Descargar Catastrosss" [icon]="FontAwesome.DOWNLOAD_SOLID"
-                      (onClick)="downloadCadastre()"
+            <p-inputgroup>
+                <p-button label="Limpiar" severity="info" (onClick)="legalNameSearch.set('');findCadastre()" />
+                <input pInputText id="legalName"
+                       placeholder="Buscar por razón social"
+                       [(ngModel)]="legalNameSearch">
+            </p-inputgroup>
+        </div>
+
+        <div class="custom-form-field md:col-span-4 md:col-start-5">
+            <p-button
+                label="Catastro Turistico Nacional"
+                [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
+                pTooltip="Descargue su catastro"
+                tooltipPosition="bottom"
+                styleClass="w-full"
+                (onClick)="goToDownloadCadastre()"
             ></p-button>
         </div>
 
