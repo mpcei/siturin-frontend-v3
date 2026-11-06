@@ -2,9 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { CustomMessageService } from '@utils/services/custom-message.service';
-import { HttpResponseInterface } from '@modules/auth/interfaces';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { CadastreInterface } from '@/pages/core/interfaces';
 
 @Injectable({
