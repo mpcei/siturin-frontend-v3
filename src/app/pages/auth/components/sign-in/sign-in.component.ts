@@ -18,6 +18,7 @@ import { RippleModule } from 'primeng/ripple';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { AuthHttpService } from '../../auth-http.service';
+import { AuthService as AuthLegacyService } from '../../../../legacy/services/auth/auth.service';
 import { environment } from '@env/environment';
 import { AuthService } from '@modules/auth/auth.service';
 import { LabelDirective } from '@utils/directives/label.directive';
@@ -42,6 +43,7 @@ export default class SignInComponent {
 
     protected form!: FormGroup;
     protected roles: RoleInterface[] = [];
+    protected rolesLegacy: RoleInterface[] = [];
     protected roleControl = new FormControl(null);
     protected isVisibleRoles = false;
     protected readonly MY_ROUTES = MY_ROUTES;
@@ -51,6 +53,7 @@ export default class SignInComponent {
     private readonly formBuilder = inject(FormBuilder);
     private readonly customMessageService = inject(CustomMessageService);
     private readonly authHttpService = inject(AuthHttpService);
+    private readonly authLegacyService = inject(AuthLegacyService);
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
 
@@ -81,7 +84,12 @@ export default class SignInComponent {
     }
 
     protected selectRole(value: RoleInterface) {
+        const role = this.rolesLegacy.find(item => item.name === value.code);
+        console.log(role);
+
         this.authService.role = value;
+        this.authLegacyService.role = role;
+        console.log(this.authLegacyService.role);
         this.router.navigate([MY_ROUTES.dashboards.absolute]);
     }
 
@@ -104,7 +112,7 @@ export default class SignInComponent {
 
     private buildForm() {
         this.form = this.formBuilder.group({
-            username: [null, [Validators.required,invalidEmailValidator()]],
+            username: [null, [Validators.required, invalidEmailValidator()]],
             password: [null, [Validators.required]]
         });
     }
@@ -136,10 +144,10 @@ export default class SignInComponent {
 
                 this.isVisibleRoles = true;
                 this.roles = data.roles;
+                this.rolesLegacy = data.userLegacy.data.roles;
                 this.roleControl.setValidators([Validators.required]);
             },
             error: (err) => {
-                console.log(err)
                 if (err.error.error === 'ACCOUNT_UNVERIFIED_EMAIL') {
                     this.requestEmailVerificationModal = true;
                 }

@@ -28,6 +28,7 @@ export interface EstablecimientoFilters {
     actividadCodigo: string | null;
     tradeName?: string | null;
     ruc?: string | null;
+    legalName?: string | null;
 }
 
 @Injectable({
@@ -263,6 +264,10 @@ export class CatastrosHttpService {
 
         if (payload.tradeName) {
             params = params.append('tradeName', payload.tradeName);
+        }
+
+        if (payload.legalName) {
+            params = params.append('legalName', payload.legalName);
         }
 
         return this.httpClient.get<ServerResponsePaginator>(url, { params }).pipe(
