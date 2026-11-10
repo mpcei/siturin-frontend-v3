@@ -55,7 +55,6 @@ export class Step2Component implements OnInit {
     }
 
     async ngOnInit() {
-        console.log(this.coreSessionStorageService.process());
         await this.loadData();
     }
 

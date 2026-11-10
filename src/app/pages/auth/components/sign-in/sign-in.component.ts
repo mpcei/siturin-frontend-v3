@@ -30,6 +30,7 @@ import { FontAwesome } from '@modules/public/icons/font-awesome';
 import { InputGroup } from 'primeng/inputgroup';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { invalidEmailValidator } from '@utils/form-validators/custom-validator';
+import { RoleEnum, RoleLegacyEnum } from '@utils/enums';
 
 @Component({
     selector: 'app-sign-in',
@@ -84,12 +85,24 @@ export default class SignInComponent {
     }
 
     protected selectRole(value: RoleInterface) {
-        const role = this.rolesLegacy.find(item => item.name === value.code);
-        console.log(role);
+        let selectedRole = '';
+
+        switch (value.code) {
+            case RoleEnum.EXTERNAL:
+                selectedRole = RoleLegacyEnum.EXTERNAL;
+                break;
+            case RoleEnum.TECHNICIAN:
+                selectedRole = RoleLegacyEnum.TECHNICIAN;
+                break;
+            case RoleEnum.SPECIALIST:
+                selectedRole = RoleLegacyEnum.SPECIALIST;
+                break;
+        }
+        const role = this.rolesLegacy.find(item => item.name === selectedRole);
 
         this.authService.role = value;
         this.authLegacyService.role = role;
-        console.log(this.authLegacyService.role);
+
         this.router.navigate([MY_ROUTES.dashboards.absolute]);
     }
 

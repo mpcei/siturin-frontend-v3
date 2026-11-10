@@ -111,7 +111,6 @@ export default class GanttComponent implements OnInit {
                         progress: Number(row.progress || 0)
                     }));
 
-                    console.log(this.tasks);
                     this.generateTimeline(this.startDate, this.endDate);
                     this.calculateTotalDays();
                 }
