@@ -74,7 +74,6 @@ export class ChecklistFormComponent implements OnInit {
 
     async ngOnInit() {
         await this.loadCatalogues();
-        console.log(this.data().processGuides);
     }
 
     async loadCatalogues() {

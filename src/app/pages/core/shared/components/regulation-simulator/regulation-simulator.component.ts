@@ -54,7 +54,7 @@ export default class RegulationSimulatorComponent {
     protected isProtectedArea = false;
 
     onRegulationSubmitted(event: Record<string, any>) {
-        console.log(event);
+
     }
 
     watchFormChanges(event: any) {

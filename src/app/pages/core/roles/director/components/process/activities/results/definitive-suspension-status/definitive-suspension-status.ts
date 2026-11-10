@@ -65,7 +65,6 @@ export class DefinitiveSuspensionStatus {
     validateForm(): boolean {
         const errors: string[] = [];
 
-        console.log(this.form.value);
         if (this.stateField.invalid) errors.push('Ratificado');
 
         if (this.files.length === 0) errors.push('Documento');
