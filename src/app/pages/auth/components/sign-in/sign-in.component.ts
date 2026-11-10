@@ -97,6 +97,15 @@ export default class SignInComponent {
             case RoleEnum.SPECIALIST:
                 selectedRole = RoleLegacyEnum.SPECIALIST;
                 break;
+            case RoleEnum.DAC:
+                selectedRole = RoleLegacyEnum.DAC;
+                break;
+            case RoleEnum.GUIDE_TECHNICIAN:
+                selectedRole = RoleLegacyEnum.GUIDE_TECHNICIAN;
+                break;
+            case RoleEnum.DIRECTOR:
+                selectedRole = RoleLegacyEnum.DIRECTOR;
+                break;
         }
         const role = this.rolesLegacy.find(item => item.name === selectedRole);
 
