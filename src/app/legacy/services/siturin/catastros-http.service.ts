@@ -22,7 +22,7 @@ import { HttpResponseInterface } from '@/pages/auth/interfaces';
 import { FileInterface } from '@utils/interfaces';
 
 export interface EstablecimientoFilters {
-    page: number;
+    page?: number;
     provinciaId: number | null;
     cantonId: number | null;
     actividadCodigo: string | null;
@@ -247,7 +247,7 @@ export class CatastrosHttpService {
         let params = new HttpParams().append('page', payload.page);
 
         if (payload.provinciaId) {
-            // params = params.append('provincia', provinciaId);
+            params = params.append('province', payload.provinciaId);
         }
 
         if (payload.cantonId) {
@@ -288,10 +288,36 @@ export class CatastrosHttpService {
     }
 
 
-    downloadCadastreFile(file: FileInterface) {
-        const url = `${this.API_URL}/core/shared/search-cadastres/${file.id}/download`;
+    downloadCadastreFile(payload: EstablecimientoFilters) {
+        const url = `${this.API_URL}/reports/excel/internals/search-cadastres`;
 
-        this.httpClient.get<BlobPart>(url, { responseType: 'blob' as 'json' })
+        let params = new HttpParams().append('page', '1');
+
+        if (payload.provinciaId) {
+            params = params.append('province', payload.provinciaId);
+        }
+
+        if (payload.cantonId) {
+            params = params.append('canton', payload.cantonId);
+        }
+
+        if (payload.actividadCodigo) {
+            params = params.append('activity', payload.actividadCodigo);
+        }
+
+        if (payload.ruc) {
+            params = params.append('ruc', payload.ruc);
+        }
+
+        if (payload.tradeName) {
+            params = params.append('tradeName', payload.tradeName);
+        }
+
+        if (payload.legalName) {
+            params = params.append('legalName', payload.legalName);
+        }
+
+        this.httpClient.get<BlobPart>(url, {params, responseType: 'blob' as 'json' })
             .subscribe(response => {
                 const filePath = URL.createObjectURL(new Blob([response]));
 
@@ -299,7 +325,7 @@ export class CatastrosHttpService {
 
                 downloadLink.href = filePath;
 
-                downloadLink.setAttribute('download', file.originalName!);
+                downloadLink.setAttribute('download', 'consulta_catastro.xlsx');
 
                 document.body.appendChild(downloadLink);
 

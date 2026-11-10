@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CatastrosHttpService, DpaHttpService, DpaService } from '@services/siturin';
 import { ActividadModel, CatastroModel, DpaModel } from '@models/siturin';
@@ -18,8 +18,11 @@ import { InputGroup } from 'primeng/inputgroup';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { FileHttpService } from '@utils/services';
+import { CustomMessageService, FileHttpService } from '@utils/services';
 import { Tooltip } from 'primeng/tooltip';
+import { SelectButton } from 'primeng/selectbutton';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Message } from 'primeng/message';
 
 @Component({
     selector: 'app-validador-documento',
@@ -34,7 +37,14 @@ import { Tooltip } from 'primeng/tooltip';
         Popover,
         FormsModule,
         InputGroup,
-        Tooltip
+        Tooltip,
+        SelectButton,
+        Tabs,
+        TabList,
+        Tab,
+        TabPanels,
+        TabPanel,
+        Message
     ],
     styleUrls: ['./consulta-catastro.component.scss']
 })
@@ -42,6 +52,7 @@ export class ConsultaCatastroComponent implements OnInit {
 
     private fileHttpService = inject(FileHttpService);
     private catastrosHttpService = inject(CatastrosHttpService);
+    private customMessageService = inject(CustomMessageService);
     private coreService = inject(CoreService);
     private dpaService = inject(DpaService);
     private dpaHttpService = inject(DpaHttpService);
@@ -51,6 +62,7 @@ export class ConsultaCatastroComponent implements OnInit {
     protected readonly FontAwesome = FontAwesome;
 
     numeroRegistroControl: FormControl = new FormControl<string>('', [Validators.required]);
+    rucValidation = signal(false);
     rucSearch = signal('');
     tradeNameSearch = signal('');
     legalNameSearch = signal('');
@@ -76,32 +88,44 @@ export class ConsultaCatastroComponent implements OnInit {
     URL_VALIDADOR_DOCUMENTO: string = '';
 
     constructor() {
-        toObservable(this.rucSearch)
-            .pipe(
-                debounceTime(500),
-                distinctUntilChanged()
-            )
-            .subscribe(() => {
-                this.findCadastre();
-            });
+        effect(() => {
+            const ruc = this.rucSearch();
 
-        toObservable(this.tradeNameSearch)
-            .pipe(
-                debounceTime(500),
-                distinctUntilChanged()
-            )
-            .subscribe(() => {
-                this.findCadastre();
-            });
+            if (ruc) {
+                this.rucValidation.set(false);
 
-        toObservable(this.legalNameSearch)
-            .pipe(
-                debounceTime(500),
-                distinctUntilChanged()
-            )
-            .subscribe(() => {
-                this.findCadastre();
-            });
+                if (ruc.length === 13) this.rucValidation.set(true);
+
+                if (ruc.length === 0) this.findCadastre();
+            }
+        });
+
+        // toObservable(this.rucSearch)
+        //     .pipe(
+        //         debounceTime(500),
+        //         distinctUntilChanged()
+        //     )
+        //     .subscribe(() => {
+        //         this.findCadastre();
+        //     });
+        //
+        // toObservable(this.tradeNameSearch)
+        //     .pipe(
+        //         debounceTime(500),
+        //         distinctUntilChanged()
+        //     )
+        //     .subscribe(() => {
+        //         this.findCadastre();
+        //     });
+        //
+        // toObservable(this.legalNameSearch)
+        //     .pipe(
+        //         debounceTime(500),
+        //         distinctUntilChanged()
+        //     )
+        //     .subscribe(() => {
+        //         this.findCadastre();
+        //     });
     }
 
     ngOnInit(): void {
@@ -110,8 +134,29 @@ export class ConsultaCatastroComponent implements OnInit {
         this.obtenerDpa();
 
         this.provinciaField.valueChanges.subscribe(value => {
-            if (value?.id)
+            if (value?.id) {
+                this.rucSearch.set('');
+                this.legalNameSearch.set('');
+                this.tradeNameSearch.set('');
+
+                this.catastros = [];
+                this.cantonField.setValue(null);
                 this.configurarDpaCantones(value);
+            }
+        });
+
+        this.cantonField.valueChanges.subscribe(value => {
+            if (value?.id) {
+                this.rucSearch.set('');
+                this.legalNameSearch.set('');
+                this.tradeNameSearch.set('');
+            }
+        });
+
+        this.actividadField.valueChanges.subscribe(value => {
+            this.rucSearch.set('');
+            this.legalNameSearch.set('');
+            this.tradeNameSearch.set('');
         });
     }
 
@@ -120,16 +165,16 @@ export class ConsultaCatastroComponent implements OnInit {
         this.catastro = {};
         this.cargando = true;
 
-        let provinciaId = null;
-        let cantonId = null;
+        let provincia = null;
+        let canton = null;
         let actividadCodigo = null;
 
         if (this.provinciaField.value) {
-            provinciaId = this.provinciaField.value.id;
+            provincia = this.provinciaField.value.nombre;
         }
 
         if (this.cantonField.value) {
-            cantonId = this.cantonField.value.nombre;
+            canton = this.cantonField.value.nombre;
         }
 
         if (this.actividadField.value) {
@@ -138,17 +183,24 @@ export class ConsultaCatastroComponent implements OnInit {
 
         this.catastrosHttpService.obtenerConsultaCatastros({
             page,
-            provinciaId,
-            cantonId,
+            provinciaId:provincia,
+            cantonId:canton,
             actividadCodigo,
             ruc: this.rucSearch(),
             tradeName: this.tradeNameSearch(),
-            legalName: this.legalNameSearch(),
+            legalName: this.legalNameSearch()
         }).subscribe({
             next: response => {
                 this.catastros = response.data;
                 this.paginator = response.pagination;
                 this.cargando = false;
+
+                if (this.catastros.length === 0) {
+                    this.customMessageService.showModalWarn({
+                        summary: 'La búsqueda no generó resultados.',
+                        detail: 'Por vavor intente de nuevo'
+                    });
+                }
             },
             error: error => this.cargando = false
         });
@@ -185,7 +237,7 @@ export class ConsultaCatastroComponent implements OnInit {
     obtenerActividades() {
         this.actividades.push(
             {
-                codigo: 'alimentos_bebidas', nombre: 'ALIMENTOS Y BEBIDAS'
+                codigo: 'alimentos_bebidas', nombre: 'ALIMENTOS, BEBIDAS Y ENTRETENIMIENTO'
             },
             {
                 codigo: 'alojamiento', nombre: 'ALOJAMIENTO'
@@ -210,7 +262,7 @@ export class ConsultaCatastroComponent implements OnInit {
             }
         );
 
-        this.actividades.sort()
+        this.actividades.sort();
     }
 
     mostrarModal(catastro: CatastroModel) {
@@ -229,11 +281,53 @@ export class ConsultaCatastroComponent implements OnInit {
     }
 
     downloadCadastre() {
-        console.log(this.cadastreFile());
-        this.catastrosHttpService.downloadCadastreFile(this.cadastreFile());
+        let provincia = null;
+        let canton = null;
+        let actividadCodigo = null;
+
+        if (this.provinciaField.value) {
+            provincia = this.provinciaField.value.nombre;
+        }
+
+        if (this.cantonField.value) {
+            canton = this.cantonField.value.nombre;
+        }
+
+        if (this.actividadField.value) {
+            actividadCodigo = this.actividadField.value.nombre;
+        }
+
+        this.catastrosHttpService.downloadCadastreFile({
+            provinciaId:provincia,
+            cantonId:canton,
+            actividadCodigo,
+            ruc: this.rucSearch(),
+            tradeName: this.tradeNameSearch(),
+            legalName: this.legalNameSearch()
+        });
     }
 
-    goToDownloadCadastre() {
-        window.open('https://serviciosturismo.economicoproductivo.gob.ec/catastro-turistico');
+    changeTab1() {
+        this.catastros = [];
+        this.value = 'tab1';
+        this.legalNameSearch.set('');
+        this.tradeNameSearch.set('');
+        this.rucValidation.set(false);
     }
+
+    changeTab2() {
+        this.catastros = [];
+        this.value = 'tab2';
+        this.rucSearch.set('');
+        this.tradeNameSearch.set('');
+    }
+
+    changeTab3() {
+        this.catastros = [];
+        this.value = 'tab3';
+        this.rucSearch.set('');
+        this.legalNameSearch.set('');
+    }
+
+    value: string = 'tab1';
 }

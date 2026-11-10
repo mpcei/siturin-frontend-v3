@@ -1,17 +1,96 @@
+<div class="custom-form-grid md:grid-cols-12">
+    <div class="custom-form-field md:col-span-12">
+        <p-message severity="info">
+            <p>
+                <b>Encuentra establecimientos y actividades turísticas registradas en Ecuador</b>
+                <br>
+                <small>
+                    Este apartado permite consultar los establecimientos y prestadores de servicios turísticos que
+                    forman parte del Catastro Turístico Nacional y que cuentan con Registro de Turismo, otorgado
+                    conforme a la normativa vigente.
+                </small>
+            </p>
+        </p-message>
+    </div>
+</div>
+
 <div class="custom-form-card">
     <div class="custom-form-grid md:grid-cols-12">
-        <div class="custom-form-section">
-            <div class="panel-messages-info">
-                <p>Consulta Catastro Turístico Nacional</p>
-
-                <p>
-                    Aplicativo para consulta de establecimientos que forman parte del Catastro Turístico Nacional
-                    del {{ environment.MINISTERIO }}.
-                </p>
-            </div>
-
+        <div class="custom-form-field md:col-span-2 md:col-start-4">
+            <p-button label="RUC" styleClass="w-full"
+                      [severity]="value=='tab1'?'info':undefined"
+                      (click)="changeTab1()"></p-button>
         </div>
-        <div class="custom-form-field md:col-span-4">
+
+        <div class="custom-form-field md:col-span-2">
+            <p-button label="Razón Social" styleClass="w-full"
+                      [severity]="value=='tab2'?'info':undefined"
+                      (click)="changeTab2()"></p-button>
+        </div>
+
+        <div class="custom-form-field md:col-span-2">
+            <p-button label="Nombre Comercial" styleClass="w-full"
+                      [severity]="value=='tab3'?'info':undefined"
+                      (click)="changeTab3()"></p-button>
+        </div>
+
+        <div class="custom-form-field md:col-span-4 md:col-start-5">
+            <p-tabs [(value)]="value">
+                <p-tabpanels>
+                    <p-tabpanel value="tab1">
+                        <p-inputgroup>
+                            <input pInputText id="ruc"
+                                   placeholder="Busar por RUC"
+                                   [(ngModel)]="rucSearch">
+                            <p-button
+                                label="Consultar"
+                                [icon]="FontAwesome.MAGNIFYING_GLASS_SOLID"
+                                styleClass="w-full"
+                                severity="info"
+                                (onClick)=" findCadastre()"
+                                [disabled]="!rucValidation()"
+                            ></p-button>
+                        </p-inputgroup>
+                    </p-tabpanel>
+                    <p-tabpanel value="tab2">
+                        <p-inputgroup>
+                            <input pInputText id="legalName"
+                                   placeholder="Buscar por razón social"
+                                   [(ngModel)]="legalNameSearch">
+                            <p-button
+                                label="Consultar"
+                                [icon]="FontAwesome.MAGNIFYING_GLASS_SOLID"
+                                styleClass="w-full"
+                                severity="info"
+                                (onClick)="findCadastre()"
+                                [disabled]="!legalNameSearch()"
+                            ></p-button>
+                        </p-inputgroup>
+                    </p-tabpanel>
+                    <p-tabpanel value="tab3">
+                        <p-inputgroup>
+                            <input pInputText id="tradeName"
+                                   placeholder="Buscar por nombre comercial"
+                                   [(ngModel)]="tradeNameSearch">
+                            <p-button
+                                label="Consultar"
+                                [icon]="FontAwesome.MAGNIFYING_GLASS_SOLID"
+                                styleClass="w-full"
+                                severity="info"
+                                (onClick)="findCadastre()"
+                                [disabled]="!tradeNameSearch()"
+                            ></p-button>
+                        </p-inputgroup>
+                    </p-tabpanel>
+                </p-tabpanels>
+            </p-tabs>
+        </div>
+    </div>
+</div>
+
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
+        <div class="custom-form-field md:col-span-3">
             <p-select id="province"
                       [formControl]="provinciaField"
                       dataKey="id"
@@ -19,12 +98,15 @@
                       optionLabel="nombre"
                       [filter]="true"
                       filterBy="nombre"
-                      (onChange)="findCadastre()"
                       [showClear]="true"
                       placeholder="Todas las provincias">
             </p-select>
+
+            @if (provinciaField.value && !cantonField.value) {
+                <small class="text-red-500">Debe seleccionar un catón para poder filtrar</small>
+            }
         </div>
-        <div class="custom-form-field md:col-span-4">
+        <div class="custom-form-field md:col-span-3">
             <p-select id="canton"
                       [formControl]="cantonField"
                       dataKey="id"
@@ -35,6 +117,18 @@
                       (onChange)="findCadastre()"
                       [showClear]="true"
                       placeholder="Todos los Cantones">
+                <ng-template #selectedItem let-selectedOption>
+                    @if (selectedOption) {
+                        <div class="flex items-center gap-2">
+                            <div>{{ selectedOption.nombre }}</div>
+                        </div>
+                    }
+                </ng-template>
+                <ng-template let-country #item>
+                    <div class="flex items-center gap-2">
+                        <div>{{ country.nombre }}</div>
+                    </div>
+                </ng-template>
             </p-select>
         </div>
         <div class="custom-form-field md:col-span-4">
@@ -49,52 +143,35 @@
                       placeholder="Todas las Actividades">
             </p-select>
         </div>
-        <div class="custom-form-field md:col-span-4">
-            <p-inputgroup>
-                <p-button label="Limpiar" severity="info" (onClick)="rucSearch.set('');findCadastre()" />
-                <input pInputText id="ruc"
-                       placeholder="Busar por RUC"
-                       [(ngModel)]="rucSearch">
-            </p-inputgroup>
-        </div>
-        <div class="custom-form-field md:col-span-4">
-            <p-inputgroup>
-                <p-button label="Limpiar" severity="info" (onClick)="tradeNameSearch.set('');findCadastre()" />
-                <input pInputText id="tradeName"
-                       placeholder="Buscar por nombre comercial"
-                       [(ngModel)]="tradeNameSearch">
-            </p-inputgroup>
-        </div>
-        <div class="custom-form-field md:col-span-4">
-            <p-inputgroup>
-                <p-button label="Limpiar" severity="info" (onClick)="legalNameSearch.set('');findCadastre()" />
-                <input pInputText id="legalName"
-                       placeholder="Buscar por razón social"
-                       [(ngModel)]="legalNameSearch">
-            </p-inputgroup>
-        </div>
 
-        <div class="custom-form-field md:col-span-4 md:col-start-5">
+        <div class="custom-form-field md:col-span-2">
             <p-button
-                label="Catastro Turistico Nacional"
-                [icon]="FontAwesome.ARROW_UP_RIGHT_FROM_SQUARE_SOLID"
-                pTooltip="Descargue su catastro"
+                label="Descargar Catastro"
+                [icon]="FontAwesome.DOWNLOAD_SOLID"
+                pTooltip="Descargar Catastro"
                 tooltipPosition="bottom"
                 styleClass="w-full"
-                (onClick)="goToDownloadCadastre()"
+                severity="success"
+                (onClick)="downloadCadastre()"
             ></p-button>
         </div>
+    </div>
+</div>
 
+<div class="custom-form-card">
+    <div class="custom-form-grid md:grid-cols-12">
         <div class="custom-form-field md:col-span-12">
             <p-paginator
                 [rows]="paginator.limit"
                 [totalRecords]="paginator.totalItems"
                 (onPageChange)="paginate($event)"></p-paginator>
 
-            <p-table dataKey="id"
-                     [value]="catastros"
+            <p-table
+                dataKey="id"
+                [value]="catastros"
+                stripedRows
             >
-                <ng-template pTemplate="header" let-columns>
+                <ng-template #header>
                     <tr>
                         <th>
                             Estado del Establecimiento en el catastro
@@ -123,7 +200,6 @@
                         <th>
                             Parroquia
                         </th>
-
                         <th>
                             Correo electrónico
                         </th>
@@ -135,7 +211,8 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+
+                <ng-template #body let-rowData>
                     <tr>
                         <td>
                             {{ rowData.stateCadastre }}
@@ -176,9 +253,17 @@
                         </td>
                     </tr>
                 </ng-template>
+                <ng-template #emptymessage>
+                    <tr>
+                        <td colspan="12">
+                            <p-message severity="error">
+                                No hay registros
+                            </p-message>
+                        </td>
+                    </tr>
+                </ng-template>
             </p-table>
         </div>
-
     </div>
 </div>
 
