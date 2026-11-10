@@ -29,7 +29,6 @@ export class DpaService {
   }
 
   obtenerProvinciasPorZonal(zonalId: number): DpaModel[] {
-    console.log('zonalId', zonalId);
     const dpa = JSON.parse(String(localStorage.getItem('dpa-legacy'))) as DpaModel[];
     return dpa.filter(dpa => dpa?.zonal?.id === zonalId);
   }
