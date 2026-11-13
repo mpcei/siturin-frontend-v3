@@ -16,12 +16,9 @@ import { TableModule } from 'primeng/table';
 import { Popover } from 'primeng/popover';
 import { InputGroup } from 'primeng/inputgroup';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { CustomMessageService, FileHttpService } from '@utils/services';
 import { Tooltip } from 'primeng/tooltip';
-import { SelectButton } from 'primeng/selectbutton';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Message } from 'primeng/message';
 
 @Component({
@@ -38,10 +35,7 @@ import { Message } from 'primeng/message';
         FormsModule,
         InputGroup,
         Tooltip,
-        SelectButton,
         Tabs,
-        TabList,
-        Tab,
         TabPanels,
         TabPanel,
         Message
@@ -183,8 +177,8 @@ export class ConsultaCatastroComponent implements OnInit {
 
         this.catastrosHttpService.obtenerConsultaCatastros({
             page,
-            provinciaId:provincia,
-            cantonId:canton,
+            provinciaId: provincia,
+            cantonId: canton,
             actividadCodigo,
             ruc: this.rucSearch(),
             tradeName: this.tradeNameSearch(),
@@ -298,8 +292,8 @@ export class ConsultaCatastroComponent implements OnInit {
         }
 
         this.catastrosHttpService.downloadCadastreFile({
-            provinciaId:provincia,
-            cantonId:canton,
+            provinciaId: provincia,
+            cantonId: canton,
             actividadCodigo,
             ruc: this.rucSearch(),
             tradeName: this.tradeNameSearch(),

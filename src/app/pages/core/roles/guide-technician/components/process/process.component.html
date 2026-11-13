@@ -92,6 +92,12 @@
                     </div>
 
                     <div class="custom-form-field md:col-span-12">
+                        @if (pagination) {
+                            <p-paginator
+                                (onPageChange)="onPagination($event,true)"
+                                [rows]="pagination.limit"
+                                [totalRecords]="pagination.totalItems" />
+                        }
                         <p-table
                             [value]="items()"
                             [tableStyle]="{ 'min-width': '50rem' }"
@@ -185,6 +191,13 @@
                     </div>
 
                     <div class="custom-form-field md:col-span-12">
+                        @if (pagination) {
+                            <p-paginator
+                                (onPageChange)="onPaginationCompleted($event,false)"
+                                [rows]="paginationCompleted.limit"
+                                [totalRecords]="paginationCompleted.totalItems" />
+                        }
+
                         <p-table
                             [value]="completedProcesses()"
                             [tableStyle]="{ 'min-width': '50rem' }"

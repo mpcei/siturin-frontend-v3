@@ -24,7 +24,6 @@ export class CatalogosSiturinService {
             });
         }
         const catalogos = JSON.parse(String(sessionStorage.getItem('catalogos-siturin')));
-        console.log(catalogos);
         if (catalogos) return catalogos.filter((catalogo: CatalogoModel) => catalogo.tipo === tipo);
 
         return [];

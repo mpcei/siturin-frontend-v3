@@ -30,6 +30,8 @@ import { Dialog } from 'primeng/dialog';
 import { InactivacionInternoComponent } from '../inactivacion-interno/inactivacion-interno.component';
 
 import { InputNumber } from 'primeng/inputnumber';
+import { TransporteComponent } from '@/pages/siturin/interno/catastro/actividades/transporte/transporte.component';
+import { Divider } from 'primeng/divider';
 @Component({
     selector: 'app-catastro-form',
     templateUrl: './catastro-form.component.html',
@@ -58,7 +60,9 @@ import { InputNumber } from 'primeng/inputnumber';
         Dialog,
         InactivacionInternoComponent,
         AsyncPipe,
-        InputNumber
+        InputNumber,
+        TransporteComponent,
+        Divider
     ]
 })
 export class CatastroFormComponent implements OnInit {
@@ -97,6 +101,8 @@ export class CatastroFormComponent implements OnInit {
         this.habilitarCamposEditables();
 
         this.formulario.patchValue(this.catastroSeleccionado);
+
+        console.log(this.transporteTerrestreField.value);
         if (!this.rucField.value?.pago) {
             this.rucField.patchValue({
                 ...this.rucField.value,
@@ -430,7 +436,8 @@ export class CatastroFormComponent implements OnInit {
             tramiteAlojamiento: [],
             tramiteInactivacion: [null],
             pago: [null],
-            personeriaJuridica: [{ value: null, disabled: true }]
+            personeriaJuridica: [{ value: null, disabled: true }],
+            transporteTerrestres: [[]],
         });
     }
 
@@ -689,6 +696,10 @@ export class CatastroFormComponent implements OnInit {
         return this.tramiteField.controls['companiasTransporteTuristico'];
     }
 
+    get transporteTerrestreField() {
+        return this.tramiteField.controls['transporteTerrestres'];
+    }
+
     get guiasTurismoField() {
         return this.tramiteField.controls['guiasTurismo'];
     }
@@ -716,6 +727,7 @@ export class CatastroFormComponent implements OnInit {
     get personeriaJuridicaField(): AbstractControl {
         return this.tramiteField.controls['personeriaJuridica'];
     }
+
 
     protected readonly CatastroEstadoEnum = CatastroEstadoEnum;
 }

@@ -2,9 +2,7 @@ import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LayoutService } from '@layout/service';
-import { Divider } from 'primeng/divider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Message } from 'primeng/message';
 import { environment } from '@env/environment';
 import { MY_ROUTES } from '@routes';
 import { FontAwesome } from '@modules/public/icons/font-awesome';
@@ -14,7 +12,7 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule, Divider, FormsModule, Message, ReactiveFormsModule, Button, Tooltip],
+    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, Button, Tooltip],
     styles: [
         `
             .login-page {

@@ -28,10 +28,12 @@ import { InputText } from 'primeng/inputtext';
 import { Dialog } from 'primeng/dialog';
 import { LabelDirective } from '@utils/directives/label.directive';
 import { DatePicker } from 'primeng/datepicker';
+import { Paginator, PaginatorState } from 'primeng/paginator';
+import { PaginationInterface } from '@utils/interfaces';
 
 @Component({
     selector: 'app-process',
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Dialog, LabelDirective, DatePicker],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, DatePipe, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, Tabs, TabList, Tab, TabPanels, TabPanel, InputText, ReactiveFormsModule, Dialog, LabelDirective, DatePicker, Paginator],
     templateUrl: './process.component.html'
 })
 export default class ProcessComponent implements OnInit {
@@ -52,6 +54,8 @@ export default class ProcessComponent implements OnInit {
     protected filterModal = signal<boolean>(false);
     protected isFiltering = signal<boolean>(false);
     protected activeFilters: any[] = [];
+    protected pagination!: PaginationInterface;
+    protected paginationCompleted!: PaginationInterface;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Listado de Trámites' }]);
@@ -95,7 +99,7 @@ export default class ProcessComponent implements OnInit {
         const valid = isAfter(new Date(this.filterForm.controls['startedAt'].value!), new Date(this.filterForm.controls['endedAt'].value!));
     }
 
-    findProcesses(isFilter = false) {
+    findProcesses(isFilter = false, page = 1) {
         if (!isFilter) {
             this.filterForm.reset();
             this.activeFilters = [];
@@ -116,15 +120,16 @@ export default class ProcessComponent implements OnInit {
 
         const filters = this.filterForm.getRawValue();
 
-        this.internalInspectionService.findProcesses('1', true, filters).subscribe({
+        this.internalInspectionService.findProcesses(page, true, filters).subscribe({
             next: (response) => {
-                this.items.set(response);
+                this.pagination = response.pagination!;
+                this.items.set(response.data);
                 this.filterModal.set(false);
             }
         });
     }
 
-    findCompletedProcesses(isFilter = false) {
+    findCompletedProcesses(isFilter = false, page = 1) {
         if (!isFilter) {
             this.filterForm.reset();
             this.activeFilters = [];
@@ -145,9 +150,10 @@ export default class ProcessComponent implements OnInit {
 
         const filters = this.filterForm.getRawValue();
 
-        this.internalInspectionService.findProcesses('1', false, filters).subscribe({
+        this.internalInspectionService.findProcesses(page, false, filters).subscribe({
             next: (response) => {
-                this.completedProcesses.set(response);
+                this.paginationCompleted = response.pagination!;
+                this.completedProcesses.set(response.data);
             }
         });
     }
@@ -175,6 +181,14 @@ export default class ProcessComponent implements OnInit {
 
     protected downloadProcessesByTechnician() {
         this.reportsHttpService.downloadProcessesByTechnician(this.authService.role.code, true);
+    }
+
+    onPagination(paginatorState: PaginatorState, isCurrent:boolean) {
+        if (paginatorState?.page || paginatorState.page === 0) this.findProcesses(isCurrent, paginatorState.page + 1);
+    }
+
+    onPaginationCompleted(paginatorState: PaginatorState, isCurrent:boolean) {
+        if (paginatorState?.page || paginatorState.page === 0) this.findCompletedProcesses(isCurrent, paginatorState.page + 1);
     }
 
     protected readonly es = es;
