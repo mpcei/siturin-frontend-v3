@@ -16,7 +16,7 @@ export class InternalInspectionService {
     private readonly apiUrl = `${environment.API_URL}/core/guide-technician`;
     private readonly customMessageService = inject(CustomMessageService);
 
-    findCadastres(page: string, isCurrent: boolean, search:string) {
+    findCadastres(page=1, isCurrent: boolean, search:string) {
         const url = `${this.apiUrl}/process-guides/cadastres`;
 
         const params = new HttpParams()

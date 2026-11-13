@@ -33,11 +33,13 @@ import { InputText } from 'primeng/inputtext';
 import { debounceTime } from 'rxjs';
 import { InputGroupAddon } from 'primeng/inputgroupaddon';
 import { InputGroup } from 'primeng/inputgroup';
+import { Paginator, PaginatorState } from 'primeng/paginator';
+import { PaginationInterface } from '@utils/interfaces';
 
 @Component({
     selector: 'app-cadastre',
     standalone: true,
-    imports: [TableModule, ButtonModule, DividerModule, PanelModule, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, ButtonActionComponent, InputText, ReactiveFormsModule, InputGroupAddon, InputGroup],
+    imports: [TableModule, ButtonModule, DividerModule, PanelModule, EstablishmentNumberPipe, Tag, ProcessStateSeverityPipe, Tooltip, ButtonActionComponent, InputText, ReactiveFormsModule, InputGroupAddon, InputGroup, Paginator],
     templateUrl: './cadastre.component.html',
     providers: [DialogService]
 })
@@ -57,6 +59,7 @@ export default class CadastreComponent implements OnInit {
     protected searchControl = new FormControl('');
     private dialogService = inject(DialogService);
     ref?: DynamicDialogRef | null;
+    protected pagination!: PaginationInterface;
 
     constructor() {
         this.breadcrumbService.setItems([{ label: 'Listado de Catastros' }]);
@@ -66,14 +69,14 @@ export default class CadastreComponent implements OnInit {
         this.findCadastres();
         this.searchControl.valueChanges.pipe(
             debounceTime(500)
-        ).
-        subscribe(() => this.findCadastres());
+        ).subscribe(() => this.findCadastres());
     }
 
-    findCadastres() {
-        this.internalInspectionService.findCadastres('1', true, this.searchControl.value!).subscribe({
+    findCadastres(page = 1) {
+        this.internalInspectionService.findCadastres(page, true, this.searchControl.value!).subscribe({
             next: (response) => {
                 this.items.set(response);
+                this.pagination = response.pagination!;
             }
         });
     }
@@ -135,6 +138,10 @@ export default class CadastreComponent implements OnInit {
 
     protected downloadRegistrationCertificate(cadastre: CadastreInterface) {
         this.reportsHttpService.downloadRegistrationCertificate(cadastre);
+    }
+
+    onPagination(paginatorState: PaginatorState, isCurrent: boolean) {
+        if (paginatorState?.page || paginatorState.page === 0) this.findCadastres(paginatorState.page + 1);
     }
 
     protected readonly es = es;
