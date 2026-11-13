@@ -192,7 +192,7 @@ export class ConsultaCatastroComponent implements OnInit {
                 if (this.catastros.length === 0) {
                     this.customMessageService.showModalWarn({
                         summary: 'La búsqueda no generó resultados.',
-                        detail: 'Por vavor intente de nuevo'
+                        detail: 'Por favor intente de nuevo'
                     });
                 }
             },
