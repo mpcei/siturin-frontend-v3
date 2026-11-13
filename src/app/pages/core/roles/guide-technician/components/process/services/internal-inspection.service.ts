@@ -39,7 +39,7 @@ export class InternalInspectionService {
         );
     }
 
-    findProcesses(page: string, isCurrent: boolean, filters: ProcessFilters) {
+    findProcesses(page = 1, isCurrent: boolean, filters: ProcessFilters) {
         const url = `${this.apiUrl}/process-guides/processes`;
 
         let params = new HttpParams()
@@ -55,7 +55,7 @@ export class InternalInspectionService {
 
         return this.httpClient.get<HttpResponseInterface>(url, { params }).pipe(
             map((response) => {
-                return response.data;
+                return response;
             })
         );
     }
