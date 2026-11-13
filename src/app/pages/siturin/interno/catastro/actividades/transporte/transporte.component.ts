@@ -5,8 +5,7 @@ import { CoreService, MessageService } from '@services/core';
 import { Card } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { PrimeTemplate } from 'primeng/api';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Tag } from 'primeng/tag';
+import { AsyncPipe, NgFor } from '@angular/common';
 import { CatalogoModel } from '@models/siturin';
 
 interface TransporteTerrestre {
@@ -18,7 +17,7 @@ interface TransporteTerrestre {
     selector: 'app-transporte',
     templateUrl: './transporte.component.html',
     styleUrls: ['./transporte.component.scss'],
-    imports: [Card, TableModule, PrimeTemplate, NgFor, NgIf, Tag, AsyncPipe]
+    imports: [Card, TableModule, PrimeTemplate, NgFor, AsyncPipe]
 })
 export class TransporteComponent implements OnInit {
     @Output() operacionIntermediacionOut: EventEmitter<any> = new EventEmitter<any>();
