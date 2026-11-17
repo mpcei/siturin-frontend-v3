@@ -4,6 +4,7 @@ import { debounceTime } from 'rxjs';
 import { ColumnModel, PaginatorModel } from '@models/core';
 import { CatastroModel, DpaModel, TramiteModel, ZonalModel } from '@models/siturin';
 import { AuthService } from '@services/auth';
+import { AuthService as AuthV3Service } from '@/pages/auth/auth.service';
 import { CoreService, MessageService } from '@services/core';
 import { CatastrosHttpService, TecnicoZonalHttpService } from '@services/siturin';
 import { CatastroEstadoEnum, RolesEnum } from '@shared/enums';
@@ -24,6 +25,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { CatastroFormComponent } from '../catastro-form/catastro-form.component';
 import { Dialog } from 'primeng/dialog';
 import { ProgressBarComponent } from '../../../../../legacy/shared/components/progress-bar/progress-bar.component';
+import { ReportsHttpService } from '@/pages/core/shared/services';
 
 @Component({
     selector: 'app-catastro-list',
@@ -55,11 +57,13 @@ import { ProgressBarComponent } from '../../../../../legacy/shared/components/pr
 })
 export class CatastroListComponent implements OnInit {
     public authService = inject(AuthService);
+    public authV3Service = inject(AuthV3Service);
     private catastrosHttpService = inject(CatastrosHttpService);
     private formBuilder = inject(FormBuilder);
     public messageService = inject(MessageService);
     private coreService = inject(CoreService);
     private tecnicoZonalHttpService = inject(TecnicoZonalHttpService);
+    private reportsHttpService = inject(ReportsHttpService);
     catastros: CatastroModel[] = [];
     catastroSeleccionado: CatastroModel = {};
     cargando: boolean = false;
@@ -289,4 +293,11 @@ export class CatastroListComponent implements OnInit {
     }
 
     protected readonly RolesEnum = RolesEnum;
+
+    downloadGuidesCadastre() {
+        switch (this.authService.role.name) {
+            case RolesEnum.DAC:
+                this.reportsHttpService.downloadGuidesCadastre(this.authV3Service.role.code);
+        }
+    }
 }
