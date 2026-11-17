@@ -20,6 +20,7 @@ import { CustomMessageService, FileHttpService } from '@utils/services';
 import { Tooltip } from 'primeng/tooltip';
 import { TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Message } from 'primeng/message';
+import { Divider } from 'primeng/divider';
 
 @Component({
     selector: 'app-validador-documento',
@@ -38,7 +39,8 @@ import { Message } from 'primeng/message';
         Tabs,
         TabPanels,
         TabPanel,
-        Message
+        Message,
+        Divider
     ],
     styleUrls: ['./consulta-catastro.component.scss']
 })
