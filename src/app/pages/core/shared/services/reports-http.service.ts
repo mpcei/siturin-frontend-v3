@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { CustomMessageService } from '@utils/services/custom-message.service';
 import { CadastreInterface } from '@/pages/core/interfaces';
+import { format } from 'date-fns';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,7 @@ export class ReportsHttpService {
     private readonly _httpClient = inject(HttpClient);
     private readonly apiUrlExternalPDF = `${environment.API_URL}/reports/pdf/internals`;
     private readonly apiUrlExternalXLSX = `${environment.API_URL}/reports/excel/internals`;
+    private readonly apiUrlInternalXLSX = `${environment.API_URL}/reports/excel/internals`;
     private readonly _customMessageService = inject(CustomMessageService);
 
     downloadInactivationCertificate(cadastre: CadastreInterface) {
@@ -90,6 +92,26 @@ export class ReportsHttpService {
             downloadLink.href = filePath;
 
             downloadLink.setAttribute('download', `bandeja_director.xlsx`);
+
+            document.body.appendChild(downloadLink);
+
+            downloadLink.click();
+        });
+    }
+
+    downloadGuidesCadastre(roleCode: string) {
+        const url = `${this.apiUrlInternalXLSX}/guide-cadastres`;
+
+        const params = new HttpParams().append('rolCode', roleCode);
+
+        this._httpClient.get<BlobPart>(url, { params, responseType: 'blob' as 'json' }).subscribe((response) => {
+            const filePath = URL.createObjectURL(new Blob([response]));
+
+            const downloadLink = document.createElement('a');
+
+            downloadLink.href = filePath;
+
+            downloadLink.setAttribute('download', `catastro_guias_${format(new Date,'yyyy_mm_dd HH_mm_ss')}.xlsx`);
 
             document.body.appendChild(downloadLink);
 
