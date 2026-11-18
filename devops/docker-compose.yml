@@ -6,8 +6,8 @@ services:
         container_name: siturin-frontend
         restart: unless-stopped
         networks:
-            - qa_network
+            - npm_network
 
 networks:
-    qa_network:
+    npm_network:
         external: true
