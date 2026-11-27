@@ -135,11 +135,11 @@ export class RenewComponent {
                 // console.log(payload);
                 formData.append('payload', JSON.stringify(payload));
 
-                // this.guideHttpService.createRenew(formData).subscribe({
-                //     next: () => {
-                //         this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
-                //     }
-                // });
+                this.guideHttpService.createRenew(formData).subscribe({
+                    next: () => {
+                        this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
+                    }
+                });
             },
             key: 'confirmdialog'
         });
