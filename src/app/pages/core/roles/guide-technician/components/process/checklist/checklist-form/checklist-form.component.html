@@ -58,7 +58,7 @@
 
             <div class="custom-form-field-row md:col-span-12">
                 @if (processGuide.requirement.code == 'certification_language') {
-                    @for (language of data().establishment.languages; track language.id) {
+                    @for (language of data().process.languages; track language.id) {
                         <p-message severity="success">
                             <p-button
                                 [label]="language.languageName"
@@ -72,7 +72,7 @@
                 }
 
                 @if (processGuide.requirement.code == 'modality_adventure_guide' || processGuide.requirement.code == 'modality_adventure') {
-                    @for (adventureModality of data().establishment.adventureModalities; track adventureModality.id) {
+                    @for (adventureModality of data().process.adventureModalities; track adventureModality.id) {
                         <p-message severity="success">
                             <p-button
                                 [label]="adventureModality.modalityName"
@@ -86,7 +86,7 @@
                 }
 
                 @if (processGuide.requirement.code == 'pane') {
-                    @for (protectedArea of data().establishment.protectedAreas; track protectedArea.id) {
+                    @for (protectedArea of data().process.protectedAreas; track protectedArea.id) {
                         <p-message severity="success">
                             {{ protectedArea.areaName }}
                         </p-message>

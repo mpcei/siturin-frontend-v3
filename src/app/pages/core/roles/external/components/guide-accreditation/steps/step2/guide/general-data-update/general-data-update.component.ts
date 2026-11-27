@@ -7,7 +7,6 @@ import { collectFormErrors } from '@utils/helpers/collect-form-errors.helper';
 import { AdventureTourismModalityComponent } from '@modules/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/adventure-tourism-modality/adventure-tourism-modality.component';
 import { RequirementComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/requirement/requirement.component';
 import { ProtectedAreaComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/protected-area/protected-area.component';
-import { LanguageComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/language/language.component';
 import { VehicleComponent } from '@/pages/core/roles/external/components/guide-accreditation/steps/step2/guide/shared/vehicle/vehicle.component';
 import { CatalogueGuideClassificationsCodeEnum } from '@/pages/core/shared/components/regulation-simulator/enum';
 import { FontAwesome } from '@/pages/public/icons/font-awesome';
@@ -29,7 +28,7 @@ export class GeneralDataUpdateComponent implements OnInit {
     @ViewChildren(RequirementComponent) private requirementComponent!: QueryList<RequirementComponent>;
     @ViewChildren(ProtectedAreaComponent) private protectedAreaComponent!: QueryList<ProtectedAreaComponent>;
     @ViewChildren(AdventureTourismModalityComponent) private adventureTourismModalityComponent!: QueryList<AdventureTourismModalityComponent>;
-    @ViewChildren(LanguageComponent) private languageComponent!: QueryList<LanguageComponent>;
+    @ViewChildren(LanguageGeneralDataUpdateComponent) private languageGeneralDataUpdateComponent!: QueryList<LanguageGeneralDataUpdateComponent>;
     @ViewChildren(VehicleComponent) private vehicleComponent!: QueryList<VehicleComponent>;
 
     private mainData: WritableSignal<Record<string, any>> = signal({});
@@ -216,7 +215,7 @@ export class GeneralDataUpdateComponent implements OnInit {
     }
 
     checkFormErrors() {
-        const errors: string[] = collectFormErrors([this.requirementComponent, this.protectedAreaComponent, this.adventureTourismModalityComponent, this.languageComponent, this.vehicleComponent]);
+        const errors: string[] = collectFormErrors([this.requirementComponent, this.protectedAreaComponent, this.adventureTourismModalityComponent, this.languageGeneralDataUpdateComponent, this.vehicleComponent]);
 
         if (errors.length > 0) {
             this.customMessageService.showFormErrors(errors);
