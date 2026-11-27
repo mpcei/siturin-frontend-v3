@@ -36,7 +36,8 @@ export class RenewComponent {
     protected readonly formStateService = inject(FormStateService);
     private readonly confirmationService = inject(ConfirmationService);
 
-    constructor() {}
+    constructor() {
+    }
 
     onSubmit() {
         if (this.checkFormErrors()) {
@@ -61,6 +62,7 @@ export class RenewComponent {
         });
 
         if (objectName?.includes('processGuides')) this.formStateService.updateSection('processGuides', this.mainData()[objectName]);
+        if (objectName?.includes('protectedArea')) this.formStateService.updateSection('protectedArea', this.mainData()[objectName]);
     }
 
     saveProcess() {
@@ -82,6 +84,7 @@ export class RenewComponent {
             },
             accept: () => {
                 const processGuides: any[] = [];
+                const protectedAreas: any[] = [];
 
                 const formData = new FormData();
 
@@ -91,27 +94,52 @@ export class RenewComponent {
                     if (x.file) formData.append(x.requirement.id, x.file);
                 });
 
+                if (this.formStateService.protectedArea()) {
+                    processGuides.push({ requirement: this.formStateService.protectedArea().requirement, value: this.formStateService.protectedArea().hasProtectedArea });
+
+                    Object.values(this.formStateService.protectedArea().protectedAreas).forEach((x: any) => {
+                        protectedAreas.push({
+                            areaCode: x.area?.code,
+                            areaName: x.area?.name,
+                            province: x.province,
+                            canton: x.canton
+                        });
+                    });
+                }
+
                 this.formStateService.updateSection('process', { endedAt: new Date() });
 
                 const { ...process } = this.formStateService.process()!;
-                const { id, createdAt, deletedAt, updatedAt, enabled, processId, classification, category, geographicArea, ...currentCredential } = this.formStateService.currentCredential()!;
+                const {
+                    id,
+                    createdAt,
+                    deletedAt,
+                    updatedAt,
+                    enabled,
+                    processId,
+                    classification,
+                    category,
+                    geographicArea,
+                    ...currentCredential
+                } = this.formStateService.currentCredential()!;
 
                 const payload = {
                     user: this.formStateService.user(),
                     process: process,
                     establishment: this.formStateService.establishment(),
                     processGuides,
-                    credentials: [currentCredential]
+                    credentials: [currentCredential],
+                    protectedAreas: protectedAreas,
                 };
 
-                console.log(payload);
+                // console.log(payload);
                 formData.append('payload', JSON.stringify(payload));
 
-                this.guideHttpService.createRenew(formData).subscribe({
-                    next: () => {
-                        this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
-                    }
-                });
+                // this.guideHttpService.createRenew(formData).subscribe({
+                //     next: () => {
+                //         this.router.navigate([MY_ROUTES.corePages.external.guideEstablishment.absolute]);
+                //     }
+                // });
             },
             key: 'confirmdialog'
         });
